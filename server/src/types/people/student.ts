@@ -1,6 +1,6 @@
 //src/types/people/student.ts
 import { Types } from "mongoose";
-import { ISchool } from "../school/school";
+import { IClass, ISchool } from "../school/school";
 import { IBaseUser } from "./user";
 
 export type StudentGender = "boy" | "girl";
@@ -17,7 +17,8 @@ export interface IStudent {
   admission_date: Date;
   previuosSchool?: string;
   guardian: Types.ObjectId | IBaseUser;
-   status: StudentStatus;
+  class: Types.ObjectId | IClass;
+  status: StudentStatus;
   studentId?: string;
   createdAt: Date;
   updatedAt: Date;
