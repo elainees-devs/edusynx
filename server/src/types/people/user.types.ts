@@ -1,4 +1,4 @@
-// src/types/people/user.ts
+//src/types/people/user.types.ts
 import { Types } from "mongoose";
 import { IClass, ISchool } from "../school/school.types";
 import { UserRole } from "../enum/enum";
