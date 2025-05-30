@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 import { IStudent } from "../people/student.types";
 import { AttendanceStatus, ExamType, Term } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
+import { IBaseUser } from "../people/user.types";
 
 export interface ISchool extends BaseDocument {
   name: string;
@@ -60,4 +61,10 @@ export interface IExamResult extends BaseDocument {
   marks: number;
   grade: string;
   comments?: string;
+}
+
+export interface ITeacherSubject extends BaseDocument {
+  school: Types.ObjectId | ISchool;
+  teacherId: Types.ObjectId| IBaseUser
+  subjectId: Types.ObjectId | ISubject;
 }
