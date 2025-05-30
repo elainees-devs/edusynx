@@ -2,9 +2,20 @@
 
 import { Types } from "mongoose";
 import { IStudent } from "../people/student";
+import { Term } from "../term";
 
-export type ExamType = "internal" | "external";
-export type Term = "Term 1" | "Term 2" | "Term 3";
+export enum ExamType {
+  Internal = "internal",
+  External = "external",
+}
+
+export enum AttendanceStatus {
+  Present = "present",
+  Absent = "absent",
+}
+
+
+
 
 export interface ISchool {
   _id: Types.ObjectId;
@@ -62,7 +73,7 @@ export interface IAttendance {
   date: Date;
   attendance: {
     studentId: Types.ObjectId | IStudent;
-    status: "present" | "absent";
+    status: AttendanceStatus;
   }[];
   createdAt: Date;
   updatedAt: Date;
