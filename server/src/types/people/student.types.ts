@@ -16,7 +16,7 @@ export interface IStudent extends BaseDocument{
   admissionDate: Date;
   previousSchool?: string;
   guardian: Types.ObjectId | IBaseUser;
-  class: Types.ObjectId | IClass;
+  classId: Types.ObjectId | IClass;
   status: StudentStatus;
   studentId?: string;
 }
