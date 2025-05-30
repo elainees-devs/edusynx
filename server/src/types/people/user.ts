@@ -1,41 +1,41 @@
-//src/types/people/user.ts
+// src/types/people/user.ts
 import { Types } from "mongoose";
-import { IClass, ISchool, ISubject } from "../school/school";
+import { IClass, ISchool } from "../school/school";
+import { UserRole } from "../enum/enum";
 
 export interface IBaseUser {
   _id: Types.ObjectId;
   school: Types.ObjectId | ISchool;
-  first_name: string;
-  middle_name: string;
-  last_name: string;
-  primary_email: string;
-  secondary_email?: string;
-  primary_phone_number: string;
-  secondary_phone_number?: string;
-  hashed_password: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  primaryEmail: string;
+  secondaryEmail?: string;
+  primaryPhoneNumber: string;
+  secondaryPhoneNumber?: string;
+  hashedPassword: string;
   nationality: string;
-  avatar_url?: string;
+  avatarUrl?: string;
   isActive: boolean;
-  last_login?: Date;
-  is_locked: boolean;
-  password_changed_at?: Date;
-  is_two_factor_enabled: boolean;
-  role: "headteacher" | "teacher" | "admin" | "guardian" | "accountant";
+  lastLogin?: Date;
+  isLocked: boolean;
+  passwordChangedAt?: Date;
+  isTwoFactorEnabled: boolean;
+  role: UserRole;
   createdAt: Date;
   updatedAt: Date;
 }
 
+
 export interface ITeacherUser extends IBaseUser {
-  role: "teacher";
-  teacher_id?: string;
+  role: UserRole.Teacher;
+  teacherId?: string;
   isClassTeacher?: boolean;
-  class: Types.ObjectId | IClass
+  class: Types.ObjectId | IClass;
   teachingSubjects?: string[];
 }
 
 export interface IGuardianUser extends IBaseUser {
-  role: "guardian";
+  role: UserRole.Guardian;
   familyNumber: number;
 }
-
-
