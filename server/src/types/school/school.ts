@@ -2,20 +2,7 @@
 
 import { Types } from "mongoose";
 import { IStudent } from "../people/student";
-import { Term } from "../term";
-
-export enum ExamType {
-  Internal = "internal",
-  External = "external",
-}
-
-export enum AttendanceStatus {
-  Present = "present",
-  Absent = "absent",
-}
-
-
-
+import { AttendanceStatus, ExamType, Term } from "../enum/enum";
 
 export interface ISchool {
   _id: Types.ObjectId;
