@@ -67,3 +67,16 @@ export interface IAttendance {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IExamResult {
+  _id: Types.ObjectId;
+  school: Types.ObjectId | ISchool;
+  exam: Types.ObjectId | IExam;
+  student: Types.ObjectId | IStudent;
+  subjects: Types.ObjectId | ISubject[];
+  marks: number;
+  grade: string;
+  comments?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
