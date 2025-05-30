@@ -1,12 +1,10 @@
 //src/types/security/session.types.ts
+import { ILoginBase } from "../common/auth-context.types";
 import { BaseDocument } from "../common/base.types";
 
-export interface ISession extends BaseDocument {
+export interface ISession extends BaseDocument, ILoginBase {
   userId: string; // Refers to IBaseUser._id
-  loginTime: Date;
   logoutTime?: Date;
-  ipAddress?: string;
-  deviceInfo: string;
   lastAccessedAt?: Date;
   expiryTime: number; // Duration in seconds
   permissions?: string[];
