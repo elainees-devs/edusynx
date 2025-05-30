@@ -1,4 +1,4 @@
-// src/types/people/student.ts
+//src/types/people/student.types.ts
 import { Types } from "mongoose";
 import { IClass, ISchool } from "../school/school.types";
 import { IBaseUser } from "./user.types";
