@@ -1,7 +1,7 @@
 //src/types/school/school.ts
 
 import { Types } from "mongoose";
-import { IStudent } from "../people/student";
+import { IStudent } from "../people/student.types";
 import { AttendanceStatus, ExamType, Term } from "../enum/enum";
 
 export interface ISchool {
