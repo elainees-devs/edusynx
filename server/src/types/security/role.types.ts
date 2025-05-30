@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 import { UserRole } from "../enum/enum";
 import { ISchool } from "../school/school.types";
 import { BaseDocument } from "../common/base.types";
+import { IBaseUser } from "../people/user.types";
 
 export interface IRole extends BaseDocument {
   role: UserRole;
@@ -14,4 +15,9 @@ export interface IRole extends BaseDocument {
   isSystemRole?: boolean; // Indicates if this is a system-defined role
   customAttributes?: Record<string, any>; // For any additional custom attributes
   // e.g., { "color": "blue", "level": 1 }
+}
+
+export interface IUserRole extends BaseDocument {
+  userId: Types.ObjectId | IBaseUser; 
+  roleId: Types.ObjectId | IRole;
 }
