@@ -1,7 +1,6 @@
 //src/types/finance/finance.types.ts
 import { Types } from "mongoose";
 import { IStudent } from "../people/student.types";
-import { ISchool, IClass } from "../school/school.types";
 import { IBaseUser } from "../people/user.types";
 import {
   FeeType,
@@ -12,6 +11,7 @@ import {
   Term,
 } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
+import { IClass, ISchool } from "../school/school-core.types";
 
 export interface IFee extends BaseDocument {
   feeType: FeeType;
@@ -19,7 +19,7 @@ export interface IFee extends BaseDocument {
   description?: string;
   amount: number;
   term: Term;
-  class: Types.ObjectId | IClass;
+  classId: Types.ObjectId | IClass;
   school: Types.ObjectId | ISchool;
   dueDate: Date;
   isRecurring?: boolean;
@@ -62,7 +62,7 @@ export interface IInvoice extends BaseDocument {
   invoiceNumber: string;
   student: Types.ObjectId | IStudent;
   school: Types.ObjectId | ISchool;
-  class: Types.ObjectId | IClass;
+  classId: Types.ObjectId | IClass;
   items: IInvoiceItem[];
   totalAmount: number;
   amountPaid: number;
