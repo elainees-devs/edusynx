@@ -14,7 +14,6 @@ export interface ISchool {
   website?: string;
   establishedYear: number;
   logo_url: string;
-
   isActive: boolean;
   school_code: string;
   createdAt: Date;
