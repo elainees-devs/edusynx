@@ -25,7 +25,6 @@ export interface IClass {
   school: Types.ObjectId | ISchool;
   class_name: string;
   stream: string;
-  class_teacher: string;
   academic_year: string;
   createdAt: Date;
   updatedAt: Date;
