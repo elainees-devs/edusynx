@@ -1,6 +1,6 @@
 //src/types/people/user.ts
 import { Types } from "mongoose";
-import { ISchool, ISubject } from "../school/school";
+import { IClass, ISchool, ISubject } from "../school/school";
 
 export interface IBaseUser {
   _id: Types.ObjectId;
@@ -29,7 +29,7 @@ export interface ITeacherUser extends IBaseUser {
   role: "teacher";
   teacher_id?: string;
   isClassTeacher?: boolean;
-  subject_name?: string | ISubject;
+  class: Types.ObjectId | IClass
   teachingSubjects?: string[];
 }
 
