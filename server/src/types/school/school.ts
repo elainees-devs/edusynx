@@ -1,6 +1,7 @@
 //src/types/school/school.ts
 
 import { Types } from "mongoose";
+import { IStudent } from "../people/student";
 
 export type ExamType = "internal" | "external";
 export type Term = "Term 1" | "Term 2" | "Term 3";
@@ -49,6 +50,20 @@ export interface IExam {
   academic_year: string;
   term: Term;
   exam_type: ExamType;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IAttendance {
+  _id: Types.ObjectId;
+  school: Types.ObjectId | ISchool;
+  class: Types.ObjectId | IClass;
+  school_year: string;
+  date: Date;
+  attendance: {
+    studentId: Types.ObjectId | IStudent;
+    status: "present" | "absent";
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
