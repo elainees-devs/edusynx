@@ -3,51 +3,7 @@ import { Types } from "mongoose";
 import { IStudent } from "../people/student";
 import { ISchool, IClass } from "../school/school";
 import { IBaseUser } from "../people/user";
-import { Term } from "../term";
-
-export enum FeeType {
-  Tuition = "tuition",
-  Admission = "admission",
-  Exam = "exam",
-  Library = "library",
-  Transport = "transport",
-  Trip = "trip",
-  Other = "other",
-}
-
-export enum PaymentMethod {
-  Mpesa = "mpesa",
-  BankTransfer = "bank_transfer",
-  Cheque = "cheque",
-  Cash = "cash",
-  CreditCard = "credit_card",
-  Other = "other",
-}
-
-export enum PaymentStatus {
-  Pending = "pending",
-  Completed = "completed",
-  Failed = "failed",
-  Refunded = "refunded",
-  PartiallyRefunded = "partially_refunded",
-}
-
-export enum InvoiceStatus {
-  Draft = "draft",
-  Issued = "issued",
-  Paid = "paid",
-  PartiallyPaid = "partially_paid",
-  Overdue = "overdue",
-  Cancelled = "cancelled",
-  Refunded = "refunded",
-}
-
-export enum RecurringInterval {
-  Monthly = "monthly",
-  Termly = "termly",
-  Annually = "annually",
-}
-
+import { FeeType, InvoiceStatus, PaymentMethod, PaymentStatus, RecurringInterval, Term } from "../enum/enum";
 
 export interface IFee {
   _id: Types.ObjectId;
