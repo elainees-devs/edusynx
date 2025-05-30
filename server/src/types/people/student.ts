@@ -2,9 +2,7 @@
 import { Types } from "mongoose";
 import { IClass, ISchool } from "../school/school";
 import { IBaseUser } from "./user";
-
-export type StudentGender = "boy" | "girl";
-export type StudentStatus = "active" | "inactive" | "completed" | "transferred";
+import { StudentGender, StudentStatus } from "../enum/enum";
 
 export interface IStudent {
   school: string | ISchool;
