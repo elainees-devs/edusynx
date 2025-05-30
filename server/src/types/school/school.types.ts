@@ -3,9 +3,9 @@
 import { Types } from "mongoose";
 import { IStudent } from "../people/student.types";
 import { AttendanceStatus, ExamType, Term } from "../enum/enum";
+import { BaseDocument } from "../common/base.types";
 
-export interface ISchool {
-  _id: Types.ObjectId;
+export interface ISchool extends BaseDocument {
   name: string;
   address: string;
   phoneNumber: string;
@@ -15,59 +15,44 @@ export interface ISchool {
   logo_url: string;
   isActive: boolean;
   school_code: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-export interface IClass {
-  _id: Types.ObjectId;
+export interface IClass extends BaseDocument {
   school: Types.ObjectId | ISchool;
-  class_name: string;
+  className: string;
   stream: string;
-  academic_year: string;
-  createdAt: Date;
-  updatedAt: Date;
+  academicYear: string;
 }
 
-export interface ISubject {
-  _id: Types.ObjectId;
+export interface ISubject extends BaseDocument {
   school: Types.ObjectId | ISchool;
   subject_name: string;
   class: Types.ObjectId | IClass;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-export interface IExam {
-  _id: Types.ObjectId;
+export interface IExam extends BaseDocument {
   school: Types.ObjectId | ISchool;
-  exam_name: string;
+  examName: string;
   class: Types.ObjectId | IClass;
   subject: Types.ObjectId | ISubject;
   exam_date: Date;
   academic_year: string;
   term: Term;
-  exam_type: ExamType;
-  createdAt: Date;
-  updatedAt: Date;
+  examType: ExamType;
 }
 
-export interface IAttendance {
-  _id: Types.ObjectId;
+export interface IAttendance extends BaseDocument {
   school: Types.ObjectId | ISchool;
   class: Types.ObjectId | IClass;
-  school_year: string;
+  schoolYear: string;
   date: Date;
   attendance: {
     studentId: Types.ObjectId | IStudent;
     status: AttendanceStatus;
   }[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-export interface IExamResult {
-  _id: Types.ObjectId;
+export interface IExamResult extends BaseDocument {
   school: Types.ObjectId | ISchool;
   exam: Types.ObjectId | IExam;
   student: Types.ObjectId | IStudent;
@@ -75,6 +60,4 @@ export interface IExamResult {
   marks: number;
   grade: string;
   comments?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
