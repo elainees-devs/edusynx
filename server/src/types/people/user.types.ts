@@ -1,6 +1,6 @@
 //src/types/people/user.types.ts
 import { Types } from "mongoose";
-import { IClass, ISchool } from "../school/school.types";
+import { IClass, ISchool } from "../school/school-core.types";
 import { UserRole } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 
@@ -23,7 +23,6 @@ export interface IBaseUser extends BaseDocument {
   isTwoFactorEnabled: boolean;
   role: UserRole;
 }
-
 
 export interface ITeacherUser extends IBaseUser {
   role: UserRole.Teacher;
