@@ -1,9 +1,9 @@
 //src/types/security/permission.types.ts
 import { Types } from "mongoose";
-import { ISchool } from "../school/school.types";
 import { UserRole } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 import { IRole } from "./role.types";
+import { ISchool } from "../school/school-core.types";
 
 export interface IPermission extends BaseDocument {
   permissionName: string; // Name of the permission
