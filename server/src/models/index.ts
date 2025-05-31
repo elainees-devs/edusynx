@@ -1,2 +1,2 @@
 //src/models/school.models.ts
-export * from './school.models';
+export * from './school.model';
