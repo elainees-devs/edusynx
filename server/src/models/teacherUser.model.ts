@@ -5,9 +5,9 @@ import { ITeacherUser, UserRole } from "../types";
 const TeacherUserSchema: Schema = new Schema({
   role: {
     type: String,
-    enum: [UserRole.Teacher],
+    enum: [UserRole.TEACHER],
     required: true,
-    default: UserRole.Teacher,
+    default: UserRole.TEACHER,
   },
   teacherId: {
     type: String,
