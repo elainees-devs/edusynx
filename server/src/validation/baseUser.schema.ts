@@ -1,14 +1,7 @@
 // src/validation/baseUser.schema.ts
-import { z } from 'zod';
-import mongoose from 'mongoose';
-import { UserRole } from '../types/enum/enum';
-
-// Helper to validate ObjectId
-const objectId = z
-  .string()
-  .refine((val) => mongoose.Types.ObjectId.isValid(val), {
-    message: 'Invalid ObjectId',
-  });
+import { z } from "zod";
+import { UserRole } from "../types/enum/enum";
+import { objectId } from "./util";
 
 export const baseUserSchema = z.object({
   school: objectId,
