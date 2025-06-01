@@ -1,0 +1,20 @@
+// src/validation/student.schema.ts
+import { z } from "zod";
+import { StudentGender, StudentStatus } from "../types/enum/enum";
+import { objectId } from "./util";
+
+export const studentSchema = z.object({
+  school: objectId,
+  firstName: z.string().min(1),
+  middleName: z.string().min(1),
+  lastName: z.string().min(1),
+  studentGender: z.nativeEnum(StudentGender),
+  dateOfBirth: z.coerce.date(),
+  adm: z.number().int().min(1),
+  admissionDate: z.coerce.date(),
+  previousSchool: z.string().optional(),
+  guardian: objectId,
+  classId: objectId,
+  status: z.nativeEnum(StudentStatus),
+  studentId: z.string().optional(),
+});
