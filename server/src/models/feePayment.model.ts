@@ -4,6 +4,7 @@ import { IFeePaymentSummary } from "../types/finance/finance.types";
 
 const FeePaymentSummarySchema = new Schema<IFeePaymentSummary>(
   {
+    student: { type: Schema.Types.ObjectId, ref: "Student", required: true },
     fee: { type: Schema.Types.ObjectId, ref: "Fee", required: true },
     totalPaid: { type: Number, required: true },
     totalBalance: { type: Number, required: true },
