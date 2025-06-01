@@ -1,79 +1,78 @@
-//src/types/enum.ts
 export enum UserRole {
-  Headteacher = "headteacher",
-  Teacher = "teacher",
-  SchoolAdmin = "school-admin",
-  Guardian = "guardian",
-  Accountant = "accountant",
+  HEADTEACHER = "headteacher",
+  TEACHER = "teacher",
+  SCHOOL_ADMIN = "school-admin",
+  GUARDIAN = "guardian",
+  ACCOUNTANT = "accountant",
 }
 
 export enum StudentGender {
-  Boy = "boy",
-  Girl = "girl",
+  BOY = "boy",
+  GIRL = "girl",
 }
 
 export enum StudentStatus {
-  Active = "active",
-  Inactive = "inactive",
-  Completed = "completed",
-  Transferred = "transferred",
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+  COMPLETED = "completed",
+  TRANSFERRED = "transferred",
 }
 
 export enum ExamType {
-  Internal = "internal",
-  External = "external",
+  INTERNAL = "internal",
+  EXTERNAL = "external",
 }
 
 export enum AttendanceStatus {
-  Present = "present",
-  Absent = "absent",
+  PRESENT = "present",
+  ABSENT = "absent",
 }
 
 export enum Term {
-  Term1 = "term1",
-  Term2 = "term2",
-  Term3 = "term3",
+  TERM1 = "term1",
+  TERM2 = "term2",
+  TERM3 = "term3",
 }
 
 export enum FeeType {
-  Tuition = "tuition",
-  Admission = "admission",
-  Exam = "exam",
-  Library = "library",
-  Transport = "transport",
-  Trip = "trip",
-  Other = "other",
+  TUITION = "tuition",
+  ADMISSION = "admission",
+  EXAM = "exam",
+  LIBRARY = "library",
+  TRANSPORT = "transport",
+  TRIP = "trip",
+  OTHER = "other",
 }
 
 export enum PaymentMethod {
-  Mpesa = "mpesa",
-  BankTransfer = "bank_transfer",
-  Cheque = "cheque",
-  Cash = "cash",
-  CreditCard = "credit_card",
-  Other = "other",
+  MPESA = "mpesa",
+  BANK_TRANSFER = "bank_transfer",
+  CHEQUE = "cheque",
+  CASH = "cash",
+  CREDIT_CARD = "credit_card",
+  OTHER = "other",
 }
 
 export enum PaymentStatus {
-  Pending = "pending",
-  Completed = "completed",
-  Failed = "failed",
-  Refunded = "refunded",
-  PartiallyRefunded = "partially_refunded",
+  PENDING = "pending",
+  COMPLETED = "completed",
+  FAILED = "failed",
+  REFUNDED = "refunded",
+  PARTIALLY_REFUNDED = "partially_refunded",
 }
 
 export enum InvoiceStatus {
-  Draft = "draft",
-  Issued = "issued",
-  Paid = "paid",
-  PartiallyPaid = "partially_paid",
-  Overdue = "overdue",
-  Cancelled = "cancelled",
-  Refunded = "refunded",
+  ISSUED = "issued",
+  PAID = "paid",
+  UNPAID = "unpaid",
+  PARTIALLY_PAID = "partially_paid",
+  OVERDUE = "overdue",
+  CANCELLED = "cancelled",
+  REFUNDED = "refunded",
 }
 
 export enum RecurringInterval {
-  Monthly = "monthly",
-  Termly = "termly",
-  Annually = "annually",
+  MONTHLY = "monthly",
+  TERMLY = "termly",
+  ANNUALLY = "annually",
 }
