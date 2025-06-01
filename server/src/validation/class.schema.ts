@@ -1,13 +1,6 @@
 // src/validation/class.schema.ts
-import { z } from 'zod';
-import mongoose from 'mongoose';
-
-// Helper to validate MongoDB ObjectId
-const objectId = z
-  .string()
-  .refine((val) => mongoose.Types.ObjectId.isValid(val), {
-    message: 'Invalid ObjectId',
-  });
+import { z } from "zod";
+import { objectId } from "./util";
 
 export const classSchema = z.object({
   school: objectId,
