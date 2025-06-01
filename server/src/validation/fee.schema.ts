@@ -1,14 +1,7 @@
 // src/validation/fee.schema.ts
 import { z } from 'zod';
-import mongoose from 'mongoose';
 import { FeeType, RecurringInterval, Term } from '../types/enum/enum';
-
-// Helper to validate MongoDB ObjectId
-const objectId = z
-  .string()
-  .refine((val) => mongoose.Types.ObjectId.isValid(val), {
-    message: 'Invalid ObjectId',
-  });
+import { objectId } from './util';
 
 export const feeSchema = z.object({
   feeType: z.nativeEnum(FeeType),
