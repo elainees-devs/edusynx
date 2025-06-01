@@ -44,6 +44,7 @@ export interface IPayment extends BaseDocument {
 }
 
 export interface IFeePaymentSummary {
+  student: Types.ObjectId | IStudent;
   fee: IFee;
   totalPaid: number;
   totalBalance: number;
@@ -52,6 +53,7 @@ export interface IFeePaymentSummary {
 }
 
 export interface IInvoiceItem {
+  student: Types.ObjectId | IStudent;
   fee: Types.ObjectId | IFee;
   amount: number;
   originalAmount?: number;
