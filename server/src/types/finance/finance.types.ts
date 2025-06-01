@@ -77,10 +77,13 @@ export interface IInvoice extends BaseDocument {
   createdBy?: Types.ObjectId | IBaseUser;
 }
 
-export interface IFinancialReport {
-  totalFees: number;
-  totalPayments: number;
-  outstandingBalance: number;
-  overdueInvoices: number;
-  recentPayments: IPayment[];
+export interface IFinancialReport extends BaseDocument {
+  school: Types.ObjectId | ISchool;
+  academicYear: string;
+  term: string;
+  totalFeesCollected: number;
+  totalPaymentsMade: number;
+  outstandingFees: number;
+  reportDate?: Date;
+  createdBy: Types.ObjectId | IBaseUser;
 }
