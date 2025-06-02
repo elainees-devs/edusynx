@@ -5,6 +5,9 @@ import {
   IClass,
   IEvent,
   IExam,
+  IFee,
+  IFeePaymentSummary,
+  IFinancialReport,
   ISchool,
 } from "../types";
 
@@ -47,5 +50,23 @@ export type CreateEventDTO = Omit<
 //Exam Result DTO
 export type CreateExamResultDTO = Omit<
   IExam,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+//Fee DTO
+export type CreateFeeDTO = Omit<
+  IFee,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+//Fee Payment DTO
+export type CreateFeePaymentDTO = Omit<
+  IFeePaymentSummary,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+// Financial Report DTO
+export type CreateFinancialReportDTO = Omit<
+  IFinancialReport,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
