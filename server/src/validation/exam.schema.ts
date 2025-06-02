@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { Term, ExamType } from '../types';
 import { objectId } from './util';
 
-export const examSchema = z.object({
+export const createExamSchema = z.object({
   school: objectId,
   examName: z.string().min(1),
   classRef: objectId,
@@ -14,3 +14,4 @@ export const examSchema = z.object({
   examType: z.nativeEnum(ExamType),
 });
 
+export const updateExamSchema = createExamSchema.partial();
