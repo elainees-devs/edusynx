@@ -5,9 +5,9 @@ import { IGuardianUser, UserRole } from "../types";
 const GuardianUserSchema: Schema = new Schema({
   role: {
     type: String,
-    enum: [UserRole.Guardian],
+    enum: [UserRole.GUARDIAN],
     required: true,
-    default: UserRole.Guardian,
+    default: UserRole.GUARDIAN,
   },
   familyNumber: {
     type: Number,
