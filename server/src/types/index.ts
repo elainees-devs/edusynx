@@ -1,5 +1,6 @@
 //src/types/index.ts
-export * from "./school/school.types";
+export * from "./school/school-core.types";
+export * from "./school/school-activity.types";
 export * from "./people/user.types";
 export * from "./people/student.types";
 export * from "./finance/finance.types";
