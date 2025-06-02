@@ -8,8 +8,10 @@ import {
   IFee,
   IFeePaymentSummary,
   IFinancialReport,
+  IGuardianUser,
   IInvoice,
   ISchool,
+  ITeacherUser,
 } from "../types";
 
 // User DTO
@@ -17,6 +19,18 @@ export type CreateUserDTO = Omit<
   IBaseUser,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
+
+//Guardian User DTO
+export type CreateGuardianUserDTO = Omit<
+  IGuardianUser,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+//Teacher DTO
+export type CreateTeacherDTO = Omit<
+  ITeacherUser,  
+  "id" | "_id" | "createdAt" | "updatedAt"
+  >;                    
 
 // School DTO
 export type CreateSchoolDTO = Omit<
