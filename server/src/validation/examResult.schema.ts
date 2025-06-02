@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { objectId } from './util';
 
-export const examResultSchema = z.object({
+export const createExamResultSchema = z.object({
   school: objectId,
   exam: objectId,
   student: objectId,
@@ -11,4 +11,6 @@ export const examResultSchema = z.object({
   grade: z.string().min(1),
   comments: z.string().optional(),
 });
+
+export const updateExamResultSchema = createExamResultSchema.partial();
 
