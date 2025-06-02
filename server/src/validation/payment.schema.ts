@@ -3,7 +3,7 @@ import { z } from "zod";
 import { PaymentMethod, PaymentStatus } from "../types/enum/enum";
 import { objectId } from "./util";
 
-export const paymentSchema = z.object({
+export const createPaymentSchema = z.object({
   student: objectId,
   fee: objectId.optional(),
   invoice: objectId.optional(),
@@ -18,3 +18,5 @@ export const paymentSchema = z.object({
   school: objectId,
   verifiedBy: objectId.optional(),
 });
+
+export const updatePaymentSchema = createPaymentSchema.partial();
