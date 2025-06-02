@@ -8,6 +8,7 @@ import {
   IFee,
   IFeePaymentSummary,
   IFinancialReport,
+  IInvoice,
   ISchool,
 } from "../types";
 
@@ -68,5 +69,17 @@ export type CreateFeePaymentDTO = Omit<
 // Financial Report DTO
 export type CreateFinancialReportDTO = Omit<
   IFinancialReport,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+//Invoice DTO
+export type CreateInvoiceDTO = Omit<
+  IInvoice,
+  "id" | "_id" | "createdAt" | "updatedAt"
+  >;
+
+  //Invoice Item DTO
+export type CreateInvoiceItemDTO = Omit<
+  IInvoice,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
