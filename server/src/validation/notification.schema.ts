@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { objectId } from "./util";
 
-export const notificationSchema = z.object({
+export const createNotificationSchema = z.object({
   school: objectId,
   notificationTitle: z.string().min(1),
   message: z.string().min(1),
@@ -10,3 +10,5 @@ export const notificationSchema = z.object({
   isRead: z.boolean().default(false),
   readAt: z.coerce.date().optional(),
 });
+
+export const updateNotificationSchema = createNotificationSchema.partial();
