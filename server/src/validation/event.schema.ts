@@ -2,7 +2,7 @@
 import { z } from 'zod';
 import { objectId } from './util';
 
-export const eventSchema = z.object({
+export const createEventSchema = z.object({
   school: objectId,
   eventTitle: z.string().min(1),
   eventDescription: z.string().min(1),
@@ -14,3 +14,5 @@ export const eventSchema = z.object({
   attendees: z.array(objectId).optional(),
   eventType: z.string().min(1),
 });
+
+export const updateEventSchema = createEventSchema.partial();
