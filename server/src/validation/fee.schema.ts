@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { FeeType, RecurringInterval, Term } from '../types/enum/enum';
 import { objectId } from './util';
 
-export const feeSchema = z.object({
+export const createFeeSchema = z.object({
   feeType: z.nativeEnum(FeeType),
   feeName: z.string().min(1),
   description: z.string().optional(),
@@ -16,3 +16,5 @@ export const feeSchema = z.object({
   recurringInterval: z.nativeEnum(RecurringInterval).optional(),
   academicTerm: z.string().min(1),
 });
+
+export const updateFeeSchema = createFeeSchema.partial();
