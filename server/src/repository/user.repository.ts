@@ -1,9 +1,10 @@
 // src/repository/user.repository.ts
+import { CreateUserDTO } from "../dto/entity.dto";
 import { User } from "../models/user.model";
 import { IBaseUser } from "../types/people/user.types";
 
 export class UserRepository {
-  async create(userData: Partial<IBaseUser>): Promise<IBaseUser> {
+  async create(userData: CreateUserDTO): Promise<IBaseUser> {
     const user = new User(userData);
     return await user.save();
   }
@@ -16,15 +17,11 @@ export class UserRepository {
   }
 
   async findById(id: string): Promise<IBaseUser | null> {
-    return await User.findById(id)
-      .populate("school", "name")
-      .exec();
+    return await User.findById(id).populate("school", "name").exec();
   }
 
   async findAll(): Promise<IBaseUser[]> {
-    return await User.find()
-      .populate("school", "name")
-      .exec();
+    return await User.find().populate("school", "name").exec();
   }
 
   async deleteById(id: string): Promise<IBaseUser | null> {
