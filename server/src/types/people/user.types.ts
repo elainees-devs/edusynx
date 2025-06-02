@@ -25,7 +25,7 @@ export interface IBaseUser extends BaseDocument {
 }
 
 export interface ITeacherUser extends IBaseUser {
-  role: UserRole.Teacher;
+  role: UserRole.TEACHER;
   teacherId?: string;
   isClassTeacher?: boolean;
   class: Types.ObjectId | IClass;
@@ -33,6 +33,6 @@ export interface ITeacherUser extends IBaseUser {
 }
 
 export interface IGuardianUser extends IBaseUser {
-  role: UserRole.Guardian;
+  role: UserRole.GUARDIAN;
   familyNumber: number;
 }
