@@ -1,5 +1,5 @@
 //src/dto/entity.dto.ts
-import { IAttendance, IBaseUser, IExam, ISchool } from "../types";
+import { IAttendance, IBaseUser, IClass, IExam, ISchool } from "../types";
 
 // User DTO
 export type CreateUserDTO = Omit<
@@ -12,6 +12,13 @@ export type CreateSchoolDTO = Omit<
   ISchool,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
+
+// Class DTO
+export type CreateClassDTO = Omit<
+  IClass,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
 
 // Attendance DTO
 export type CreateAttendanceDTO = Omit<
