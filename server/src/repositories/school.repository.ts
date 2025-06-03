@@ -1,4 +1,4 @@
-//src/repository/school.repository.ts
+//src/repositories/school.repository.ts
 import { CreateSchoolDTO } from "../dto/entity.dto";
 import School from "../models/school.model";
 import { ISchool } from "../types";
