@@ -2,8 +2,10 @@
 import { z } from "zod";
 import { objectId } from "./util";
 
-export const rolePermissionSchema = z.object({
+export const createRolePermissionSchema = z.object({
   school: objectId,
   roleId: objectId,
   permissionId: objectId,
 });
+
+export const updateRolePermissionSchema = createRolePermissionSchema.partial();

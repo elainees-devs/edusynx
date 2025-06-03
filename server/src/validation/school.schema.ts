@@ -1,7 +1,7 @@
 // src/validation/school.schema.ts
 import { z } from "zod";
 
-export const schoolSchema = z.object({
+export const createSchoolSchema = z.object({
   name: z.string().min(1),
   address: z.string().min(1),
   phoneNumber: z.string().min(10),
@@ -12,3 +12,5 @@ export const schoolSchema = z.object({
   isActive: z.boolean().optional().default(true),
   schoolCode: z.string().min(1),
 });
+
+export const updateSchoolSchema = createSchoolSchema.partial();
