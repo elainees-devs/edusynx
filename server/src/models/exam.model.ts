@@ -19,4 +19,4 @@ const examSchema = new Schema<IExam>(
   }
 );
 
-export const Exam = model<IExam>('Exam', examSchema);
+export const ExamModel = model<IExam>('Exam', examSchema);
