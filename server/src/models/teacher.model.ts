@@ -1,8 +1,8 @@
-//src/models/teacherUser.model.ts
+//src/models/teacher.model.ts
 import mongoose, { Schema, Document, Types } from "mongoose";
 import { ITeacherUser, UserRole } from "../types";
 
-const TeacherUserSchema: Schema = new Schema({
+const TeacherSchema: Schema = new Schema({
   role: {
     type: String,
     enum: [UserRole.TEACHER],
@@ -27,7 +27,7 @@ const TeacherUserSchema: Schema = new Schema({
   },
 });
 
-export const TeacherUser = mongoose.model<ITeacherUser>(
+export const Teacher = mongoose.model<ITeacherUser>(
   "TeacherUser",
-  TeacherUserSchema
+  TeacherSchema
 );
