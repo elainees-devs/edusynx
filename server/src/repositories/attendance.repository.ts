@@ -1,11 +1,11 @@
 //src/repositories/attendance.repository.ts
 import { CreateAttendanceDTO } from "../dto/entity.dto";
-import { Attendance } from "../models";
+import { AttendanceModel } from "../models";
 import { IAttendance } from "../types";
 
 export class AttendanceRepository {
   async create(attendanceData: CreateAttendanceDTO): Promise<IAttendance> {
-    const attendance = new Attendance(attendanceData);
+    const attendance = new AttendanceModel(attendanceData);
     return await attendance.save();
   }
 
@@ -13,34 +13,34 @@ export class AttendanceRepository {
     id: string,
     updates: Partial<IAttendance>
   ): Promise<IAttendance | null> {
-    return await Attendance.findByIdAndUpdate(id, updates, {
+    return await AttendanceModel.findByIdAndUpdate(id, updates, {
       new: true,
     }).exec();
   }
 
   async findById(id: string): Promise<IAttendance | null> {
-    return await Attendance.findById(id)
+    return AttendanceModel.findById(id)
       .populate("classRef", "name")
       .populate("attendance.studentId", "name")
       .exec();
   }
   async findAll(): Promise<IAttendance[]> {
-    return await Attendance.find()
+    return await AttendanceModel.find()
       .populate("classRef", "name")
       .populate("attendance.studentId", "name")
       .exec();
   }
   async deleteById(id: string): Promise<IAttendance | null> {
-    return await Attendance.findByIdAndDelete(id).exec();
+    return await AttendanceModel.findByIdAndDelete(id).exec();
   }
   async deleteAll(): Promise<void> {
-    await Attendance.deleteMany({}).exec();
+    await AttendanceModel.deleteMany({}).exec();
   }
   async findByClassAndDate(
     classId: string,
     date: Date
   ): Promise<IAttendance | null> {
-    return await Attendance.findOne({ classRef: classId, date })
+    return await AttendanceModel.findOne({ classRef: classId, date })
       .populate("classRef", "name")
       .populate("attendance.studentId", "name")
       .exec();
@@ -49,7 +49,7 @@ export class AttendanceRepository {
     schoolId: string,
     schoolYear: string
   ): Promise<IAttendance[]> {
-    return await Attendance.find({ school: schoolId, schoolYear })
+    return await AttendanceModel.find({ school: schoolId, schoolYear })
       .populate("classRef", "name")
       .populate("attendance.studentId", "name")
       .exec();
@@ -58,7 +58,7 @@ export class AttendanceRepository {
     studentId: string,
     date: Date
   ): Promise<IAttendance | null> {
-    return await Attendance.findOne({ "attendance.studentId": studentId, date })
+    return await AttendanceModel.findOne({ "attendance.studentId": studentId, date })
       .populate("classRef", "name")
       .populate("attendance.studentId", "name")
       .exec();
