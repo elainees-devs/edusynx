@@ -14,4 +14,4 @@ const ClassSchema = new Schema<IClass>(
   }
 );
 
-export const ClassModel = model<IClass>("Class", ClassSchema);
+export const Class = model<IClass>("Class", ClassSchema);
