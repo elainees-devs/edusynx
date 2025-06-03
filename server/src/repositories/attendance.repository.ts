@@ -1,66 +1,60 @@
-//src/repositories/attendance.repository.ts
+// src/repositories/attendance.repository.ts
 import { CreateAttendanceDTO } from "../dto/entity.dto";
 import { AttendanceModel } from "../models";
 import { IAttendance } from "../types";
 
 export class AttendanceRepository {
-  async create(attendanceData: CreateAttendanceDTO): Promise<IAttendance> {
-    const attendance = new AttendanceModel(attendanceData);
-    return await attendance.save();
+  async createAttendance(attendanceData: CreateAttendanceDTO): Promise<IAttendance> {
+    const attendanceInstance = new AttendanceModel(attendanceData);
+    return await attendanceInstance.save();
   }
 
-  async updateById(
-    id: string,
-    updates: Partial<IAttendance>
+  async getAttendanceById(attendanceId: string): Promise<IAttendance | null> {
+    return await AttendanceModel.findById(attendanceId);
+  }
+
+  async getAllAttendances(): Promise<IAttendance[]> {
+    return await AttendanceModel.find();
+  }
+
+  async updateAttendanceById(
+    attendanceId: string,
+    updates: Partial<CreateAttendanceDTO>
   ): Promise<IAttendance | null> {
-    return await AttendanceModel.findByIdAndUpdate(id, updates, {
+    return await AttendanceModel.findByIdAndUpdate(attendanceId, updates, {
       new: true,
-    }).exec();
+    });
   }
 
-  async findById(id: string): Promise<IAttendance | null> {
-    return AttendanceModel.findById(id)
-      .populate("classRef", "name")
-      .populate("attendance.studentId", "name")
-      .exec();
+  async deleteAttendanceById(attendanceId: string): Promise<IAttendance | null> {
+    return await AttendanceModel.findByIdAndDelete(attendanceId);
   }
-  async findAll(): Promise<IAttendance[]> {
-    return await AttendanceModel.find()
-      .populate("classRef", "name")
-      .populate("attendance.studentId", "name")
-      .exec();
+
+  async deleteAllAttendances(): Promise<void> {
+    await AttendanceModel.deleteMany({});
   }
-  async deleteById(id: string): Promise<IAttendance | null> {
-    return await AttendanceModel.findByIdAndDelete(id).exec();
-  }
-  async deleteAll(): Promise<void> {
-    await AttendanceModel.deleteMany({}).exec();
-  }
-  async findByClassAndDate(
+
+  async getAttendanceByClassAndDate(
     classId: string,
     date: Date
   ): Promise<IAttendance | null> {
-    return await AttendanceModel.findOne({ classRef: classId, date })
-      .populate("classRef", "name")
-      .populate("attendance.studentId", "name")
-      .exec();
+    return await AttendanceModel.findOne({ classRef: classId, date });
   }
-  async findBySchoolAndYear(
+
+  async getAttendancesBySchoolAndYear(
     schoolId: string,
     schoolYear: string
   ): Promise<IAttendance[]> {
-    return await AttendanceModel.find({ school: schoolId, schoolYear })
-      .populate("classRef", "name")
-      .populate("attendance.studentId", "name")
-      .exec();
+    return await AttendanceModel.find({ school: schoolId, schoolYear });
   }
-  async findByStudentAndDate(
+
+  async getAttendanceByStudentAndDate(
     studentId: string,
     date: Date
   ): Promise<IAttendance | null> {
-    return await AttendanceModel.findOne({ "attendance.studentId": studentId, date })
-      .populate("classRef", "name")
-      .populate("attendance.studentId", "name")
-      .exec();
+    return await AttendanceModel.findOne({
+      "attendance.studentId": studentId,
+      date,
+    });
   }
 }
