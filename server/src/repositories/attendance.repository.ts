@@ -1,6 +1,6 @@
-//src/repository/attendance.repository.ts
+//src/repositories/attendance.repository.ts
 import { CreateAttendanceDTO } from "../dto/entity.dto";
-import { Attendance } from "../models/attendance.model";
+import { Attendance } from "../models";
 import { IAttendance } from "../types";
 
 export class AttendanceRepository {
