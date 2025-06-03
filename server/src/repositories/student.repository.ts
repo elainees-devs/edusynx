@@ -1,13 +1,13 @@
-//src/repositories/student.repository.ts
+// src/repositories/student.repository.ts
 import mongoose from "mongoose";
 import { CreateStudentDTO } from "../dto/entity.dto";
 import { IStudent } from "../types";
-import { Class, Student } from "../models";
+import { ClassModel, StudentModel } from "../models";
 
 export class StudentRepository {
   // Generate next available admission number for a school
   private async generateAdmissionNumber(schoolId: mongoose.Types.ObjectId) {
-    const fetchedAdmissionNumbers = await Student.find(
+    const fetchedAdmissionNumbers = await StudentModel.find(
       { school: schoolId },
       { adm: 1 }
     );
@@ -35,7 +35,7 @@ export class StudentRepository {
     const schoolObjectId = new mongoose.Types.ObjectId(guardian.school._id);
     const createdAdm = await this.generateAdmissionNumber(schoolObjectId);
 
-    const student = new Student({
+    const student = new StudentModel({
       studentFirstName,
       studentLastName,
       studentGender,
@@ -53,52 +53,54 @@ export class StudentRepository {
   }
 
   async findAllStudents() {
-    return await Student.find().populate("school");
+    return await StudentModel.find().populate("school");
   }
 
   async findStudentWithGuardianById(id: string) {
-    return await Student.findById(id).populate("guardian");
+    return await StudentModel.findById(id).populate("guardian");
   }
 
   async findStudentNameById(id: string) {
-    const student = await Student.findById(id);
-    return student ? `${student.firstName} ${student.lastName}` : null;
+    const student = await StudentModel.findById(id);
+    return student
+      ? `${student.firstName} ${student.lastName}`
+      : null;
   }
 
   async findStudentsByClassName(className: string) {
-    const classObj = await Class.findOne({ className });
+    const classObj = await ClassModel.findOne({ className });
     if (!classObj) return null;
-    return await Student.find({ class: classObj._id }).populate("school");
+    return await StudentModel.find({ clas: classObj._id }).populate("school");
   }
 
   async createStudent(studentData: CreateStudentDTO) {
-    const student = new Student(studentData);
+    const student = new StudentModel(studentData);
     return await student.save();
   }
 
   async deleteStudentById(id: string) {
-    return await Student.findByIdAndDelete(id);
+    return await StudentModel.findByIdAndDelete(id);
   }
 
   async deleteAllStudents() {
-    return await Student.deleteMany({});
+    return await StudentModel.deleteMany({});
   }
 
   async updateStudentById(id: string, data: Partial<IStudent>) {
-    return await Student.findByIdAndUpdate(id, data, { new: true });
+    return await StudentModel.findByIdAndUpdate(id, data, { new: true });
   }
 
   async countStudents(id?: string) {
-    if (!id) return await Student.countDocuments({});
+    if (!id) return await StudentModel.countDocuments({});
     if (!mongoose.Types.ObjectId.isValid(id)) return null;
-    return await Student.countDocuments({ _id: id });
+    return await StudentModel.countDocuments({ _id: id });
   }
 
   async getAllStudentNames() {
-    const students = await Student.find({}, "firstName middleName lastName");
-    return students.map((student) => ({
-      _id: student._id,
-      fullName: `${student.firstName} ${student.middleName} ${student.lastName}`,
+    const students = await StudentModel.find({}, "studentFirstName studentMiddleName studentLastName");
+    return students.map((s) => ({
+      _id: s._id,
+      fullName: `${s.firstName} ${s.middleName ?? ""} ${s.lastName}`.trim(),
     }));
   }
 }
