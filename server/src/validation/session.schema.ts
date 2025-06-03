@@ -1,7 +1,7 @@
 // src/validation/session.schema.ts
 import { z } from "zod";
 
-export const sessionSchema = z.object({
+export const createSessionSchema = z.object({
   userId: z.string().min(1),
   logoutTime: z.coerce.date().optional(),
   lastAccessedAt: z.coerce.date().optional(),
@@ -9,3 +9,6 @@ export const sessionSchema = z.object({
   permissions: z.array(z.string()).optional(),
   roles: z.array(z.string()).optional(),
 });
+
+export const updateSessionSchema = createSessionSchema.partial()
+

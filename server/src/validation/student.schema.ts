@@ -3,7 +3,7 @@ import { z } from "zod";
 import { StudentGender, StudentStatus } from "../types/enum/enum";
 import { objectId } from "./util";
 
-export const studentSchema = z.object({
+export const createStudentSchema = z.object({
   school: objectId,
   firstName: z.string().min(1),
   middleName: z.string().min(1),
@@ -18,3 +18,5 @@ export const studentSchema = z.object({
   status: z.nativeEnum(StudentStatus),
   studentId: z.string().optional(),
 });
+
+export const updateStudentSchema = createStudentSchema.partial();    
