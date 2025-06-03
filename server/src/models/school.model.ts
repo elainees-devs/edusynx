@@ -21,6 +21,6 @@ const SchoolSchema: Schema = new Schema<ISchool>(
 );
 
 // Create the model
-const School = model<ISchool>('School', SchoolSchema);
+const SchoolModel = model<ISchool>('School', SchoolSchema);
 
-export default School;
+export default SchoolModel;
