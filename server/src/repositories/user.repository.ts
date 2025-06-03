@@ -1,4 +1,4 @@
-// src/repository/user.repository.ts
+// src/repositories/user.repository.ts
 import { CreateUserDTO } from "../dto/entity.dto";
 import { User } from "../models/user.model";
 import { IBaseUser } from "../types/people/user.types";
