@@ -5,6 +5,53 @@ import { IStudent } from "../types";
 import { Class, Student } from "../models";
 
 export class StudentRepository {
+  // Generate next available admission number for a school
+  private async generateAdmissionNumber(schoolId: mongoose.Types.ObjectId) {
+    const fetchedAdmissionNumbers = await Student.find(
+      { school: schoolId },
+      { adm: 1 }
+    );
+
+    const studentAdmissionNumbers = fetchedAdmissionNumbers
+      .map((student) => student.adm)
+      .filter((adm) => adm != null);
+
+    return studentAdmissionNumbers.length > 0
+      ? Math.max(...studentAdmissionNumbers) + 1
+      : 500;
+  }
+
+  // Create student and associate with guardian
+  async generateAdmissionNumberAndCreateStudent(reqBody: any, guardian: any) {
+    const {
+      studentFirstName,
+      studentLastName,
+      studentGender,
+      clas,
+      previousSchool,
+      dateOfBirth,
+    } = reqBody;
+
+    const schoolObjectId = new mongoose.Types.ObjectId(guardian.school._id);
+    const createdAdm = await this.generateAdmissionNumber(schoolObjectId);
+
+    const student = new Student({
+      studentFirstName,
+      studentLastName,
+      studentGender,
+      school: guardian.school._id,
+      clas,
+      previousSchool,
+      registrationDate: Date.now(),
+      dateOfBirth,
+      adm: createdAdm,
+      guardian: guardian._id,
+    });
+
+    await student.save();
+    return student;
+  }
+
   async findAllStudents() {
     return await Student.find().populate("school");
   }
