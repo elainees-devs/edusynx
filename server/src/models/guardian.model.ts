@@ -1,8 +1,8 @@
-//src/models/guardianUser.model.ts
-import mongoose, { Schema, Document } from "mongoose";
+//src/models/guardian.model.ts
+import mongoose, { Schema} from "mongoose";
 import { IGuardianUser, UserRole } from "../types";
 
-const GuardianUserSchema: Schema = new Schema({
+const GuardianSchema: Schema = new Schema({
   role: {
     type: String,
     enum: [UserRole.GUARDIAN],
@@ -15,7 +15,7 @@ const GuardianUserSchema: Schema = new Schema({
   },
 });
 
-export const GuardianUser = mongoose.model<IGuardianUser>(
+export const Guardian= mongoose.model<IGuardianUser>(
   "GuardianUser",
-  GuardianUserSchema
+  GuardianSchema
 );
