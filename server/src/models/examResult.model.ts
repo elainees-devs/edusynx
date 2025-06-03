@@ -17,4 +17,4 @@ const examResultSchema = new Schema<IExamResult>(
   }
 );
 
-export const ExamResult = model<IExamResult>('ExamResult', examResultSchema);
+export const ExamResultModel = model<IExamResult>('ExamResult', examResultSchema);
