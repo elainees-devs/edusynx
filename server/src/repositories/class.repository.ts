@@ -1,6 +1,6 @@
-//src/repository/class.repository.ts
+//src/repositories/class.repository.ts
 import { CreateClassDTO } from "../dto/entity.dto";
-import { Class } from "../models/class.model";
+import { Class } from "../models";
 import { IClass } from "../types/school/school-core.types";
 
 export class ClassRepository {
