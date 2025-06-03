@@ -21,4 +21,4 @@ const attendanceSchema = new Schema<IAttendance>(
   }
 );
 
-export const Attendance = model<IAttendance>('Attendance', attendanceSchema);
+export const AttendanceModel = model<IAttendance>('Attendance', attendanceSchema);
