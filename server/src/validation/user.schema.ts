@@ -1,9 +1,10 @@
-// src/validation/baseUser.schema.ts
+//src/validation/user.schema.ts
 import { z } from "zod";
 import { UserRole } from "../types/enum/enum";
 import { objectId } from "./util";
 
-export const createUserSchema = z.object({
+// Base schema for all users
+const baseUserSchema = z.object({
   school: objectId,
   firstName: z.string().min(3),
   middleName: z.string().min(3),
@@ -22,4 +23,41 @@ export const createUserSchema = z.object({
   isTwoFactorEnabled: z.boolean().default(false),
   role: z.nativeEnum(UserRole),
 });
-export const updateUserSchema = createUserSchema.partial();
+
+// Teacher-specific schema
+const teacherUserExtension = z.object({
+  role: z.literal(UserRole.TEACHER),
+  teacherId: z.string().optional(),
+  isClassTeacher: z.boolean().optional(),
+  class: objectId,
+  teachingSubjects: z.array(z.string()).optional(),
+});
+
+// Guardian-specific schema
+const guardianUserExtension = z.object({
+  role: z.literal(UserRole.GUARDIAN),
+  familyNumber: z.number(),
+});
+
+// Other roles fallback
+const generalUserExtension = z.object({
+  role: z.enum([
+    UserRole.SCHOOL_ADMIN,
+    UserRole.ACCOUNTANT,
+    UserRole.HEADTEACHER,
+  ]),
+});
+
+// Strict schema for creation
+export const createUserSchema = z.discriminatedUnion("role", [
+  baseUserSchema.merge(teacherUserExtension),
+  baseUserSchema.merge(guardianUserExtension),
+  baseUserSchema.merge(generalUserExtension),
+]);
+
+// Relaxed schema for updates
+export const updateUserSchema = z.discriminatedUnion("role", [
+  baseUserSchema.merge(teacherUserExtension).partial(),
+  baseUserSchema.merge(guardianUserExtension).partial(),
+  baseUserSchema.merge(generalUserExtension).partial(),
+]);
