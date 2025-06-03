@@ -12,6 +12,7 @@ import {
   IInvoice,
   ISchool,
   ITeacherUser,
+  IStudent
 } from "../types";
 
 // User DTO
@@ -35,6 +36,12 @@ export type CreateTeacherDTO = Omit<
 // School DTO
 export type CreateSchoolDTO = Omit<
   ISchool,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+// Student DTO
+export type CreateStudentDTO = Omit<
+  IStudent,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
 
