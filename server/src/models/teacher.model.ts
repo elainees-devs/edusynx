@@ -1,8 +1,10 @@
 //src/models/teacher.model.ts
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema} from "mongoose";
 import { ITeacherUser, UserRole } from "../types";
+import { UserSchemaFields } from "./user.model";
 
 const TeacherSchema: Schema = new Schema({
+  ...UserSchemaFields,
   role: {
     type: String,
     enum: [UserRole.TEACHER],
