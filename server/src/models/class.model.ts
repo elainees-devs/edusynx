@@ -1,5 +1,5 @@
 //src/models/class.model.ts
-import { Schema, model, Document, Types } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { IClass } from "../types/school/school-core.types";
 
 const ClassSchema = new Schema<IClass>(
@@ -14,4 +14,4 @@ const ClassSchema = new Schema<IClass>(
   }
 );
 
-export const Class = model<IClass>("Class", ClassSchema);
+export const ClassModel = model<IClass>("Class", ClassSchema);
