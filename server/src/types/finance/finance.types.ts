@@ -43,7 +43,7 @@ export interface IPayment extends BaseDocument {
   verifiedBy?: Types.ObjectId | IBaseUser;
 }
 
-export interface IFeePaymentSummary {
+export interface IFeePaymentSummary extends BaseDocument {
   student: Types.ObjectId | IStudent;
   fee: IFee;
   totalPaid: number;
@@ -52,7 +52,7 @@ export interface IFeePaymentSummary {
   lastPaymentDate?: Date;
 }
 
-export interface IInvoiceItem {
+export interface IInvoiceItem extends BaseDocument {
   student: Types.ObjectId | IStudent;
   fee: Types.ObjectId | IFee;
   amount: number;
