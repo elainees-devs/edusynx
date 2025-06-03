@@ -1,14 +1,20 @@
-// src/controllers/login.controller.ts
+//src/controllers/login.controller.ts
 import { Request, Response, NextFunction } from "express";
 import { LoginRepository } from "../repositories/login.repository";
+import { AppError } from "../utils/AppError";
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, hashedpassword } = req.body;
+
+    if (!email || !hashedpassword) {
+      throw new AppError("Email and password are required", 400);
+    }
+
     const result = await LoginRepository.login(email, hashedpassword);
 
     if (!result.token) {
-      return res.status(401).json({ message: result.message });
+      throw new AppError(result.message || "Invalid credentials", 401);
     }
 
     res.status(200).json({ token: result.token, message: result.message });
@@ -16,3 +22,4 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     next(error);
   }
 };
+
