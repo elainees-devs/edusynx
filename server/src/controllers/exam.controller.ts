@@ -1,5 +1,4 @@
 //src/controllers/exam.controller.ts
-// src/controllers/exam.controller.ts
 import { Request, Response, NextFunction } from "express";
 import { ExamRepository } from "../repositories/exam.repository";
 import { AppError } from "../utils/AppError";
