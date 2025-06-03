@@ -1,7 +1,8 @@
 // src/repositories/feePayment.repository.ts
-import { FeePaymentSummaryModel } from "../models/feePayment.model";
-import { IFeePaymentSummary } from "../types/finance/finance.types";
 import mongoose from "mongoose";
+import { FeePaymentSummaryModel } from "../models/feePayment.model";
+import { PaymentModel } from "../models/payment.model"; // Make sure this exists
+import { IFeePaymentSummary, IPayment } from "../types/finance/finance.types";
 
 export class FeePaymentRepository {
   async createFeePaymentSummary(data: IFeePaymentSummary): Promise<IFeePaymentSummary> {
@@ -29,7 +30,10 @@ export class FeePaymentRepository {
       .populate("payments");
   }
 
-  async updateFeePaymentSummary(id: string, updateData: Partial<IFeePaymentSummary>): Promise<IFeePaymentSummary | null> {
+  async updateFeePaymentSummary(
+    id: string,
+    updateData: Partial<IFeePaymentSummary>
+  ): Promise<IFeePaymentSummary | null> {
     return await FeePaymentSummaryModel.findByIdAndUpdate(id, updateData, { new: true });
   }
 
@@ -41,28 +45,39 @@ export class FeePaymentRepository {
   async calculateTotalFeesPaidByStudent(studentId: string): Promise<number> {
     const result = await FeePaymentSummaryModel.aggregate([
       { $match: { student: new mongoose.Types.ObjectId(studentId) } },
-      {
-        $group: {
-          _id: "$student",
-          totalPaid: { $sum: "$totalPaid" },
-        },
-      },
+      { $group: { _id: "$student", totalPaid: { $sum: "$totalPaid" } } },
     ]);
-
     return result[0]?.totalPaid || 0;
   }
 
   // Calculate total amount paid by all students
   async calculateTotalFeesPaidByAllStudents(): Promise<number> {
     const result = await FeePaymentSummaryModel.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalPaid: { $sum: "$totalPaid" },
-        },
-      },
+      { $group: { _id: null, totalPaid: { $sum: "$totalPaid" } } },
     ]);
-
     return result[0]?.totalPaid || 0;
+  }
+
+  // Add a payment and update FeePaymentSummary accordingly
+  async addPaymentToSummary(paymentData: IPayment): Promise<void> {
+    const payment = new PaymentModel(paymentData);
+    await payment.save();
+
+    await FeePaymentSummaryModel.findOneAndUpdate(
+      {
+        student: payment.student,
+        fee: payment.fee,
+      },
+      {
+        $push: { payments: payment._id },
+        $inc: {
+          totalPaid: payment.amountPaid,
+          totalBalance: -payment.amountPaid,
+        },
+        $set: {
+          lastPaymentDate: payment.paymentDate,
+        },
+      }
+    );
   }
 }
