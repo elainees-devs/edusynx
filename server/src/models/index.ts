@@ -12,3 +12,4 @@ export * from './invoice.model';
 export * from './financialReport.model';
 export * from './event.model';
 export * from './feePayment.model';
+export * from './counter.model';
