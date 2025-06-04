@@ -19,7 +19,7 @@ const GuardianSchema: Schema = new Schema({
   timestamps: true,
 });
 
-export const Guardian = mongoose.model<IGuardianUser>(
+export const GuardianModel = mongoose.model<IGuardianUser>(
   "GuardianUser",
   GuardianSchema
 );
