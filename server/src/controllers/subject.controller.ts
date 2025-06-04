@@ -1,5 +1,4 @@
 //src/controllers/subject.controller.ts
-// src/controllers/subject.controller.ts
 import { Request, Response, NextFunction } from "express";
 import { SubjectRepository } from "../repositories/subject.repository";
 import { AppError } from "../utils/AppError";
