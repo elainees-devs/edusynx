@@ -5,13 +5,13 @@ import { AppError } from "../utils/AppError";
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, hashedpassword } = req.body;
+    const { email, password} = req.body;
 
-    if (!email || !hashedpassword) {
+    if (!email || !password) {
       throw new AppError("Email and password are required", 400);
     }
 
-    const result = await LoginRepository.login(email, hashedpassword);
+    const result = await LoginRepository.login(email, password);
 
     if (!result.token) {
       throw new AppError(result.message || "Invalid credentials", 401);
