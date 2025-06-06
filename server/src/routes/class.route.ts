@@ -16,4 +16,4 @@ classRouter.put("/:id", validate(updateClassSchema), classController.updateClass
 classRouter.delete("/:id", classController.deleteClass);
 classRouter.delete("/", classController.deleteAllClasses);
 
-export default classRouter;
+export {classRouter}
