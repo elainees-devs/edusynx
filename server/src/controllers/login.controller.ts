@@ -1,10 +1,9 @@
-// src/controllers/login.controller.ts
-import { Request, Response } from "express";
+//src/controllers/login.controller.ts
 import { LoginRepository } from "../repositories/login.repository";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
 
-export const loginUser = handleAsync(async (req: Request, res: Response) => {
+export const loginUser = handleAsync(async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
