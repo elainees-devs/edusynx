@@ -8,11 +8,11 @@ import {
   IFee,
   IFeePaymentSummary,
   IFinancialReport,
-  IGuardianUser,
+  IGuardian,
   IInvoice,
   ISchool,
-  ITeacherUser,
-  IStudent
+  ITeacher,
+  IStudent,
 } from "../types";
 
 // User DTO
@@ -23,15 +23,15 @@ export type CreateUserDTO = Omit<
 
 //Guardian User DTO
 export type CreateGuardianUserDTO = Omit<
-  IGuardianUser,
+  IGuardian,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
 
 //Teacher DTO
 export type CreateTeacherDTO = Omit<
-  ITeacherUser,  
+  ITeacher,
   "id" | "_id" | "createdAt" | "updatedAt"
-  >;                    
+>;
 
 // School DTO
 export type CreateSchoolDTO = Omit<
@@ -76,10 +76,7 @@ export type CreateExamResultDTO = Omit<
 >;
 
 //Fee DTO
-export type CreateFeeDTO = Omit<
-  IFee,
-  "id" | "_id" | "createdAt" | "updatedAt"
->;
+export type CreateFeeDTO = Omit<IFee, "id" | "_id" | "createdAt" | "updatedAt">;
 
 //Fee Payment DTO
 export type CreateFeePaymentDTO = Omit<
@@ -97,9 +94,9 @@ export type CreateFinancialReportDTO = Omit<
 export type CreateInvoiceDTO = Omit<
   IInvoice,
   "id" | "_id" | "createdAt" | "updatedAt"
-  >;
+>;
 
-  //Invoice Item DTO
+//Invoice Item DTO
 export type CreateInvoiceItemDTO = Omit<
   IInvoice,
   "id" | "_id" | "createdAt" | "updatedAt"
