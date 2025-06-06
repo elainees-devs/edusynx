@@ -21,4 +21,4 @@ studentRouter.put("/student/update/:id", validate(updateStudentSchema),studentCo
 studentRouter.delete("/student/:id", studentController.deleteStudentById);
 studentRouter.delete("/students", studentController.deleteAllStudents);
 
-export default studentRouter;
+export {studentRouter};
