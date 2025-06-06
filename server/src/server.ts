@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
-import router from "./routes/user.route";
+import { userRouter } from "./routes/index";
 
 configDotenv();
 
@@ -17,7 +17,7 @@ connectDB();
 app.use(express.json());
 
 // Routes
-app.use("/users", router);
+app.use("/users", userRouter);
 app.get("/", (req: Request, res: Response) => {
   logger.info("Received request on /");
   res.send("Server is running....!");
