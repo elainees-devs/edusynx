@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
-import { userRouter } from "./routes/index";
+import { classRouter, schoolRouter, studentRouter, userRouter } from "./routes/index";
 
 configDotenv();
 
@@ -18,6 +18,10 @@ app.use(express.json());
 
 // Routes
 app.use("/users", userRouter);
+app.use("/school", schoolRouter);
+app.use("/class", classRouter);
+app.use("/student", studentRouter);
+
 app.get("/", (req: Request, res: Response) => {
   logger.info("Received request on /");
   res.send("Server is running....!");
