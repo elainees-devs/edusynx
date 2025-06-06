@@ -13,7 +13,7 @@ export const UserSchemaFields: Record<keyof Omit<IBaseUser, "_id" | "createdAt" 
   secondaryEmail: { type: String },
   primaryPhoneNumber: { type: String, required: true },
   secondaryPhoneNumber: { type: String },
-  hashedPassword: { type: String, required: true },
+  password: { type: String, required: true },
   nationality: { type: String, required: true },
   avatarUrl: { type: String },
   isActive: { type: Boolean, default: true },
