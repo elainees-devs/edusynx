@@ -2,7 +2,8 @@
 import { Request, Response, NextFunction } from "express";
 import { UserRepository } from "../repositories/user.repository";
 import { AppError } from "../utils/AppError";
-import redisClient from '../redisClient';
+import redisClient from "../redisClient";
+import bcrypt from "bcrypt";
 
 export class UserController {
   private userRepo: UserRepository;
@@ -13,7 +14,9 @@ export class UserController {
 
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const newUser = await this.userRepo.createUser(req.body);
+      const hashedPassword = await bcrypt.hash(req.body.hashedPassword, 10);
+      const userData = { ...req.body, hashedPassword };
+      const newUser = await this.userRepo.createUser(userData);
       res.status(201).json(newUser);
     } catch (error) {
       next(error);
@@ -36,7 +39,7 @@ export class UserController {
       // Try to get cached user
       const cachedUser = await redisClient.get(`user:${userId}`);
       if (cachedUser) {
-        console.log('Serving user from Redis cache');
+        console.log("Serving user from Redis cache");
         return res.json(JSON.parse(cachedUser));
       }
 
@@ -55,7 +58,10 @@ export class UserController {
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const updatedUser = await this.userRepo.updateUserById(req.params.id, req.body);
+      const updatedUser = await this.userRepo.updateUserById(
+        req.params.id,
+        req.body
+      );
       if (!updatedUser) throw new AppError("User not found", 404);
 
       // Invalidate cache on update
