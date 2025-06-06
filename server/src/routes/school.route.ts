@@ -24,3 +24,5 @@ schoolRouter.put(
 );
 schoolRouter.delete("/:id", schoolController.deleteSchoolById);
 schoolRouter.delete("/", schoolController.deleteAllSchools);
+
+export {schoolRouter}
