@@ -13,4 +13,4 @@ userRouter.get("/:id", userController.getUserById);
 userRouter.put("/:id", validate(updateUserSchema), userController.updateUser);
 userRouter.delete("/:id", userController.deleteUser);
 
-export default userRouter;
+export { userRouter };
