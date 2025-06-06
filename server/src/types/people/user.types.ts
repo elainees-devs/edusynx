@@ -13,7 +13,7 @@ export interface IBaseUser extends BaseDocument {
   secondaryEmail?: string;
   primaryPhoneNumber: string;
   secondaryPhoneNumber?: string;
-  hashedPassword: string;
+  password: string;
   nationality: string;
   avatarUrl?: string;
   isActive: boolean;
