@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import { UserRepository } from "../repositories/user.repository";
 import { AppError } from "../utils/AppError";
 import redisClient from "../redisClient";
-import bcrypt from "bcrypt";
+import { createUserSchema } from "../validation/user.schema";
+import type { z } from "zod";
 
 export class UserController {
   private userRepo: UserRepository;
@@ -12,11 +13,20 @@ export class UserController {
     this.userRepo = new UserRepository();
   }
 
-  createUser = async (req: Request, res: Response, next: NextFunction) => {
+  createUser = async (
+    req: Request<{}, {}, z.infer<typeof createUserSchema>>,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-      const hashedPassword = await bcrypt.hash(req.body.hashedPassword, 10);
-      const userData = { ...req.body, hashedPassword };
-      const newUser = await this.userRepo.createUser(userData);
+      const { school, ...rest } = req.body;
+      const newUser = await this.userRepo.createUser({
+        ...rest,
+        school:
+          typeof school === "string"
+            ? new (require("mongoose").Types.ObjectId)(school)
+            : school,
+      });
       res.status(201).json(newUser);
     } catch (error) {
       next(error);
@@ -32,25 +42,21 @@ export class UserController {
     }
   };
 
-  getUserById = async (req: Request, res: Response, next: NextFunction) => {
+  getUserById = async (
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-      const userId = req.params.id;
+      const { id } = req.params;
+      const user = await this.userRepo.findUserById(id);
 
-      // Try to get cached user
-      const cachedUser = await redisClient.get(`user:${userId}`);
-      if (cachedUser) {
-        console.log("Serving user from Redis cache");
-        return res.json(JSON.parse(cachedUser));
+      if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
       }
 
-      // If no cache, fetch from DB
-      const user = await this.userRepo.findUserById(userId);
-      if (!user) throw new AppError("User not found", 404);
-
-      // Cache the result for 1 hour
-      await redisClient.setEx(`user:${userId}`, 3600, JSON.stringify(user));
-
-      res.json(user);
+      res.status(200).json(user);
     } catch (error) {
       next(error);
     }
@@ -64,9 +70,7 @@ export class UserController {
       );
       if (!updatedUser) throw new AppError("User not found", 404);
 
-      // Invalidate cache on update
       await redisClient.del(`user:${req.params.id}`);
-
       res.json(updatedUser);
     } catch (error) {
       next(error);
@@ -78,9 +82,7 @@ export class UserController {
       const deletedUser = await this.userRepo.deleteUserById(req.params.id);
       if (!deletedUser) throw new AppError("User not found", 404);
 
-      // Invalidate cache on delete
       await redisClient.del(`user:${req.params.id}`);
-
       res.status(204).send();
     } catch (error) {
       next(error);
