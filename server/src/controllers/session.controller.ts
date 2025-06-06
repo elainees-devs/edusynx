@@ -1,73 +1,48 @@
-//src/controllers/session.controller.ts
-import { Request, Response, NextFunction } from "express";
+// src/controllers/session.controller.ts
+import { Request, Response } from "express";
 import { SessionRepository } from "../repositories/session.repository";
 import { AppError } from "../utils/AppError";
 import { Types } from "mongoose";
+import { handleAsync } from "../utils/handleAsync";
 
-export const createSession = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const session = await SessionRepository.create(req.body);
-    res.status(201).json(session);
-  } catch (error) {
-    next(error);
-  }
-};
+const sessionRepo = new SessionRepository();
 
-export const getSessionById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const session = await SessionRepository.findById(req.params.id);
-    if (!session) throw new AppError("Session not found", 404);
-    res.json(session);
-  } catch (error) {
-    next(error);
-  }
-};
+export const createSession = handleAsync(async (req: Request, res: Response) => {
+  const session = await sessionRepo.create(req.body);
+  res.status(201).json(session);
+});
 
-export const getAllSessions = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const sessions = await SessionRepository.findAll(req.query);
-    res.json(sessions);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getSessionById = handleAsync(async (req: Request, res: Response) => {
+  const session = await sessionRepo.findById(req.params.id);
+  if (!session) throw new AppError("Session not found", 404);
+  res.json(session);
+});
 
-export const updateSession = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const updated = await SessionRepository.updateById(req.params.id, req.body);
-    if (!updated) throw new AppError("Session not found", 404);
-    res.json(updated);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAllSessions = handleAsync(async (req: Request, res: Response) => {
+  const sessions = await sessionRepo.findAll(req.query);
+  res.json(sessions);
+});
 
-export const deleteSession = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const deleted = await SessionRepository.deleteById(req.params.id);
-    if (!deleted) throw new AppError("Session not found", 404);
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+export const updateSession = handleAsync(async (req: Request, res: Response) => {
+  const updated = await sessionRepo.updateById(req.params.id, req.body);
+  if (!updated) throw new AppError("Session not found", 404);
+  res.json(updated);
+});
 
-export const getActiveSessionsByUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const userId = new Types.ObjectId(req.params.userId);
-    const sessions = await SessionRepository.findActiveByUser(userId.toString());
-    res.json(sessions);
-  } catch (error) {
-    next(error);
-  }
-};
+export const deleteSession = handleAsync(async (req: Request, res: Response) => {
+  const deleted = await sessionRepo.deleteById(req.params.id);
+  if (!deleted) throw new AppError("Session not found", 404);
+  res.status(204).send();
+});
 
-export const deleteAllSessionsByUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const userId = new Types.ObjectId(req.params.userId);
-    const result = await SessionRepository.deleteAllByUser(userId.toString());
-    res.json({ message: `${result.deletedCount} session(s) deleted` });
-  } catch (error) {
-    next(error);
-  }
-};
+export const getActiveSessionsByUser = handleAsync(async (req: Request, res: Response) => {
+  const userId = new Types.ObjectId(req.params.userId);
+  const sessions = await sessionRepo.findActiveByUser(userId.toString());
+  res.json(sessions);
+});
+
+export const deleteAllSessionsByUser = handleAsync(async (req: Request, res: Response) => {
+  const userId = new Types.ObjectId(req.params.userId);
+  const result = await sessionRepo.deleteAllByUser(userId.toString());
+  res.json({ message: `${result.deletedCount} session(s) deleted` });
+});
