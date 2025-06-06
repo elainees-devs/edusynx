@@ -1,6 +1,6 @@
 //src/models/teacher.model.ts
 import mongoose, { Schema} from "mongoose";
-import { ITeacherUser, UserRole } from "../types";
+import { ITeacher, UserRole } from "../types";
 import { UserSchemaFields } from "./user.model";
 
 const TeacherSchema: Schema = new Schema({
@@ -29,7 +29,7 @@ const TeacherSchema: Schema = new Schema({
   },
 });
 
-export const Teacher = mongoose.model<ITeacherUser>(
+export const TeacherModel = mongoose.model<ITeacher>(
   "TeacherUser",
   TeacherSchema
 );

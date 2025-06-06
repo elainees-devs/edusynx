@@ -1,15 +1,17 @@
-//src/middlewares/validate.ts
-import { NextFunction, Request, Response } from "express";
+// src/middlewares/validate.ts
+import { Request, Response, NextFunction } from "express";
 import { ZodSchema } from "zod";
 
 export const validate =
   (schema: ZodSchema<any>) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    const result = schema.safeParse(req.body);
-    if (!result.success) {
-      return res.status(400).json({ errors: result.error.flatten() });
+  (req: Request, res: Response, next: NextFunction): void => {
+    try {
+      req.body = schema.parse(req.body);
+      next();
+    } catch (error) {
+      res.status(400).json({
+        message: "Validation failed",
+        issues: (error as any).errors || error,
+      });
     }
-    // If validation is successful, attach the parsed data to the request body
-    req.body = result.data;
-    next();
   };

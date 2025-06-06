@@ -1,112 +1,70 @@
-//src/controllers/student.controller.ts
-import { Request, Response, NextFunction } from "express";
+// src/controllers/student.controller.ts
 import { StudentRepository } from "../repositories/student.repository";
 import { AppError } from "../utils/AppError";
+import { handleAsync } from "../utils/handleAsync";
 
 const studentRepo = new StudentRepository();
 
-export const createStudent = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+export class StudentController {
+  createStudent = handleAsync(async (req, res) => {
     const student = await studentRepo.createStudent(req.body);
     res.status(201).json(student);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const generateAdmissionAndCreateStudent = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const guardian = req.user; // Ensure guardian is attached via middleware/auth
+  generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
+    const guardian = req.user; // Ensure guardian is attached via middleware
     const student = await studentRepo.generateAdmissionNumberAndCreateStudent(req.body, guardian);
     res.status(201).json(student);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const getAllStudents = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
+  getAllStudents = handleAsync(async (_req, res) => {
     const students = await studentRepo.findAllStudents();
     res.json(students);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const getStudentWithGuardianById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  getStudentWithGuardianById = handleAsync(async (req, res) => {
     const student = await studentRepo.findStudentWithGuardianById(req.params.id);
     if (!student) throw new AppError("Student not found", 404);
     res.json(student);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const getStudentNameById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  getStudentNameById = handleAsync(async (req, res) => {
     const name = await studentRepo.findStudentNameById(req.params.id);
     if (!name) throw new AppError("Student not found", 404);
     res.json({ fullName: name });
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const getStudentsByClassName = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  getStudentsByClassName = handleAsync(async (req, res) => {
     const students = await studentRepo.findStudentsByClassName(req.params.className);
     if (!students) throw new AppError("Class not found or no students", 404);
     res.json(students);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const updateStudentById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  updateStudentById = handleAsync(async (req, res) => {
     const updatedStudent = await studentRepo.updateStudentById(req.params.id, req.body);
     if (!updatedStudent) throw new AppError("Student not found", 404);
     res.json(updatedStudent);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const deleteStudentById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  deleteStudentById = handleAsync(async (req, res) => {
     const deletedStudent = await studentRepo.deleteStudentById(req.params.id);
     if (!deletedStudent) throw new AppError("Student not found", 404);
     res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const deleteAllStudents = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
+  deleteAllStudents = handleAsync(async (_req, res) => {
     await studentRepo.deleteAllStudents();
     res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const countStudents = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  countStudents = handleAsync(async (req, res) => {
     const count = await studentRepo.countStudents(req.params.id);
     if (count === null) throw new AppError("Invalid student ID", 400);
     res.json({ count });
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const getAllStudentNames = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
+  getAllStudentNames = handleAsync(async (_req, res) => {
     const names = await studentRepo.getAllStudentNames();
     res.json(names);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
+}

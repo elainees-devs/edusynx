@@ -13,7 +13,7 @@ const baseUserSchema = z.object({
   secondaryEmail: z.string().email().optional(),
   primaryPhoneNumber: z.string().min(10),
   secondaryPhoneNumber: z.string().min(10).optional(),
-  hashedPassword: z.string().min(8),
+  password: z.string().min(8),
   nationality: z.string().min(6),
   avatarUrl: z.string().url().optional(),
   isActive: z.boolean().default(true),

@@ -1,55 +1,66 @@
-//src/controllers/users.controller.ts
+// src/controllers/users.controller.ts
 import { Request, Response, NextFunction } from "express";
 import { UserRepository } from "../repositories/user.repository";
 import { AppError } from "../utils/AppError";
+import redisClient from "../redisClient";
+import { createUserSchema } from "../validation/user.schema";
+import mongoose from "mongoose";
+import type { z } from "zod";
+import { handleAsync } from "../utils/handleAsync";
 
+export class UserController {
+  private userRepo: UserRepository;
 
-const userRepo = new UserRepository();
-
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const newUser = await userRepo.createUser(req.body);
-    res.status(201).json(newUser);
-  } catch (error) {
-    next(error);
+  constructor() {
+    this.userRepo = new UserRepository();
   }
-};
 
-export const getAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    const users = await userRepo.findAllUsers();
+  createUser = handleAsync<{}, any, z.infer<typeof createUserSchema>>(
+    async (req, res) => {
+      const { school, ...rest } = req.body;
+      const newUser = await this.userRepo.createUser({
+        ...rest,
+        school:
+          typeof school === "string"
+            ? new mongoose.Types.ObjectId(school)
+            : school,
+      });
+      res.status(201).json(newUser);
+    }
+  );
+
+  getAllUsers =handleAsync(async (_req, res) => {
+    const users = await this.userRepo.findAllUsers();
     res.json(users);
-  } catch (error) {
-    next(error);
-  }
-};
+  });
 
-export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const user = await userRepo.findUserById(req.params.id);
-    if (!user) throw new AppError("User not found", 404);
-    res.json(user);
-  } catch (error) {
-    next(error);
-  }
-};
+  getUserById = handleAsync<{ id: string }>(async (req, res) => {
+    const user = await this.userRepo.findUserById(req.params.id);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    res.status(200).json(user);
+  });
 
-export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const updatedUser = await userRepo.updateUserById(req.params.id, req.body);
-    if (!updatedUser) throw new AppError("User not found", 404);
-    res.json(updatedUser);
-  } catch (error) {
-    next(error);
-  }
-};
+  updateUser =handleAsync<{ id: string }, any, Partial<any>>(
+    async (req, res) => {
+      const updatedUser = await this.userRepo.updateUserById(
+        req.params.id,
+        req.body
+      );
+      if (!updatedUser) throw new AppError("User not found", 404);
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const deletedUser = await userRepo.deleteUserById(req.params.id);
+      await redisClient.del(`user:${req.params.id}`);
+      res.json(updatedUser);
+    }
+  );
+
+  deleteUser =handleAsync<{ id: string }>(async (req, res) => {
+    const deletedUser = await this.userRepo.deleteUserById(req.params.id);
     if (!deletedUser) throw new AppError("User not found", 404);
+
+    await redisClient.del(`user:${req.params.id}`);
     res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+  });
+}

@@ -1,63 +1,39 @@
-// src/controllers/invoiceItem.controller.ts
-import { Request, Response, NextFunction } from "express";
+//src/controllers/invoiceItem.controller.ts
 import { InvoiceItemRepository } from "../repositories/invoiceItem.repository";
 import { AppError } from "../utils/AppError";
+import { handleAsync } from "../utils/handleAsync";
 
 const invoiceItemRepo = new InvoiceItemRepository();
 
-export const createInvoiceItem = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const newItem = await invoiceItemRepo.createInvoiceItem(req.body);
-    res.status(201).json(newItem);
-  } catch (error) {
-    next(error);
-  }
-};
+export const createInvoiceItem = handleAsync(async (req, res) => {
+  const newItem = await invoiceItemRepo.createInvoiceItem(req.body);
+  res.status(201).json(newItem);
+});
 
-export const getInvoiceItemById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const item = await invoiceItemRepo.findInvoiceItemById(req.params.id);
-    if (!item) throw new AppError("Invoice item not found", 404);
-    res.json(item);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getInvoiceItemById = handleAsync(async (req, res) => {
+  const item = await invoiceItemRepo.findInvoiceItemById(req.params.id);
+  if (!item) throw new AppError("Invoice item not found", 404);
+  res.json(item);
+});
 
-export const getAllInvoiceItems = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    const items = await invoiceItemRepo.findAllInvoiceItems();
-    res.json(items);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAllInvoiceItems = handleAsync(async (_req, res) => {
+  const items = await invoiceItemRepo.findAllInvoiceItems();
+  res.json(items);
+});
 
-export const updateInvoiceItem = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const updated = await invoiceItemRepo.updateInvoiceItemById(req.params.id, req.body);
-    if (!updated) throw new AppError("Invoice item not found", 404);
-    res.json(updated);
-  } catch (error) {
-    next(error);
-  }
-};
+export const updateInvoiceItem = handleAsync(async (req, res) => {
+  const updated = await invoiceItemRepo.updateInvoiceItemById(req.params.id, req.body);
+  if (!updated) throw new AppError("Invoice item not found", 404);
+  res.json(updated);
+});
 
-export const deleteInvoiceItem = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const deleted = await invoiceItemRepo.deleteInvoiceItemById(req.params.id);
-    if (!deleted) throw new AppError("Invoice item not found", 404);
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+export const deleteInvoiceItem = handleAsync(async (req, res) => {
+  const deleted = await invoiceItemRepo.deleteInvoiceItemById(req.params.id);
+  if (!deleted) throw new AppError("Invoice item not found", 404);
+  res.status(204).send();
+});
 
-export const deleteAllInvoiceItems = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    await invoiceItemRepo.deleteAllInvoiceItems();
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+export const deleteAllInvoiceItems = handleAsync(async (_req, res) => {
+  await invoiceItemRepo.deleteAllInvoiceItems();
+  res.status(204).send();
+});

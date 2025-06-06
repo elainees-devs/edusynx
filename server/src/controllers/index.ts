@@ -9,6 +9,7 @@ export * from "./class.controller";
 export * from "./student.controller";
 export * from "./attendance.controller";
 export * from "./exam.controller";
+export * from "./event.controller";
 export * from "./subject.controller";
 export * from "./invoice.controller";
 export * from "./invoiceItem.controller";
@@ -17,3 +18,4 @@ export * from "./feePayment.controller";
 export * from "./payment.controller";
 export * from "./permission.controller";
 export * from "./rolePermission.controller";
+export * from "./user.controller"

@@ -1,73 +1,47 @@
-//src/controllers/payment.controller.ts
-import { Request, Response, NextFunction } from "express";
+// src/controllers/payment.controller.ts
 import { PaymentRepository } from "../repositories/payment.repository";
 import { AppError } from "../utils/AppError";
 import { Types } from "mongoose";
+import { handleAsync } from "../utils/handleAsync";
 
-export const createPayment = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const payment = await PaymentRepository.create(req.body);
-    res.status(201).json(payment);
-  } catch (error) {
-    next(error);
-  }
-};
+const paymentRepo = new PaymentRepository();
 
-export const getPaymentById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const payment = await PaymentRepository.findById(req.params.id);
-    if (!payment) throw new AppError("Payment not found", 404);
-    res.json(payment);
-  } catch (error) {
-    next(error);
-  }
-};
+export const createPayment = handleAsync(async (req, res) => {
+  const payment = await paymentRepo.create(req.body);
+  res.status(201).json(payment);
+});
 
-export const getAllPayments = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const payments = await PaymentRepository.findAll(req.query);
-    res.json(payments);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getPaymentById = handleAsync(async (req, res) => {
+  const payment = await paymentRepo.findById(req.params.id);
+  if (!payment) throw new AppError("Payment not found", 404);
+  res.json(payment);
+});
 
-export const updatePayment = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const updated = await PaymentRepository.updateById(req.params.id, req.body);
-    if (!updated) throw new AppError("Payment not found", 404);
-    res.json(updated);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAllPayments = handleAsync(async (req, res) => {
+  const payments = await paymentRepo.findAll(req.query);
+  res.json(payments);
+});
 
-export const deletePayment = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const deleted = await PaymentRepository.deleteById(req.params.id);
-    if (!deleted) throw new AppError("Payment not found", 404);
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+export const updatePayment = handleAsync(async (req, res) => {
+  const updated = await paymentRepo.updateById(req.params.id, req.body);
+  if (!updated) throw new AppError("Payment not found", 404);
+  res.json(updated);
+});
 
-export const getPaymentsByStudent = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const studentId = new Types.ObjectId(req.params.studentId);
-    const payments = await PaymentRepository.findByStudent(studentId);
-    res.json(payments);
-  } catch (error) {
-    next(error);
-  }
-};
+export const deletePayment = handleAsync(async (req, res) => {
+  const deleted = await paymentRepo.deleteById(req.params.id);
+  if (!deleted) throw new AppError("Payment not found", 404);
+  res.status(204).send();
+});
 
-export const getPaymentsByInvoice = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const invoiceId = new Types.ObjectId(req.params.invoiceId);
-    const payments = await PaymentRepository.findByInvoice(invoiceId);
-    res.json(payments);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getPaymentsByStudent = handleAsync(async (req, res) => {
+  const studentId = new Types.ObjectId(req.params.studentId);
+  const payments = await paymentRepo.findByStudent(studentId);
+  res.json(payments);
+});
+
+export const getPaymentsByInvoice = handleAsync(async (req, res) => {
+  const invoiceId = new Types.ObjectId(req.params.invoiceId);
+  const payments = await paymentRepo.findByInvoice(invoiceId);
+  res.json(payments);
+});

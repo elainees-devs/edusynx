@@ -13,7 +13,7 @@ export interface IBaseUser extends BaseDocument {
   secondaryEmail?: string;
   primaryPhoneNumber: string;
   secondaryPhoneNumber?: string;
-  hashedPassword: string;
+  password: string;
   nationality: string;
   avatarUrl?: string;
   isActive: boolean;
@@ -24,7 +24,7 @@ export interface IBaseUser extends BaseDocument {
   role: UserRole;
 }
 
-export interface ITeacherUser extends IBaseUser {
+export interface ITeacher extends IBaseUser {
   role: UserRole.TEACHER;
   teacherId?: string;
   isClassTeacher?: boolean;
@@ -32,7 +32,7 @@ export interface ITeacherUser extends IBaseUser {
   teachingSubjects?: string[];
 }
 
-export interface IGuardianUser extends IBaseUser {
+export interface IGuardian extends IBaseUser {
   role: UserRole.GUARDIAN;
   familyNumber: number;
 }
