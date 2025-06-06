@@ -18,3 +18,4 @@ export * from "./feePayment.controller";
 export * from "./payment.controller";
 export * from "./permission.controller";
 export * from "./rolePermission.controller";
+export * from "./user.controller"
