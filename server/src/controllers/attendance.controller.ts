@@ -1,113 +1,77 @@
-//src/controllers/attendance.controller.ts
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { AttendanceRepository } from "../repositories/attendance.repository";
 import { AppError } from "../utils/AppError";
+import { handleAsync } from "../utils/handleAsync";
 
 const attendanceRepo = new AttendanceRepository();
 
-export const createAttendance = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const newAttendance = await attendanceRepo.createAttendance(req.body);
-    res.status(201).json(newAttendance);
-  } catch (error) {
-    next(error);
-  }
-};
+export const createAttendance = handleAsync(async (req, res) => {
+  const newAttendance = await attendanceRepo.createAttendance(req.body);
+  res.status(201).json(newAttendance);
+});
 
-export const getAttendanceById = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const attendance = await attendanceRepo.getAttendanceById(req.params.id);
-    if (!attendance) throw new AppError("Attendance not found", 404);
-    res.json(attendance);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAttendanceById = handleAsync<{ id: string }>(async (req, res) => {
+  const attendance = await attendanceRepo.getAttendanceById(req.params.id);
+  if (!attendance) throw new AppError("Attendance not found", 404);
+  res.json(attendance);
+});
 
-export const getAllAttendances = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    const attendances = await attendanceRepo.getAllAttendances();
-    res.json(attendances);
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAllAttendances = handleAsync(async (_req, res) => {
+  const attendances = await attendanceRepo.getAllAttendances();
+  res.json(attendances);
+});
 
-export const updateAttendance = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const updated = await attendanceRepo.updateAttendanceById(req.params.id, req.body);
-    if (!updated) throw new AppError("Attendance not found", 404);
-    res.json(updated);
-  } catch (error) {
-    next(error);
-  }
-};
+export const updateAttendance = handleAsync<{ id: string }, any, Partial<any>>(async (req, res) => {
+  const updated = await attendanceRepo.updateAttendanceById(req.params.id, req.body);
+  if (!updated) throw new AppError("Attendance not found", 404);
+  res.json(updated);
+});
 
-export const deleteAttendance = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const deleted = await attendanceRepo.deleteAttendanceById(req.params.id);
-    if (!deleted) throw new AppError("Attendance not found", 404);
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+export const deleteAttendance = handleAsync<{ id: string }>(async (req, res) => {
+  const deleted = await attendanceRepo.deleteAttendanceById(req.params.id);
+  if (!deleted) throw new AppError("Attendance not found", 404);
+  res.status(204).send();
+});
 
-export const deleteAllAttendances = async (_req: Request, res: Response, next: NextFunction) => {
-  try {
-    await attendanceRepo.deleteAllAttendances();
-    res.status(204).send();
-  } catch (error) {
-    next(error);
-  }
-};
+export const deleteAllAttendances = handleAsync(async (_req, res) => {
+  await attendanceRepo.deleteAllAttendances();
+  res.status(204).send();
+});
 
-export const getAttendanceByClassAndDate = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { classId, date } = req.query;
-    if (!classId || !date) throw new AppError("classId and date are required", 400);
+export const getAttendanceByClassAndDate = handleAsync(async (req, res) => {
+  const { classId, date } = req.query;
+  if (!classId || !date) throw new AppError("classId and date are required", 400);
 
-    const attendance = await attendanceRepo.getAttendanceByClassAndDate(
-      classId as string,
-      new Date(date as string)
-    );
+  const attendance = await attendanceRepo.getAttendanceByClassAndDate(
+    classId as string,
+    new Date(date as string)
+  );
 
-    if (!attendance) throw new AppError("Attendance not found", 404);
-    res.json(attendance);
-  } catch (error) {
-    next(error);
-  }
-};
+  if (!attendance) throw new AppError("Attendance not found", 404);
+  res.json(attendance);
+});
 
-export const getAttendancesBySchoolAndYear = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { schoolId, schoolYear } = req.query;
-    if (!schoolId || !schoolYear) throw new AppError("schoolId and schoolYear are required", 400);
+export const getAttendancesBySchoolAndYear = handleAsync(async (req, res) => {
+  const { schoolId, schoolYear } = req.query;
+  if (!schoolId || !schoolYear) throw new AppError("schoolId and schoolYear are required", 400);
 
-    const attendances = await attendanceRepo.getAttendancesBySchoolAndYear(
-      schoolId as string,
-      schoolYear as string
-    );
+  const attendances = await attendanceRepo.getAttendancesBySchoolAndYear(
+    schoolId as string,
+    schoolYear as string
+  );
 
-    res.json(attendances);
-  } catch (error) {
-    next(error);
-  }
-};
+  res.json(attendances);
+});
 
-export const getAttendanceByStudentAndDate = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { studentId, date } = req.query;
-    if (!studentId || !date) throw new AppError("studentId and date are required", 400);
+export const getAttendanceByStudentAndDate = handleAsync(async (req, res) => {
+  const { studentId, date } = req.query;
+  if (!studentId || !date) throw new AppError("studentId and date are required", 400);
 
-    const attendance = await attendanceRepo.getAttendanceByStudentAndDate(
-      studentId as string,
-      new Date(date as string)
-    );
+  const attendance = await attendanceRepo.getAttendanceByStudentAndDate(
+    studentId as string,
+    new Date(date as string)
+  );
 
-    if (!attendance) throw new AppError("Attendance not found", 404);
-    res.json(attendance);
-  } catch (error) {
-    next(error);
-  }
-};
+  if (!attendance) throw new AppError("Attendance not found", 404);
+  res.json(attendance);
+});
