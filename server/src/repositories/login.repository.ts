@@ -1,33 +1,32 @@
-//src/repositories/login.repository.ts
+// src/repositories/login.repository.ts
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Login } from "../models/login.model";
-import { ILogin } from "../types/security/login.types";
-import { IBaseUser } from "../types";
+import { IBaseUser, ILoginRequest } from "../types";
 import { UserModel } from "../models";
 import dotenv from "dotenv";
 
-// Load environment variables
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "default_jwt_secret";
 
 export class LoginRepository {
-  static async login(email: string, password: string): Promise<{ token?: string; message: string }> {
+  async login(data: ILoginRequest): Promise<{ token?: string; message: string }> {
+    const { email, password } = data;
+
     const user: IBaseUser | null = await UserModel.findOne({ email });
 
     if (!user) {
-      // If user not found, log attempt without userId
       await Login.create({
         isSuccessful: false,
         failureReason: "User not found",
-      } as Partial<ILogin>);
+      });
       return { message: "Invalid credentials" };
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    const loginData: Partial<ILogin> = {
+    const loginData = {
       userId: user._id,
       isSuccessful: isPasswordValid,
       failureReason: isPasswordValid ? undefined : "Incorrect password",
