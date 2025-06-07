@@ -3,7 +3,7 @@ import { Router } from "express";
 import { loginSchema } from "../validation/login.schema";
 import { LoginController } from "../controllers";
 import { validate } from "../middlewares/validate";
-import { sanitizeHeaders } from "../middlewares/sanitzeHeader";
+import { sanitizeHeaders } from "../middlewares/sanitizeHeaders";
 
 const loginRouter = Router();
 const loginController = new LoginController();
