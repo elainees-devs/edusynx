@@ -1,3 +1,11 @@
+//src/types/enum/enum.ts
+export enum LoginFailureReason {
+  INVALID_CREDENTIALS = "Invalid credentials",
+  USER_NOT_FOUND = "User not found",
+  ACCOUNT_LOCKED = "Account locked",
+  OTHER = "Other",
+}
+
 export enum UserRole {
   HEADTEACHER = "headteacher",
   TEACHER = "teacher",
