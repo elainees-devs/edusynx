@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { GuardianModel, TeacherModel, UserModel } from "../models";
 import { IGuardian, ITeacher, IBaseUser } from "../types/people/user.types";
 import { UserRole } from "../types/enum/enum";
+import { ILoginBase } from "../types/common/auth-context.types";
 
 type Role = UserRole;
 
@@ -36,11 +37,7 @@ export const authenticateUser = (role: Role) => {
           user = await TeacherModel.findById(decoded.id).populate(["school", "class"]) as ITeacher;
           break;
         case UserRole.SCHOOL_ADMIN:
-          user = await UserModel.findById(decoded.id).populate("school");
-          break;
         case UserRole.HEADTEACHER:
-          user = await UserModel.findById(decoded.id).populate("school") as IBaseUser;
-          break;
         case UserRole.ACCOUNTANT:
           user = await UserModel.findById(decoded.id).populate("school") as IBaseUser;
           break;
@@ -56,7 +53,16 @@ export const authenticateUser = (role: Role) => {
         return next(error);
       }
 
+      // Record login info
+      const loginInfo: ILoginBase = {
+        loginTime: new Date(),
+        ipAddress: req.ip,
+        deviceInfo: req.headers["user-agent"] || undefined,
+      };
+
       req.user = user;
+      req.loginInfo = loginInfo;
+
       next();
     } catch (err: any) {
       const error = new Error("Invalid token");
