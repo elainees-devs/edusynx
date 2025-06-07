@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
-import { classRouter, schoolRouter, studentRouter, userRouter } from "./routes/index";
+import { classRouter, examRouter, loginRouter, rolePermissionRouter, schoolRouter, studentRouter, userRouter } from "./routes/index";
 
 configDotenv();
 
@@ -21,6 +21,9 @@ app.use("/users", userRouter);
 app.use("/school", schoolRouter);
 app.use("/class", classRouter);
 app.use("/student", studentRouter);
+app.use("/login", loginRouter);
+app.use("/exam", examRouter);
+app.use("/rolePermission", rolePermissionRouter)
 
 app.get("/", (req: Request, res: Response) => {
   logger.info("Received request on /");
