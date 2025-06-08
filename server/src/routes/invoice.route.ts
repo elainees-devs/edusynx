@@ -14,4 +14,4 @@ invoiceRouter.put("/:id",validate(updateInvoiceSchema),invoiceController.updateI
 invoiceRouter.delete("/:id", invoiceController.deleteInvoice);
 invoiceRouter.delete("/", invoiceController.deleteAllInvoices);
 
-export default invoiceRouter;
+export {invoiceRouter};
