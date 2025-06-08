@@ -2,15 +2,15 @@
 import { Router } from "express";
 import { PaymentController } from "../controllers/payment.controller";
 
-const router = Router();
+const paymentRouter = Router();
 const paymentController = new PaymentController();
 
-router.post("/", paymentController.createPayment);
-router.get("/", paymentController.getAllPayments);
-router.get("/:id", paymentController.getPaymentById);
-router.put("/:id", paymentController.updatePayment);
-router.delete("/:id", paymentController.deletePayment);
-router.get("/student/:studentId", paymentController.getPaymentsByStudent);
-router.get("/invoice/:invoiceId", paymentController.getPaymentsByInvoice);
+paymentRouter.post("/", paymentController.createPayment);
+paymentRouter.get("/", paymentController.getAllPayments);
+paymentRouter.get("/:id", paymentController.getPaymentById);
+paymentRouter.put("/:id", paymentController.updatePayment);
+paymentRouter.delete("/:id", paymentController.deletePayment);
+paymentRouter.get("/student/:studentId", paymentController.getPaymentsByStudent);
+paymentRouter.get("/invoice/:invoiceId", paymentController.getPaymentsByInvoice);
 
-export default router;
+export default paymentRouter;
