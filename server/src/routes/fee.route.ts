@@ -13,4 +13,4 @@ feeRouter.get("/:id", feeController.getFeeById);
 feeRouter.put("/:id",validate(updateFeeSchema), feeController.updateFee);
 feeRouter.delete("/:id", feeController.deleteFee);
 
-export default feeRouter;
+export {feeRouter};
