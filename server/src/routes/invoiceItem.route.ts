@@ -14,4 +14,4 @@ invoiceItemRouter.put("/:id",validate(updateInvoiceItemSchema),controller.update
 invoiceItemRouter.delete("/:id", controller.deleteInvoiceItem);
 invoiceItemRouter.delete("/", controller.deleteAllInvoiceItems);
 
-export default invoiceItemRouter;
+export {invoiceItemRouter};
