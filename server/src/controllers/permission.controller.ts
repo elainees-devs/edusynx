@@ -4,43 +4,45 @@ import { AppError } from "../utils/AppError";
 import { Types } from "mongoose";
 import { handleAsync } from "../utils/handleAsync";
 
-const permissionRepo = new PermissionRepository();
+export class PermissionController {
+  private permissionRepo = new PermissionRepository();
 
-export const createPermission = handleAsync(async (req, res) => {
-  const permission = await permissionRepo.create(req.body);
-  res.status(201).json(permission);
-});
+  createPermission = handleAsync(async (req, res) => {
+    const permission = await this.permissionRepo.create(req.body);
+    res.status(201).json(permission);
+  });
 
-export const getPermissionById = handleAsync(async (req, res) => {
-  const permission = await permissionRepo.findById(req.params.id);
-  if (!permission) throw new AppError("Permission not found", 404);
-  res.json(permission);
-});
+  getPermissionById = handleAsync(async (req, res) => {
+    const permission = await this.permissionRepo.findById(req.params.id);
+    if (!permission) throw new AppError("Permission not found", 404);
+    res.json(permission);
+  });
 
-export const getAllPermissions = handleAsync(async (req, res) => {
-  const permissions = await permissionRepo.findAll(req.query);
-  res.json(permissions);
-});
+  getAllPermissions = handleAsync(async (req, res) => {
+    const permissions = await this.permissionRepo.findAll(req.query);
+    res.json(permissions);
+  });
 
-export const updatePermission = handleAsync(async (req, res) => {
-  const updated = await permissionRepo.updateById(req.params.id, req.body);
-  if (!updated) throw new AppError("Permission not found", 404);
-  res.json(updated);
-});
+  updatePermission = handleAsync(async (req, res) => {
+    const updated = await this.permissionRepo.updateById(req.params.id, req.body);
+    if (!updated) throw new AppError("Permission not found", 404);
+    res.json(updated);
+  });
 
-export const deletePermission = handleAsync(async (req, res) => {
-  const deleted = await permissionRepo.deleteById(req.params.id);
-  if (!deleted) throw new AppError("Permission not found", 404);
-  res.status(204).send();
-});
+  deletePermission = handleAsync(async (req, res) => {
+    const deleted = await this.permissionRepo.deleteById(req.params.id);
+    if (!deleted) throw new AppError("Permission not found", 404);
+    res.status(204).send();
+  });
 
-export const getPermissionsByRole = handleAsync(async (req, res) => {
-  const permissions = await permissionRepo.findByRole(req.params.role);
-  res.json(permissions);
-});
+  getPermissionsByRole = handleAsync(async (req, res) => {
+    const permissions = await this.permissionRepo.findByRole(req.params.role);
+    res.json(permissions);
+  });
 
-export const getPermissionsBySchool = handleAsync(async (req, res) => {
-  const schoolId = new Types.ObjectId(req.params.schoolId);
-  const permissions = await permissionRepo.findBySchool(schoolId);
-  res.json(permissions);
-});
+  getPermissionsBySchool = handleAsync(async (req, res) => {
+    const schoolId = new Types.ObjectId(req.params.schoolId);
+    const permissions = await this.permissionRepo.findBySchool(schoolId);
+    res.json(permissions);
+  });
+}
