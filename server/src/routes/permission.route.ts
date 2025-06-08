@@ -13,4 +13,4 @@ permissionRouter.delete("/:id", permissionController.deletePermission);
 permissionRouter.get("/role/:role", permissionController.getPermissionsByRole);
 permissionRouter.get("/school/:schoolId", permissionController.getPermissionsBySchool);
 
-export default permissionRouter;
+export {permissionRouter};
