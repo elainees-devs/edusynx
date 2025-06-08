@@ -12,4 +12,4 @@ notificationRouter.get("/user/:userId", notificationController.getUserNotificati
 notificationRouter.put("/:id/read",validate(updateNotificationSchema), notificationController.markNotificationAsRead);
 notificationRouter.delete("/:id", notificationController.deleteNotification);
 
-export default notificationRouter;
+export {notificationRouter};
