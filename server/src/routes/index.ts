@@ -1,9 +1,15 @@
-//src/routes/index.ts
-export * from './user.route'
-export * from './school.route'
-export * from './student.route'
-export * from './class.route'
-export * from './exam.route'
-export * from './login.route'
-export * from './rolePermission.route'
-export * from './subject.route'
+// src/routes/index.ts
+export { userRouter } from './user.route';
+export { schoolRouter } from './school.route';
+export { classRouter } from './class.route';
+export { studentRouter } from './student.route';
+export { loginRouter } from './login.route';
+export { examRouter } from './exam.route';
+export { rolePermissionRouter } from './rolePermission.route';
+export { subjectRouter } from './subject.route';
+export { feeRouter } from './fee.route';
+export { invoiceRouter } from './invoice.route';
+export { invoiceItemRouter } from './invoiceItem.route';
+export { notificationRouter } from './notification.route';
+export { paymentRouter } from './payment.route';
+export { permissionRouter } from './permission.route';
