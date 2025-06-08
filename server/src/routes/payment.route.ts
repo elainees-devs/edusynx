@@ -13,4 +13,4 @@ paymentRouter.delete("/:id", paymentController.deletePayment);
 paymentRouter.get("/student/:studentId", paymentController.getPaymentsByStudent);
 paymentRouter.get("/invoice/:invoiceId", paymentController.getPaymentsByInvoice);
 
-export default paymentRouter;
+export {paymentRouter};
