@@ -1,5 +1,5 @@
 //src/repositories/session.repository.ts
-import { SessionModel } from "../models/session.model";
+import { SessionModel } from '../models/';
 import { ISession } from "../types/security/session.types";
 
 export class SessionRepository {
