@@ -19,7 +19,9 @@ import {
   invoiceItemRouter,
   notificationRouter,
   paymentRouter,
-  permissionRouter
+  permissionRouter,
+  sessionRouter,
+  eventRouter
 } from "./routes";
 
 configDotenv();
@@ -50,6 +52,8 @@ app.use('/invoiceItem', invoiceItemRouter);
 app.use('/notification', notificationRouter);
 app.use('/payment', paymentRouter);
 app.use('/permission', permissionRouter);
+app.use('/session', sessionRouter);
+app.use('/event', eventRouter);
 
 // Health check route
 app.get("/", (req: Request, res: Response) => {
