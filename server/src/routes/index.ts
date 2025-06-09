@@ -13,3 +13,5 @@ export { invoiceItemRouter } from './invoiceItem.route';
 export { notificationRouter } from './notification.route';
 export { paymentRouter } from './payment.route';
 export { permissionRouter } from './permission.route';
+export { sessionRouter } from './session.route';
+export { eventRouter } from './event.route';
