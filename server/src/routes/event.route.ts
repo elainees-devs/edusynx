@@ -14,4 +14,4 @@ eventRouter.put("/:id",validate(updateEventSchema),eventController.updateEvent);
 eventRouter.delete("/:id", eventController.deleteEvent);
 eventRouter.delete("/", eventController.deleteAllEvents);
 
-export default eventRouter;
+export {eventRouter};
