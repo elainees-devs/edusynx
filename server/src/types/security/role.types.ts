@@ -1,9 +1,9 @@
 //src/types/security/role.types.ts
 import { Types } from "mongoose";
 import { UserRole } from "../enum/enum";
-import { ISchool } from "../school/school.types";
 import { BaseDocument } from "../common/base.types";
 import { IBaseUser } from "../people/user.types";
+import { ISchool } from "../school/school-core.types";
 
 export interface IRole extends BaseDocument {
   role: UserRole;
