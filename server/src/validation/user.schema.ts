@@ -2,13 +2,13 @@
 import { z } from "zod";
 import { objectId } from "./util";
 
-// Base schema - explicitly excludes role
+// Base schema
 const baseUserSchema = z.object({
   school: objectId,
   firstName: z.string().min(3),
   middleName: z.string().min(3),
   lastName: z.string().min(3),
-  primaryEmail: z.string().email(),
+  email: z.string().email(),
   secondaryEmail: z.string().email().optional(),
   primaryPhoneNumber: z.string().min(10),
   secondaryPhoneNumber: z.string().min(10).optional(),
