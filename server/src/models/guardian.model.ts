@@ -1,6 +1,6 @@
 // src/models/guardian.model.ts
 import mongoose, { Schema } from "mongoose";
-import { IGuardianUser, UserRole } from "../types";
+import { IGuardian, UserRole } from "../types";
 import { UserSchemaFields } from "./user.model";
 
 const GuardianSchema: Schema = new Schema({
@@ -19,7 +19,7 @@ const GuardianSchema: Schema = new Schema({
   timestamps: true,
 });
 
-export const GuardianModel = mongoose.model<IGuardianUser>(
+export const GuardianModel = mongoose.model<IGuardian>(
   "GuardianUser",
   GuardianSchema
 );
