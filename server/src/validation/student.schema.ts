@@ -5,9 +5,9 @@ import { objectId } from "./util";
 
 export const createStudentSchema = z.object({
   school: objectId,
-  firstName: z.string().min(1),
-  middleName: z.string().min(1),
-  lastName: z.string().min(1),
+  studentFirstName: z.string().min(1),
+  studentMiddleName: z.string().min(1),
+  studentLastName: z.string().min(1),
   studentGender: z.nativeEnum(StudentGender),
   dateOfBirth: z.coerce.date(),
   adm: z.number().int().min(1),
