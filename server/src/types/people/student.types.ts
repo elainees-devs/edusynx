@@ -7,9 +7,9 @@ import { IClass, ISchool } from "../school/school-core.types";
 
 export interface IStudent extends BaseDocument{
   school: string | ISchool;
-  firstName: string;
-  middleName: string;
-  lastName: string;
+  studentFirstName: string;
+  studentMiddleName: string;
+  studentLastName: string;
   studentGender: StudentGender;
   dateOfBirth: Date;
   adm: number;
