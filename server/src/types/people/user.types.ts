@@ -1,9 +1,10 @@
-//src/types/people/user.types.ts
+// src/types/people/user.types.ts
 import { Types } from "mongoose";
 import { IClass, ISchool } from "../school/school-core.types";
 import { UserRole } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 
+// Base user interface WITHOUT role
 export interface IBaseUser extends BaseDocument {
   school: Types.ObjectId | ISchool;
   firstName: string;
@@ -24,6 +25,7 @@ export interface IBaseUser extends BaseDocument {
   role: UserRole;
 }
 
+// Teacher interface with literal role
 export interface ITeacher extends IBaseUser {
   role: UserRole.TEACHER;
   teacherId?: string;
@@ -32,6 +34,7 @@ export interface ITeacher extends IBaseUser {
   teachingSubjects?: string[];
 }
 
+// Guardian interface with literal role
 export interface IGuardian extends IBaseUser {
   role: UserRole.GUARDIAN;
   familyNumber: number;
