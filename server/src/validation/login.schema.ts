@@ -1,10 +1,7 @@
 // src/validation/login.schema.ts
 import { z } from "zod";
-import { objectId } from "./util";
 
 export const loginSchema = z.object({
-  userId: objectId,
-  sessionId: z.string().optional(), 
-  isSuccessful: z.boolean(),
-  failureReason: z.string().optional(),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 });
