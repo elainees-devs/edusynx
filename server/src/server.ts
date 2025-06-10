@@ -21,12 +21,14 @@ import {
   paymentRouter,
   permissionRouter,
   sessionRouter,
-  eventRouter
+  eventRouter,
 } from "./routes";
 
 configDotenv();
 
 const app = express();
+const apiRouter = express.Router();
+
 const PORT: number = parseInt(process.env.PORT || "5000", 10);
 
 // Database connection
@@ -38,27 +40,27 @@ app.use(cors());
 app.use(helmet());
 
 // Routes
-app.use('/users', userRouter);
-app.use('/school', schoolRouter);
-app.use('/class', classRouter);
-app.use('/student', studentRouter);
-app.use('/login', loginRouter);
-app.use('/exam', examRouter);
-app.use('/rolePermission', rolePermissionRouter);
-app.use('/subject', subjectRouter);
-app.use('/fee', feeRouter);
-app.use('/invoice', invoiceRouter);
-app.use('/invoiceItem', invoiceItemRouter);
-app.use('/notification', notificationRouter);
-app.use('/payment', paymentRouter);
-app.use('/permission', permissionRouter);
-app.use('/session', sessionRouter);
-app.use('/event', eventRouter);
+apiRouter.use("/users", userRouter);
+apiRouter.use("/school", schoolRouter);
+apiRouter.use("/class", classRouter);
+apiRouter.use("/student", studentRouter);
+apiRouter.use("/auth", loginRouter);
+apiRouter.use("/exam", examRouter);
+apiRouter.use("/rolePermission", rolePermissionRouter);
+apiRouter.use("/subject", subjectRouter);
+apiRouter.use("/fee", feeRouter);
+apiRouter.use("/invoice", invoiceRouter);
+apiRouter.use("/invoiceItem", invoiceItemRouter);
+apiRouter.use("/notification", notificationRouter);
+apiRouter.use("/payment", paymentRouter);
+apiRouter.use("/permission", permissionRouter);
+apiRouter.use("/session", sessionRouter);
+apiRouter.use("/event", eventRouter);
 
+app.use("/api/v1", apiRouter);
 // Health check route
-app.get("/", (req: Request, res: Response) => {
-  logger.info("Received request on /");
-  res.send("Server is running....!");
+apiRouter.get("/", (req: Request, res: Response) => {
+  res.json({ message: "API v1 is up and running" });
 });
 
 // 404 fallback
