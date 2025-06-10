@@ -1,7 +1,9 @@
 // src/controllers/student.controller.ts
 import { StudentRepository } from "../repositories/student.repository";
+import { IGuardian } from "../types";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
+
 
 const studentRepo = new StudentRepository();
 
@@ -11,11 +13,11 @@ export class StudentController {
     res.status(201).json(student);
   });
 
-  generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
-    const guardian = req.user; // Ensure guardian is attached via middleware
-    const student = await studentRepo.generateAdmissionNumberAndCreateStudent(req.body, guardian);
-    res.status(201).json(student);
-  });
+generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
+  const guardian = req.user as IGuardian;
+  const student = await studentRepo.generateAdmissionNumberAndCreateStudent(req.body, guardian);
+  res.status(201).json(student);
+});
 
   getAllStudents = handleAsync(async (_req, res) => {
     const students = await studentRepo.findAllStudents();
