@@ -63,7 +63,7 @@ export class StudentRepository {
   async findStudentNameById(id: string) {
     const student = await StudentModel.findById(id);
     return student
-      ? `${student.firstName} ${student.lastName}`
+      ? `${student.studentFirstName} ${student.studentLastName}`
       : null;
   }
 
@@ -100,7 +100,7 @@ export class StudentRepository {
     const students = await StudentModel.find({}, "studentFirstName studentMiddleName studentLastName");
     return students.map((s) => ({
       _id: s._id,
-      fullName: `${s.firstName} ${s.middleName ?? ""} ${s.lastName}`.trim(),
+      fullName: `${s.studentFirstName} ${s.studentMiddleName ?? ""} ${s.studentLastName}`.trim(),
     }));
   }
 }
