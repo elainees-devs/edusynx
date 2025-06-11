@@ -1,18 +1,19 @@
 // src/routes/session.route.ts
 import { Router } from "express";
-import { SessionController } from "../controllers/session.controller";
-import { validate } from "../middlewares/validate";
+import { SessionController } from "../controllers";
 import { createSessionSchema, updateSessionSchema } from "../validation/session.schema";
+import { validate } from "../middlewares/validate";
 
 const sessionRouter = Router();
 const sessionController = new SessionController();
 
-sessionRouter.post("/",validate(createSessionSchema),sessionController.createSession);
+sessionRouter.post("/", validate(createSessionSchema), sessionController.createSession);
 sessionRouter.get("/", sessionController.getAllSessions);
+sessionRouter.get("/active", sessionController.getActiveSessions);
+sessionRouter.get("/user/:userId", sessionController.getSessionsByUserId);
 sessionRouter.get("/:id", sessionController.getSessionById);
-sessionRouter.put("/:id",validate(updateSessionSchema), sessionController.updateSession);
+sessionRouter.put("/:id", validate(updateSessionSchema), sessionController.updateSession);
 sessionRouter.delete("/:id", sessionController.deleteSession);
-sessionRouter.get("/user/:userId/active", sessionController.getActiveSessionsByUser);
-sessionRouter.delete("/user/:userId", sessionController.deleteAllSessionsByUser);
+sessionRouter.delete("/", sessionController.deleteAllSessions);
 
-export {sessionRouter};
+export { sessionRouter };
