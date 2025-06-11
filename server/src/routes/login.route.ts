@@ -1,18 +1,18 @@
-//src/routes/login.route.ts
+// src/routes/login.route.ts
 import { Router } from "express";
+import { LoginController } from "../controllers/login.controller";
 import { loginSchema } from "../validation/login.schema";
-import { LoginController } from "../controllers";
 import { validate } from "../middlewares/validate";
 import { sanitizeHeaders } from "../middlewares/sanitizeHeaders";
 
 const loginRouter = Router();
-const loginController = new LoginController();
+const loginsController = new LoginController();
 
 loginRouter.post(
-  "/login",
+  "/",
   sanitizeHeaders,
   validate(loginSchema),
-  loginController.loginUser
+  loginsController.login
 );
 
 export { loginRouter };
