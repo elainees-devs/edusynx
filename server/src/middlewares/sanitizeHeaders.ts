@@ -1,6 +1,5 @@
 // src/middlewares/sanitizeHeaders.ts
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../utils/AppError";
 
 export function sanitizeHeaders(
   req: Request,
@@ -8,14 +7,22 @@ export function sanitizeHeaders(
   next: NextFunction
 ) {
   const ipHeader = req.headers["x-forwarded-for"];
-  const userAgent = req.headers["user-agent"];
+  let rawIp = "";
 
   if (!ipHeader) {
-    return next(new AppError("Missing x-forwarded-for header", 400));
+    rawIp = req.socket.remoteAddress || "";
+  } else if (Array.isArray(ipHeader)) {
+    rawIp = ipHeader[0];
+  } else {
+    rawIp = ipHeader;
   }
 
+  // Normalize IPv6 format like "::ffff:192.168.0.1"
+  const ipv4 = rawIp.startsWith("::ffff:") ? rawIp.replace("::ffff:", "") : rawIp;
+  req.headers["x-forwarded-for"] = ipv4;
+
+  const userAgent = req.headers["user-agent"];
   if (userAgent && typeof userAgent === "string") {
-    // trim user-agent to max 256 chars
     req.headers["user-agent"] = userAgent.trim().slice(0, 256);
   }
 
