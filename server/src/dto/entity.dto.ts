@@ -13,7 +13,9 @@ import {
   ISchool,
   ITeacher,
   IStudent,
+  ISession
 } from "../types";
+
 
 // User DTO
 export type CreateUserDTO = Omit<
@@ -99,5 +101,11 @@ export type CreateInvoiceDTO = Omit<
 //Invoice Item DTO
 export type CreateInvoiceItemDTO = Omit<
   IInvoice,
+  "id" | "_id" | "createdAt" | "updatedAt"
+>;
+
+// Session DTO
+export type CreateSessionDTO = Omit<
+  ISession,
   "id" | "_id" | "createdAt" | "updatedAt"
 >;
