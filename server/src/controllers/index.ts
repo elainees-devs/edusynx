@@ -1,7 +1,7 @@
 //src/controllers/index.ts
 
 export * from "./session.controller";
-export * from "./auth.controller";
+export * from "./login.controller";
 export * from "./user.controller";
 export * from "./notification.controller";   
 export * from "./school.controller";  
