@@ -1,91 +1,84 @@
 // src/repositories/login.repository.ts
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Login } from "../models/login.model";
-import { LoginHistoryModel } from "../models/loginHistory.model";
-import { IBaseUser, ILoginRequest, LoginFailureReason } from "../types";
-import { UserModel } from "../models";
-import dotenv from "dotenv";
 import { Types } from "mongoose";
+import { Login } from "../models/login.model";
+import { ILoginRepository, ILoginAttemptPayload, ILockoutCheckParams, ILockoutStatus } from "../types/security/login.types";
+import { LoginFailureReason } from "../types/enum/enum";
 
-dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || "default_jwt_secret";
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MINUTES = 15;
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
-interface LoginResult {
-  token?: string;
-  message: string;
-}
+export class LoginRepository implements ILoginRepository {
+  private failedAttempts: Record<string, { count: number; lastAttempt: Date }> = {};
 
-export class LoginRepository {
-  /**
-   * Attempt to login a user with email and password.
-   * Logs every attempt in the Login and LoginHistory collections.
-   */
-  async login(
-    data: ILoginRequest & { ipAddress?: string; deviceInfo?: string }
-  ): Promise<LoginResult> {
-    const { email, password, ipAddress, deviceInfo } = data;
+  async recordFailedAttempt(payload: ILoginAttemptPayload): Promise<void> {
+    await Login.create({
+      userId: payload.userId,
+      sessionId: null,
+      isSuccessful: false,
+      failureReason: payload.reason ?? LoginFailureReason.INVALID_CREDENTIALS,
+    });
 
-    // Find user by email (primaryEmail)
-    const user: (IBaseUser & { password: string; _id: Types.ObjectId }) | null =
-      await UserModel.findOne({ primaryEmail: email }).exec();
+    const key = `${payload.userId}-${payload.ipAddress}`;
+    const now = new Date();
 
-    const loginTime = new Date();
+    if (!this.failedAttempts[key]) {
+      this.failedAttempts[key] = { count: 1, lastAttempt: now };
+    } else {
+      this.failedAttempts[key].count++;
+      this.failedAttempts[key].lastAttempt = now;
+    }
+  }
 
-    if (!user) {
-      // User not found — log failed login with userId null
-      const loginData = {
-        userId: null, // user not found, so null here
-        isSuccessful: false,
-        failureReason: LoginFailureReason.USER_NOT_FOUND,
-        loginTime,
-        ipAddress,
-        deviceInfo,
-      };
+  async checkLockoutStatus(params: ILockoutCheckParams): Promise<ILockoutStatus> {
+    const { userId, ipAddress } = params;
+    const key = `${userId}-${ipAddress}`;
+    const attemptData = this.failedAttempts[key];
 
-      await Promise.all([
-        Login.create(loginData),
-        LoginHistoryModel.create(loginData),
-      ]);
-
-      return { message: "Invalid credentials" };
+    if (!attemptData) {
+      return { isLocked: false, attemptsRemaining: MAX_ATTEMPTS };
     }
 
-    // Check password validity
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const elapsedMinutes = (Date.now() - attemptData.lastAttempt.getTime()) / 60000;
+    if (attemptData.count >= MAX_ATTEMPTS && elapsedMinutes < LOCKOUT_MINUTES) {
+      return {
+        isLocked: true,
+        attemptsRemaining: 0,
+        lockoutTime: new Date(attemptData.lastAttempt.getTime() + LOCKOUT_MINUTES * 60000),
+        lockoutMinutes: LOCKOUT_MINUTES,
+      };
+    }
 
-    // Log login attempt
-    const loginData = {
-      userId: user._id,
-      isSuccessful: isPasswordValid,
-      failureReason: isPasswordValid ? undefined : LoginFailureReason.INVALID_CREDENTIALS,
-      loginTime,
-      ipAddress,
-      deviceInfo,
-      // sessionId: undefined, // add session tracking here if needed
+    return {
+      isLocked: false,
+      attemptsRemaining: MAX_ATTEMPTS - attemptData.count,
+    };
+  }
+
+  async resetFailedAttempts(params: { userId?: Types.ObjectId | string; ipAddress: string }): Promise<void> {
+    const key = `${params.userId}-${params.ipAddress}`;
+    delete this.failedAttempts[key];
+  }
+
+  async generateAuthToken(params: {
+    userId: Types.ObjectId | string;
+    email: string;
+    role?: string;
+    ipAddress: string;
+    deviceInfo?: string;
+  }): Promise<string> {
+    const payload = {
+      userId: params.userId,
+      email: params.email,
+      role: params.role,
+      ipAddress: params.ipAddress,
+      deviceInfo: params.deviceInfo,
+      sessionId: new Types.ObjectId().toHexString(),
     };
 
-    await Promise.all([
-      Login.create(loginData),
-      LoginHistoryModel.create(loginData),
-    ]);
-
-    if (!isPasswordValid) {
-      return { message: "Invalid credentials" };
-    }
-
-    // Generate JWT token for successful login
-    const token = jwt.sign(
-      {
-        id: user._id.toString(),
-        email: user.primaryEmail,
-        role: user.role,
-      },
-      JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    return { token, message: "Login successful" };
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
   }
 }
+
