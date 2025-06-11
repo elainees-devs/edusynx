@@ -1,40 +1,47 @@
-//src/repositories/session.repository.ts
-import { SessionModel } from '../models/';
+// src/repositories/session.repository.ts
+import { CreateSessionDTO } from "../dto/entity.dto";
+import { SessionModel } from "../models";
 import { ISession } from "../types/security/session.types";
 
 export class SessionRepository {
-  async create(data: Partial<ISession>): Promise<ISession> {
-    const session = new SessionModel(data);
-    return session.save();
+  async createSession(sessionData: CreateSessionDTO): Promise<ISession> {
+    const session = new SessionModel(sessionData);
+    return await session.save();
   }
 
-  async findById(id: string): Promise<ISession | null> {
-    return SessionModel.findById(id).exec();
+  async getSessionById(sessionId: string): Promise<ISession | null> {
+    return await SessionModel.findById(sessionId);
   }
 
-  async findAll(filter: Partial<ISession> = {}): Promise<ISession[]> {
-    return SessionModel.find(filter).exec();
+  async getAllSessions(): Promise<ISession[]> {
+    return await SessionModel.find();
   }
 
-  async updateById(
-    id: string,
-    updateData: Partial<ISession>
+  async updateSessionById(
+    sessionId: string,
+    sessionData: Partial<CreateSessionDTO>
   ): Promise<ISession | null> {
-    return SessionModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+    return await SessionModel.findByIdAndUpdate(sessionId, sessionData, {
+      new: true,
+    });
   }
 
-  async deleteById(id: string): Promise<ISession | null> {
-    return SessionModel.findByIdAndDelete(id).exec();
+  async deleteSessionById(sessionId: string): Promise<ISession | null> {
+    return await SessionModel.findByIdAndDelete(sessionId);
   }
 
-  async findActiveByUser(userId: string): Promise<ISession[]> {
-    return SessionModel.find({
-      userId,
-      logoutTime: { $exists: false },
-    }).exec();
+  async deleteAllSessions(): Promise<void> {
+    await SessionModel.deleteMany({});
   }
 
-  async deleteAllByUser(userId: string): Promise<{ deletedCount?: number }> {
-    return SessionModel.deleteMany({ userId }).exec();
+  async getSessionsByUserId(userId: string): Promise<ISession[]> {
+    return await SessionModel.find({ userId });
+  }
+
+  async getActiveSessions(): Promise<ISession[]> {
+    const now = new Date();
+    return await SessionModel.find({
+      expiryTime: { $gt: now.getTime() / 1000 },
+    });
   }
 }
