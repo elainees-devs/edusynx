@@ -8,7 +8,6 @@ const LoginSchema: Schema = new Schema(
     userId: {
       type: Types.ObjectId,
       ref: "User",
-      required: true,
     },
     sessionId: {
       type: String,
