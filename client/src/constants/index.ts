@@ -1,3 +1,4 @@
 // src/constants/index.ts
 
-export * from './footer-links'
+export * from './footerLinks'
+export * from './navLinks'
