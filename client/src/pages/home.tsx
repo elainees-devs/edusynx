@@ -1,5 +1,5 @@
 // src/pages/home.tsx
-import { Hero, HowItWorks, NavBar, PricingSection } from "../components";
+import { Hero, HowItWorks, KeyFetures, NavBar, PricingSection } from "../components";
 ("../components/index");
 import Footer from "../shared/layout/footer";
 
@@ -8,6 +8,7 @@ const HomePage = () => {
     <>
       <NavBar />
       <Hero />
+      <KeyFetures />
       <HowItWorks />
       <PricingSection />
       <Footer />
