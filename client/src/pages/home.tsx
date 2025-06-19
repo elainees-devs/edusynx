@@ -1,14 +1,16 @@
 // src/pages/home.tsx
-import { Hero, NavBar, PricingSection } from "../components"; "../components/index";
+import { Hero, HowItWorks, NavBar, PricingSection } from "../components";
+("../components/index");
 import Footer from "../shared/layout/footer";
 
 const HomePage = () => {
   return (
     <>
-    <NavBar />
-    <Hero />
-    <PricingSection />
-    <Footer />
+      <NavBar />
+      <Hero />
+      <HowItWorks />
+      <PricingSection />
+      <Footer />
     </>
   );
 };
