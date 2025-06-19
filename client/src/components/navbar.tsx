@@ -10,17 +10,22 @@ const NavBar: React.FC = () => {
           Edu<span className="text-secondary">synx</span>
         </a>
         <ul className="flex list-none">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href} className="ml-8">
-              <a
-                href={link.href}
-                className="font-semibold transition-colors duration-300 text-dark hover:text-primary"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+  {NAV_LINKS.map((link) => (
+    <li key={link.href} className="ml-8">
+      <a
+        href={link.href}
+        className={`font-semibold transition-colors duration-300 px-4 py-2 rounded ${
+          link.label === "SignUp"
+            ? "bg-primary text-white hover:bg-primary/90"
+            : "text-dark hover:text-primary"
+        }`}
+      >
+        {link.label}
+      </a>
+    </li>
+  ))}
+</ul>
+
         <button
           className="block text-2xl md:hidden text-dark"
           aria-label="Open mobile menu"
