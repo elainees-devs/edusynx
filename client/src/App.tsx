@@ -1,7 +1,7 @@
 // src/App.tsx
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { HomePage, SignIn } from './pages';
+import { HomePage, SignIn, SignUp } from './pages';
 
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
   );
