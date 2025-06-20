@@ -1,19 +1,20 @@
 // src/components/hero.tsx
-
-import React from 'react';
+import React from "react";
 
 const Hero: React.FC = () => {
   return (
-    <section className="min-h-screen flex items-center bg-gradient-to-br from-[#f5f7fa] to-[#e4e8eb] pt-44">
+    <section className="flex items-center min-h-screen hero-section pt-44">
       <div className="container px-4 mx-auto">
         <div className="flex flex-col items-center justify-between md:flex-row">
           {/* Hero Text */}
           <div className="flex-1 text-center md:pr-12 md:text-left">
             <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl">
-              Streamline School Operations with <span className="text-blue-600">Edusynx</span>
+              Streamline School Operations with{" "}
+              <span className="text-blue-600">Edusynx</span>
             </h1>
             <p className="max-w-xl mx-auto mb-8 text-lg md:text-xl md:mx-0">
-              Automate, Centralize, and Optimize Your School's Management with AI-Driven Features
+              Automate, Centralize, and Optimize Your School's Management with
+              AI-Driven Features
             </p>
             <div className="flex justify-center gap-5 md:justify-start">
               <a
