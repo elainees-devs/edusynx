@@ -1,0 +1,6 @@
+// src/pages/dashboard/index.ts
+export {default as AccountantDashBoard} from './accountant'
+export {default as TeacherDashboard} from './teacher'
+export {default as GuardianDashboard} from './guardian'
+export {default as HeadTeacherDashboard} from './headteacher'
+export {default as SchoolAdminDashboard} from './school-admin'
