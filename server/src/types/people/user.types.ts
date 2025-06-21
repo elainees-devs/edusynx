@@ -4,13 +4,12 @@ import { IClass, ISchool } from "../school/school-core.types";
 import { UserRole } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 
-// Base user interface WITHOUT role
 export interface IBaseUser extends BaseDocument {
   school: Types.ObjectId | ISchool;
   firstName: string;
   middleName: string;
   lastName: string;
-  primaryEmail: string;
+  email: string;
   secondaryEmail?: string;
   primaryPhoneNumber: string;
   secondaryPhoneNumber?: string;
