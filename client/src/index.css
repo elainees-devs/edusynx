@@ -1,24 +1,27 @@
-/* src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Ensure full height for the entire page */
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* CSS variables */
 :root {
   --dark: #1e293b;
 }
 
+/* Global reset and typography */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -26,6 +29,12 @@ body {
   line-height: 1.6;
 }
 
+/* Hero background */
 .hero-section {
-  background: linear-gradient(135deg, rgb(240, 249, 255) 0%, rgb(224, 242, 254) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(240, 249, 255) 0%,
+    rgb(224, 242, 254) 100%
+  );
 }
+
