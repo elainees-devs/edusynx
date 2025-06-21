@@ -1,17 +1,23 @@
 // src/components/navbar.tsx
-import React from "react";
+import React, { useState } from "react";
 import { NAV_LINKS } from "../constants";
+import { FiMenu, FiX } from "react-icons/fi";
 
 const NavBar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <header className="fixed top-0 w-full bg-white shadow-md z-[1000]">
       <nav className="flex justify-between items-center max-w-[1200px] mx-auto px-5 py-5">
+        {/* Logo */}
         <a href="#" className="text-[1.8rem] font-bold text-primary">
           Edu<span className="text-secondary">synx</span>
         </a>
-        <ul className="flex list-none">
+
+        {/* Desktop Menu */}
+        <ul className="hidden gap-6 md:flex">
           {NAV_LINKS.map((link) => (
-            <li key={link.href} className="ml-8">
+            <li key={link.href}>
               <a
                 href={link.href}
                 className={`font-semibold transition-colors duration-300 px-4 py-2 rounded ${
@@ -26,13 +32,37 @@ const NavBar: React.FC = () => {
           ))}
         </ul>
 
+        {/* Hamburger Toggle (only on small screens) */}
         <button
-          className="block text-2xl md:hidden text-dark"
-          aria-label="Open mobile menu"
+          className="text-2xl md:hidden text-dark"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle Menu"
         >
-          <i className="fas fa-bars"></i>
+          {isMenuOpen ? <FiX /> : <FiMenu />}
         </button>
       </nav>
+
+      {/* Mobile Menu (only shown when open) */}
+      {isMenuOpen && (
+        <div className="px-5 py-4 bg-white shadow-md md:hidden">
+          <ul className="flex flex-col gap-3">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={`block font-semibold transition-colors duration-300 px-4 py-2 rounded ${
+                    link.label === "SignUp"
+                      ? "bg-primary text-white hover:bg-primary/90"
+                      : "text-dark hover:text-primary"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </header>
   );
 };
