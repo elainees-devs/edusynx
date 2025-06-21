@@ -1,4 +1,4 @@
-//src/routes/school.route.ts
+// src/routes/school.route.ts
 import { Router } from "express";
 import { validate } from "../middlewares/validate";
 import {
@@ -22,6 +22,7 @@ schoolRouter.put(
   validate(updateSchoolSchema),
   schoolController.updateSchool
 );
+schoolRouter.patch("/schools/:id/activate", schoolController.activateSchool);
 schoolRouter.delete("/:id", schoolController.deleteSchoolById);
 schoolRouter.delete("/", schoolController.deleteAllSchools);
 
