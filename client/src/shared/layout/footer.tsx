@@ -9,11 +9,9 @@ const Footer = () => {
           {/* Column 1 */}
           <div>
             <h4
-              className="text-white mb-4 text-lg font-semibold relative 
-               after:absolute after:left-1/2 after:-translate-x-[40%] 
-               after:bottom-0 after:translate-y-full 
-               after:block after:content-[''] after:w-10 after:h-0.5 
-               after:bg-secondary"
+              className="text-white mb-4 text-lg font-semibold inline-block relative
+             after:absolute after:left-0 after:bottom-0 after:translate-y-[2px]
+             after:w-full after:h-[2px] after:bg-secondary after:content-['']"
             >
               Edusynx
             </h4>
@@ -26,14 +24,13 @@ const Footer = () => {
           {/* Column 2 - Quick Links */}
           <div>
             <h4
-              className="text-white mb-4 text-lg font-semibold relative 
-               after:absolute after:left-1/2 after:-translate-x-[40%] 
-               after:bottom-0 after:translate-y-full 
-               after:block after:content-[''] after:w-10 after:h-0.5 
-               after:bg-secondary"
+              className="text-white mb-4 text-lg font-semibold inline-block relative
+             after:absolute after:left-0 after:bottom-0 after:translate-y-[2px]
+             after:w-full after:h-[2px] after:bg-secondary after:content-['']"
             >
               Quick Links
             </h4>
+
             <ul className="space-y-2 list-none">
               {quickLinks.map(({ label, href }) => (
                 <li key={label}>
@@ -51,14 +48,13 @@ const Footer = () => {
           {/* Column 3 - Resources */}
           <div>
             <h4
-              className="text-white mb-4 text-lg font-semibold relative 
-               after:absolute after:left-1/2 after:-translate-x-[40%] 
-               after:bottom-0 after:translate-y-full 
-               after:block after:content-[''] after:w-10 after:h-0.5 
-               after:bg-secondary"
+              className="text-white mb-4 text-lg font-semibold inline-block relative
+             after:absolute after:left-0 after:bottom-0 after:translate-y-[2px]
+             after:w-full after:h-[2px] after:bg-secondary after:content-['']"
             >
               Resources
             </h4>
+
             <ul className="space-y-2 list-none">
               {resourcesLinks.map(({ label, href }) => (
                 <li key={label}>
