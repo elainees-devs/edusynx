@@ -44,4 +44,14 @@ export class SchoolController {
     await this.schoolRepo.deleteAllSchools();
     res.status(204).send();
   });
+    /**
+   * Activate school after verifying payment
+   */
+  activateSchool = handleAsync<{ id: string }>(async (req, res) => {
+    const school = await this.schoolRepo.updateSchoolById(req.params.id, {
+      isActive: true,
+    });
+    if (!school) throw new AppError("School not found", 404);
+    res.json({ message: "School activated successfully", school });
+  });
 }
