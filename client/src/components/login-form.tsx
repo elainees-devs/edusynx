@@ -19,18 +19,19 @@ const LoginForm: React.FC = () => {
           </p>
 
           <label htmlFor="username">Username:</label><br />
-          <input
-            className="w-full p-2 mb-4 border-2 border-gray-400 rounded"
-            id="username"
-            type="text"
-            placeholder="example@gmail.com"
-          /><br />
+         <input
+  className="w-full p-2 mb-4 border rounded border-gray"
+  id="username"
+  type="text"
+  placeholder="example@gmail.com"
+/><br />
 
           <label htmlFor="password">Password:</label><br />
           <input
-            className="w-full p-2 mb-4 border-2 border-gray-400 rounded"
+            className="w-full p-2 mb-4 border rounded border-gray"
             id="password"
             type="password"
+            placeholder="........"
           />
 
           <div className="mt-4">
