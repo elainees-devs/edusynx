@@ -1,4 +1,4 @@
-//src/middlewares/error.middleware.ts
+//server/src/middlewares/error.middleware.ts
 import { Request, Response, NextFunction } from "express";
 import logger from "../utils/logger";
 
