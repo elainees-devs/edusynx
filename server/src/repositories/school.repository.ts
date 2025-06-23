@@ -1,11 +1,15 @@
-//src/repositories/school.repository.ts
+// server/src/repositories/school.repository.ts
 import { CreateSchoolDTO } from "../dto/entity.dto";
 import School from "../models/school.model";
 import { ISchool } from "../types";
+import { slugify } from "../utils/slugify";
 
 export class SchoolRepository {
   async createSchool(schoolData: CreateSchoolDTO): Promise<ISchool> {
-    const school = new School(schoolData);
+    const slug = slugify(schoolData.name)
+    const school = new School({
+      ...schoolData,
+    slug});
     return await school.save();
   }
 
@@ -30,5 +34,9 @@ export class SchoolRepository {
 
   async deleteAllSchools(): Promise<void> {
     await School.deleteMany({}).exec();
+  }
+
+  async findBySlug(slug: string): Promise<ISchool | null> {
+    return await School.findOne({ slug, isActive: true }).exec();
   }
 }
