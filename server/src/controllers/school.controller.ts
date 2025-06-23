@@ -1,4 +1,4 @@
-// src/controllers/school.controller.ts
+// server/src/controllers/school.controller.ts
 import { SchoolRepository } from "../repositories/school.repository";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
@@ -54,4 +54,11 @@ export class SchoolController {
     if (!school) throw new AppError("School not found", 404);
     res.json({ message: "School activated successfully", school });
   });
+
+  getSchoolBySlug = handleAsync<{ slug: string }>(async (req, res) => {
+  const school = await this.schoolRepo.findBySlug(req.params.slug);
+  if (!school) throw new AppError("School not found or inactive", 404);
+  res.json(school);
+});
+
 }
