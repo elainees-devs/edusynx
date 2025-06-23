@@ -1,4 +1,4 @@
-//src/models/school.models.ts
+// server/src/models/school.models.ts
 import { model, Schema, Types } from "mongoose";
 import { ISchool } from "../types/school/school-core.types";
 
@@ -14,9 +14,11 @@ const SchoolSchema: Schema = new Schema<ISchool>(
     logoUrl: { type: String, required: true },
     isActive: { type: Boolean, default: true },
     schoolCode: { type: String, required: true, unique: true },
+    slug: {type: String,required: true,unique: true,lowercase: true,trim: true,
+    },
   },
   {
-    timestamps: true, // adds createdAt and updatedAt fields
+    timestamps: true, 
   }
 );
 
