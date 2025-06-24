@@ -1,19 +1,27 @@
 // client/src/context/useGlobalState.tsx
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 import type { ReactNode } from "react";
-import { UserRole } from "../constants";
 
+import { dummyUsers, UserRole } from "../constants";
+
+// Define role type from UserRole constant
 export type Role = (typeof UserRole)[keyof typeof UserRole];
 
-// Define types
+
+// Define User and GlobalState types
 export interface User {
+  _id: string;
   name: string;
   email: string;
   password?: string;
   role: Role;
+  school?: {
+    _id: string;
+    name: string;
+    isActive: boolean;
+  } | null;
 }
 
-// Define GlobalState type
 export interface GlobalState {
   users: User[];
   loggedInUser: User | null;
@@ -24,7 +32,10 @@ const initialState: GlobalState = {
   loggedInUser: null,
 };
 
-type Action = { type: "UPDATE_USERS" | "UPDATE_USER"; payload: any };
+// Define possible actions
+type Action =
+  | { type: "UPDATE_USERS"; payload: User[] }
+  | { type: "UPDATE_USER"; payload: User };
 
 // Create context
 const GlobalStateContext = createContext<
@@ -36,7 +47,7 @@ const GlobalStateContext = createContext<
   | undefined
 >(undefined);
 
-// Custom hook to access state and update it
+// Custom hook to access global state
 export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
   if (!context) {
@@ -45,7 +56,7 @@ export const useGlobalState = () => {
   return context;
 };
 
-// Reducer function to update state
+// Reducer function
 const reducer = (state: GlobalState, action: Action): GlobalState => {
   switch (action.type) {
     case "UPDATE_USERS":
@@ -57,7 +68,7 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
   }
 };
 
-// GlobalStateProvider component
+// Provider component
 interface GlobalStateProviderProps {
   children: ReactNode;
 }
@@ -67,11 +78,15 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Function to get the user role
+  // Load dummy users into state on mount
+  useEffect(() => {
+    dispatch({ type: "UPDATE_USERS", payload: dummyUsers });
+  }, []);
+
+  // Function to get user role
   const getUserRole = (state: GlobalState) => {
-    // Assuming the first user in the state represents the current user
-    const currentUser = state.users[0];
-    return currentUser ? currentUser.role : UserRole.SUPER_ADMIN; // Default to SUPER ADMIN role if no user is available
+    const currentUser = state.loggedInUser || state.users[0];
+    return currentUser ? currentUser.role : UserRole.SUPER_ADMIN;
   };
 
   return (
