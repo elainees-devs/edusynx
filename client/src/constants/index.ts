@@ -6,6 +6,7 @@ export * from './keyFeatures'
 export * from './benefits';
 export * from './pricingPlans';
 export * from './steps';
+export * from './dummy-users';
 export * from './user-dashboard'
 
 //export user roles
