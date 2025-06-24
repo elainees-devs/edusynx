@@ -1,13 +1,32 @@
-// src/components/login-form.tsx
+// client/src/components/login-form.tsx
 import React from "react";
 import LoginButton from "./login-button";
 
-const LoginForm: React.FC = () => {
+export interface LoginFormProps {
+  email: string;
+  password: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  onSubmit: (event: React.FormEvent) => Promise<void>;
+  onResetPassword: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({
+  email,
+  password,
+  setEmail,
+  setPassword,
+  onSubmit,
+  onResetPassword,
+}) => {
   return (
-    <form className="flex flex-col md:flex-row h-auto md:h-[85vh] rounded-2xl bg-white overflow-hidden">
+    <form
+      className="flex flex-col md:flex-row h-auto md:h-[85vh] rounded-2xl bg-white overflow-hidden"
+      onSubmit={onSubmit}
+    >
       {/* Left Section */}
       <div className="w-full p-8 md:w-1/2 bg-emerald-200">
-        {/* Left side content */}
+        {/* Left side content (e.g. branding/image/etc.) */}
       </div>
 
       {/* Right Section */}
@@ -18,40 +37,44 @@ const LoginForm: React.FC = () => {
             Welcome back! Please login to your account
           </p>
 
-          <label htmlFor="username">Username:</label>
-          <br />
+          <label htmlFor="email">Email:</label>
           <input
             className="w-full p-2 mb-4 border rounded border-gray"
-            id="username"
+            id="email"
             type="text"
             placeholder="example@gmail.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <br />
 
           <label htmlFor="password">Password:</label>
-          <br />
           <input
             className="w-full p-2 mb-4 border rounded border-gray"
             id="password"
             type="password"
             placeholder="........"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
+
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-2">
               <input type="checkbox" className="accent-emerald-500" />
               Remember Me
             </label>
-            <a
-              href="/reset-password"
+            <button
+              type="button"
+              onClick={onResetPassword}
               className="text-emerald-600 hover:underline"
             >
               Forgot Password?
-            </a>
+            </button>
           </div>
 
           <div className="mb-4 -mt-8">
             <LoginButton />
           </div>
+
           <div className="mt-6 text-sm text-center text-gray-600">
             Don’t have an account?{" "}
             <a href="/register" className="text-emerald-600 hover:underline">
