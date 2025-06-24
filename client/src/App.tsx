@@ -10,10 +10,12 @@ import {
   SuperAdminDashboard,
   TeacherDashboard,
 } from "./pages/dashboard/";
+import { GlobalStateProvider } from "./context/useGlobalState";
 
 function App() {
   return (
-    <Router>
+    <GlobalStateProvider>
+       <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
@@ -29,6 +31,8 @@ function App() {
            <Route path="/dashboard/super-admin" element={<SuperAdminDashboard />} />
       </Routes>
     </Router>
+    </GlobalStateProvider>
+   
   );
 }
 
