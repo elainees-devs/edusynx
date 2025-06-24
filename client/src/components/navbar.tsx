@@ -1,4 +1,4 @@
-// src/components/navbar.tsx
+// client/src/components/navbar.tsx
 import React, { useState } from "react";
 import { NAV_LINKS } from "../constants";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -21,7 +21,7 @@ const NavBar: React.FC = () => {
               <a
                 href={link.href}
                 className={`font-semibold transition-colors duration-300 px-4 py-2 rounded ${
-                  link.label === "SignUp"
+                  link.label === "Register"
                     ? "bg-primary text-white hover:bg-primary/90"
                     : "text-dark hover:text-primary"
                 }`}
