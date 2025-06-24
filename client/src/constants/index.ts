@@ -8,6 +8,7 @@ export * from './pricingPlans';
 export * from './steps';
 export * from './dummy-users';
 export * from './user-dashboard'
+export * from './school-fields'
 
 //export user roles
 export { UserRole } from './user-role'
