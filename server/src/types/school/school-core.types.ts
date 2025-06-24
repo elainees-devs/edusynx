@@ -1,4 +1,4 @@
-// server/src/types.school/school-core.types.ts
+// server/src/types/school/school-core.types.ts
 
 import { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
@@ -11,10 +11,11 @@ export interface ISchool extends BaseDocument {
   email: string;
   website?: string;
   establishedYear: number;
-  logoUrl: string;
+  logoUrl?: string;
   isActive: boolean;
   schoolCode: string;
-  slug: string;
+  slug?: string;
+  role: string;
 }
 
 export interface IClass extends BaseDocument {
