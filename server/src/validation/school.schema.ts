@@ -6,12 +6,11 @@ export const createSchoolSchema = z.object({
   address: z.string().min(1),
   phoneNumber: z.string().min(10),
   email: z.string().email(),
-  website: z.string().url().optional(),
   establishedYear: z.number().int().min(1000).max(new Date().getFullYear()),
-  logoUrl: z.string().url(),
-  isActive: z.boolean().optional().default(true),
+  isActive: z.boolean().optional().default(false),
   schoolCode: z.string().min(4),
-  slug: z.string().min(1)
+  slug: z.string().min(1).optional(),
+  role:z.string().min(1)
 });
 
 export const updateSchoolSchema = createSchoolSchema.partial();
