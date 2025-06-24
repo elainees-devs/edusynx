@@ -1,4 +1,4 @@
-// src/App.tsx
+// client/src/App.tsx
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { HomePage, ResetPassword, SignIn, SignUp } from "./pages";
@@ -7,6 +7,7 @@ import {
   GuardianDashboard,
   HeadTeacherDashboard,
   SchoolAdminDashboard,
+  SuperAdminDashboard,
   TeacherDashboard,
 } from "./pages/dashboard/";
 
@@ -20,11 +21,12 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         
         {/* Dashboards */}
-        <Route path="/teacher" element={<TeacherDashboard />} />
-        <Route path="/headteacher" element={<HeadTeacherDashboard />} />
-        <Route path="/guardian" element={<GuardianDashboard />} />
-        <Route path="/accountant" element={<AccountantDashboard />} />
-        <Route path="/school-admin" element={<SchoolAdminDashboard />} />
+        <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+        <Route path="/dashboard/headteacher" element={<HeadTeacherDashboard />} />
+        <Route path="/dashboard/guardian" element={<GuardianDashboard />} />
+        <Route path="/dashboard/accountant" element={<AccountantDashboard />} />
+        <Route path="/dashboard/school-admin" element={<SchoolAdminDashboard />} />
+           <Route path="/dashboard/super-admin" element={<SuperAdminDashboard />} />
       </Routes>
     </Router>
   );
