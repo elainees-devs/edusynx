@@ -1,5 +1,4 @@
-// src/types/school/school-core.types.ts
-
+// client/src/types/school/school-core.types.ts
 import type { BaseDocument } from "../common/base.types";
 import type { IBaseUser } from "../people/user.types";
 
@@ -13,6 +12,7 @@ export interface ISchool extends BaseDocument {
   logoUrl: string;
   isActive: boolean;
   schoolCode: string;
+  role: string;
 }
 
 export interface IClass extends BaseDocument {
