@@ -23,13 +23,19 @@ import {
   sessionRouter,
   eventRouter,
 } from "./routes";
+import { SchoolController } from "./controllers";
+import emailRouter from "./routes/email.route";
+
+
 
 configDotenv();
 
 const app = express();
 const apiRouter = express.Router();
+const schoolController = new SchoolController();
 
 const PORT: number = parseInt(process.env.PORT || "5000", 10);
+const FRONTEND_BASE_URL = process.env.FRONTEND_BASE_URL || "http://localhost:5173";
 
 // Database connection
 connectDB();
@@ -42,6 +48,7 @@ app.use(helmet());
 // Routes
 apiRouter.use("/users", userRouter);
 apiRouter.use("/school", schoolRouter);
+app.get("/:slug/signup", schoolController.getSchoolBySlug);
 apiRouter.use("/class", classRouter);
 apiRouter.use("/student", studentRouter);
 apiRouter.use("/auth", loginRouter);
@@ -56,6 +63,8 @@ apiRouter.use("/payment", paymentRouter);
 apiRouter.use("/permission", permissionRouter);
 apiRouter.use("/session", sessionRouter);
 apiRouter.use("/event", eventRouter);
+apiRouter.use("/email", emailRouter)
+
 
 app.use("/api/v1", apiRouter);
 // Health check route
