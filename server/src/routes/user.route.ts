@@ -1,4 +1,4 @@
-// src/routes/users.route.ts
+// server/src/routes/user.route.ts
 import { Router } from "express";
 import { validate } from "../middlewares/validate";
 import { createUserSchema, updateUserSchema } from "../validation/user.schema";
@@ -12,5 +12,6 @@ userRouter.get("/", userController.getAllUsers);
 userRouter.get("/:id", userController.getUserById);
 userRouter.put("/:id", validate(updateUserSchema), userController.updateUser);
 userRouter.delete("/:id", userController.deleteUser);
+userRouter.delete("/", userController.deleteAllUsers); 
 
 export { userRouter };
