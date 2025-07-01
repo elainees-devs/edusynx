@@ -12,7 +12,8 @@ export interface ISchool extends BaseDocument {
   logoUrl: string;
   isActive: boolean;
   schoolCode: string;
-  role: string;
+  role?: string;
+  accessUrl?: string;
 }
 
 export interface IClass extends BaseDocument {
