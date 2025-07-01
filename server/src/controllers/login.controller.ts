@@ -1,4 +1,4 @@
-// src/controllers/logins.controller.ts
+// server/src/controllers/login.controller.ts
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { UserModel } from "../models/user.model";
@@ -13,6 +13,13 @@ const loginRepo = new LoginRepository();
 export class LoginController {
   login = handleAsync(async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    logger.info(`[LOGIN ATTEMPT] Email=${email}`);
+    if (!email || !password) {
+      logger.warn("Login attempt with missing email or password");
+      throw new AppError("Email and password are required", 400);
+    }
+
+    // Log the login attempt details
 
     const ipAddress = (req.headers["x-forwarded-for"] as string) || "unknown";
     const deviceInfo = (req.headers["user-agent"] as string) || "unknown";
@@ -21,6 +28,7 @@ export class LoginController {
     );
 
     const user = await UserModel.findOne({ email });
+    console.log("user:", user);
     if (!user) {
       await loginRepo.recordFailedAttempt({
         email,
@@ -72,6 +80,7 @@ export class LoginController {
     res.status(200).json({
       message: "Login successful",
       token,
+      user,
     });
   });
 }
