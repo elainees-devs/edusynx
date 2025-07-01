@@ -8,3 +8,4 @@ export function slugify(name: string): string {
     .replace(/\s+/g, '-')           // spaces → hyphens
     .replace(/-+/g, '-');           // multiple hyphens → one
 }
+
