@@ -18,7 +18,9 @@ schoolRouter.post(
   schoolController.createSchool
 );
 schoolRouter.get("/", schoolController.getAllSchools);
+
 schoolRouter.patch(":id/activate", schoolController.activateSchool);
+
 schoolRouter.put(
   "/:id",
   validate(updateSchoolSchema),
