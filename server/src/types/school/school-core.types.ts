@@ -16,6 +16,7 @@ export interface ISchool extends BaseDocument {
   schoolCode: string;
   slug?: string;
   role: string;
+  accessUrl?: string;
 }
 
 export interface IClass extends BaseDocument {
