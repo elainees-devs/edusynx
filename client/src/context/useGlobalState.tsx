@@ -3,28 +3,18 @@ import React, { createContext, useContext, useReducer, useEffect } from "react";
 import type { ReactNode } from "react";
 
 import { dummyUsers, UserRole } from "../constants";
+import type { IUser } from "../types/people/user.types";
 
 // Define role type from UserRole constant
 export type Role = (typeof UserRole)[keyof typeof UserRole];
 
 
 // Define User and GlobalState types
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  password?: string;
-  role: Role;
-  school?: {
-    _id: string;
-    name: string;
-    isActive: boolean;
-  } | null;
-}
+
 
 export interface GlobalState {
-  users: User[];
-  loggedInUser: User | null;
+  users: IUser[];
+  loggedInUser: IUser | null;
 }
 
 const initialState: GlobalState = {
@@ -34,8 +24,8 @@ const initialState: GlobalState = {
 
 // Define possible actions
 type Action =
-  | { type: "UPDATE_USERS"; payload: User[] }
-  | { type: "UPDATE_USER"; payload: User };
+  | { type: "UPDATE_USERS"; payload: IUser[] }
+  | { type: "UPDATE_USER"; payload: IUser };
 
 // Create context
 const GlobalStateContext = createContext<
@@ -80,7 +70,7 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
 
   // Load dummy users into state on mount
   useEffect(() => {
-    dispatch({ type: "UPDATE_USERS", payload: dummyUsers });
+    dispatch({ type: "UPDATE_USERS", payload: dummyUsers  });
   }, []);
 
   // Function to get user role
