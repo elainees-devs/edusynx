@@ -1,4 +1,5 @@
 // server/src/controllers/school.controller.ts
+import mongoose from "mongoose";
 import { SchoolRepository } from "../repositories/school.repository";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
@@ -15,20 +16,45 @@ export class SchoolController {
     res.status(201).json(newSchool);
   });
 
+  getSchoolById = handleAsync<{ id: string }>(async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      throw new AppError("Invalid school ID", 400);
+    }
+
+    const school = await this.schoolRepo.findSchoolById(id);
+    if (!school) throw new AppError("School not found", 404);
+    res.json(school);
+  });
+
+  getSchoolByAccessLink = handleAsync<{ accessLink?: string }>(async (req, res) => {
+  const accessLink = req.params.accessLink;
+
+  if (!accessLink || typeof accessLink !== "string") {
+    throw new AppError("accessLink query parameter is required", 400);
+  }
+
+  const school = await this.schoolRepo.findByAccessLink(accessLink);
+
+  if (!school) {
+    throw new AppError("School not found", 404);
+  }
+
+  res.json(school);
+});
+
   getAllSchools = handleAsync(async (_req, res) => {
     const schools = await this.schoolRepo.findAllSchools();
     res.json(schools);
   });
 
-  getSchoolById = handleAsync<{ id: string }>(async (req, res) => {
-    const school = await this.schoolRepo.findSchoolById(req.params.id);
-    if (!school) throw new AppError("School not found", 404);
-    res.json(school);
-  });
-
   updateSchool = handleAsync<{ id: string }, any, Partial<any>>(
     async (req, res) => {
-      const updated = await this.schoolRepo.updateSchoolById(req.params.id, req.body);
+      const updated = await this.schoolRepo.updateSchoolById(
+        req.params.id,
+        req.body
+      );
       if (!updated) throw new AppError("School not found", 404);
       res.json(updated);
     }
@@ -44,7 +70,7 @@ export class SchoolController {
     await this.schoolRepo.deleteAllSchools();
     res.status(204).send();
   });
-    /**
+  /**
    * Activate school after verifying payment
    */
   activateSchool = handleAsync<{ id: string }>(async (req, res) => {
@@ -56,9 +82,8 @@ export class SchoolController {
   });
 
   getSchoolBySlug = handleAsync<{ slug: string }>(async (req, res) => {
-  const school = await this.schoolRepo.findBySlug(req.params.slug);
-  if (!school) throw new AppError("School not found or inactive", 404);
-  res.json(school);
-});
-
+    const school = await this.schoolRepo.findBySlug(req.params.slug);
+    if (!school) throw new AppError("School not found or inactive", 404);
+    res.json(school);
+  });
 }
