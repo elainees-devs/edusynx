@@ -1,4 +1,4 @@
-// src/controllers/users.controller.ts
+// server/src/controllers/user.controller.ts
 import { UserRepository } from "../repositories/user.repository";
 import { AppError } from "../utils/AppError";
 import redisClient from "../redisClient";
@@ -69,6 +69,11 @@ export class UserController {
     if (!deletedUser) throw new AppError("User not found", 404);
 
     await redisClient.del(`user:${req.params.id}`);
+    res.status(204).send();
+  });
+
+  deleteAllUsers = handleAsync(async (_req, res) => {
+    await this.userRepo.deleteAllUsers();
     res.status(204).send();
   });
 }
