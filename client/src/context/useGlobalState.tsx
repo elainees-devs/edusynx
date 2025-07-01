@@ -1,15 +1,11 @@
 // client/src/context/useGlobalState.tsx
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import type { ReactNode } from "react";
-
-import { dummyUsers, UserRole } from "../constants";
 import type { IUser } from "../types/people/user.types";
-
-// Define role type from UserRole constant
-export type Role = (typeof UserRole)[keyof typeof UserRole];
+import { UserRole} from "../constants";
 
 
-// Define User and GlobalState types
+export type Role = typeof UserRole[keyof typeof UserRole];
 
 
 export interface GlobalState {
@@ -22,12 +18,10 @@ const initialState: GlobalState = {
   loggedInUser: null,
 };
 
-// Define possible actions
 type Action =
   | { type: "UPDATE_USERS"; payload: IUser[] }
   | { type: "UPDATE_USER"; payload: IUser };
 
-// Create context
 const GlobalStateContext = createContext<
   | {
       state: GlobalState;
@@ -37,7 +31,6 @@ const GlobalStateContext = createContext<
   | undefined
 >(undefined);
 
-// Custom hook to access global state
 export const useGlobalState = () => {
   const context = useContext(GlobalStateContext);
   if (!context) {
@@ -46,7 +39,6 @@ export const useGlobalState = () => {
   return context;
 };
 
-// Reducer function
 const reducer = (state: GlobalState, action: Action): GlobalState => {
   switch (action.type) {
     case "UPDATE_USERS":
@@ -58,7 +50,6 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
   }
 };
 
-// Provider component
 interface GlobalStateProviderProps {
   children: ReactNode;
 }
@@ -68,15 +59,9 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Load dummy users into state on mount
-  useEffect(() => {
-    dispatch({ type: "UPDATE_USERS", payload: dummyUsers  });
-  }, []);
-
-  // Function to get user role
   const getUserRole = (state: GlobalState) => {
     const currentUser = state.loggedInUser || state.users[0];
-    return currentUser ? currentUser.role : UserRole.SUPER_ADMIN;
+    return currentUser ? currentUser.role : UserRole.SUPER_ADMIN
   };
 
   return (
