@@ -5,11 +5,8 @@ import type { ISchool } from '../types';
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
 export const registerSchool = async (data: ISchool) => {
-  console.log("Sending school data:", data); // Log the request payload
-
   try {
     const response = await axios.post(`${API_BASE}/school/register`, data);
-    console.log("Server response:", response.data); // Log the successful response
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -63,4 +60,6 @@ export const deleteSchool = async (id: string): Promise<ISchool> => {
     throw error;
   }
 };
+
+
 
