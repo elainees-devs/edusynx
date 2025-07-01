@@ -6,11 +6,13 @@ import React, {
   useEffect,
 } from "react";
 import type { ReactNode } from "react";
-import type { ISchool } from "../types";
-import { UserRole } from "../constants";
-import useUserAuth from "./useAuth";
 
-type User = ISchool;
+import { UserRole } from "../constants";
+import useUserAuth from "./useUserAuth";
+import type { IUser } from "../types/people/user.types";
+
+
+type User = IUser;
 
 export interface GlobalState {
   userRole: UserRole;
