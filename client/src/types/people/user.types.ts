@@ -1,9 +1,17 @@
-// src/types/people/user.types.ts
+// client/src/types/people/user.types.ts
 
 import type { UserRole } from "../../constants";
 import type { BaseDocument } from "../common/base.types";
 import type { IClass, ISchool } from "../school/school-core.types";
 
+export interface IUser  {
+  _id?: string
+  email: string;
+  fullName: string;
+  password: string;
+  role: UserRole;
+  school: string ;
+}
 export interface IBaseUser extends BaseDocument {
   school: string | ISchool;
   firstName: string;
