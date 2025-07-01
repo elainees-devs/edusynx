@@ -11,19 +11,26 @@ const SchoolSchema: Schema = new Schema<ISchool>(
     email: { type: String, required: true },
     website: { type: String },
     establishedYear: { type: Number, required: true },
-    logoUrl: { type: String},
-    isActive: { type: Boolean, default: false},
+    logoUrl: { type: String },
+    isActive: { type: Boolean, default: false },
     schoolCode: { type: String, required: true, unique: true },
-    slug: {type: String,required: true,unique: true,lowercase: true,trim: true,
-    role:{type: String, required:true}
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
+    role: { type: String, required: true },
+    accessUrl: { type: String, required: true, lowercase: true },
   },
+
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
 // Create the model
-const SchoolModel = model<ISchool>('School', SchoolSchema);
+const SchoolModel = model<ISchool>("School", SchoolSchema);
 
 export default SchoolModel;
