@@ -1,9 +1,7 @@
-// src/pages/dashboard/headteacher.tsx
+// client/src/pages/dashboard/headteacher.tsx
 const HeadTeacherDashboard: React.FC = () =>{
     return(
-        <div>
-            <h1>Head Teacher Dashboard</h1>
-        </div>
+        <div><h1>HeadeTeacher Dashboard</h1></div>
     )
 }
 export default HeadTeacherDashboard
