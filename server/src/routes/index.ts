@@ -1,9 +1,10 @@
-// src/routes/index.ts
+// server/src/routes/index.ts
 export { userRouter } from './user.route';
 export { schoolRouter } from './school.route';
 export { classRouter } from './class.route';
 export { studentRouter } from './student.route';
 export { loginRouter } from './login.route';
+export { emailRouter } from './email.route';
 export { examRouter } from './exam.route';
 export { rolePermissionRouter } from './rolePermission.route';
 export { subjectRouter } from './subject.route';

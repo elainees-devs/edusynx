@@ -5,6 +5,9 @@ import cors from "cors";
 import helmet from "helmet";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { options } from "./docs/swagger";
 import {
   userRouter,
   schoolRouter,
@@ -22,9 +25,9 @@ import {
   permissionRouter,
   sessionRouter,
   eventRouter,
+  emailRouter
 } from "./routes";
 import { SchoolController } from "./controllers";
-import emailRouter from "./routes/email.route";
 import seedUsers from "./seeds/seedUsers";
 
 configDotenv();
@@ -34,6 +37,14 @@ const apiRouter = express.Router();
 const PORT: number = parseInt(process.env.PORT || "5000", 10);
 const FRONTEND_BASE_URL =
   process.env.FRONTEND_BASE_URL || "http://localhost:5173";
+// Swagger setup
+const swaggerSpec = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  swaggerOptions: {
+    url: '/api-docs/swagger.json',
+  },
+}));
 
 // Middleware
 app.use(express.json());

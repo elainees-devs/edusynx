@@ -2,7 +2,6 @@
 import express, { Request, Response } from "express";
 import { sendAccessLink } from "../utils/email";
 import { handleAsync } from "../utils/handleAsync";
-import { access } from "fs";
 
 interface SendAccessLinkBody {
   email: string;
@@ -11,6 +10,38 @@ interface SendAccessLinkBody {
 
 const emailRouter = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Email
+ *   description: Email-related endpoints
+ */
+
+/**
+ * @swagger
+ * /api/email/send-access-link:
+ *   post:
+ *     summary: Send access link via email
+ *     tags: [Email]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SendAccessLink'
+ *     responses:
+ *       200:
+ *         description: Access URL sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Missing email or access URL
+ */
 emailRouter.post(
   "/send-access-link",
   handleAsync<{}, any, SendAccessLinkBody>(async (req: Request<{}, any, SendAccessLinkBody>, res: Response) => {
@@ -25,5 +56,4 @@ emailRouter.post(
   })
 );
 
-export default emailRouter;
-
+export {emailRouter};
