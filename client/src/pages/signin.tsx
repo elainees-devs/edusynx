@@ -1,35 +1,41 @@
 // client/src/pages/signin.tsx
+
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { LoginForm } from "../components";
-import { useNavigate, useParams } from "react-router-dom";
 import useUserAuth from "../hooks/useUserAuth";
 import { useGlobalState } from "../context/useGlobalState";
 import { UserRole } from "../constants";
 import Swal from "sweetalert2";
 import { loginUser } from "../api/auth";
-import type { IUser } from "../types/people/user.types";
 
 const SignIn: React.FC = () => {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const userAuth = useUserAuth();
   const { dispatch, state } = useGlobalState();
 
+  // Redirect map
   const roleRedirectMap: Record<UserRole, string> = {
-    [UserRole.SUPER_ADMIN]: "/dashboard/super-admin",
-    [UserRole.SCHOOL_ADMIN]: "/dashboard/school-admin",
-    [UserRole.TEACHER]: "/dashboard/teacher",
-    [UserRole.HEADTEACHER]: "/dashboard/headteacher",
-    [UserRole.ACCOUNTANT]: "/dashboard/accountant",
-    [UserRole.GUARDIAN]: "/dashboard/guardian",
+    [UserRole.SUPER_ADMIN]: "super-admin",
+    [UserRole.SCHOOL_ADMIN]: "school-admin",
+    [UserRole.TEACHER]: "teacher",
+    [UserRole.HEADTEACHER]: "headteacher",
+    [UserRole.ACCOUNTANT]: "accountant",
+    [UserRole.GUARDIAN]: "guardian",
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!slug) {
+      Swal.fire("Error", "Missing school identifier in URL.", "error");
+      return;
+    }
+
     try {
-      const { token, user } = await loginUser(email, password);
+      const { token, user} = await loginUser(email, password);
       localStorage.setItem("token", token);
 
       dispatch({
@@ -38,35 +44,56 @@ const SignIn: React.FC = () => {
       });
 
       userAuth.loginUser(user);
-      Swal.fire("Logged in successfully");
 
-      navigate(roleRedirectMap[user.role] || "/unauthorized");
-    } catch (error: any) {
-      console.error("Login error:", error);
+      Swal.fire("Success", "Logged in successfully", "success");
 
-      if (Array.isArray(error.issues)) {
+      const rolePath = roleRedirectMap[user.role as UserRole];
+      if (rolePath) {
+        navigate(`/${slug}/dashboard/${rolePath}`);
+      } else {
+        navigate("/unauthorized");
+      }
+    } catch (error) {
+      // Handle with type-safe logic
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "issues" in error &&
+        Array.isArray((error as { issues: unknown[] }).issues)
+      ) {
+        const issues = (error as { issues: { message: string }[] }).issues;
         Swal.fire({
           icon: "error",
           title: "Validation Error",
-          text: error.issues.map((i: any) => `• ${i.message}`).join("\n"),
+          html: issues.map((i) => `<div>• ${i.message}</div>`).join(""),
         });
       } else {
-        Swal.fire("Login Error", error.message || "Something went wrong.");
+        const message =
+          typeof error === "object" && error !== null && "message" in error
+            ? String((error as { message?: string }).message)
+            : "Something went wrong.";
+        Swal.fire({
+          icon: "error",
+          title: "Login Error",
+          text: message,
+        });
       }
     }
   };
 
-  const handleResetPassword = () => navigate("/reset-password");
+  const handleResetPassword = () => navigate(`/${slug}/reset-password`);
 
   return (
-    <div className="h-screen p-16 bg-light">
+    <div className="nin-h-screen p-16 bg-light">
       <LoginForm
+        slug={slug!}
         email={email}
         password={password}
         setEmail={setEmail}
         setPassword={setPassword}
         onSubmit={handleLogin}
         onResetPassword={handleResetPassword}
+
       />
     </div>
   );
