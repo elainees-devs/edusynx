@@ -74,7 +74,7 @@ const RoleSpecificStep = ({ back }: { back: () => void }) => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-between">
-        <button onClick={back} className="px-4 py-2 text-white bg-gray-500 rounded">
+        <button onClick={back} className="px-4 py-2 text-white bg-gray rounded">
           Back
         </button>
         <button onClick={handleSubmit} className="px-4 py-2 text-white bg-green-600 rounded">
