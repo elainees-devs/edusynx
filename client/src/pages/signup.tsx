@@ -3,11 +3,13 @@ import SignUpStepper from '../components/signup/signup-stepper';
 import { SignUpProvider } from '../hooks/useSignUpContext';
 
 
-const SignUp= () => {
+const SignUp = () => {
   return (
-    <SignUpProvider>
-      <SignUpStepper />
-    </SignUpProvider>
+    <div className="min-h-screen bg-light">
+      <SignUpProvider>
+        <SignUpStepper />
+      </SignUpProvider>
+    </div>
   );
 };
 
