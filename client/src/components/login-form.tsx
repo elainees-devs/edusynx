@@ -1,6 +1,7 @@
 // client/src/components/login-form.tsx
 import React from "react";
 import LoginButton from "./login-button";
+import { useNavigate } from "react-router-dom";
 
 export interface LoginFormProps {
   email: string;
@@ -9,6 +10,7 @@ export interface LoginFormProps {
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   onSubmit: (event: React.FormEvent) => Promise<void>;
   onResetPassword: () => void;
+  slug: string; 
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
@@ -18,7 +20,11 @@ const LoginForm: React.FC<LoginFormProps> = ({
   setPassword,
   onSubmit,
   onResetPassword,
+  slug
 }) => {
+  const navigate = useNavigate();
+  if (!slug) return <div>Invalid school slug</div>;
+
   return (
     <form
       className="flex flex-col md:flex-row h-auto md:h-[85vh] rounded-2xl bg-white overflow-hidden"
@@ -26,7 +32,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
     >
       {/* Left Section */}
       <div className="w-full p-8 md:w-1/2 bg-emerald-200">
-        {/* Left side content (e.g. branding/image/etc.) */}
+        {/* Left side content*/}
       </div>
 
       {/* Right Section */}
@@ -77,9 +83,13 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
           <div className="mt-6 text-sm text-center text-gray-600">
             Don’t have an account?{" "}
-            <a href="/register" className="text-emerald-600 hover:underline">
+            <button
+              type="button"
+              onClick={() => navigate(`/${slug}/signup`)}
+              className="text-emerald-600 hover:underline"
+            >
               Sign up
-            </a>
+            </button>
           </div>
         </div>
       </div>
