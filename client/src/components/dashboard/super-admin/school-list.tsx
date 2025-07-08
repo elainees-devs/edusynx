@@ -8,31 +8,115 @@ import type { ISchool } from "../../../types";
 import { logger } from "../../../utils/logger";
 import { sendAccessLink } from "../../../api/email";
 
-const renderCell = (f: any, v: any, i: any, e: boolean, h: any) => {
-  if (!e) {
-    if (f.isLink && v) return <a href={v} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">Website</a>;
-    if (f.key === "isActive") return <span className={v ? "text-green-600 font-medium" : "text-gray font-medium"}>{v ? "Active" : "Inactive"}</span>;
-    return v || "N/A";
+// Helper to format values safely for input fields
+const normalizeValue = (
+  val: string | number | boolean | Date | null | undefined
+): string | number | undefined => {
+  if (val instanceof Date) return val.toISOString().split("T")[0];
+  if (typeof val === "boolean") return val ? "true" : "false"; // or "" if you prefer
+  if (val === null || val === undefined) return "";
+  return val;
+};
+
+const renderCell = (
+  field: { key: string; label: string; type?: string; isLink?: boolean },
+  value: string | number | boolean | null | undefined,
+  inputValue: string | number | boolean | null | undefined,
+  isEditing: boolean,
+  handleChange: React.ChangeEventHandler<HTMLInputElement>
+) => {
+  if (!isEditing) {
+    if (field.isLink && typeof value === "string") {
+      return (
+        <a
+          href={value}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          Website
+        </a>
+      );
+    }
+
+    if (field.key === "isActive") {
+      return (
+        <span
+          className={
+            value ? "text-green-600 font-medium" : "text-gray-600 font-medium"
+          }
+        >
+          {value ? "Active" : "Inactive"}
+        </span>
+      );
+    }
+
+    return value !== null && value !== undefined ? String(value) : "N/A";
   }
-  return f.type === "checkbox" ? <input type="checkbox" name={f.key} checked={!!i} onChange={h} /> : <input type={f.type} name={f.key} value={i instanceof Date ? i.toISOString().split("T")[0] : i ?? ""} onChange={h} className="w-full px-2 py-1 border" />;
+
+  if (field.type === "checkbox") {
+    return (
+      <input
+        type="checkbox"
+        name={field.key}
+        checked={Boolean(inputValue === "true" || inputValue === true)}
+        onChange={handleChange}
+      />
+    );
+  }
+
+  return (
+    <input
+      type={field.type || "text"}
+      name={field.key}
+      value={normalizeValue(inputValue)}
+      onChange={handleChange}
+      className="w-full px-2 py-1 border"
+    />
+  );
 };
 
 const SchoolTable: React.FC = () => {
   const [schools, setSchools] = useState<ISchool[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { editingSchoolId, editForm, handleChange, handleSave, handleCancel, handleEdit, handleDelete } = useSchoolEditHandlers(setSchools);
+  const [sendingId, setSendingId] = useState<string | null>(null);
+
+  const {
+    editingSchoolId,
+    editForm,
+    handleChange,
+    handleSave,
+    handleCancel,
+    handleEdit,
+    handleDelete,
+  } = useSchoolEditHandlers(setSchools);
 
   useEffect(() => {
-    fetchSchools().then(setSchools).catch((err) => setError(err.message)).finally(() => setLoading(false));
+    fetchSchools()
+      .then(setSchools)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <div className="p-4">
-      <h2 className="mt-8 mb-4 text-xl font-semibold text-center">Registered Schools</h2>
+      <h2 className="mt-8 mb-4 text-xl font-semibold text-center">
+        Registered Schools
+      </h2>
       <table className="min-w-full text-sm border border-gray-300 table-auto">
         <thead className="bg-gray-100">
-          <tr><th className="p-2 border">#</th>{schoolFields.map(f => <th key={f.key} className="p-2 border">{f.label}</th>)}<th className="p-2 border">Logo</th><th className="p-2 border">Actions</th><th className="p-2 border">Link</th></tr>
+          <tr>
+            <th className="p-2 border">#</th>
+            {schoolFields.map((f) => (
+              <th key={f.key} className="p-2 border">
+                {f.label}
+              </th>
+            ))}
+            <th className="p-2 border">Logo</th>
+            <th className="p-2 border">Actions</th>
+            <th className="p-2 border">Link</th>
+          </tr>
         </thead>
         <tbody>
           {schools.map((s, i) => {
@@ -40,44 +124,114 @@ const SchoolTable: React.FC = () => {
             return (
               <tr key={s._id} className="border-t">
                 <td className="p-2 text-center border">{i + 1}</td>
-                {schoolFields.map(f => (
-                  <td key={f.key} className={`p-2 border ${["email", "website"].includes(f.key) ? "break-all" : "text-center"}`}>
-                    {renderCell(f, s[f.key as keyof ISchool], editForm[f.key as keyof ISchool], isEditing, handleChange)}
+                {schoolFields.map((f) => (
+                  <td
+                    key={f.key}
+                    className={`p-2 border ${
+                      ["email", "website"].includes(f.key)
+                        ? "break-all"
+                        : "text-center"
+                    }`}
+                  >
+                    {renderCell(
+                      f,
+                      normalizeValue(s[f.key as keyof ISchool]),
+                      normalizeValue(editForm[f.key as keyof ISchool]),
+                      isEditing,
+                      handleChange
+                    )}
                   </td>
                 ))}
-                <td className="p-2 text-center border"><img src={s.logoUrl} alt={s.name} className="h-8 mx-auto" /></td>
-                <td className="flex justify-center gap-2 p-2 border">
+                <td className="p-2 text-center border">
+                  <img src={s.logoUrl} alt={s.name} className="h-8 mx-auto" />
+                </td>
+                <td className="p-2 text-center border">
                   {isEditing ? (
                     <>
-                      <button onClick={() => handleSave(s._id!)} className="text-green-600 hover:underline">Save</button>
-                      <button onClick={handleCancel} className="text-gray-600 hover:underline">Cancel</button>
+                      <button
+                        onClick={() => handleSave(s._id!)}
+                        className="text-green-600 hover:underline mr-2"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={handleCancel}
+                        className="text-gray-600 hover:underline"
+                      >
+                        Cancel
+                      </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => handleEdit(s)} className="text-blue-500 hover:text-blue-700"><FaEdit /></button>
-                      <button onClick={() => handleDelete(s._id!)} className="text-red-500 hover:text-red-700"><FaTrash /></button>
+                      <button
+                        title="Edit"
+                        onClick={() => handleEdit(s)}
+                        className="text-blue-500 hover:text-blue-700 mr-2"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        title="Delete"
+                        onClick={() => handleDelete(s._id!)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <FaTrash />
+                      </button>
                     </>
                   )}
                 </td>
                 <td className="p-2 text-center border">
-                  <button onClick={async () => {
-                    if (!s.accessUrl) return alert("Access URL is missing for this school.");
-                    try {
-                      logger.info(`Sending access link to ${s.email}`);
-                      alert(await sendAccessLink(s.email, s.accessUrl));
-                    } catch (error) {
-                      logger.error(`Failed to send access link to ${s.email}`, error);
-                      alert("Failed to send access link.");
-                    }
-                  }} className="px-2 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700">Send Link</button>
+                  <button
+                    disabled={sendingId === s._id}
+                    onClick={async () => {
+                      if (!s.accessUrl)
+                        return alert("Access URL is missing for this school.");
+                      try {
+                        setSendingId(s._id!);
+                        logger.info(`Sending access link to ${s.email}`);
+                        const msg = await sendAccessLink(s.email, s.accessUrl);
+                        alert(msg);
+                      } catch (error) {
+                        logger.error(
+                          `Failed to send access link to ${s.email}`,
+                          error
+                        );
+                        alert("Failed to send access link.");
+                      } finally {
+                        setSendingId(null);
+                      }
+                    }}
+                    className={`px-2 py-1 text-sm text-white rounded ${
+                      sendingId === s._id
+                        ? "bg-gray-500"
+                        : "bg-blue-600 hover:bg-blue-700"
+                    }`}
+                  >
+                    {sendingId === s._id ? "Sending..." : "Send Link"}
+                  </button>
                 </td>
               </tr>
             );
           })}
+          {loading && (
+            <tr>
+              <td colSpan={schoolFields.length + 3} className="p-4 text-center">
+                Loading schools...
+              </td>
+            </tr>
+          )}
+          {error && (
+            <tr>
+              <td
+                colSpan={schoolFields.length + 3}
+                className="p-4 text-center text-red-600"
+              >
+                {error}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-      {loading && <p className="mt-4 text-center">Loading...</p>}
-      {error && <p className="mt-4 text-center text-red-600">{error}</p>}
     </div>
   );
 };
