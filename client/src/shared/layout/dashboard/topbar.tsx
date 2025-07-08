@@ -1,15 +1,32 @@
 // src/shared/layout/dashboard/topbar.tsx
-import type { FC } from "react";
+
+import NotificationButton from "./top-bar/notification";
+import Profile from "./top-bar/profile";
 
 interface TopbarProps {
   title?: string;
 }
 
-const Topbar: FC<TopbarProps> = ({ title }) => {
+const Topbar: React.FC<TopbarProps> = ({ title }) => {
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-white shadow">
-      <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
-      {/* Additional topbar content (user menu, notifications, etc.) */}
+    <header className="bg-white flex items-center justify-between px-6 py-3 shadow">
+      <div>
+        <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
+        <h2 className="text-gray-500">{getGreeting()}</h2>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <NotificationButton />
+        <Profile />
+      </div>
     </header>
   );
 };
