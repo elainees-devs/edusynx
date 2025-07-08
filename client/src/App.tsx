@@ -18,7 +18,6 @@ import {
 } from "./pages/dashboard/";
 import { GlobalStateProvider } from "./context/useGlobalState";
 
-
 function App() {
   return (
     <GlobalStateProvider>
@@ -26,7 +25,7 @@ function App() {
         <Routes>
           {/* Pages */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/signin" element={<SignIn />} />
+          <Route path="/:slug/signin" element={<SignIn />} />
           <Route path="/:slug/signup" element={<SignUp />} />
           <Route path="/register" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
