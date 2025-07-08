@@ -7,9 +7,22 @@ const steps = ['Personal Info', 'Contact Info', 'Account Info', 'Role Specific']
 
 const SignUpStepper = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const next = () => setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
-  const back = () => setCurrentStep((s) => Math.max(s - 1, 0));
+   const next = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
+      setLoading(false);
+    }, 800); // simulate async delay
+  };
+  const back = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setCurrentStep((s) => Math.max(s - 1, 0));
+      setLoading(false);
+    }, 800); // simulate async delay
+  };
 
   const StepComponent = [
     <PersonalInfoStep key="step1" next={next} />, 
@@ -23,9 +36,16 @@ const SignUpStepper = () => {
      <p className='pb-4'>To access your account, please finish setting up your profile by completing the signup process.</p>
 
       <h2 className="mb-4 text-xl font-bold">{steps[currentStep]}</h2>
-      {StepComponent}
+     
+      {loading ? (
+        <div className="flex flex-col items-center py-8">
+          <div className="loader mb-2"></div>
+          <p>Loading...</p>
+        </div>
+      ) : (
+        StepComponent
+      )}
     </div>
   );
 };
-
 export default SignUpStepper;
