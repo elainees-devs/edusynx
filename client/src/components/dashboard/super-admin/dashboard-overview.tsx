@@ -5,11 +5,22 @@ import {
   LineChart, Line, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer
 } from "recharts";
 import { activeUsersByRole, apiUsageData, COLORS, kpiData, recentErrors, schoolsGrowthData, uptimeData } from "../../../constants/super-admin";
+import { FaClock, FaExclamationTriangle, FaRocket, FaSchool, FaUsers } from "react-icons/fa";
 
 
 
-const KpiCard = ({ label, value }: { label: string; value: string | number }) => (
+const KpiCard = ({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: string | number;
+  icon: React.ReactNode;
+}) => (
+
   <div className="bg-white rounded-2xl shadow p-4 w-full">
+      <div className="text-blue-600 text-2xl">{icon}</div>
     <p className="text-sm text-gray-500">{label}</p>
     <h2 className="text-xl font-bold">{value}</h2>
   </div>
@@ -18,17 +29,19 @@ const KpiCard = ({ label, value }: { label: string; value: string | number }) =>
 const SuperAdminDashboardOverView: React.FC = () => {
   return (
     <div className="ml-48 p-6 space-y-6">
-      {/* Top KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <KpiCard label="Total Schools" value={kpiData.totalSchools} />
-        <KpiCard
-          label="Active Users"
-          value={`Admins: ${kpiData.activeUsers.admins}, Teachers: ${kpiData.activeUsers.teachers}, Students: ${kpiData.activeUsers.students}`}
-        />
-        <KpiCard label="System Uptime" value={`${kpiData.systemUptime}%`} />
-        <KpiCard label="Errors Today" value={kpiData.errorsToday} />
-        <KpiCard label="Avg API Time" value={`${kpiData.avgApiResponseTime}ms`} />
-      </div>
+      {/* Row: KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <KpiCard label="Total Schools" value={kpiData.totalSchools} icon={<FaSchool />} />
+          <KpiCard
+            label="Active Users"
+            value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.students}`}
+            icon={<FaUsers />}
+          />
+          <KpiCard label="System Uptime" value={`${kpiData.systemUptime}%`} icon={<FaClock />} />
+          <KpiCard label="Errors Today" value={kpiData.errorsToday} icon={<FaExclamationTriangle />} />
+          <KpiCard label="Avg API Time" value={`${kpiData.avgApiResponseTime}ms`} icon={<FaRocket />} />
+        </div>
+
 
       {/* Middle Charts Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
