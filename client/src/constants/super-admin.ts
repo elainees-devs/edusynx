@@ -19,9 +19,11 @@ export const schoolsGrowthData = [
 ];
 
 export const activeUsersByRole = [
-  { role: "Admins", count: 12 },
+  { role: "Admins", count: 24 },
+   { role: "Head Teachers", count: 30 },
+    { role: "Parents", count: 180 },
   { role: "Teachers", count: 130 },
-  { role: "Students", count: 2100 },
+  { role: "Accountants", count: 20 },
 ];
 
 export const uptimeData = [
