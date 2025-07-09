@@ -16,7 +16,7 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
 
   return (
-    <aside className="w-64 h-screen bg-gray-800 text-white shadow-lg fixed">
+    <aside className="w-48 h-screen bg-gray-800 text-white shadow-lg fixed">
       <div className="text-2xl font-bold px-6 py-5 border-b border-gray-700">
         EduSynx Admin
       </div>
