@@ -7,6 +7,7 @@ import {
   SignIn,
   SchoolRegistrationPage,
   SignUp,
+  Schools,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -48,6 +49,10 @@ function App() {
           <Route
             path="/dashboard/super-admin"
             element={<SuperAdminDashboard />}
+          />
+            <Route
+            path="/dashboard/schools"
+            element={<Schools />}
           />
         </Routes>
       </Router>
