@@ -1,3 +1,4 @@
+// client/constants/super-admin.ts
 export const COLORS = ["#4f46e5", "#16a34a", "#dc2626"];
 
 export const kpiData = {
