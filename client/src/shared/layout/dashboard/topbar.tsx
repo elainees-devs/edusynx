@@ -18,7 +18,7 @@ const Topbar: React.FC<TopbarProps> = ({ title }) => {
 
   return (
     <header className="bg-white flex items-center justify-between px-6 py-3 shadow">
-      <div>
+      <div className="ml-48">
         <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
         <h2 className="text-gray-500">{getGreeting()}</h2>
       </div>
