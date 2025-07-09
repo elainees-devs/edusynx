@@ -1,8 +1,17 @@
 // client/src/api/school-api.ts
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import type { ISchool } from '../types';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+
+export interface PaginatedSchoolResponse {
+  page: number;
+  limit: number;
+  totalPages: number;
+  totalSchools: number;
+  schools: ISchool[];
+}
+
 
 export const registerSchool = async (data: ISchool) => {
   try {
@@ -26,20 +35,18 @@ export const registerSchool = async (data: ISchool) => {
   }
 };
 
-export const fetchSchools = async (): Promise<ISchool[]> => {
-  try {
-    const response = await axios.get(`${API_BASE}/school`);
-    return response.data; 
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error fetching schools:", error.response?.data);
-      throw error.response?.data || { message: 'A network error occurred' };
-    }
+export const fetchSchools = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedSchoolResponse> => {
+  const response = await axios.get(`${API_BASE}/school`, {
+    params: { page, limit },
+  });
 
-    console.error("Unknown error fetching schools:", error);
-    throw { message: 'An unknown error occurred' };
-  }
+  console.log("✅ Fetched Schools Response:", response.data);
+  return response.data; 
 };
+
 
 export const updateSchool = async (id: string, updatedData: Partial<ISchool>): Promise<ISchool> => {
   try {
