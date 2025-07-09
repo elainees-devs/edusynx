@@ -34,7 +34,7 @@ const SuperAdminDashboardOverView: React.FC = () => {
           <KpiCard label="Total Schools" value={kpiData.totalSchools} icon={<FaSchool />} />
           <KpiCard
             label="Active Users"
-            value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.students}`}
+            value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.accountants}, HT:${kpiData.activeUsers.headTeachers}, P:${kpiData.activeUsers.parents} `}
             icon={<FaUsers />}
           />
           <KpiCard label="System Uptime" value={`${kpiData.systemUptime}%`} icon={<FaClock />} />
