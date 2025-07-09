@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { SchoolRepository } from "../repositories/school.repository";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
+import { Request } from "express";
 
 export class SchoolController {
   private schoolRepo: SchoolRepository;
@@ -86,4 +87,25 @@ export class SchoolController {
     if (!school) throw new AppError("School not found or inactive", 404);
     res.json(school);
   });
+
+getPaginatedSchools = handleAsync(async (req: Request, res) => {
+  const page = parseInt(req.query.page as string || "1", 10);
+  const limit = parseInt(req.query.limit as string || "10", 10);
+  const skip = (page - 1) * limit;
+
+  const [schools, total] = await Promise.all([
+    this.schoolRepo.findMany({ skip, limit }),
+    this.schoolRepo.countAll(),
+  ]);
+
+res.status(200).json({
+  page,
+  limit,
+  totalPages: Math.ceil(total / limit),
+  totalSchools: total,
+  schools, // <- this must be an array
+});
+
+});
+
 }
