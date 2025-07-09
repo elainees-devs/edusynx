@@ -46,7 +46,8 @@ const renderCell = (
             value ? "text-green-600 font-medium" : "text-gray-600 font-medium"
           }
         >
-          {value ? "Active" : "Inactive"}
+          {value === "true" ? "Active" : "Inactive"}
+
         </span>
       );
     }
@@ -81,6 +82,11 @@ const SchoolTable: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sendingId, setSendingId] = useState<string | null>(null);
+const [page, setPage] = useState(1);
+const [limit] = useState(10);
+const [totalPages, setTotalPages] = useState(1);
+
+
 
   const {
     editingSchoolId,
@@ -92,12 +98,24 @@ const SchoolTable: React.FC = () => {
     handleDelete,
   } = useSchoolEditHandlers(setSchools);
 
-  useEffect(() => {
-    fetchSchools()
-      .then(setSchools)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+useEffect(() => {
+  setLoading(true);
+  fetchSchools(page, limit)
+    .then((data) => {
+      setSchools(data.schools);
+      setTotalPages(data.totalPages);
+    })
+    .catch((err) => {
+      console.error(err);
+      setError(err.message || "Error fetching schools");
+    })
+    .finally(() => setLoading(false));
+}, [page, limit]);
+
+
+
+
+
 
   return (
     <div className="p-4">
@@ -118,120 +136,154 @@ const SchoolTable: React.FC = () => {
             <th className="p-2 border">Link</th>
           </tr>
         </thead>
-        <tbody>
-          {schools.map((s, i) => {
-            const isEditing = editingSchoolId === s._id;
-            return (
-              <tr key={s._id} className="border-t">
-                <td className="p-2 text-center border">{i + 1}</td>
-                {schoolFields.map((f) => (
-                  <td
-                    key={f.key}
-                    className={`p-2 border ${
-                      ["email", "website"].includes(f.key)
-                        ? "break-all"
-                        : "text-center"
-                    }`}
-                  >
-                    {renderCell(
-                      f,
-                      normalizeValue(s[f.key as keyof ISchool]),
-                      normalizeValue(editForm[f.key as keyof ISchool]),
-                      isEditing,
-                      handleChange
-                    )}
-                  </td>
-                ))}
-                <td className="p-2 text-center border">
-                  <img src={s.logoUrl} alt={s.name} className="h-8 mx-auto" />
-                </td>
-                <td className="p-2 text-center border">
-                  {isEditing ? (
-                    <>
-                      <button
-                        onClick={() => handleSave(s._id!)}
-                        className="text-green-600 hover:underline mr-2"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="text-gray-600 hover:underline"
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        title="Edit"
-                        onClick={() => handleEdit(s)}
-                        className="text-blue-500 hover:text-blue-700 mr-2"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        title="Delete"
-                        onClick={() => handleDelete(s._id!)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <FaTrash />
-                      </button>
-                    </>
-                  )}
-                </td>
-                <td className="p-2 text-center border">
-                  <button
-                    disabled={sendingId === s._id}
-                    onClick={async () => {
-                      if (!s.accessUrl)
-                        return alert("Access URL is missing for this school.");
-                      try {
-                        setSendingId(s._id!);
-                        logger.info(`Sending access link to ${s.email}`);
-                        const msg = await sendAccessLink(s.email, s.accessUrl);
-                        alert(msg);
-                      } catch (error) {
-                        logger.error(
-                          `Failed to send access link to ${s.email}`,
-                          error
-                        );
-                        alert("Failed to send access link.");
-                      } finally {
-                        setSendingId(null);
-                      }
-                    }}
-                    className={`px-2 py-1 text-sm text-white rounded ${
-                      sendingId === s._id
-                        ? "bg-gray-500"
-                        : "bg-blue-600 hover:bg-blue-700"
-                    }`}
-                  >
-                    {sendingId === s._id ? "Sending..." : "Send Link"}
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-          {loading && (
-            <tr>
-              <td colSpan={schoolFields.length + 3} className="p-4 text-center">
-                Loading schools...
-              </td>
-            </tr>
-          )}
-          {error && (
-            <tr>
-              <td
-                colSpan={schoolFields.length + 3}
-                className="p-4 text-center text-red-600"
-              >
-                {error}
-              </td>
-            </tr>
-          )}
-        </tbody>
+      <tbody>
+  {loading ? (
+    <tr>
+      <td colSpan={schoolFields.length + 3} className="p-4 text-center">
+        Loading schools...
+      </td>
+    </tr>
+  ) : error ? (
+    <tr>
+      <td
+        colSpan={schoolFields.length + 3}
+        className="p-4 text-center text-red-600"
+      >
+        {error}
+      </td>
+    </tr>
+  ) : schools.length === 0 ? (
+    <tr>
+      <td
+        colSpan={schoolFields.length + 3}
+        className="p-4 text-center text-gray-600"
+      >
+        No schools found.
+      </td>
+    </tr>
+  ) : (
+    schools.map((s, i) => {
+      const isEditing = editingSchoolId === s._id;
+      return (
+        <tr key={s._id} className="border-t">
+          <td className="p-2 text-center border">{(page - 1) * limit + i + 1}</td>
+
+          {schoolFields.map((f) => (
+            <td
+              key={f.key}
+              className={`p-2 border ${
+                ["email", "website"].includes(f.key)
+                  ? "break-all"
+                  : "text-center"
+              }`}
+            >
+              {renderCell(
+                f,
+                normalizeValue(s[f.key as keyof ISchool]),
+                normalizeValue(editForm[f.key as keyof ISchool]),
+                isEditing,
+                handleChange
+              )}
+            </td>
+          ))}
+          <td className="p-2 text-center border">
+            <img src={s.logoUrl} alt={s.name} className="h-8 mx-auto" />
+          </td>
+          <td className="p-2 text-center border">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={() => handleSave(s._id!)}
+                  className="text-green-600 hover:underline mr-2"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="text-gray-600 hover:underline"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  title="Edit"
+                  onClick={() => handleEdit(s)}
+                  className="text-blue-500 hover:text-blue-700 mr-2"
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  title="Delete"
+                  onClick={() => handleDelete(s._id!)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <FaTrash />
+                </button>
+              </>
+            )}
+          </td>
+          <td className="p-2 text-center border">
+            <button
+              disabled={sendingId === s._id}
+              onClick={async () => {
+                if (!s.accessUrl)
+                  return alert("Access URL is missing for this school.");
+                try {
+                  setSendingId(s._id!);
+                  logger.info(`Sending access link to ${s.email}`);
+                  const msg = await sendAccessLink(s.email, s.accessUrl);
+                  alert(msg);
+                } catch (error) {
+                  logger.error(
+                    `Failed to send access link to ${s.email}`,
+                    error
+                  );
+                  alert("Failed to send access link.");
+                } finally {
+                  setSendingId(null);
+                }
+              }}
+              className={`px-2 py-1 text-sm text-white rounded ${
+                sendingId === s._id
+                  ? "bg-gray-500"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {sendingId === s._id ? "Sending..." : "Send Link"}
+            </button>
+          </td>
+        </tr>
+      );
+    })
+  )}
+</tbody>
+
+
       </table>
+      <div className="flex justify-center items-center mt-4 space-x-4">
+  <button
+    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+    disabled={page === 1}
+    className="px-4 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+  >
+    Previous
+  </button>
+
+  <span className="text-sm font-medium">
+    Page {page} of {totalPages}
+  </span>
+
+  <button
+    onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+    disabled={page === totalPages}
+    className="px-4 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
+
     </div>
   );
 };
