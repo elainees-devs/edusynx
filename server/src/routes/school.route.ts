@@ -52,6 +52,8 @@ schoolRouter.post(
  *       200:
  *         description: List of all schools
  */
+
+schoolRouter.get("/", schoolController.getPaginatedSchools);
 schoolRouter.get("/", schoolController.getAllSchools);
 
 /**
