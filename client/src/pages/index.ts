@@ -5,3 +5,4 @@ export { default as SignIn} from './signin';
 export { default as SignUp } from './signup';
 export { default as SchoolRegistrationPage} from './school-register';
 export { default as ResetPassword } from './reset-password';
+export { default as Schools } from  './dashboard/schools';
