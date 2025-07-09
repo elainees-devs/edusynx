@@ -1,3 +1,4 @@
+import SuperAdminDashboardOverView from "../../components/dashboard/super-admin/dashboard-overview"
 import Sidebar from "../../shared/layout/dashboard/sidebar"
 import Topbar from "../../shared/layout/dashboard/topbar"
 
@@ -6,6 +7,7 @@ const SuperAdminDashboard: React.FC = () =>{
         <div>
             <Topbar />
             <Sidebar />
+            <SuperAdminDashboardOverView />
            
         </div>
     )
