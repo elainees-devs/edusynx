@@ -1,4 +1,4 @@
-// File: src/components/dashboard/SuperAdminDashboard.tsx
+// client/src/components/dashboard/SuperAdminDashboard.tsx
 
 import React from "react";
 import {
