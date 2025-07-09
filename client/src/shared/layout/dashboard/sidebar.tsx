@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
   return (
  <aside className="fixed top-0 left-0 h-screen w-48 bg-white text-gray-900 shadow-lg overflow-y-auto z-50">
 
-      <div className="text-2xl font-bold px-6 py-5 border-b border-gray-700">
+      <div className="text-xl font-bold px-6 py-5 border-b border-gray-700">
         EduSynx Admin
       </div>
       <nav className="mt-6">
