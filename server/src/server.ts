@@ -29,6 +29,7 @@ import {
 } from "./routes";
 import { SchoolController } from "./controllers";
 import seedUsers from "./seeds/seedUsers";
+import { seedSchools } from "./seeds/seedSchools";
 
 configDotenv();
 
@@ -92,7 +93,10 @@ app.use((req: Request, res: Response) => {
 (async () => {
   try {
     if (process.env.SEED_USERS === "true") {
+      console.log("SEED_USERS =", process.env.SEED_USERS);
+
       await seedUsers();
+      await seedSchools(); 
     }
 
     app.listen(PORT, () => {
