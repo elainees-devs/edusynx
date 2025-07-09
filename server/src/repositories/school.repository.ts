@@ -55,4 +55,13 @@ export class SchoolRepository {
     const school = await School.findById(id).select("slug").exec();
     return school?.slug || null;
   }
+
+  async findMany({ skip = 0, limit = 10 }) {
+  return School.find().skip(skip).limit(limit);
+}
+
+async countAll() {
+  return School.countDocuments();
+}
+
 }
