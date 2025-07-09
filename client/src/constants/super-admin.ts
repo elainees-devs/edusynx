@@ -3,7 +3,7 @@ export const COLORS = ["#4f46e5", "#16a34a", "#dc2626"];
 
 export const kpiData = {
   totalSchools: 154,
-  activeUsers: { admins: 12, teachers: 130, students: 2100 },
+  activeUsers: { admins: 12, teachers: 130, accountants: 30, parents: 180, headTeachers: 30 },
   systemUptime: 99.98,
   errorsToday: 7,
   avgApiResponseTime: 240,
@@ -20,8 +20,8 @@ export const schoolsGrowthData = [
 
 export const activeUsersByRole = [
   { role: "Admins", count: 24 },
-   { role: "Head Teachers", count: 30 },
-    { role: "Parents", count: 180 },
+  { role: "Head Teachers", count: 30 },
+  { role: "Parents", count: 180 },
   { role: "Teachers", count: 130 },
   { role: "Accountants", count: 20 },
 ];
