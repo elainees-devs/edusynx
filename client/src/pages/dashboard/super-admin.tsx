@@ -4,7 +4,7 @@ import Topbar from "../../shared/layout/dashboard/topbar"
 
 const SuperAdminDashboard: React.FC = () =>{
     return(
-        <div>
+        <div className="bg-gray">
             <Topbar />
             <Sidebar />
             <SuperAdminDashboardOverView />
