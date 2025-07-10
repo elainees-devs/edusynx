@@ -32,18 +32,18 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Dashboards */}
-          <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+          <Route path="/:slug/dashboard/teacher" element={<TeacherDashboard />} />
           <Route
-            path="/dashboard/headteacher"
+            path="/:slug/dashboard/headteacher"
             element={<HeadTeacherDashboard />}
           />
-          <Route path="/dashboard/guardian" element={<GuardianDashboard />} />
+          <Route path="/:slug/dashboard/guardian" element={<GuardianDashboard />} />
           <Route
-            path="/dashboard/accountant"
+            path="/:slug/dashboard/accountant"
             element={<AccountantDashboard />}
           />
           <Route
-            path="/dashboard/school-admin"
+            path="/:slug/dashboard/school-admin"
             element={<SchoolAdminDashboard />}
           />
           <Route
