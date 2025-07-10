@@ -1,7 +1,14 @@
 // client/src/pages/dashboard/headteacher.tsx
+import Sidebar from "../../shared/layout/dashboard/sidebar"
+import Topbar from "../../shared/layout/dashboard/topbar"
+
+
 const HeadTeacherDashboard: React.FC = () =>{
     return(
-        <div><h1>HeadeTeacher Dashboard</h1></div>
+        <div className="bg-gray">
+            <Topbar role="Head Teacher" />
+            <Sidebar />
+            </div>
     )
 }
 export default HeadTeacherDashboard
