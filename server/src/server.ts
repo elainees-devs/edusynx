@@ -28,8 +28,8 @@ import {
   emailRouter
 } from "./routes";
 import { SchoolController } from "./controllers";
-import seedUsers from "./seeds/seedUsers";
-import { seedSchools } from "./seeds/seedSchools";
+import adminRouter from "./routes/super-admin.route";
+
 
 configDotenv();
 
@@ -77,6 +77,8 @@ apiRouter.use("/session", sessionRouter);
 apiRouter.use("/event", eventRouter);
 apiRouter.use("/email", emailRouter);
 apiRouter.use("/auth", loginRouter);
+apiRouter.use("/super-admin", adminRouter)
+
 
 app.use("/api/v1", apiRouter);
 // Health check route
@@ -89,21 +91,7 @@ app.use((req: Request, res: Response) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// ✅ Start server and run optional seed
-(async () => {
-  try {
-    if (process.env.SEED_USERS === "true") {
-      console.log("SEED_USERS =", process.env.SEED_USERS);
-
-      await seedUsers();
-      await seedSchools(); 
-    }
-
     app.listen(PORT, () => {
       logger.info(`Server is running on port ${PORT}`);
     });
-  } catch (error) {
-    logger.error("Error starting server:", error);
-    process.exit(1);
-  }
-})();
+
