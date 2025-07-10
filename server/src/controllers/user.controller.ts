@@ -13,13 +13,10 @@ export class UserController {
     this.userRepo = new UserRepository();
   }
 
- createUser = handleAsync<{}, any, any>(
-  async (req, res) => {
+  createUser = handleAsync<{}, any, any>(async (req, res) => {
     const role = req.body.role as UserRole;
-
     const { school, ...rest } = req.body;
 
-    // validate the role
     if (!Object.values(UserRole).includes(role)) {
       throw new AppError("Invalid role provided", 400);
     }
@@ -27,15 +24,14 @@ export class UserController {
     const newUser = await this.userRepo.createUser({
       ...rest,
       role,
-      school: typeof school === "string"
-        ? new mongoose.Types.ObjectId(school)
-        : school,
+      school:
+        typeof school === "string"
+          ? new mongoose.Types.ObjectId(school)
+          : school,
     });
 
     res.status(201).json(newUser);
-  }
-);
-
+  });
 
   getAllUsers = handleAsync(async (_req, res) => {
     const users = await this.userRepo.findAllUsers();
