@@ -1,4 +1,4 @@
-//src/types/enum/enum.ts
+// server/src/types/enum/enum.ts
 export enum LoginFailureReason {
   INVALID_CREDENTIALS = "Invalid credentials",
   USER_NOT_FOUND = "User not found",
@@ -12,6 +12,7 @@ export enum UserRole {
   SCHOOL_ADMIN = "school-admin",
   GUARDIAN = "guardian",
   ACCOUNTANT = "accountant",
+  SUPER_ADMIN = "super-admin",
 }
 
 export enum StudentGender {
