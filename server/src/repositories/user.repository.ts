@@ -1,4 +1,4 @@
-// src/repositories/user.repository
+// server/src/repositories/user.repository
 import { Types } from "mongoose";
 import { CreateUserDTO } from "../dto/entity.dto";
 import { UserModel } from "../models";
@@ -6,7 +6,6 @@ import { IBaseUser } from "../types/people/user.types";
 import bcrypt from "bcrypt";
 import { ISchool } from "../types";
 import { AppError } from "../utils/AppError";
-
 
 export class UserRepository {
   async createUser(userData: CreateUserDTO): Promise<IBaseUser> {
@@ -27,7 +26,10 @@ export class UserRepository {
       const user = new UserModel(processedData);
       return await user.save();
     } catch (error) {
-      throw new AppError(`Failed to create user: ${(error as Error).message}`, 500);
+      throw new AppError(
+        `Failed to create user: ${(error as Error).message}`,
+        500
+      );
     }
   }
 
@@ -40,9 +42,13 @@ export class UserRepository {
         updates.school = this.normalizeSchoolId(updates.school);
       }
 
-      return await UserModel.findByIdAndUpdate(new Types.ObjectId(id), updates, {
-        new: true,
-      })
+      return await UserModel.findByIdAndUpdate(
+        new Types.ObjectId(id),
+        updates,
+        {
+          new: true,
+        }
+      )
         .populate("school", "firstName")
         .exec();
     } catch (error) {
@@ -70,7 +76,10 @@ export class UserRepository {
     try {
       return await UserModel.find().populate("school", "firstName").exec();
     } catch (error) {
-      throw new AppError(`Failed to find all users: ${(error as Error).message}`, 500);
+      throw new AppError(
+        `Failed to find all users: ${(error as Error).message}`,
+        500
+      );
     }
   }
 
@@ -89,7 +98,10 @@ export class UserRepository {
     try {
       await UserModel.deleteMany({}).exec();
     } catch (error) {
-      throw new AppError(`Failed to delete all users: ${(error as Error).message}`, 500);
+      throw new AppError(
+        `Failed to delete all users: ${(error as Error).message}`,
+        500
+      );
     }
   }
 
