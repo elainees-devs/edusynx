@@ -1,5 +1,5 @@
 // src/types/people/user.types.ts
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 import { IClass, ISchool } from "../school/school-core.types";
 import { UserRole } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
@@ -37,4 +37,11 @@ export interface ITeacher extends IBaseUser {
 export interface IGuardian extends IBaseUser {
   role: UserRole.GUARDIAN;
   familyNumber: number;
+}
+// SuperAdmin interface with literal role
+export interface ISuperAdmin extends Document {
+  _id: Types.ObjectId; // or `string` if you're stringifying it later
+  email: string;
+  password: string;
+  role: UserRole.SUPER_ADMIN;
 }
