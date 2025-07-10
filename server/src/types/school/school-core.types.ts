@@ -1,6 +1,6 @@
 // server/src/types/school/school-core.types.ts
 
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
 import { IBaseUser } from "../people/user.types";
 
