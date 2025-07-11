@@ -8,6 +8,7 @@ import {
   SchoolRegistrationPage,
   SignUp,
   Schools,
+  SuperAdminSignUp,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/:slug/signin" element={<SignIn />} />
           <Route path="/:slug/signup" element={<SignUp />} />
+          <Route path="/super-admin" element={<SuperAdminSignUp />} />
           <Route path="/register" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
