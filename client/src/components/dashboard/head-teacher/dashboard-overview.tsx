@@ -2,24 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { FaMoneyBillWave, FaExclamationTriangle, FaUserCheck } from "react-icons/fa";
 import { MdNotificationsActive } from "react-icons/md";
-
-interface FinancialSummary {
-  totalIncome: number;
-  totalExpenses: number;
-  netBalance: number;
-}
-
-interface FeeAlert {
-  studentName: string;
-  className: string;
-  overdueAmount: number;
-}
-
-interface AttendanceAlert {
-  studentName: string;
-  className: string;
-  attendanceRate: number;
-}
+import type { AttendanceAlert, FeeAlert, FinancialSummary } from "../../../constants/data/head-teacher-dashboard";
 
 const PrincipalDashboard: React.FC = () => {
   const [finance, setFinance] = useState<FinancialSummary>({
