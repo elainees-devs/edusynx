@@ -1,12 +1,12 @@
 // client/src/utils/logger.ts
 export const logger = {
-  info: (message: string, ...optionalParams: any[]) => {
+  info: (message: string, ...optionalParams: unknown[]) => {
     console.info(`[INFO] ${message}`, ...optionalParams);
   },
-  warn: (message: string, ...optionalParams: any[]) => {
+  warn: (message: string, ...optionalParams: unknown[]) => {
     console.warn(`[WARN] ${message}`, ...optionalParams);
   },
-  error: (message: string, ...optionalParams: any[]) => {
+  error: (message: string, ...optionalParams: unknown[]) => {
     console.error(`[ERROR] ${message}`, ...optionalParams);
   },
 };
