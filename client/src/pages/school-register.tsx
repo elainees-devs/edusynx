@@ -43,20 +43,25 @@ const SchoolRegistrationPage: React.FC = () => {
   };
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
 
-    try {
-      await registerSchool(formData);
-      setMessage("✅ School registered successfully!");
-      setFormData(defaultSchoolData);
-    } catch (err: any) {
-      setMessage(`❌ ${err.message || "Registration failed"}`);
-    } finally {
-      setLoading(false);
+  try {
+    await registerSchool(formData);
+    setMessage("✅ School registered successfully!");
+    setFormData(defaultSchoolData);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      setMessage(`❌ ${err.message}`);
+    } else {
+      setMessage("❌ Registration failed");
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gray-50">
       <form
