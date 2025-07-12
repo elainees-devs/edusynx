@@ -1,5 +1,4 @@
 // src/shared/layout/dashboard/sidebar.tsx
-
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -20,7 +19,7 @@ const Sidebar: React.FC = () => {
   // Role-based nav item map
   const navMap: Record<string, typeof superAdminNavItems> = {
     "super-admin": superAdminNavItems,
-    headteacher: headTeacherNavItems,
+    "headteacher": headTeacherNavItems,
     // "school-admin": schoolAdminNavItems,
     // "teacher": teacherNavItems,
     // "accountant": accountantNavItems,
