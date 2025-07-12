@@ -1,31 +1,32 @@
-name: Generate Snake Animation
+name: CI/CD
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # every day at midnight UTC
-  workflow_dispatch:
-
-permissions:
-  contents: write  
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  generate:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout (full history)
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Generate Snake SVG
-        uses: Platane/snk@v3
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          github_user_name: elainees-devs
-          outputs: |
-            output/github-contribution-grid-snake.svg
-            output/github-contribution-grid-snake-dark.svg?palette=github-dark
+          node-version: 18
 
-      - name: Commit & Push changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          token: ${{ secrets.GH_TOKEN }}  # Add this line if using a fork
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🧹 Run lint
+        run: npm run lint
+
+      - name: 🧪 Run tests
+        run: npm test
+
+      - name: 🏗️ Build project
+        run: npm run build
