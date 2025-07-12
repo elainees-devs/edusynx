@@ -1,5 +1,4 @@
 // server/src/routes/super-admin.route.ts
-
 import { Router } from "express";
 import { SuperAdminController } from "../controllers/super-admin.controller";
 
@@ -10,6 +9,6 @@ const superAdminController = new SuperAdminController();
 adminRouter.post("/login", superAdminController.login);
 
 
-adminRouter.post("/create", superAdminController.createSuperAdmin);
+adminRouter.post("/signup", superAdminController.createSuperAdmin);
 
 export default adminRouter;
