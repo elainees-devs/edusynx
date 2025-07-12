@@ -1,5 +1,4 @@
 // client/src/types/people/user.types.ts
-
 import type { UserRole } from "../../constants";
 import type { BaseDocument } from "../common/base.types";
 import type { IClass, ISchool } from "../school/school-core.types";
@@ -47,4 +46,11 @@ export interface ITeacher extends IBaseUser {
 export interface IGuardian extends IBaseUser {
   role: typeof UserRole.GUARDIAN;
   familyNumber: number;
+}
+
+// SuperAdmin interface with literal role
+export interface ISuperAdmin {
+  email: string;
+  password: string;
+  role: typeof UserRole.SUPER_ADMIN;
 }
