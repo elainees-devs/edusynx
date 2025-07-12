@@ -1,61 +1,58 @@
 // client/src/pages/signup/super-admin-signup.tsx
 import React, { useState } from "react";
-import SuperAdminSignUpForm from "../../components/forms/super-admin-signup-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import Swal from "sweetalert2";
+import type { ISuperAdmin } from "../../types/people/user.types";
+import SuperAdminFormFields from "../../components/forms/super-admin-signup-form";
 
 
-interface SuperAdminFormData {
-  email: string;
-  password: string;
-  role: string;
-}
+const SuperAdminSignUpForm: React.FC = () => {
+  const [showPassword, setShowPassword] = useState(false);
 
-const SuperAdminSignUp: React.FC = () => {
-  const [formData, setFormData] = useState<SuperAdminFormData>({
-    email: "",
-    password: "",
-    role: "super-admin",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISuperAdmin>();
 
-  const [errors, setErrors] = useState<Partial<SuperAdminFormData>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const onSubmit: SubmitHandler<ISuperAdmin> = async (data) => {
+  try {
+    console.log(data);
+    await Swal.fire({
+      icon: "success",
+      title: "Success!",
+      text: "Super admin registered successfully!",
+    });
+  } catch (error) {
+    console.error("Submission error:", error); 
+    await Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong!",
+    });
+  }
+};
 
-  const validate = (): boolean => {
-    const newErrors: Partial<SuperAdminFormData> = {};
-    if (!formData.email.includes("@")) newErrors.email = "Invalid email";
-    if (formData.password.length < 6) newErrors.password = "Min 6 characters";
-    if (!formData.role) newErrors.role = "Role is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    console.log("Submitted:", formData);
-    setSubmitted(true);
-
-    // TODO: Send to backend
-  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Super Admin Registration</h2>
-      <SuperAdminSignUpForm
-        formData={formData}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <SuperAdminFormFields
+        register={register}
         errors={errors}
-        handleChange={handleChange}
+        showPassword={showPassword}
+        toggleShowPassword={toggleShowPassword}
       />
-      <button type="submit">Register</button>
-      {submitted && <p style={{ color: "green" }}>Registration submitted!</p>}
+
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Sign Up
+      </button>
     </form>
   );
 };
 
-export default SuperAdminSignUp;
+export default SuperAdminSignUpForm;
