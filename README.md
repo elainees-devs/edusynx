@@ -174,19 +174,6 @@ Edusynx is designed to centralize school administration—particularly fee track
   - Phase 1: Payments & Attendance
   - Phase 2: Analytics & Parent Portal
 
----
-
-## 👥 Contributors
-
-- Project Lead: Elaine Muhombe  
-- Dev Team: MERN Developers  
-- UX Design: Figma-based Wireframes
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
 
 ---
 
