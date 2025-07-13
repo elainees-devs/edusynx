@@ -18,11 +18,13 @@ import {
   SuperAdminDashboard,
   TeacherDashboard,
 } from "./pages/dashboard/";
-import { GlobalStateProvider } from "./context/useGlobalState";
+import GlobalStateProvider from "./context/global/useGlobalState";
+
 
 function App() {
   return (
-    <GlobalStateProvider>
+   
+<GlobalStateProvider>
       <Router>
         <Routes>
           {/* Pages */}
