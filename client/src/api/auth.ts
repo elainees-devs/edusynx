@@ -45,3 +45,26 @@ export const loginUser = async (
     throw new Error("A network error occurred");
   }
 };
+
+// forgot password functionality
+export const sendPasswordResetEmail = async (email: string): Promise<void> => {
+  try {
+    await axios.post(`${API_BASE}/auth/forgot-password`, { email }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    logger.info(`Password reset email sent to: ${email}`);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      logger.error(`Failed to send password reset email to: ${email}`, error);
+      throw (
+        error.response?.data || { message: "Failed to send password reset email." }
+      );
+    }
+
+    throw new Error("A network error occurred while sending the password reset email.");
+  }
+}
+   
