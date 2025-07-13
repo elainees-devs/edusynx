@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { LoginForm } from "../components";
 import useUserAuth from "../hooks/useUserAuth";
-import { useGlobalState } from "../context/useGlobalState";
+
 import { UserRole } from "../constants";
 import Swal from "sweetalert2";
 import { loginUser } from "../api/auth";
+import { useGlobalState } from "../hooks/useGlobalContext";
 
 const SignIn: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
