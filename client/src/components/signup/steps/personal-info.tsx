@@ -1,5 +1,5 @@
 // client/src/components/signup/steps/personal-info.tsx
-import { useSignUpContext } from '../../../hooks/useSignUpContext';
+import { useSignUpContext } from "../../../context/signup/useSignUpContext";
 
 const PersonalInfoStep = ({ next }: { next: () => void }) => {
   const { formData, updateForm } = useSignUpContext();

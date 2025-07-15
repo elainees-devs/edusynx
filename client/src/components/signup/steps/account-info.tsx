@@ -1,5 +1,7 @@
 // client/src/components/signup/steps/account-info.tsx
-import { useSignUpContext } from '../../../hooks/useSignUpContext';
+
+import { useSignUpContext } from "../../../context/signup/useSignUpContext";
+
 
 const AccountInfoStep = ({ next, back }: { next: () => void; back: () => void }) => {
   const { formData, updateForm } = useSignUpContext();

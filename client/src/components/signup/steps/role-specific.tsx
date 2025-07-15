@@ -1,4 +1,4 @@
-import { useSignUpContext } from '../../../hooks/useSignUpContext';
+import { useSignUpContext } from "../../../context/signup/useSignUpContext";
 
 type SignUpRole = 'teacher' | 'headteacher' | 'school-admin' | 'accountant';
 
