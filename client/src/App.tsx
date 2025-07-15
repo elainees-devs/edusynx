@@ -3,12 +3,13 @@ import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   HomePage,
-  ResetPassword,
+
   SignIn,
   SchoolRegistrationPage,
   SignUp,
   Schools,
   SuperAdminSignUp,
+  ResetPassword,
 } from "./pages";
 import {
   AccountantDashboard,
