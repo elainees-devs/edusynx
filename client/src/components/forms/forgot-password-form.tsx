@@ -71,7 +71,7 @@ const ForgotPasswordForm: React.FC = () => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition disabled:opacity-50"
+        className="w-full bg-[#1AA260] text-white py-2 rounded-xl hover:bg-blue-700 transition disabled:opacity-50"
       >
         {isSubmitting ? "Sending..." : "Send Reset Link"}
       </button>
