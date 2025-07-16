@@ -1,6 +1,5 @@
 // client/src/components/forms/login-form.tsx
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../login-button";
 import { MdEmail } from "react-icons/md";
@@ -9,8 +8,10 @@ import { RiLockPasswordLine } from "react-icons/ri";
 export interface LoginFormProps {
   email: string;
   password: string;
+  rememberMe: boolean;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setRememberMe: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (event: React.FormEvent) => Promise<void>;
   onResetPassword: () => void;
   slug: string;
@@ -19,8 +20,10 @@ export interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({
   email,
   password,
+  rememberMe,
   setEmail,
   setPassword,
+  setRememberMe,
   onSubmit,
   onResetPassword,
   slug,
@@ -74,7 +77,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-emerald-500" />
+              <input
+                type="checkbox"
+                className="accent-emerald-500"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
               Remember Me
             </label>
             <button
