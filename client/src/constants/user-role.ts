@@ -2,7 +2,6 @@
 export const UserRole = {
   HEADTEACHER: "headteacher",
   TEACHER: "teacher",
-  SUPER_ADMIN: "super-admin",
   SCHOOL_ADMIN: "school-admin",
   GUARDIAN: "guardian",
   ACCOUNTANT: "accountant",
