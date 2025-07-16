@@ -17,7 +17,7 @@ export type Action =
   | { type: "UPDATE_USER"; payload: User | null };
 
 export const initialState: GlobalState = {
-  userRole: UserRole.SUPER_ADMIN,
+  userRole: UserRole.SCHOOL_ADMIN,
   users: [],
   loggedInUser: null,
   API_URL: "https://mern-edusynx-school-management-system.onrender.com",
