@@ -12,13 +12,13 @@ const SignIn: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const userAuth = useUserAuth();
   const { dispatch, state } = useGlobalState();
 
   // Redirect map
   const roleRedirectMap: Record<UserRole, string> = {
-    [UserRole.SUPER_ADMIN]: "super-admin",
     [UserRole.SCHOOL_ADMIN]: "school-admin",
     [UserRole.TEACHER]: "teacher",
     [UserRole.HEADTEACHER]: "headteacher",
@@ -122,11 +122,13 @@ const SignIn: React.FC = () => {
       <LoginForm
         slug={slug!}
         email={email}
+        rememberMe = {rememberMe}
         password={password}
         setEmail={setEmail}
         setPassword={setPassword}
         onSubmit={handleLogin}
         onResetPassword={handleResetPassword}
+        setRememberMe={setRememberMe}
       />
     </div>
   );
