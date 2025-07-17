@@ -9,6 +9,7 @@ import {
   Schools,
   SuperAdminSignUp,
   ResetPassword,
+  SuperAdminSignIn,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -32,6 +33,7 @@ function App() {
           <Route path="/:slug/signin" element={<SignIn />} />
           <Route path="/:slug/signup" element={<SignUp />} />
           <Route path="/signup/super-admin" element={<SuperAdminSignUp />} />
+           <Route path="/signin/super-admin" element={<SuperAdminSignIn />} />
           <Route path="/register" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
