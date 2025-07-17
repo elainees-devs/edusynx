@@ -4,14 +4,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
 import type { ISuperAdmin } from "../../types/people/user.types";
 
-interface Props {
+interface SuperAdminSignUpProps {
   register: UseFormRegister<ISuperAdmin>;
   errors: FieldErrors<ISuperAdmin>;
   showPassword: boolean;
   toggleShowPassword: () => void;
 }
 
-const SuperAdminFormFields: React.FC<Props> = ({
+const SuperAdminSignUpFormFields: React.FC<SuperAdminSignUpProps> = ({
   register,
   errors,
   showPassword,
@@ -82,4 +82,4 @@ const SuperAdminFormFields: React.FC<Props> = ({
   </div>
 );
 
-export default SuperAdminFormFields;
+export default SuperAdminSignUpFormFields;
