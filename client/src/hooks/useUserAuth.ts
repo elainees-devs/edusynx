@@ -1,29 +1,35 @@
-// client/src/hooks/useUserAuth.ts
 import { useState, useEffect } from "react";
-import type { IUser } from "../types/people/user.types";
-
+import type { ISuperAdmin, IUser } from "../types/people/user.types";
 
 interface UseLoggedInStatus {
   isLoggedIn: boolean;
-  savedUser: IUser| null;
+  savedUser: IUser | null;
+  savedAdmin: ISuperAdmin | null;
   loginUser: (user: IUser) => void;
+  loginSuperAdmin: (admin: ISuperAdmin) => void;
   logoutUser: () => void;
 }
 
 const useUserAuth = (): UseLoggedInStatus => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [savedUser, setUserDetails] = useState<IUser| null>(null);
+  const [savedUser, setUserDetails] = useState<IUser | null>(null);
+  const [savedAdmin, setAdmin] = useState<ISuperAdmin | null>(null);
 
   useEffect(() => {
     const checkLoggedInStatus = () => {
-      const savedUser = localStorage.getItem("savedUser");
-      if (savedUser) {
+      const userData = localStorage.getItem("savedUser");
+      const adminData = localStorage.getItem("savedSuperAdmin");
+
+      if (userData) {
         setIsLoggedIn(true);
-        const storedUserDetails = JSON.parse(savedUser || "{}");
-        setUserDetails(storedUserDetails);
+        setUserDetails(JSON.parse(userData));
+      } else if (adminData) {
+        setIsLoggedIn(true);
+        setAdmin(JSON.parse(adminData));
       } else {
         setIsLoggedIn(false);
         setUserDetails(null);
+        setAdmin(null);
       }
     };
 
@@ -40,18 +46,32 @@ const useUserAuth = (): UseLoggedInStatus => {
     localStorage.setItem("savedUser", JSON.stringify(user));
     setIsLoggedIn(true);
     setUserDetails(user);
+    setAdmin(null); // Clear admin just in case
+  };
 
-    // Log the saved user to the console after login
-    console.log("Saved user after login:", user);
+  const loginSuperAdmin = (admin: ISuperAdmin): void => {
+    localStorage.setItem("savedSuperAdmin", JSON.stringify(admin));
+    setIsLoggedIn(true);
+    setAdmin(admin);
+    setUserDetails(null); // Clear user just in case
   };
 
   const logoutUser = (): void => {
     localStorage.removeItem("savedUser");
+    localStorage.removeItem("savedSuperAdmin");
     setIsLoggedIn(false);
     setUserDetails(null);
+    setAdmin(null);
   };
 
-  return { isLoggedIn, savedUser, loginUser, logoutUser };
+  return {
+    isLoggedIn,
+    savedUser,
+    savedAdmin,
+    loginUser,
+    loginSuperAdmin,
+    logoutUser,
+  };
 };
 
 export default useUserAuth;
