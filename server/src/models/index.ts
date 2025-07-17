@@ -15,3 +15,4 @@ export * from './feePayment.model';
 export * from './counter.model';
 export * from './role.model'
 export * from './session.model'
+export * from './password-reset.model'
