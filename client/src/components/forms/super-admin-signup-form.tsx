@@ -1,4 +1,4 @@
-// client/src/components/forms/SuperAdminFormFields.tsx
+// client/src/components/forms/super-admin-signup-form.tsx
 import React from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
