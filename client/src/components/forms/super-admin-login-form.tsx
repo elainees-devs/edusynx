@@ -1,58 +1,87 @@
 // client/src/components/forms/super-admin-login-form.tsx
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import type { SubmitHandler } from 'react-hook-form';
+import React from "react";
 
-type LoginFormInputs = {
+export interface LoginFormProps {
   email: string;
   password: string;
-  role?: string;
-};
-
-interface SuperAdminLoginFormProps {
-  onLogin: (data: LoginFormInputs) => void;
+  rememberMe: boolean;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setRememberMe: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: (event: React.FormEvent) => Promise<void>;
+  onResetPassword: () => void;
 }
 
-const SuperAdminLoginForm: React.FC<SuperAdminLoginFormProps> = ({ onLogin }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormInputs>();
-
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    onLogin({ ...data, role: 'super-admin' });
-  };
-
+const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
+  email,
+  password,
+  rememberMe,
+  setEmail,
+  setPassword,
+  setRememberMe,
+  onSubmit,
+  onResetPassword,
+}) => {
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-      <h2>Super Admin Login</h2>
+    <form
+      onSubmit={onSubmit}
+      className="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-2xl p-8 space-y-6"
+    >
+      <h2 className="text-2xl font-bold text-center text-gray-800">Super Admin Login</h2>
 
-      <div>
-        <label>Email:</label>
+      <div className="space-y-2">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          Email
+        </label>
         <input
+          id="email"
           type="email"
-          {...register('email', { required: 'Email is required' })}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
         />
-        {errors.email && <span className="error">{errors.email.message}</span>}
       </div>
 
-      <div>
-        <label>Password:</label>
+      <div className="space-y-2">
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          Password
+        </label>
         <input
+          id="password"
           type="password"
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Password must be at least 6 characters',
-            },
-          })}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
         />
-        {errors.password && <span className="error">{errors.password.message}</span>}
       </div>
 
-      <button type="submit">Login</button>
+      <div className="flex items-center justify-between text-sm">
+        <label className="flex items-center space-x-2 text-gray-600">
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+            className="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500"
+          />
+          <span>Remember Me</span>
+        </label>
+        <button
+          type="button"
+          onClick={onResetPassword}
+          className="text-blue-600 hover:underline focus:outline-none"
+        >
+          Forgot Password?
+        </button>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
+      >
+        Login
+      </button>
     </form>
   );
 };
