@@ -1,9 +1,9 @@
 // client/src/types/global/globalState.types.ts
 import { UserRole } from "../../constants";
-import type { IUser } from "../people/user.types";
+import type { ISuperAdmin, IUser } from "../people/user.types";
 
 
-export type User = IUser;
+export type User = IUser | ISuperAdmin
 
 export interface GlobalState {
   userRole: UserRole;
@@ -14,7 +14,9 @@ export interface GlobalState {
 
 export type Action =
   | { type: "UPDATE_USERS"; payload: User[] }
-  | { type: "UPDATE_USER"; payload: User | null };
+  | { type: "UPDATE_USER"; payload: User | null }
+  | { type: "LOGIN"; payload: User | null };
+
 
 export const initialState: GlobalState = {
   userRole: UserRole.SCHOOL_ADMIN,
