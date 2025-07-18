@@ -1,20 +1,66 @@
 // client/src/pages/reset-password.tsx
-import type React from "react";
-import ForgotPasswordForm from "../components/forms/forgot-password-form";
+import React from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import Swal from "sweetalert2";
+import type { SendResetTokenBody } from "../types/email/email.types";
+import { sendResetTokenEmail } from "../api/email";
+import ResetPasswordFormFields from "../components/forms/forgot-password-form";
 
 const ResetPassword: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SendResetTokenBody>();
+
+  const onSubmit: SubmitHandler<SendResetTokenBody> = async (data) => {
+    try {
+      await sendResetTokenEmail(data.email, data.token);
+
+      await Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Password reset email sent successfully!",
+      });
+    } catch (error) {
+      console.error("Submission error:", error);
+
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "issues" in error &&
+        Array.isArray((error as { issues: unknown[] }).issues)
+      ) {
+        const issues = (error as { issues: { message: string }[] }).issues;
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          html: issues.map((i) => `<div>• ${i.message}</div>`).join(""),
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong. Please try again.",
+        });
+      }
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-semibold mb-6 text-center">
-          Forgot Password
-        </h1>
-        <ForgotPasswordForm />
-        <div className="mt-4 text-center">
-          <a href="/signin" className="text-[#1AA260] hover:underline">
-            Back to Sign In
-          </a>
-        </div>
+    <div>
+      <h1>Forgot Password</h1>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ResetPasswordFormFields register={register} errors={errors} />
+
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Reset Email"}
+        </button>
+      </form>
+
+      <div>
+        <a href="/signin">Back to Sign In</a>
       </div>
     </div>
   );
