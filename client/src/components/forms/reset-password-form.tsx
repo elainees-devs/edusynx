@@ -1,3 +1,4 @@
+// client/src/components/forms/reset-password-form.tsx
 import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
 import type { SendResetTokenBody } from "../../types/email/email.types";
