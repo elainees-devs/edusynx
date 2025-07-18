@@ -5,8 +5,8 @@ import cors from "cors";
 import helmet from "helmet";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import { options } from "./docs/swagger";
 import {
   userRouter,
@@ -25,7 +25,8 @@ import {
   permissionRouter,
   sessionRouter,
   eventRouter,
-  emailRouter
+  emailRouter,
+  resetRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -40,12 +41,16 @@ const FRONTEND_BASE_URL =
   process.env.FRONTEND_BASE_URL || "http://localhost:5173";
 // Swagger setup
 const swaggerSpec = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  explorer: true,
-  swaggerOptions: {
-    url: '/api-docs/swagger.json',
-  },
-}));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    swaggerOptions: {
+      url: "/api-docs/swagger.json",
+    },
+  })
+);
 
 // Middleware
 app.use(express.json());
@@ -56,6 +61,11 @@ const schoolController = new SchoolController();
 
 // Database connection
 connectDB();
+
+// Health check route
+apiRouter.get("/", (req: Request, res: Response) => {
+  res.json({ message: "API v1 is up and running" });
+});
 
 // Routes
 apiRouter.use("/users", userRouter);
@@ -76,22 +86,16 @@ apiRouter.use("/permission", permissionRouter);
 apiRouter.use("/session", sessionRouter);
 apiRouter.use("/event", eventRouter);
 apiRouter.use("/email", emailRouter);
-apiRouter.use("/auth", loginRouter);
-apiRouter.use("/super-admin", adminRouter)
-
+apiRouter.use("/super-admin", adminRouter);
+apiRouter.use("/password-reset", resetRouter);
 
 app.use("/api/v1", apiRouter);
-// Health check route
-apiRouter.get("/", (req: Request, res: Response) => {
-  res.json({ message: "API v1 is up and running" });
-});
 
 // 404 fallback
 app.use((req: Request, res: Response) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-    app.listen(PORT, () => {
-      logger.info(`Server is running on port ${PORT}`);
-    });
-
+app.listen(PORT, () => {
+  logger.info(`Server is running on port ${PORT}`);
+});
