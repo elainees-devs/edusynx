@@ -16,3 +16,17 @@ export const sendAccessLink = async (email: string, accessUrl: string) => {
     throw new Error('Failed to send access link');
   }
 };
+
+export const sendResetTokenEmail = async(email: string, token: string) => {
+  try{
+  const res = await axios.post(`https://localhost:5173/reset-password?token=`, {
+    email,
+    token,
+  })
+logger.info(`Password Reset link successfully sent to ${email}`);
+    return res.data.message;
+  } catch (error) {
+    logger.error(`Failed to send password reset link to ${email}`, error);
+    throw new Error('Failed to send password reset link');
+  }
+};
