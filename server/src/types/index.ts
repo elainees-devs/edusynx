@@ -9,6 +9,7 @@ export * from "./finance/finance.types";
 export * from "./enum/enum";
 export * from "./auth/auth"
 export * from "./security/session.types"
+export * from "./email/email.types"
 export type ILoginResponse = ILoginResponseSuccess | ILoginResponseFailure;
 
 
