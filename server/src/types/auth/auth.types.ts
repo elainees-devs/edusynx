@@ -21,28 +21,17 @@ export interface ILoginResponse {
   isLocked?: boolean;
   expiresIn?: number;
 }
-
-export interface IRefreshTokenRequest {
-  refreshToken: string;
-  ipAddress: string;
-  deviceInfo?: string;
+export interface IPasswordResetToken {
+  userId?: Types.ObjectId | string
+  superAdmin?: Types.ObjectId | String
+  token: string;
+  expiresAt: Date;
+  used: boolean;
 }
 
 export interface ILogoutRequest {
   userId: Types.ObjectId | string;
   sessionId: string;
-  ipAddress: string;
-}
-
-export interface IPasswordResetRequest {
-  email: string;
-  ipAddress: string;
-}
-
-export interface IChangePasswordRequest {
-  userId: Types.ObjectId | string;
-  currentPassword: string;
-  newPassword: string;
   ipAddress: string;
 }
 
