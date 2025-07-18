@@ -4,7 +4,8 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Swal from "sweetalert2";
 import type { SendResetTokenBody } from "../types/email/email.types";
 import { sendResetTokenEmail } from "../api/email";
-import ResetPasswordFormFields from "../components/forms/reset-password-form";
+import { ResetPasswordForm } from "../components/forms";
+
 
 const ResetPassword: React.FC = () => {
   const {
@@ -52,7 +53,7 @@ const ResetPassword: React.FC = () => {
       <h1>Forgot Password</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ResetPasswordFormFields register={register} errors={errors} />
+      <ResetPasswordForm register={register} errors={errors} />
 
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Sending..." : "Send Reset Email"}
