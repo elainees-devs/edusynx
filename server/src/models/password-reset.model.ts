@@ -8,7 +8,10 @@ const PasswordResetTokenSchema: Schema = new Schema(
     userId: {
       type: Types.ObjectId,
       ref: "User",
-      required: true,
+    },
+    superAdminId:{
+      type: Types.ObjectId,
+      ref: "SuperAdmin",
     },
     token: {
       type: String,
