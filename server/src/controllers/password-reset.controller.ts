@@ -9,15 +9,22 @@ const tokenRepo = new PasswordResetTokenRepository();
 
 export class PasswordResetTokenController {
   createToken = handleAsync(async (req: Request, res: Response) => {
-    const parsed = passwordResetTokenSchema.safeParse(req.body);
-    if (!parsed.success) {
-      const issues = parsed.error.issues.map((e) => e.message).join(", ");
-      throw new AppError(issues, 400);
-    }
+  const parsed = passwordResetTokenSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const issues = parsed.error.issues.map((e) => e.message).join(", ");
+    throw new AppError(issues, 400);
+  }
 
-    const newToken = await tokenRepo.create(parsed.data);
-    res.status(201).json({ message: "Reset token created", data: newToken });
-  });
+  const { userId, superAdminId } = parsed.data;
+
+  if (!userId && !superAdminId) {
+    throw new AppError("Either userId or superAdminId must be provided", 400);
+  }
+
+  const newToken = await tokenRepo.create(parsed.data);
+  res.status(201).json({ message: "Reset token created", data: newToken });
+});
+
 
   verifyToken = handleAsync(async (req: Request, res: Response) => {
     const { token } = req.params;
