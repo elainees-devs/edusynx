@@ -4,7 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Swal from "sweetalert2";
 import type { SendResetTokenBody } from "../types/email/email.types";
 import { sendResetTokenEmail } from "../api/email";
-import ResetPasswordFormFields from "../components/forms/forgot-password-form";
+import ResetPasswordFormFields from "../components/forms/reset-password-form";
 
 const ResetPassword: React.FC = () => {
   const {
