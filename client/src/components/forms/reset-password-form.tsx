@@ -34,20 +34,6 @@ const ResetPasswordFormFields: React.FC<ResetPasswordFormFieldsProps> = ({
       )}
     </div>
 
-    {/* Token */}
-    <div>
-      <label className="block mb-1">Token</label>
-      <input
-        type="text"
-        {...register("token", { required: "Token is required" })}
-        className={`w-full border rounded px-3 py-2 ${
-          errors.token ? "border-red-500" : "border-gray-300"
-        }`}
-      />
-      {errors.token && (
-        <p className="text-red-500 text-sm mt-1">{errors.token.message}</p>
-      )}
-    </div>
   </div>
 );
 
