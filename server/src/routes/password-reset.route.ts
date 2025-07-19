@@ -56,4 +56,7 @@ resetRouter.patch("/:token/use", controller.markTokenUsed);
 // Delete tokens by userId
 resetRouter.delete("/user/:userId", controller.deleteUserTokens);
 
+// Confirm password reset
+resetRouter.post("/confirm", controller.resetPassword); 
+
 export { resetRouter };
