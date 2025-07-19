@@ -1,5 +1,6 @@
 // client/src/types/auth/reset-password.types.types
 export interface NewPasswordBody {
-  password: string;
+  token: string;
+  newPassword: string;
   confirmPassword: string;
 }
