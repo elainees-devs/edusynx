@@ -27,7 +27,16 @@ export class PasswordResetTokenRepository {
     );
   }
 
-  async deleteByUserId(userId: string) {
-    return await PasswordResetToken.deleteMany({ userId });
+  // Delete all tokens by email 
+  async deleteByEmail(email: string) {
+    return await PasswordResetToken.deleteMany({ email });
+  }
+
+  // Optional: delete by userId or superAdminId fallback (if both stored)
+  async deleteByOwnerId(userId?: string, superAdminId?: string) {
+    const filter: any = {};
+    if (userId) filter.userId = userId;
+    if (superAdminId) filter.superAdminId = superAdminId;
+    return await PasswordResetToken.deleteMany(filter);
   }
 }
