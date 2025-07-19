@@ -1,4 +1,4 @@
-// src/types/auth/auth.types.ts
+// server/src/types/auth/auth.types.ts
 import { Types } from "mongoose";
 
 export interface ILoginRequest {
@@ -22,8 +22,9 @@ export interface ILoginResponse {
   expiresIn?: number;
 }
 export interface IPasswordResetToken {
-  userId?: Types.ObjectId | string
-  superAdmin?: Types.ObjectId | String
+  email: string;
+  userId?: Types.ObjectId | string;
+  superAdmin?: Types.ObjectId | String;
   token: string;
   expiresAt: Date;
   used: boolean;
