@@ -45,10 +45,10 @@ export const loginUser = async (
   }
 };
 
-// forgot password functionality
+// Reset password functionality
 export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   try {
-    await axios.post(`${API_BASE}/auth/forgot-password`, { email }, {
+    await axios.post(`${API_BASE}/password-reset`, { email }, {
       headers: {
         "Content-Type": "application/json",
       },
