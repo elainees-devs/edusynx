@@ -2,6 +2,7 @@
 import axios from "axios";
 import { logger } from "../utils/logger";
 import type { IUser } from "../types/people/user.types";
+import type { NewPasswordBody } from "../types/auth/new-password.types";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
@@ -67,3 +68,10 @@ export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   }
 }
    
+export const confirmPasswordReset = async (data: NewPasswordBody) => {
+  const response = await axios.post(
+    "http://localhost:5000/api/v1/password-reset/confirm", 
+    data
+  );
+  return response.data;
+};
