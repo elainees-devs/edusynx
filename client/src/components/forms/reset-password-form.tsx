@@ -6,6 +6,7 @@ import type { SendResetTokenBody } from "../../types/email/email.types";
 interface ResetPasswordFormFieldsProps {
   register: UseFormRegister<SendResetTokenBody>;
   errors: FieldErrors<SendResetTokenBody>;
+  
 }
 
 const ResetPasswordFormFields: React.FC<ResetPasswordFormFieldsProps> = ({
