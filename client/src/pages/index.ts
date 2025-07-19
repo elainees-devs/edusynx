@@ -7,3 +7,4 @@ export { default as SuperAdminSignUp } from './signup/super-admin-signup';
 export { default as SchoolRegistrationPage} from './school-register';
 export { default as Schools } from  './dashboard/schools';
 export { default as ResetPassword } from  './password/reset-password';
+export { default as NewPassword } from  './password/new-password';
