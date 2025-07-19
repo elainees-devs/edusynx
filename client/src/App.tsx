@@ -10,6 +10,7 @@ import {
   SuperAdminSignUp,
   ResetPassword,
   SuperAdminSignIn,
+  NewPassword,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -36,6 +37,7 @@ function App() {
            <Route path="/signin/super-admin" element={<SuperAdminSignIn />} />
           <Route path="/register" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/new-password" element={<NewPassword/>} />
 
           {/* Dashboards */}
           <Route path="/:slug/dashboard/teacher" element={<TeacherDashboard />} />
