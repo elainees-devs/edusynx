@@ -1,30 +1,43 @@
 // server/src/controllers/password-reset.controller.ts
 import { Request, Response } from "express";
+import crypto from "crypto";
 import { PasswordResetTokenRepository } from "../repositories/password-reset.repository";
-import { handleAsync } from "../utils/handleAsync";
-import { AppError } from "../utils/AppError";
 import { passwordResetTokenSchema } from "../validation/password-reset.schema";
+import { AppError, handleAsync } from "../utils";
+import { sendResetTokenEmail } from "../services/email.service";
 
 const tokenRepo = new PasswordResetTokenRepository();
 
 export class PasswordResetTokenController {
   createToken = handleAsync(async (req: Request, res: Response) => {
-  const parsed = passwordResetTokenSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const issues = parsed.error.issues.map((e) => e.message).join(", ");
-    throw new AppError(issues, 400);
-  }
+    const parsed = passwordResetTokenSchema.safeParse(req.body);
+    if (!parsed.success) {
+      const issues = parsed.error.issues.map((e) => e.message).join(", ");
+      throw new AppError(issues, 400);
+    }
 
-  const { userId, superAdminId } = parsed.data;
+    const { email } = parsed.data;
 
-  if (!userId && !superAdminId) {
-    throw new AppError("Either userId or superAdminId must be provided", 400);
-  }
+    if (!email) {
+      throw new AppError("Email is required", 400);
+    }
 
-  const newToken = await tokenRepo.create(parsed.data);
-  res.status(201).json({ message: "Reset token created", data: newToken });
-});
+    // Generate secure token
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
+    const newToken = await tokenRepo.create({
+      email,
+      token,
+      expiresAt,
+      used: false,
+    });
+
+    // Send reset token email
+    await sendResetTokenEmail(email, token);
+
+    res.status(201).json({ message: "Reset token created and email sent" });
+  });
 
   verifyToken = handleAsync(async (req: Request, res: Response) => {
     const { token } = req.params;
@@ -49,9 +62,13 @@ export class PasswordResetTokenController {
   });
 
   deleteUserTokens = handleAsync(async (req: Request, res: Response) => {
-    const { userId } = req.params;
+    const { email } = req.params;
 
-    await tokenRepo.deleteByUserId(userId);
-    res.status(200).json({ message: "All reset tokens deleted for user" });
+    if (!email) {
+      throw new AppError("Email is required", 400);
+    }
+
+    await tokenRepo.deleteByEmail(email);
+    res.status(200).json({ message: "All reset tokens deleted for email" });
   });
 }
