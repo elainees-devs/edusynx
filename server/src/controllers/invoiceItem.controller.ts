@@ -1,7 +1,6 @@
-// src/controllers/invoiceItem.controller.ts
+// server/src/controllers/invoiceItem.controller.ts
 import { InvoiceItemRepository } from "../repositories/invoiceItem.repository";
-import { AppError } from "../utils/AppError";
-import { handleAsync } from "../utils/handleAsync";
+import { AppError, handleAsync } from "../utils";
 
 const invoiceItemRepo = new InvoiceItemRepository();
 
