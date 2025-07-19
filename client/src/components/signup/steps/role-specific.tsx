@@ -1,3 +1,4 @@
+// client/src/components/signup/steps/role-specific.tsx
 import { useSignUpContext } from "../../../context/signup/useSignUpContext";
 
 type SignUpRole = 'teacher' | 'headteacher' | 'school-admin' | 'accountant';
