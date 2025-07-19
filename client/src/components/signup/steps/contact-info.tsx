@@ -32,7 +32,7 @@ const ContactInfoStep = ({ next, back }: { next: () => void; back: () => void })
       />
         <div className="flex justify-between">
         <button onClick={back} className="px-4 py-2 text-white rounded bg-gray">Back</button>
-        <button onClick={next} className="px-4 py-2 text-white bg-blue-600 rounded">Next</button>
+        <button onClick={next} className="px-4 py-2 text-white bg-green-600 rounded">Next</button>
       </div>
     </div>
   );
