@@ -29,3 +29,8 @@ Thumbs.db
 
 # Optional: coverage from test tools
 coverage/
+
+# Ignore test route files
+src/routes/email-test.route.ts
+src/routes/test.route.ts
+
