@@ -17,8 +17,7 @@ const transporter = nodemailer.createTransport({
  */
 export async function sendResetTokenEmail(to: string, token: string) {
   const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
-  const resetUrl = `https://localhost:5173/reset-password?token=${token}`;
-
+  const resetUrl = `${CLIENT_URL}/new-password?token=${token}`;
   const mailOptions = {
     from: `"EduSynx Support" <${process.env.SMTP_USER}>`,
     to,
