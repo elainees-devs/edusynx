@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
+// server/src/controllers/attendance.controller.ts
 import { AttendanceRepository } from "../repositories/attendance.repository";
-import { AppError } from "../utils/AppError";
-import { handleAsync } from "../utils/handleAsync";
+import { AppError, handleAsync } from "../utils";
 
 const attendanceRepo = new AttendanceRepository();
 
