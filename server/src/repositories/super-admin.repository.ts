@@ -2,7 +2,6 @@
 import { SuperAdminModel } from "../models/super-admin.model";
 import { ISuperAdmin } from "../types";
 
-
 export class SuperAdminRepository {
   // Create ONLY if no super admin exists
   async create(adminData: Partial<ISuperAdmin>): Promise<ISuperAdmin> {
@@ -16,6 +15,7 @@ export class SuperAdminRepository {
   async findByEmail(email: string): Promise<ISuperAdmin | null> {
     return await SuperAdminModel.findOne({ email });
   }
+
 
   // Get the single super admin (find all, realistically returns one or none)
   async findAll(): Promise<ISuperAdmin[]> {
