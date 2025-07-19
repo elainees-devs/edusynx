@@ -5,8 +5,11 @@ import Swal from "sweetalert2";
 import type { SendResetTokenBody } from "../../types/email/email.types";
 import { ResetPasswordForm } from "../../components/forms";
 import { sendPasswordResetEmail } from "../../api/auth";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ResetPassword: React.FC = () => {
+  const navigate = useNavigate();
+  const{slug} = useParams();
   const {
     register,
     handleSubmit,
@@ -47,6 +50,13 @@ const ResetPassword: React.FC = () => {
       }
     }
   };
+  const handleBackToSignIn = () => {
+    if (slug) {
+      navigate(`/${slug}/signin`);
+    } else {
+      navigate("/signin/super-admin");
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded-lg shadow-md">
@@ -58,16 +68,19 @@ const ResetPassword: React.FC = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-200 hover:text-gray transition"
         >
           {isSubmitting ? "Sending..." : "Send Reset Email"}
         </button>
       </form>
 
       <div className="text-center mt-4">
-        <a href="/signin" className="text-sm text-blue-600 hover:underline">
-          Back to Sign In
-        </a>
+           <button
+      onClick={handleBackToSignIn}
+      className="text-sm text-green-600 hover:underline"
+    >
+      Back to Sign In
+    </button>
       </div>
     </div>
   );
