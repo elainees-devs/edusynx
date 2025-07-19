@@ -1,10 +1,12 @@
-// src/models/passwordResetToken.model.ts
+// server/src/models/passwordResetToken.model.ts
 import mongoose, { Schema, Types } from "mongoose";
 import { IPasswordResetToken } from "../types";
 
-
 const PasswordResetTokenSchema: Schema = new Schema(
   {
+    email:{
+      type: String,
+    },
     userId: {
       type: Types.ObjectId,
       ref: "User",
