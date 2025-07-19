@@ -2,11 +2,5 @@
 import { z } from "zod";
 
 export const passwordResetTokenSchema = z.object({
-  userId: z.string().optional(),
-  superAdminId: z.string().optional(),
-  token: z.string().min(1, "Token is required"),
-  expiresAt: z.coerce.date().refine((date) => date > new Date(), {
-    message: "Expiration date must be in the future",
-  }),
-  used: z.boolean().optional(),
+   email: z.string().email({ message: "Invalid email address" }),
 });
