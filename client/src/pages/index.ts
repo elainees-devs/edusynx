@@ -1,5 +1,4 @@
-// src/pages/index.ts
-
+// client/src/pages/index.ts
 export { default as HomePage } from './home';
 export { default as SignIn} from './signin/signin';
 export { default as SuperAdminSignIn } from './signin/super-admin-signin';
