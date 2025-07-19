@@ -1,10 +1,16 @@
 // server/src/controllers/password-reset.controller.ts
 import { Request, Response } from "express";
 import crypto from "crypto";
+import bcrypt from "bcrypt"
 import { PasswordResetTokenRepository } from "../repositories/password-reset.repository";
 import { passwordResetTokenSchema } from "../validation/password-reset.schema";
 import { AppError, handleAsync } from "../utils";
 import { sendResetTokenEmail } from "../services/email.service";
+import { UserModel } from "../models";
+import { SuperAdminModel } from "../models/super-admin.model";
+import SchoolModel from "../models/school.model";
+import { Document } from "mongoose";
+import { IBaseUser, ISchool } from "../types";
 
 const tokenRepo = new PasswordResetTokenRepository();
 
@@ -39,16 +45,42 @@ export class PasswordResetTokenController {
     res.status(201).json({ message: "Reset token created and email sent" });
   });
 
-  verifyToken = handleAsync(async (req: Request, res: Response) => {
-    const { token } = req.params;
+verifyToken = handleAsync(async (req: Request, res: Response) => {
+  const { token } = req.params;
 
-    const found = await tokenRepo.findValidToken(token);
-    if (!found) {
-      throw new AppError("Invalid or expired token", 400);
-    }
+  const found = await tokenRepo.findValidToken(token);
+  if (!found) {
+    throw new AppError("Invalid or expired token", 400);
+  }
 
-    res.status(200).json({ message: "Token is valid", data: found });
+  const email = found.email;
+
+  // Check both user and admin
+  const user = await UserModel.findOne({ email }).populate("school", "slug");
+  const admin = await SuperAdminModel.findOne({ email });
+
+  if (!user && !admin) {
+    throw new AppError("No user found for this token", 404);
+  }
+
+  // Determine role
+  const role = user ? user.role : admin?.role;
+
+  // Determine slug if not super-admin
+  const slug = role !== "super-admin" && user?.school && typeof user.school === "object" && "slug" in user.school
+    ? (user.school as ISchool).slug
+    : undefined;
+
+  return res.status(200).json({
+    message: "Token is valid",
+    data: {
+      email,
+      role,
+      slug, // only included if role is not super-admin
+    },
   });
+});
+
 
   markTokenUsed = handleAsync(async (req: Request, res: Response) => {
     const { token } = req.params;
@@ -71,4 +103,56 @@ export class PasswordResetTokenController {
     await tokenRepo.deleteByEmail(email);
     res.status(200).json({ message: "All reset tokens deleted for email" });
   });
+
+  resetPassword = handleAsync(async (req: Request, res: Response) => {
+  const { token, newPassword } = req.body;
+
+  // 1. Validate token
+  const resetToken = await tokenRepo.findValidToken(token);
+  if (!resetToken) {
+    throw new AppError("Invalid or expired token", 400);
+  }
+
+  const email = resetToken.email;
+
+  // 2. Find user or admin
+  const user = await UserModel.findOne({ email }).populate("school", "slug");
+  const admin = await SuperAdminModel.findOne({ email });
+
+  if (!user && !admin) {
+    throw new AppError("No account found for this email", 404);
+  }
+
+  // 3. Validate password
+  if (!newPassword || newPassword.length < 8) {
+    throw new AppError("Password must be at least 8 characters long", 400);
+  }
+
+  // 4. Hash and update password
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  if (user) {
+    user.password = hashedPassword;
+    await user.save();
+  } else if (admin) {
+    admin.password = hashedPassword;
+    await admin.save();
+  }
+
+  // 5. Mark token as used
+  await tokenRepo.markAsUsed(token);
+
+  // 6. Get role and slug
+  const role = admin ? "super-admin" : user?.role || "unknown";
+  const slug = user && typeof user.school === "object" && "slug" in user.school
+    ? (user.school as ISchool).slug
+    : undefined;
+
+  return res.status(200).json({
+    message: "Password has been reset",
+    data: {
+      role,
+      slug,
+    },
+  });
+});
 }
