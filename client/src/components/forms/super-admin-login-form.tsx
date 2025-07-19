@@ -38,7 +38,7 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
       </div>
@@ -52,7 +52,7 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
       </div>
@@ -63,14 +63,14 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}
-            className="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500"
+            className="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500"
           />
           <span>Remember Me</span>
         </label>
         <button
           type="button"
           onClick={onResetPassword}
-          className="text-blue-600 hover:underline focus:outline-none"
+          className="text-green-600 hover:underline focus:outline-none"
         >
           Forgot Password?
         </button>
@@ -78,7 +78,7 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
 
       <button
         type="submit"
-        className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
+        className="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-blue-200 hover:text-gray transition duration-200"
       >
         Login
       </button>
