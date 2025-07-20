@@ -49,7 +49,7 @@ const ClassDetails: React.FC<ClassProps> = ({
 
     
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 items-end">
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">Class</label>
