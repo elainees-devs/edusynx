@@ -11,6 +11,7 @@ import {
   ResetPassword,
   SuperAdminSignIn,
   NewPassword,
+  RegisterClass,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -29,7 +30,7 @@ function App() {
 <GlobalStateProvider>
       <Router>
         <Routes>
-          {/* Pages */}
+          {/* HomePage, Signin, SignUp, ShoolRegister, Reset Password and New Password */}
           <Route path="/" element={<HomePage />} />
           <Route path="/:slug/signin" element={<SignIn />} />
           <Route path="/:slug/signup" element={<SignUp />} />
@@ -38,6 +39,7 @@ function App() {
           <Route path="/register" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword/>} />
+      
 
           {/* Dashboards */}
           <Route path="/:slug/dashboard/teacher" element={<TeacherDashboard />} />
@@ -61,6 +63,12 @@ function App() {
             <Route
             path="/dashboard/schools"
             element={<Schools />}
+          />
+
+          {/* Class */}
+            <Route
+            path="/register-class"
+            element={<RegisterClass />}
           />
         </Routes>
       </Router>
