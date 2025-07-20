@@ -3,24 +3,25 @@ import React, { useState } from "react";
 import { ClassDetails } from "../components";
 import { classOptions } from "../constants/class-options";
 import type { IClass } from "../types";
+import Topbar from "../shared/layout/dashboard/topbar";
+import Sidebar from "../shared/layout/dashboard/sidebar";
 
 const ViewClass: React.FC = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStream, setSelectedStream] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const dummyClasses: IClass[] = [
     { id: "1", ClassName: "Grade 1", stream: "North", academicYear: "2025" },
     { id: "2", ClassName: "Grade 2", stream: "East", academicYear: "2025" },
-  
   ];
-// fetch data from API
+
   const streams = ["North", "South", "East", "West"];
 
   const handleFilterChange = (filters: { ClassName: string; stream: string }) => {
     setSelectedClass(filters.ClassName);
     setSelectedStream(filters.stream);
-    setCurrentPage(1); // Reset to page 1 on new filter
+    setCurrentPage(1);
   };
 
   const handleResetFilters = () => {
@@ -48,19 +49,37 @@ const ViewClass: React.FC = () => {
   );
 
   return (
-    <ClassDetails
-      classOptions={classOptions}
-      streams={streams}
-      classes={paginatedClasses}
-      selectedClass={selectedClass}
-      selectedStream={selectedStream}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onFilterChange={handleFilterChange}
-      onResetFilters={handleResetFilters}
-      onEdit={handleEdit}
-      onPageChange={setCurrentPage}
-    />
+    <div className="flex flex-col h-screen">
+      {/* Topbar */}
+      <div className="flex-shrink-0">
+        <Topbar role="Head Teacher" />
+      </div>
+
+      {/* Sidebar + Content */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
+          <Sidebar />
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-6 overflow-y-auto">
+          <ClassDetails
+            classOptions={classOptions}
+            streams={streams}
+            classes={paginatedClasses}
+            selectedClass={selectedClass}
+            selectedStream={selectedStream}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onFilterChange={handleFilterChange}
+            onResetFilters={handleResetFilters}
+            onEdit={handleEdit}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
