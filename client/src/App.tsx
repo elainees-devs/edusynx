@@ -12,6 +12,7 @@ import {
   SuperAdminSignIn,
   NewPassword,
   RegisterClass,
+  ViewClass,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -70,6 +71,11 @@ function App() {
             path="/register-class"
             element={<RegisterClass />}
           />
+             <Route
+            path="/view-class"
+            element={<ViewClass />}
+          />
+
         </Routes>
       </Router>
     </GlobalStateProvider>
