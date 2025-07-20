@@ -17,8 +17,7 @@ export interface ISchool extends BaseDocument {
 }
 
 export interface IClass extends BaseDocument {
-  school: string | ISchool;
-  className: string;
+  ClassName: string;
   stream: string;
   academicYear: string;
 }
