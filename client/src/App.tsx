@@ -13,6 +13,7 @@ import {
   NewPassword,
   RegisterClass,
   ViewClass,
+  RegisterStream,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -68,12 +69,17 @@ function App() {
 
           {/* Class */}
             <Route
-            path="/register-class"
+            path="/class/register-class"
             element={<RegisterClass />}
           />
              <Route
-            path="/view-class"
+            path="/class/view-class"
             element={<ViewClass />}
+          />
+          {/* Stream */}
+               <Route
+            path="/stream/register-stream"
+            element={<RegisterStream />}
           />
 
         </Routes>
