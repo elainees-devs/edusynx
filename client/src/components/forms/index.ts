@@ -5,3 +5,4 @@ export {default as ResetPasswordForm } from "./reset-password-form";
 export {default as SuperAdminSignUpForm} from "./super-admin-signup-form";
 export {default as NewPasswordForm} from "./new-password-form";
 export {default as RegisterClassForm} from "./register-class-form";
+export {default as RegisterStreamForm} from "./register-stream-form";
