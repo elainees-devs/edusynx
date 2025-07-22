@@ -6,8 +6,8 @@ import Topbar from "../../shared/layout/dashboard/topbar"
 const SuperAdminDashboard: React.FC = () =>{
     return(
         <div className="bg-gray">
-            <Topbar role="Super Admin" />
-            <Sidebar />
+            <Topbar role="super-admin" />
+            <Sidebar role="super-admin" />
             <SuperAdminDashboardOverView />
            
         </div>
