@@ -11,3 +11,4 @@ export { default as NewPassword } from  './password/new-password';
 export { default as RegisterClass} from './class/register-class';
 export { default as ViewClass} from './class/view-class';
 export { default as RegisterStream} from './stream/register-stream';
+export {default as ViewTeachers} from './view-teachers'
