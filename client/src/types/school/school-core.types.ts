@@ -33,6 +33,18 @@ export interface ISubject extends BaseDocument {
   classRef: string | IClass;
 }
 
+export interface ITeacherPersonalDetails{
+  id: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  email: string;
+  primaryPhoneNumber: string;
+  secondaryPhoneNumber?: string
+  isActive: boolean;
+}
+
+
 export interface ITeacherSubject extends BaseDocument {
   school: string | ISchool;
   teacherId: string | IBaseUser;
