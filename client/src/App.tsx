@@ -14,6 +14,7 @@ import {
   RegisterClass,
   ViewClass,
   RegisterStream,
+  ViewTeachers,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -80,6 +81,12 @@ function App() {
                <Route
             path="/stream/register-stream"
             element={<RegisterStream />}
+          />
+
+          
+               <Route
+            path="/view-teachers"
+             element={<ViewTeachers/>}
           />
 
         </Routes>
