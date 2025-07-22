@@ -1,3 +1,4 @@
+// client/src/shared/layout/dashboard/top-bar/notification.tsx
 import { FaBell } from "react-icons/fa";
 import { useState } from "react";
 
