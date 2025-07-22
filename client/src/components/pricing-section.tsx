@@ -20,17 +20,17 @@ const PricingSection: React.FC = () => {
               key={plan.title}
               className={`relative rounded-2xl shadow-md p-8 border ${
                 plan.popular
-                  ? "border-blue-600 bg-white"
+                  ? "border-teal-600 bg-white"
                   : "border-gray-200 bg-gray-100"
               }`}
             >
               {plan.popular && (
-                <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full">
+                <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold text-teal-800 bg-blue-100 rounded-full">
                   Most Popular
                 </span>
               )}
               <h3 className="mb-2 text-2xl font-bold">{plan.title}</h3>
-              <p className="mb-4 text-xl font-semibold text-blue-600">
+              <p className="mb-4 text-xl font-semibold text-teal-600">
                 {plan.price}/month
               </p>
               <p className="mb-6 text-gray-500">{plan.description}</p>
@@ -46,7 +46,7 @@ const PricingSection: React.FC = () => {
               <button
                 className={`w-full py-2 px-4 rounded-xl font-semibold ${
                   plan.popular
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    ? "bg-teal-400 text-white hover:bg-teal-200 hover:text-gray" 
                     : "bg-gray-300 text-gray-800 hover:bg-gray-400"
                 }`}
                 onClick={() =>
