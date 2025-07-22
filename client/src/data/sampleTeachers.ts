@@ -1,8 +1,5 @@
 // client/src/data/sampleTeachers.ts
-
 import type { ITeacherPersonalDetails } from "../types";
-
-
 
 export const sampleTeachers: ITeacherPersonalDetails[] = [
   {
