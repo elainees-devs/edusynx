@@ -16,7 +16,7 @@ const Benefits: React.FC = () => {
               key={index}
               className="p-6 transition-shadow bg-white rounded-lg shadow hover:shadow-lg"
             >
-              <h4 className="mb-2 text-xl font-semibold text-primary">
+              <h4 className="mb-2 text-xl font-semibold text-teal-500">
                 {benefit.title}
               </h4>
               <p className="text-gray-600">{benefit.description}</p>
