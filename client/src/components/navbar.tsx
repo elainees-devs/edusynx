@@ -10,7 +10,7 @@ const NavBar: React.FC = () => {
     <header className="fixed top-0 w-full bg-white shadow-md z-[1000]">
       <nav className="flex justify-between items-center max-w-[1200px] mx-auto px-5 py-5">
         {/* Logo */}
-        <a href="#" className="text-[1.8rem] font-bold text-primary">
+        <a href="#" className="text-[1.8rem] font-bold text-teal-400">
           Edu<span className="text-secondary">synx</span>
         </a>
 
@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
                 href={link.href}
                 className={`font-semibold transition-colors duration-300 px-4 py-2 rounded ${
                   link.label === "Register"
-                    ? "bg-primary text-white hover:bg-primary/90"
+                    ? "bg-teal-400 text-white hover:bg-teal-200/90 hover:text-gray"
                     : "text-dark hover:text-primary"
                 }`}
               >
