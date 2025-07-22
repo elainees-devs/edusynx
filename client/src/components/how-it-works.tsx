@@ -20,7 +20,7 @@ const HowItWorks: React.FC = () => {
                 className="p-6 transition shadow bg-gray-50 rounded-2xl hover:shadow-lg"
               >
                 <div className="flex justify-center mb-4">
-                  <Icon className="w-8 h-8 text-blue-600" />
+                  <Icon className="w-8 h-8 text-teal-600" />
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">{step.title}</h3>
                 <p className="text-sm text-gray-500">{step.description}</p>
