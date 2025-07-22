@@ -10,7 +10,7 @@ const Hero: React.FC = () => {
           <div className="flex-1 text-center md:pr-12 md:text-left">
             <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl">
               Streamline School Operations with{" "}
-              <span className="text-blue-600">Edusynx</span>
+              <span className="text-teal-400">Edusynx</span>
             </h1>
             <p className="max-w-xl mx-auto mb-8 text-lg md:text-xl md:mx-0">
               Automate, Centralize, and Optimize Your School's Management with
@@ -19,13 +19,13 @@ const Hero: React.FC = () => {
             <div className="flex justify-center gap-5 md:justify-start">
               <a
                 href="#"
-                className="px-6 py-3 font-semibold text-white transition duration-300 bg-blue-600 hover:bg-blue-700 rounded-xl"
+                className="px-6 py-3 font-semibold text-white transition duration-300 bg-teal-600 hover:bg-teal-200 hover:text-gray rounded-xl"
               >
                 Get Started
               </a>
               <a
                 href="#"
-                className="px-6 py-3 font-semibold text-blue-600 transition duration-300 border border-blue-600 hover:bg-blue-600 hover:text-white rounded-xl"
+                className="px-6 py-3 font-semibold text-teal-600 transition duration-300 border border-teal-600 hover:bg-teal-600 hover:text-gray rounded-xl"
               >
                 Request Demo
               </a>
