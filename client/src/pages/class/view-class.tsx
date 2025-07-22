@@ -1,5 +1,5 @@
 // client/src/pages/view-class.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { ClassDetails } from "../../components";
 import { classOptions } from "../../constants/class-options";
 import type { IClass } from "../../types";
@@ -59,7 +59,7 @@ const ViewClass: React.FC = () => {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
-          <Sidebar />
+          <Sidebar role="headteacher" />
         </div>
 
         {/* Main Content */}
