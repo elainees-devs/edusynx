@@ -4,51 +4,58 @@ import Swal from "sweetalert2";
 import { SuperAdminLoginForm } from "../../components/forms";
 import useUserAuth from "../../hooks/useUserAuth";
 import { loginSuperAdmin } from "../../api/auth/super-admin-auth";
+import { useNavigate } from "react-router-dom"; 
 
 const SuperAdminSignIn: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const useAuth = useUserAuth();
-
+  const navigate = useNavigate(); 
 
   const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const { user } = await loginSuperAdmin(email, password);
+    try {
+      const { user } = await loginSuperAdmin(email, password);
+         console.log("Logged-in user role:", user.role);
 
-    useAuth.loginSuperAdmin(user);
+      useAuth.loginSuperAdmin(user);
 
-    Swal.fire({
-      icon: "success",
-      title: "Login Successful",
-      text: `Welcome back, ${user.role || "Super Admin"}!`,
-    });
-
-    // optionally: redirect or update global state here
-  } catch (error) {
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "issues" in error &&
-      Array.isArray((error as { issues: unknown[] }).issues)
-    ) {
-      const issues = (error as { issues: { message: string }[] }).issues;
       Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        html: issues.map((i) => `<div>• ${i.message}</div>`).join(""),
+        icon: "success",
+        title: "Login Successful",
+        text: `Welcome back, Super Admin!`,
+        timer: 1500,
+        showConfirmButton: false,
       });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: "Invalid email or password. Please try again.",
-      });
+
+      // ✅ Redirect to dashboard after success
+      setTimeout(() => {
+        navigate("/dashboard/super-admin");
+      }, 1500); // Give time for SweetAlert2 to show
+    } catch (error) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "issues" in error &&
+        Array.isArray((error as { issues: unknown[] }).issues)
+      ) {
+        const issues = (error as { issues: { message: string }[] }).issues;
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          html: issues.map((i) => `<div>• ${i.message}</div>`).join(""),
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Invalid email or password. Please try again.",
+        });
+      }
     }
-  }
-};
+  };
 
   return (
     <div>
