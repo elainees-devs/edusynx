@@ -1,8 +1,5 @@
-// src/shared/layout/dashboard/topbar.tsx
-
-import NotificationButton from "./top-bar/notification";
-import Profile from "./top-bar/profile";
-
+// client/src/shared/layout/dashboard/topbar.tsx
+import { NotificationButton,Profile } from "./top-bar";
 interface TopbarProps {
   title?: string;
   role: 'admin' | 'headteacher' | 'teacher' | 'accountant' | string;
@@ -24,7 +21,7 @@ const Topbar: React.FC<TopbarProps> = ({ title, role }) => {
     return (
       <>
         {greeting},{" "}
-        <span className="text-blue-600 font-medium">{formattedRole}</span>
+        <span className="text-teal-400 font-medium">{formattedRole}</span>
       </>
     );
   };
