@@ -1,13 +1,33 @@
 // client/src/components/dashboard/SuperAdminDashboard.tsx
-
-import React from "react";
 import {
-  LineChart, Line, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
-import { activeUsersByRole, apiUsageData, COLORS, kpiData, recentErrors, schoolsGrowthData, uptimeData } from "../../../constants/super-admin";
-import { FaClock, FaExclamationTriangle, FaRocket, FaSchool, FaUsers } from "react-icons/fa";
-
-
+import {
+  activeUsersByRole,
+  apiUsageData,
+  COLORS,
+  kpiData,
+  recentErrors,
+  schoolsGrowthData,
+  uptimeData,
+} from "../../../constants/super-admin";
+import {
+  FaClock,
+  FaExclamationTriangle,
+  FaRocket,
+  FaSchool,
+  FaUsers,
+} from "react-icons/fa";
 
 const KpiCard = ({
   label,
@@ -18,9 +38,8 @@ const KpiCard = ({
   value: string | number;
   icon: React.ReactNode;
 }) => (
-
   <div className="bg-white rounded-2xl shadow p-4 w-full">
-      <div className="text-blue-600 text-2xl">{icon}</div>
+    <div className="text-teal-400 text-2xl">{icon}</div>
     <p className="text-sm text-gray-500">{label}</p>
     <h2 className="text-xl font-bold">{value}</h2>
   </div>
@@ -30,18 +49,33 @@ const SuperAdminDashboardOverView: React.FC = () => {
   return (
     <div className="ml-48 p-6 space-y-6">
       {/* Row: KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <KpiCard label="Total Schools" value={kpiData.totalSchools} icon={<FaSchool />} />
-          <KpiCard
-            label="Active Users"
-            value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.accountants}, HT:${kpiData.activeUsers.headTeachers}, P:${kpiData.activeUsers.parents} `}
-            icon={<FaUsers />}
-          />
-          <KpiCard label="System Uptime" value={`${kpiData.systemUptime}%`} icon={<FaClock />} />
-          <KpiCard label="Errors Today" value={kpiData.errorsToday} icon={<FaExclamationTriangle />} />
-          <KpiCard label="Avg API Time" value={`${kpiData.avgApiResponseTime}ms`} icon={<FaRocket />} />
-        </div>
-
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <KpiCard
+          label="Total Schools"
+          value={kpiData.totalSchools}
+          icon={<FaSchool />}
+        />
+        <KpiCard
+          label="Active Users"
+          value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.accountants}, HT:${kpiData.activeUsers.headTeachers}, P:${kpiData.activeUsers.parents} `}
+          icon={<FaUsers />}
+        />
+        <KpiCard
+          label="System Uptime"
+          value={`${kpiData.systemUptime}%`}
+          icon={<FaClock />}
+        />
+        <KpiCard
+          label="Errors Today"
+          value={kpiData.errorsToday}
+          icon={<FaExclamationTriangle />}
+        />
+        <KpiCard
+          label="Avg API Time"
+          value={`${kpiData.avgApiResponseTime}ms`}
+          icon={<FaRocket />}
+        />
+      </div>
 
       {/* Middle Charts Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -72,7 +106,10 @@ const SuperAdminDashboardOverView: React.FC = () => {
                 label
               >
                 {activeUsersByRole.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
                 ))}
               </Pie>
               <Tooltip />
@@ -85,7 +122,7 @@ const SuperAdminDashboardOverView: React.FC = () => {
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={uptimeData}>
               <XAxis dataKey="date" />
-              <YAxis domain={[99.90, 100]} />
+              <YAxis domain={[99.9, 100]} />
               <Tooltip />
               <Line type="monotone" dataKey="uptime" stroke="#16a34a" />
             </LineChart>
