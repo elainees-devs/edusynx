@@ -1,45 +1,37 @@
-// src/shared/layout/dashboard/sidebar.tsx
-import React from "react";
+// client/src/shared/layout/dashboard/sidebar.tsx
 import { Link, useLocation } from "react-router-dom";
 import {
   headTeacherNavItems,
   superAdminNavItems,
-
-  // teacherNavItems,
-  // accountantNavItems,
-  // guardianNavItems,
 } from "../../../constants/sidebarMenu";
-import useUserAuth from "../../../hooks/useUserAuth";
+import EduSynxLogo from "../../edusynx-logo";
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  role: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
-  const { savedUser: user } = useUserAuth();
-  const role = user?.role || "";
+  const normalizedRole = role.toLowerCase().replace(/\s+/g, "-");
 
-  // Role-based nav item map
   const navMap: Record<string, typeof superAdminNavItems> = {
     "super-admin": superAdminNavItems,
     "headteacher": headTeacherNavItems,
-    // "school-admin": schoolAdminNavItems,
-    // "teacher": teacherNavItems,
-    // "accountant": accountantNavItems,
-    // "guardian": guardianNavItems,
+    // Add more roles here
   };
 
-  const navItems = navMap[role] || [];
+  const navItems = navMap[normalizedRole] || [];
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-48 bg-white text-gray-900 shadow-lg overflow-y-auto z-50">
-      <div className="text-xl font-bold px-6 py-5 border-b border-gray-700">
-        EduSynx {role ? role.replace(/-/g, " ").toUpperCase() : ""}
-      </div>
+     <EduSynxLogo className="ml-8 text-[1rem]" />
       <nav className="mt-6">
         <ul>
           {navItems.map(({ name, icon: Icon, path }) => (
             <li key={name}>
               <Link
                 to={path}
-                className={`flex items-center px-6 py-3 hover:bg-gray-700 transition ${
+                className={`flex items-center px-6 py-3 hover:bg-teal-200 transition ${
                   location.pathname === path ? "bg-gray-700 text-white" : ""
                 }`}
               >
