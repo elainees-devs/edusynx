@@ -85,7 +85,7 @@ function App() {
           {/*head teacher menus submenus */}
           
                <Route
-            path="/dashboard/headteacher/teachers/view"
+            path="/teachers/view-teachers"
              element={<ViewTeachers/>}
           />
 
