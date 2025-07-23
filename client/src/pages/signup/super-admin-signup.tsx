@@ -68,7 +68,7 @@ const SuperAdminSignUpForm: React.FC = () => {
 
         <button
           type="submit"
-          className="block mx-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-200 hover:text-gray"
+          className="block mx-auto bg-teal-400 text-white px-4 py-2 rounded hover:bg-green-200 hover:text-gray"
         >
           Sign Up
         </button>
