@@ -1,6 +1,6 @@
 // server/src/repositories/school.repository.ts
 import { FRONTEND_BASE_URL } from "../config/config";
-import { CreateSchoolDTO } from "../dto/entity.dto";
+import { CreateSchoolDTO } from "../dto";
 import School from "../models/school.model";
 import { ISchool } from "../types";
 import { slugify } from "../utils/slugify";
