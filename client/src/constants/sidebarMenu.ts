@@ -12,11 +12,13 @@ import {
   FaClipboardList,
 } from "react-icons/fa";
 import type { IconType } from "react-icons"; 
+import { teacherNavChildren } from "./sidebar-submenu";
 
-interface NavItem {
+export interface NavItem {
   name: string;
   path: string;
   icon: IconType;
+  children?: NavItem[];
 }
 
 export const superAdminNavItems: NavItem[] = [
@@ -29,7 +31,7 @@ export const superAdminNavItems: NavItem[] = [
 
 export const headTeacherNavItems: NavItem[] = [
   { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
-  { name: "Teachers", icon: FaChalkboardTeacher, path: "/dashboard/teachers" },
+  { name: "Teachers", icon: FaChalkboardTeacher, path: "/dashboard/teachers", children: teacherNavChildren },
   { name: "Students", icon: FaUsers, path: "/dashboard/students" },
   { name: "Classes", icon: FaBook, path: "/dashboard/classes" },
   { name: "Reports", icon: FaClipboardList, path: "/dashboard/reports" },
