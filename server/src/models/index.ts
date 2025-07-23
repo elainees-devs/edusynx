@@ -4,6 +4,7 @@ export * from './user.model';
 export * from './guardian.model';
 export * from './teacher.model';
 export * from './student.model';
+export * from './stream.model';
 export * from './class.model';          
 export * from './attendance.model';
 export * from './exam.model';

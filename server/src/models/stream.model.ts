@@ -1,13 +1,9 @@
 // server/src/models/stream.ts
 import mongoose, { Schema, model, Types, Document } from "mongoose";
-import { ISchool } from "../types";
+import { ISchool, IStream } from "../types";
 
-interface IStream extends Document {
-  school: Types.ObjectId | ISchool;
-  stream: string;
-}
 
-const streamSchema = new Schema<IStream>(
+const StreamSchemaFields = new Schema<IStream>(
   {
     school: {
       type: Types.ObjectId,
@@ -21,8 +17,11 @@ const streamSchema = new Schema<IStream>(
       trim: true,
     },
   },
-  { timestamps: true }
+    {
+    timestamps: true,
+  }
+
 );
 
-const StreamModel = model<IStream>("Stream", streamSchema);
-export default StreamModel;
+
+export const StreamModel = model<IStream>('Stream', StreamSchemaFields);
