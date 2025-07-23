@@ -17,3 +17,4 @@ export { permissionRouter } from './permission.route';
 export { sessionRouter } from './session.route';
 export { eventRouter } from './event.route';
 export { resetRouter } from './password-reset.route';
+export { allocationRouter } from './allocation.route';
