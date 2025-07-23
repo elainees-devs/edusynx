@@ -6,10 +6,11 @@ import type { SendResetTokenBody } from "../../types/email/email.types";
 import { ResetPasswordForm } from "../../components/forms";
 import { sendPasswordResetEmail } from "../../api/auth";
 import { useNavigate, useParams } from "react-router-dom";
+import { HiArrowNarrowLeft } from "react-icons/hi";
 
 const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
-  const{slug} = useParams();
+  const { slug } = useParams();
   const {
     register,
     handleSubmit,
@@ -59,8 +60,9 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">Forgot Password</h1>
+    <div className="max-w-md mx-auto mt-10 p-6 border border-dashed rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-4 text-center">Forgot Password?</h1>
+      <p className="text-center text-gray">No worries! We’ll help you get back into your account.</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <ResetPasswordForm register={register} errors={errors} />
@@ -68,19 +70,20 @@ const ResetPassword: React.FC = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-200 hover:text-gray transition"
+          className="w-full bg-teal-400 text-white py-2 rounded-md hover:bg-green-200 hover:text-gray transition"
         >
-          {isSubmitting ? "Sending..." : "Send Reset Email"}
+          {isSubmitting ? "Sending..." : "Send Password Reset Email"}
         </button>
       </form>
 
       <div className="text-center mt-4">
-           <button
-      onClick={handleBackToSignIn}
-      className="text-sm text-green-600 hover:underline"
-    >
-      Back to Sign In
-    </button>
+        <button
+          onClick={handleBackToSignIn}
+          className="flex items-center justify-center gap-1 text-sm text-teal-600 hover:underline"
+        >
+          <HiArrowNarrowLeft className="text-base" />
+          Back to login
+        </button>
       </div>
     </div>
   );
