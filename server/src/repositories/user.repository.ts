@@ -1,18 +1,18 @@
 // server/src/repositories/user.repository
 import { Types } from "mongoose";
-import { CreateUserDTO } from "../dto/entity.dto";
 import { UserModel } from "../models";
 import { IBaseUser } from "../types/people/user.types";
 import bcrypt from "bcrypt";
-import { ISchool } from "../types";
 import { AppError } from "../utils/AppError";
+import { CreateUserDTO } from "../dto";
+import { normalizeSchoolId } from "../utils";
 
 export class UserRepository {
   async createUser(userData: CreateUserDTO): Promise<IBaseUser> {
     try {
       const processedData = {
         ...userData,
-        school: this.normalizeSchoolId(userData.school),
+        school:normalizeSchoolId(userData.school),
       };
 
       if (processedData.password) {
@@ -39,7 +39,7 @@ export class UserRepository {
   ): Promise<IBaseUser | null> {
     try {
       if (updates.school) {
-        updates.school = this.normalizeSchoolId(updates.school);
+        updates.school = normalizeSchoolId(updates.school);
       }
 
       return await UserModel.findByIdAndUpdate(
@@ -103,20 +103,5 @@ export class UserRepository {
         500
       );
     }
-  }
-
-  private normalizeSchoolId(
-    school: Types.ObjectId | ISchool | string
-  ): Types.ObjectId {
-    if (typeof school === "string") {
-      return new Types.ObjectId(school);
-    }
-    if (school instanceof Types.ObjectId) {
-      return school;
-    }
-    if (school && school._id) {
-      return school._id;
-    }
-    throw new AppError("Invalid school object: missing _id", 400);
   }
 }
