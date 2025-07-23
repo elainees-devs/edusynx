@@ -1,6 +1,6 @@
-import { ILoginResponseFailure, ILoginResponseSuccess } from "./auth/auth.types";
-
 // server/src/types/index.ts
+
+import { ILoginResponseFailure, ILoginResponseSuccess } from "./auth/auth.types";
 export * from "./school/school-core.types";
 export * from "./school/school-activity.types";
 export * from "./school/allocation.types"
