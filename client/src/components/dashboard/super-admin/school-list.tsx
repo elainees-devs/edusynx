@@ -113,16 +113,12 @@ useEffect(() => {
 }, [page, limit]);
 
 
-
-
-
-
   return (
-    <div className="p-4">
-      <h2 className="mt-8 mb-4 text-xl font-semibold text-center">
+    <div className="p-4 overflow-auto">
+      <h2 className="mb-4 text-xl font-semibold text-center">
         Registered Schools
       </h2>
-      <table className="min-w-full text-sm border border-gray-300 table-auto">
+      <table className="text-sm border border-gray-300 table-auto">
         <thead className="bg-gray-100">
           <tr>
             <th className="p-2 border">#</th>
@@ -194,7 +190,7 @@ useEffect(() => {
               <>
                 <button
                   onClick={() => handleSave(s._id!)}
-                  className="text-green-600 hover:underline mr-2"
+                  className="text-teal-600 hover:underline mr-2"
                 >
                   Save
                 </button>
@@ -248,7 +244,7 @@ useEffect(() => {
               className={`px-2 py-1 text-sm text-white rounded ${
                 sendingId === s._id
                   ? "bg-gray-500"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  : "bg-teal-400 hover:bg-teal-200 hover:text-gray"
               }`}
             >
               {sendingId === s._id ? "Sending..." : "Send Link"}
