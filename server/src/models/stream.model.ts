@@ -1,6 +1,6 @@
 // server/src/models/stream.ts
-import mongoose, { Schema, model, Types, Document } from "mongoose";
-import { ISchool, IStream } from "../types";
+import  { Schema, model, Types, Document } from "mongoose";
+import { IStream } from "../types";
 
 
 const StreamSchemaFields = new Schema<IStream>(
