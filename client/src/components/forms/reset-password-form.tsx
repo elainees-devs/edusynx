@@ -26,7 +26,7 @@ const ResetPasswordFormFields: React.FC<ResetPasswordFormFieldsProps> = ({
             message: "Invalid email address",
           },
         })}
-        className={`w-full border rounded px-3 py-2 ${
+        className={`w-full border border-teal-100 rounded-full px-3 py-2 ${
           errors.email ? "border-red-500" : "border-gray-300"
         }`}
       />
