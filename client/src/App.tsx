@@ -47,7 +47,7 @@ function App() {
           {/* Dashboards */}
           <Route path="/:slug/dashboard/teacher" element={<TeacherDashboard />} />
           <Route
-            path="/:slug/dashboard/headteacher"
+            path="/dashboard/headteacher"
             element={<HeadTeacherDashboard />}
           />
           <Route path="/:slug/dashboard/guardian" element={<GuardianDashboard />} />
@@ -82,10 +82,10 @@ function App() {
             path="/stream/register-stream"
             element={<RegisterStream />}
           />
-
+          {/*head teacher menus submenus */}
           
                <Route
-            path="/view-teachers"
+            path="/dashboard/headteacher/teachers/view"
              element={<ViewTeachers/>}
           />
 
