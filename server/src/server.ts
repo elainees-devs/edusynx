@@ -27,6 +27,7 @@ import {
   eventRouter,
   emailRouter,
   resetRouter,
+  allocationRouter
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -88,6 +89,7 @@ apiRouter.use("/event", eventRouter);
 apiRouter.use("/email", emailRouter);
 apiRouter.use("/super-admin", adminRouter);
 apiRouter.use("/password-reset", resetRouter);
+apiRouter.use("/allocations", allocationRouter);
 
 app.use("/api/v1", apiRouter);
 
