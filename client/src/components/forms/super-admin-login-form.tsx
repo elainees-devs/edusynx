@@ -25,9 +25,9 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-2xl p-8 space-y-6"
+      className="max-w-md mx-auto mt-10 bg-white border border-dashed shadow-lg rounded-2xl p-8 space-y-6"
     >
-      <h2 className="text-2xl font-bold text-center text-gray-800">Super Admin Login</h2>
+      <h2 className="text-2xl font-semibold text-center text-gray-800">Super Admin Login</h2>
 
       <div className="space-y-2">
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -38,7 +38,7 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
           required
         />
       </div>
@@ -52,7 +52,7 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
           required
         />
       </div>
@@ -63,14 +63,14 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}
-            className="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500"
+            className="rounded border-gray-300 text-teal-600 shadow-sm focus:ring-teal-500"
           />
           <span>Remember Me</span>
         </label>
         <button
           type="button"
           onClick={onResetPassword}
-          className="text-green-600 hover:underline focus:outline-none"
+          className="text-teal-600 hover:underline focus:outline-none"
         >
           Forgot Password?
         </button>
@@ -78,7 +78,7 @@ const SuperAdminLoginForm: React.FC<LoginFormProps> = ({
 
       <button
         type="submit"
-        className="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-blue-200 hover:text-gray transition duration-200"
+        className="w-full py-2 px-4 bg-teal-400 text-white font-semibold rounded-lg shadow hover:bg-blue-200 hover:text-gray transition duration-200"
       >
         Login
       </button>
