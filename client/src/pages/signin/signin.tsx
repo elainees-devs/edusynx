@@ -25,6 +25,7 @@ const SignIn: React.FC = () => {
     [UserRole.HEADTEACHER]: "headteacher",
     [UserRole.ACCOUNTANT]: "accountant",
     [UserRole.GUARDIAN]: "guardian",
+    "super-admin": "super-admin"
   };
   function isPopulatedSchool(school: unknown): school is { isActive: boolean } {
     return (
