@@ -19,3 +19,4 @@ export * from "./permission.controller";
 export * from "./rolePermission.controller";
 export * from "./user.controller"
 export * from "./event.controller"
+export * from "./allocation.controller"
