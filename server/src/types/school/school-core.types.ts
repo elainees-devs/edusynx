@@ -17,7 +17,7 @@ export interface ISchool extends BaseDocument {
   role: string
   accessUrl?: string
 }
-export interface Istream extends BaseDocument{
+export interface IStream extends BaseDocument{
   school: Types.ObjectId | ISchool
   stream: string
 }
