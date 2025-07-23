@@ -1,8 +1,8 @@
 // src/repositories/student.repository.ts
 import mongoose from "mongoose";
-import { CreateStudentDTO } from "../dto/entity.dto";
 import { IStudent } from "../types";
 import { ClassModel, StudentModel } from "../models";
+import { CreateStudentDTO } from "../dto";
 
 export class StudentRepository {
   // Generate next available admission number for a school
