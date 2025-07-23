@@ -6,3 +6,4 @@ export * from "./imageOptimization";
 export * from "./logger";
 export * from "./slugify";
 export * from "./userEmail"
+export * from "./normalizeSchoolId"
