@@ -19,7 +19,7 @@ export interface ISchool extends BaseDocument {
 }
 export interface IStream extends BaseDocument{
   school: Types.ObjectId | ISchool
-  stream: string
+  streamName: string
 }
 export interface IClass extends BaseDocument {
   school: Types.ObjectId | ISchool
