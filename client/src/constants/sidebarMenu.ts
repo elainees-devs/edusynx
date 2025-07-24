@@ -10,6 +10,7 @@ import {
   FaBook,
   FaUsers,
   FaClipboardList,
+  FaStream,
 } from "react-icons/fa";
 import type { IconType } from "react-icons"; 
 import { teacherNavChildren } from "./sidebar-submenu";
@@ -33,6 +34,8 @@ export const headTeacherNavItems: NavItem[] = [
   { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
   { name: "Teachers", icon: FaChalkboardTeacher, path: "/dashboard/teachers", children: teacherNavChildren },
   { name: "Students", icon: FaUsers, path: "/dashboard/students" },
+   { name: "Streams", icon: FaStream, path: "/dashboard/streams" },
+
   { name: "Classes", icon: FaBook, path: "/dashboard/classes" },
   { name: "Reports", icon: FaClipboardList, path: "/dashboard/reports" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
