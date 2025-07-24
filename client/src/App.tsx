@@ -56,7 +56,7 @@ function App() {
           <Route path="/:slug/classes" element={<ViewClass />} />
 
           {/* === Streams === */}
-          <Route path="/super-admin/streams/new" element={<RegisterStream />} />
+          <Route path="/head-teacher/streams/new" element={<RegisterStream />} />
 
           {/* === Head Teacher submenus === */}
           <Route path="/:slug/head-teacher/teachers" element={<ViewTeachers />} />
