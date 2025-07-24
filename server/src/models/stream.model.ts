@@ -10,7 +10,7 @@ const StreamSchemaFields = new Schema<IStream>(
       ref: "School",
       required: true,
     },
-    stream: {
+    streamName: {
       type: String,
       required: true,
       lowercase: true,
