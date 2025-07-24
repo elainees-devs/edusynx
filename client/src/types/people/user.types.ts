@@ -1,7 +1,7 @@
 // client/src/types/people/user.types.ts
 import type { UserRole } from "../../constants";
 import type { BaseDocument } from "../common/base.types";
-import type { IClass, ISchool } from "../school/school-core.types";
+import type { ISchool } from "../school/school-core.types";
 
 export interface IUser {
   _id?: string;
@@ -14,6 +14,7 @@ export interface IUser {
 }
 
 export interface IBaseUser extends BaseDocument {
+  id: string;
   school: string | ISchool;
   firstName: string;
   middleName: string;
@@ -33,14 +34,7 @@ export interface IBaseUser extends BaseDocument {
   role: UserRole;
 }
 
-// Teacher interface with literal role
-export interface ITeacher extends IBaseUser {
-  role: typeof UserRole.TEACHER;
-  teacherId?: string;
-  isClassTeacher?: boolean;
-  class: string | IClass;
-  teachingSubjects?: string[];
-}
+
 
 // Guardian interface with literal role
 export interface IGuardian extends IBaseUser {
