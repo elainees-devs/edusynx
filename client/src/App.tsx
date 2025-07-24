@@ -25,70 +25,44 @@ import {
   TeacherDashboard,
 } from "./pages/dashboard/";
 import GlobalStateProvider from "./context/global/useGlobalState";
-
+import ClassTeacher from "./pages/allocation/class-teacher";
 
 function App() {
   return (
-   
-<GlobalStateProvider>
+    <GlobalStateProvider>
       <Router>
         <Routes>
-          {/* HomePage, Signin, SignUp, ShoolRegister, Reset Password and New Password */}
+          {/* === Public / Authentication / Home === */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/:slug/signin" element={<SignIn />} />
-          <Route path="/:slug/signup" element={<SignUp />} />
-          <Route path="/signup/super-admin" element={<SuperAdminSignUp />} />
-           <Route path="/signin/super-admin" element={<SuperAdminSignIn />} />
-          <Route path="/register" element={<SchoolRegistrationPage />} />
+          <Route path="/:slug/sign-in" element={<SignIn />} />
+          <Route path="/:slug/sign-up" element={<SignUp />} />
+          <Route path="/super-admin/sign-up" element={<SuperAdminSignUp />} />
+          <Route path="/super-admin/sign-in" element={<SuperAdminSignIn />} />
+          <Route path="/register-school" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/new-password" element={<NewPassword/>} />
-      
+          <Route path="/new-password" element={<NewPassword />} />
 
-          {/* Dashboards */}
+          {/* === Dashboards === */}
           <Route path="/:slug/dashboard/teacher" element={<TeacherDashboard />} />
-          <Route
-            path="/dashboard/headteacher"
-            element={<HeadTeacherDashboard />}
-          />
+          <Route path="/:slug/dashboard/head-teacher" element={<HeadTeacherDashboard />} />
           <Route path="/:slug/dashboard/guardian" element={<GuardianDashboard />} />
-          <Route
-            path="/:slug/dashboard/accountant"
-            element={<AccountantDashboard />}
-          />
-          <Route
-            path="/:slug/dashboard/school-admin"
-            element={<SchoolAdminDashboard />}
-          />
-          <Route
-            path="/dashboard/super-admin"
-            element={<SuperAdminDashboard />}
-          />
-            <Route
-            path="/dashboard/schools"
-            element={<Schools />}
-          />
+          <Route path="/:slug/dashboard/accountant" element={<AccountantDashboard />} />
+          <Route path="/:slug/dashboard/school-admin" element={<SchoolAdminDashboard />} />
+          <Route path="/super-admin/dashboard" element={<SuperAdminDashboard />} />
+          <Route path="/super-admin/schools" element={<Schools />} />
 
-          {/* Class */}
-            <Route
-            path="/class/register-class"
-            element={<RegisterClass />}
-          />
-             <Route
-            path="/class/view-class"
-            element={<ViewClass />}
-          />
-          {/* Stream */}
-               <Route
-            path="/stream/register-stream"
-            element={<RegisterStream />}
-          />
-          {/*head teacher menus submenus */}
-          
-               <Route
-            path="/teachers/view-teachers"
-             element={<ViewTeachers/>}
-          />
+          {/* === Classes === */}
+          <Route path="/:slug/classes/new" element={<RegisterClass />} />
+          <Route path="/:slug/classes" element={<ViewClass />} />
 
+          {/* === Streams === */}
+          <Route path="/super-admin/streams/new" element={<RegisterStream />} />
+
+          {/* === Head Teacher submenus === */}
+          <Route path="/:slug/head-teacher/teachers" element={<ViewTeachers />} />
+
+          {/* === Allocation === */}
+          <Route path="/:slug/allocation/class-teacher" element={<ClassTeacher />} />
         </Routes>
       </Router>
     </GlobalStateProvider>
