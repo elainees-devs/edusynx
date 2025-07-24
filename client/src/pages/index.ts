@@ -12,3 +12,4 @@ export { default as RegisterClass} from './class/register-class';
 export { default as ViewClass} from './class/view-class';
 export { default as RegisterStream} from './stream/register-stream';
 export {default as ViewTeachers} from './teachers/view-teachers'
+
