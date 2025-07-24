@@ -16,15 +16,16 @@ export interface ISchool extends BaseDocument {
   accessUrl?: string;
 }
 
+
+export interface IStream extends BaseDocument{
+  school: string;
+  streamName: string
+}
 export interface IClass extends BaseDocument {
   id: string;
   ClassName: string;
   stream: string;
   academicYear: string;
-}
-export interface IStream extends BaseDocument{
-  id: string;
-  stream: string
 }
 
 export interface ISubject extends BaseDocument {
