@@ -1,5 +1,5 @@
 // server/src/repositories/stream.repository.ts
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { CreateStreamDTO } from "../dto/school-structure.dto";
 import { StreamModel } from "../models";
 import { IStream } from "../types";
@@ -63,6 +63,18 @@ class StreamRepository {
     }
   }
 
+  // Delete stream by ID
+  async deleteStreamById(id: string):Promise<IStream | null> {
+    try{
+      return await StreamModel.findByIdAndDelete(new Types.ObjectId(id)).exec()
+    }catch (error) {
+      throw new AppError(
+        `Failed to delete user with id ${id}: ${(error as Error).message}`,
+        500
+      );
+    }
+  }
+  
   // Find all streams
   async getAllStreams(): Promise<IStream[]> {
     try {
