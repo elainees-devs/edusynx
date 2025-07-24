@@ -12,6 +12,11 @@ export interface PaginatedSchoolResponse {
   schools: ISchool[];
 }
 
+export const getSchoolById = async (id: string): Promise<ISchool> => {
+  const response = await axios.get(`${API_BASE}/school/${id}`);
+  return response.data;
+};
+
 
 export const registerSchool = async (data: ISchool) => {
   try {
