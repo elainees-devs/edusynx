@@ -14,10 +14,11 @@ export class StreamController {
 
   // POST /api/streams
   createStream = handleAsync<{}, any, any>(async (req, res) => {
-    const { school, streamName } = req.body;
+    const { school, streamName, academicYear } = req.body;
 
     const newStream = await this.streamRepo.createStream({
-      streamName,
+     streamName,
+     academicYear,
       school: typeof school === "string" ? new mongoose.Types.ObjectId(school) : school,
     });
 
