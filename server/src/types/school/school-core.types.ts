@@ -1,7 +1,6 @@
 // server/src/types/school/school-core.types.ts
-import mongoose, { Types } from "mongoose";
+import { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
-import { IBaseUser } from "../people/user.types";
 
 export interface ISchool extends BaseDocument {
   name: string
@@ -20,22 +19,12 @@ export interface ISchool extends BaseDocument {
 export interface IStream extends BaseDocument{
   school: Types.ObjectId | ISchool
   streamName: string
+  academicYear: string
 }
 export interface IClass extends BaseDocument {
   school: Types.ObjectId | ISchool
-  className: string
-  stream: string
+  grade: string
+  stream: Types.ObjectId | IStream
   academicYear: string
 }
 
-export interface ISubject extends BaseDocument {
-  school: Types.ObjectId | ISchool
-  subjectName: string
-  classRef: Types.ObjectId | IClass
-}
-
-export interface ITeacherSubject extends BaseDocument {
-  school: Types.ObjectId | ISchool;
-  teacherId: Types.ObjectId | IBaseUser
-  subjectId: Types.ObjectId | ISubject
-}
