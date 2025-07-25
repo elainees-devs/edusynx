@@ -1,6 +1,4 @@
 // server/src/controllers/stream.controller.ts
-
-import mongoose from "mongoose";
 import { handleAsync } from "../utils/handleAsync";
 import { AppError } from "../utils/AppError";
 import StreamRepository from "../repositories/stream.repository";
