@@ -127,4 +127,4 @@ departmentRouter.delete('/:id', departmentController.deleteDepartment); // Fixed
  */
 departmentRouter.delete('/', departmentController.deleteAllDepartments);
 
-export default departmentRouter;
+export {departmentRouter};
