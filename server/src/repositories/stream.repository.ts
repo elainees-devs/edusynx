@@ -53,11 +53,23 @@ class StreamRepository {
   async findStreamById(id: string): Promise<IStream | null> {
     try {
       return await StreamModel.findById(new Types.ObjectId(id))
-        .populate("school", "stream")
+        .populate("school", "name")
         .exec();
     } catch (error) {
       throw new AppError(
         `Failed to find user with id ${id}: ${(error as Error).message}`,
+        500
+      );
+    }
+  }
+
+  // Get all streams for a specific school
+  async findBySchool(schoolId: string): Promise<IStream[]> {
+    try {
+      return await StreamModel.find({ school: schoolId }).exec();
+    } catch (error) {
+      throw new AppError(
+        `Failed to fetch streams for school ${schoolId}: ${(error as Error).message}`,
         500
       );
     }
