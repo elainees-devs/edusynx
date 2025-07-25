@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { handleAsync } from "../utils/handleAsync";
 import { AppError } from "../utils/AppError";
 import StreamRepository from "../repositories/stream.repository";
+import { normalizeSchoolId } from "../utils";
 // import redisClient from "../redisClient"; // Uncomment if using Redis for caching
 
 /**
@@ -21,18 +22,17 @@ export class StreamController {
    * Create a new stream
    * 
    */
-  createStream = handleAsync<{}, any, any>(async (req, res) => {
-    const { school, streamName, academicYear } = req.body;
+ createStream = handleAsync<{}, any, any>(async (req, res) => {
+  const { school, streamName, academicYear } = req.body;
 
-    // Convert school to ObjectId if it's a string
-    const newStream = await this.streamRepo.createStream({
-      streamName,
-      academicYear,
-      school: typeof school === "string" ? new mongoose.Types.ObjectId(school) : school,
-    });
-
-    res.status(201).json(newStream);
+  const newStream = await this.streamRepo.createStream({
+    streamName,
+    academicYear,
+    school: normalizeSchoolId(school),
   });
+
+  res.status(201).json(newStream);
+});
 
   /**
    * Get all streams belonging to a specific school
