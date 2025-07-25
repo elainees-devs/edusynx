@@ -5,46 +5,26 @@ import { registerStream } from "../../api/stream.api";
 import Swal from "sweetalert2";
 import Sidebar from "../../shared/layout/dashboard/sidebar";
 import Topbar from "../../shared/layout/dashboard/topbar";
+import { getSchoolId } from "../../utils/getSchoolId";
 
-// Type guard to check if the school is a populated object
-function isPopulatedSchool(school: unknown): school is { _id: string; isActive: boolean } {
-  return (
-    typeof school === "object" &&
-    school !== null &&
-    "_id" in school
-  );
-}
 
 const RegisterStream: React.FC = () => {
   const { state } = useGlobalState();
 
-  const user = state.loggedInUser as
-    | { role: string; school?: string | { _id: string; isActive: boolean } }
-    | undefined;
+const user = state.loggedInUser as
+  | { role: string; school?: string | { _id: string; isActive: boolean } }
+  | undefined;
 
-  const isSuperAdmin = user?.role === "super-admin";
+const schoolId = getSchoolId(user);
 
-  // Safely get schoolId using type guard
-  let schoolId: string | null = null;
-
-  if (!isSuperAdmin) {
-    const school = user?.school;
-
-    if (typeof school === "string") {
-      schoolId = school;
-    } else if (isPopulatedSchool(school)) {
-      schoolId = school._id;
-    }
-  }
-
-  // 🧠 If schoolId is missing, return an error message
-  if (!schoolId) {
-    return (
-      <div className="p-6 text-red-600">
-        Unable to load school ID. Please log in again or contact support.
-      </div>
-    );
-  }
+// If schoolId is missing, show an error
+if (!schoolId) {
+  return (
+    <div className="p-6 text-red-600">
+      Unable to load school ID. Please log in again or contact support.
+    </div>
+  );
+}
 
   // Form submission handler
   const handleStreamSubmit = async (data: { streamName: string; school: string }) => {
