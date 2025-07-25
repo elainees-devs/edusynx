@@ -52,7 +52,7 @@ function App() {
           <Route path="/super-admin/schools" element={<Schools />} />
 
           {/* === Classes === */}
-          <Route path="/:slug/classes/new" element={<RegisterClass />} />
+          <Route path="/head-teacher/class/new" element={<RegisterClass />} />
           <Route path="/:slug/classes" element={<ViewClass />} />
 
           {/* === Streams === */}
