@@ -36,7 +36,7 @@ export const headTeacherNavItems: NavItem[] = [
   { name: "Students", icon: FaUsers, path: "/dashboard/students" },
    { name: "Streams", icon: FaStream, path: "/dashboard/streams" },
 
-  { name: "Classes", icon: FaBook, path: "/dashboard/classes" },
+  { name: "Classes", icon: FaBook, path: "/head-teacher/class/new" },
   { name: "Reports", icon: FaClipboardList, path: "/dashboard/reports" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
