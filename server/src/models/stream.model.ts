@@ -16,6 +16,12 @@ const StreamSchemaFields = new Schema<IStream>(
       lowercase: true,
       trim: true,
     },
+      academicYear: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
   },
     {
     timestamps: true,
