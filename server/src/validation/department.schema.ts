@@ -8,3 +8,5 @@ export const createDepartmentSchema = z.object({
     school: objectId,
     departmentName: z.string().min(3)
 })
+
+export const updateDepartmentSchema = createDepartmentSchema.partial();
