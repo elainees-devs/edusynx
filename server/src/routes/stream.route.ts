@@ -1,4 +1,4 @@
-// server/src/roytes/stream.route.ts
+// server/src/routes/stream.route.ts
 import { Router } from "express";
 import { createStreamSchema, updateStreamSchema } from "../validation/stream.schema";
 import { validate } from "../middlewares/validate";
@@ -48,6 +48,37 @@ streamRouter.post('/', validate(createStreamSchema), streamController.createStre
  *         description: Stream not found
  */
 streamRouter.get('/:id', streamController.findStreamById);
+
+/**
+ * @swagger
+ * /api/streams/school/{schoolId}:
+ *   get:
+ *     summary: Get all streams for a specific school
+ *     tags: [Streams]
+ *     parameters:
+ *       - in: path
+ *         name: schoolId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the school
+ *     responses:
+ *       200:
+ *         description: A list of streams
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Stream'
+ *       400:
+ *         description: Invalid school ID
+ *       500:
+ *         description: Server error
+ */
+streamRouter.get("/school/:schoolId", streamController.getStreamsBySchool);
+
+
 
 /**
  * @openapi
