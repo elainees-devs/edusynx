@@ -12,6 +12,7 @@ export class StreamController {
     this.streamRepo = new StreamRepository();
   }
 
+  // POST /api/streams
   createStream = handleAsync<{}, any, any>(async (req, res) => {
     const { school, streamName } = req.body;
 
@@ -23,11 +24,25 @@ export class StreamController {
     res.status(201).json(newStream);
   });
 
+  // GET /api/streams/school/:schoolId
+  getStreamsBySchool = handleAsync<{ schoolId: string }>(async (req, res) => {
+    const { schoolId } = req.params;
+    const streams = await this.streamRepo.findBySchool(schoolId);
+
+    if (!streams || streams.length === 0) {
+      throw new AppError("No streams found for this school", 404);
+    }
+
+    res.status(200).json({ success: true, streams });
+  });
+
+  // GET /api/streams
   getAllStreams = handleAsync(async (_req, res) => {
     const streams = await this.streamRepo.getAllStreams();
     res.json(streams);
   });
 
+  // GET /api/streams/:id
   findStreamById = handleAsync<{ id: string }>(async (req, res) => {
     const stream = await this.streamRepo.findStreamById(req.params.id);
 
@@ -38,6 +53,7 @@ export class StreamController {
     res.status(200).json(stream);
   });
 
+  // PUT /api/streams/:id
   updateStreamById = handleAsync<{ id: string }, any, Partial<any>>(async (req, res) => {
     const updatedStream = await this.streamRepo.updateStreamById(req.params.id, req.body);
 
@@ -49,6 +65,7 @@ export class StreamController {
     res.json(updatedStream);
   });
 
+  // DELETE /api/streams/:id
   deleteStreamById = handleAsync<{ id: string }>(async (req, res) => {
     const deletedStream = await this.streamRepo.deleteStreamById(req.params.id);
 
@@ -60,6 +77,7 @@ export class StreamController {
     res.status(204).send();
   });
 
+  // DELETE /api/streams
   deleteAllStreams = handleAsync(async (_req, res) => {
     await this.streamRepo.deleteAllStreams();
     res.status(204).send();
