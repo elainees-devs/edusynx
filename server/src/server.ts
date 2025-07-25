@@ -28,7 +28,8 @@ import {
   emailRouter,
   resetRouter,
   allocationRouter,
-  streamRouter
+  streamRouter,
+  departmentRouter
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -74,6 +75,7 @@ apiRouter.use("/users", userRouter);
 apiRouter.use("/school", schoolRouter);
 app.get("/:slug/signup", schoolController.getSchoolBySlug);
 apiRouter.use("/class", classRouter);
+apiRouter.use("/department", departmentRouter);
 apiRouter.use("/student", studentRouter);
 apiRouter.use("/auth", loginRouter);
 apiRouter.use("/exam", examRouter);
