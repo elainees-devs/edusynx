@@ -1,78 +1,93 @@
-// client/src/components/forms/register-class-form.tsx
+// client/src/components/forms/RegisterClassForm.tsx
 import React from "react";
-import { classOptions } from "../../constants/class-options";
+import { useForm } from "react-hook-form";
 import type { IClass } from "../../types";
-import type { UseFormRegister } from "react-hook-form";
+import { classOptions } from "../../constants/class-options";
 
-interface RegisterClassFormProps {
-  register: UseFormRegister<IClass>;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
 
-const RegisterClassForm: React.FC<RegisterClassFormProps> = ({ register, onSubmit }) => {
+type Props = {
+  onSubmit: (data: IClass) => void;
+  schoolId: string;
+  streams: { value: string; label: string }[];
+};
+
+const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<IClass>();
+
+  const submitHandler = (data: IClass) => {
+    const payload = { ...data, school: schoolId };
+    onSubmit(payload);
+    reset(); // Optional
+  };
+
   return (
-    <form
-      onSubmit={onSubmit}
-      className="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-2xl p-8 space-y-6"
-    >
-      <h2 className="text-2xl font-bold text-center text-gray-800">
-        Register Class
-      </h2>
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6 max-w-md mx-auto bg-white p-6 rounded shadow">
+      <h2 className="text-xl font-bold text-center">Register New Class</h2>
 
-      {/* Class Name Dropdown */}
-      <div className="space-y-2">
-        <label htmlFor="ClassName" className="block text-sm font-medium text-gray-700">
-          Class Name
-        </label>
+      {/* Grade/Class Name Select */}
+      <div>
+        <label htmlFor="grade" className="block font-medium">Grade/Class Name</label>
         <select
-          id="ClassName"
-          {...register("ClassName", { required: true })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-          required
+          id="grade"
+          {...register("grade", { required: "Grade is required" })}
+          className="border p-2 rounded w-full"
         >
           <option value="">Select a class</option>
           {classOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
+            <option key={option} value={option}>{option}</option>
           ))}
         </select>
-      </div>
-
-      {/* Stream Input */}
-      <div className="space-y-2">
-        <label htmlFor="stream" className="block text-sm font-medium text-gray-700">
-          Stream
-        </label>
-        <input
-          id="stream"
-          type="text"
-          placeholder="e.g. Science, Arts, etc."
-          {...register("stream", { required: true })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
+        {errors.grade && (
+          <p className="text-red-500 text-sm">{errors.grade.message}</p>
+        )}
       </div>
 
       {/* Academic Year Input */}
-      <div className="space-y-2">
-        <label htmlFor="academicYear" className="block text-sm font-medium text-gray-700">
-          Academic Year
-        </label>
+      <div>
+        <label htmlFor="academicYear" className="block font-medium">Academic Year</label>
         <input
-          id="academicYear"
           type="text"
-          placeholder="e.g. 2023-2024"
-          {...register("academicYear", { required: true })}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          id="academicYear"
+          {...register("academicYear", { required: "Academic year is required" })}
+          className="border p-2 rounded w-full"
         />
+        {errors.academicYear && (
+          <p className="text-red-500 text-sm">{errors.academicYear.message}</p>
+        )}
+      </div>
+
+      {/* Stream Select */}
+      <div>
+        <label htmlFor="stream" className="block font-medium">Stream</label>
+        <select
+          id="stream"
+          {...register("stream", { required: "Stream is required" })}
+          className="border p-2 rounded w-full"
+        >
+          <option value="">Select a stream</option>
+          {streams.map((stream) => (
+            <option key={stream.value} value={stream.value}>
+              {stream.label}
+            </option>
+          ))}
+        </select>
+        {errors.stream && (
+          <p className="text-red-500 text-sm">{errors.stream.message}</p>
+        )}
       </div>
 
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-blue-200 hover:text-gray transition duration-200"
+        disabled={isSubmitting}
+        className="bg-teal-400 text-white px-4 py-2 rounded hover:bg-teal-200 hover:text-gray w-full"
       >
-        Submit
+        {isSubmitting ? "Registering..." : "Register Class"}
       </button>
     </form>
   );
