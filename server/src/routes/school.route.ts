@@ -46,14 +46,24 @@ schoolRouter.post(
  * @swagger
  * /api/schools:
  *   get:
- *     summary: Get all registered schools
+ *     summary: Get all registered schools (paginated)
  *     tags: [Schools]
  *     responses:
  *       200:
  *         description: List of all schools
  */
-
 schoolRouter.get("/", schoolController.getPaginatedSchools);
+
+/**
+ * @swagger
+ * /api/schools/all:
+ *   get:
+ *     summary: Get all schools without pagination
+ *     tags: [Schools]
+ *     responses:
+ *       200:
+ *         description: List of all schools without pagination
+ */
 schoolRouter.get("/", schoolController.getAllSchools);
 
 /**
@@ -163,5 +173,41 @@ schoolRouter.delete("/", schoolController.deleteAllSchools);
  *         description: School not found
  */
 schoolRouter.get("/:id", validateObjectId("id"), schoolController.getSchoolById);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Schools
+ *   description: School management endpoints
+ */
+
+/**
+ * @swagger
+ * /api/school/{slug}:
+ *   get:
+ *     summary: Get school by slug
+ *     tags: [Schools]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Unique slug of the school
+ *     responses:
+ *       200:
+ *         description: School found successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/School'
+ *       404:
+ *         description: School not found or inactive
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+schoolRouter.get("/:slug", schoolController.getSchoolBySlug);
 
 export { schoolRouter };
