@@ -19,3 +19,4 @@ export { eventRouter } from './event.route';
 export { resetRouter } from './password-reset.route';
 export { streamRouter } from './stream.route';
 export { allocationRouter } from './allocation.route';
+export {departmentRouter} from './department.route'
