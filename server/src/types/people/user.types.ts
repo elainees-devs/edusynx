@@ -25,13 +25,9 @@ export interface IBaseUser extends BaseDocument {
 }
 
 // Teacher interface with literal role
-export interface ITeacher extends IBaseUser {
-  role: UserRole.TEACHER;
-  teacherId?: string;
-  isClassTeacher?: boolean;
-  class: Types.ObjectId | IClass;
-  teachingSubjects?: string[];
-}
+export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
+  role: typeof UserRole["TEACHER"];
+};
 
 // Guardian interface with literal role
 export interface IGuardian extends IBaseUser {
