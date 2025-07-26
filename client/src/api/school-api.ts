@@ -40,6 +40,16 @@ export const registerSchool = async (data: ISchool) => {
   }
 };
 
+/**
+ * Fetches a school document by slug.
+ * @param slug - The unique slug used in the signup URL.
+ * @returns A Promise that resolves to a school object.
+ */
+export const getSchoolBySlug = async (slug: string): Promise<ISchool> => {
+  const response = await axios.get(`${API_BASE}/school/slug/${slug}`);
+  return response.data;
+};
+
 export const fetchSchools = async (
   page: number = 1,
   limit: number = 10
