@@ -25,3 +25,26 @@ export const registerClass = async (data: IClass) => {
     throw { message: 'An unknown error occurred' };
   }
 };
+
+// Get classes by dynamic filter: schoolId (required), academicYear (optional)
+export const getClassesByFilter = async (
+  schoolId: string,
+  academicYear?: string
+): Promise<IClass[]> => {
+  try {
+    const url = new URL(`${API_BASE}/class/school/${schoolId}`);
+    if (academicYear) {
+      url.searchParams.append("academicYear", academicYear);
+    }
+
+    const response = await axios.get(url.toString());
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching classes:", error.response?.data);
+      throw error.response?.data || { message: 'Failed to fetch classes' };
+    }
+
+    throw { message: 'An unknown error occurred while fetching classes' };
+  }
+};
