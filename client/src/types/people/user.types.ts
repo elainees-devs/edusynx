@@ -1,20 +1,11 @@
 // client/src/types/people/user.types.ts
 import type { UserRole } from "../../constants";
 import type { BaseDocument } from "../common/base.types";
+import type { IDepartment } from "../school/academic.types";
 import type { ISchool } from "../school/school-core.types";
 
-export interface IUser {
-  _id?: string;
-  email: string;
-  fullName: string;
-  password: string;
-  role: UserRole;
-  school: string;
-  isActive: boolean;
-}
 
 export interface IBaseUser extends BaseDocument {
-  id: string;
   school: string | ISchool;
   firstName: string;
   middleName: string;
@@ -26,7 +17,7 @@ export interface IBaseUser extends BaseDocument {
   password: string;
   nationality: string;
   avatarUrl?: string;
-  isActive: boolean;
+  isActive?: boolean;
   lastLogin?: Date;
   isLocked: boolean;
   passwordChangedAt?: Date;
@@ -35,8 +26,11 @@ export interface IBaseUser extends BaseDocument {
 }
 
 export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
-  role: typeof UserRole["TEACHER"];
-};
+   role: typeof UserRole.TEACHER;
+  isClassTeacher?:boolean
+  department?: string |IDepartment
+  isHeadOfDepartment?:boolean
+}
 
 // Guardian interface with literal role
 export interface IGuardian extends IBaseUser {
