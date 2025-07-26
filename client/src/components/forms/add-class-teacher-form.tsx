@@ -26,7 +26,7 @@ const ClassTeacherForm: React.FC<Props> = ({ teachers, existingAllocations, onAl
   useEffect(() => {
     if (watchSearch?.trim()) {
       const filtered = teachers.filter((t) =>
-        t.name.toLowerCase().includes(watchSearch.toLowerCase())
+        t.firstName.toLowerCase().includes(watchSearch.toLowerCase())
       );
       setSearchResults(filtered);
     } else {
@@ -120,14 +120,14 @@ const ClassTeacherForm: React.FC<Props> = ({ teachers, existingAllocations, onAl
                 className="p-2 hover:bg-gray-200 cursor-pointer"
                 onClick={() => handleTeacherSelect(t)}
               >
-                {t.name}
+                {t.firstName}{t.middleName}{t.lastName}
               </li>
             ))}
           </ul>
         )}
         {selectedTeacher && (
           <p className="text-sm text-green-600 mt-1">
-            Selected: {selectedTeacher.name}
+            Selected: {selectedTeacher.firstName}
           </p>
         )}
       </div>
