@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import type { ITeacherPersonalDetails } from "../../types";
+
 import SearchBar from "../../shared/layout/ui/SearchBar";
+import type { Teacher } from "../../types/school/allocation";
 
 
 export interface TeacherDetailsProps {
-  teachers: ITeacherPersonalDetails[];
+  teachers: Teacher[];
   onEdit: (teacherId: string) => void;
   onToggleStatus: (teacherId: string) => void;
 }
@@ -20,7 +21,10 @@ const ViewTeachersDetails: React.FC<TeacherDetailsProps> = ({
   const handleSort = () => setSortAsc((prev) => !prev);
 
   const filteredTeachers = teachers.filter((teacher) =>
-    teacher.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+    (`${teacher.firstName} ${teacher.middleName} ${teacher.lastName}`)
+  .toLowerCase()
+  .includes(searchTerm.toLowerCase())
+
   );
 
   const sortedTeachers = [...filteredTeachers].sort((a, b) => {
