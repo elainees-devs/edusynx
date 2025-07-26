@@ -1,6 +1,6 @@
 // src/middleware/tenant.middleware.ts
 import { Request, Response, NextFunction } from "express";
-import { SchoolRepository } from "../repositories/school.repository";
+import { SchoolRepository } from "../repositories/school-core/school.repository";
 
 const schoolRepo = new SchoolRepository();
 
