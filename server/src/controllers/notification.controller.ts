@@ -1,5 +1,5 @@
-// src/controllers/notification.controller.ts
-import { NotificationRepository } from "../repositories/notification.repository";
+// server/src/controllers/notification.controller.ts
+import { NotificationRepository } from "../repositories";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
 
