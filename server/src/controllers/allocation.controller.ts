@@ -1,9 +1,9 @@
 // server/controllers/allocation.controller.ts
 import { Types } from "mongoose";
-import { AllocationRepository } from "../repositories/allocation.repository";
 import { ISchoolAllocation } from "../types";
 import { AppError, handleAsync } from "../utils";
 import { SchoolAllocationSchema } from "../validation/allocation.schema";
+import { AllocationRepository } from "../repositories";
 
 const allocationRepo = new AllocationRepository();
 
