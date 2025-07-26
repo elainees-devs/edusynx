@@ -1,5 +1,5 @@
-//src/controllers/event.controller.ts
-import { EventRepository } from "../repositories/event.repository";
+// server/src/controllers/event.controller.ts
+import { EventRepository } from "../repositories";
 import { AppError } from "../utils/AppError";
 import { handleAsync } from "../utils/handleAsync";
 
