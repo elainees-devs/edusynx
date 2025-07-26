@@ -1,4 +1,4 @@
-//src/models/counter.model.ts
+// server/src/models/counter.model.ts
 import { Schema, model, Types } from "mongoose";
 import { IInvoiceCounter } from "../types/finance/counter.types";
 
