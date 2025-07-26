@@ -4,7 +4,7 @@ import SignUpProvider from '../../context/signup/SignUpProvider';
 
 const SignUp = () => {
   return (
-    <div className="min-h-screen bg-light">
+    <div className="h-full">
       <SignUpProvider>
         <SignUpStepper />
       </SignUpProvider>
