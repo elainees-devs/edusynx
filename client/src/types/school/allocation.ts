@@ -1,18 +1,21 @@
 // client/src/types/school/allocation.ts
-export interface SubjectAllocation {
-  subjectName: string;
-  teachers: string[]; // teachers assigned to this subject
-  headOfSubject?: string; // optional
-}
+import type { IBaseUser } from "../people/user.types";
 
-export interface ClassAllocation {
-  className: string;
-  classTeacher?: string; // main teacher for the class
-  subjects: SubjectAllocation[];
-  // RULE: classTeacher (if set) must appear in at least one of the subjects.teachers
-}
 
-export interface SchoolAllocation {
-  classes: ClassAllocation[];
-  headsOfSubjects: Record<string, string>;
-}
+export type Teacher = Pick<
+  IBaseUser,
+  "firstName"|"middleName"| "lastName"|"primaryPhoneNumber" | "secondaryPhoneNumber" | "email"
+> & {
+  id: string
+  isActive: boolean
+};
+
+
+export type ClassAllocation = {
+  id: number
+  className: string
+  stream: string
+  teacher: Teacher
+};
+
+
