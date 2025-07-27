@@ -34,7 +34,6 @@ import {
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
 
-
 configDotenv();
 
 const app = express();
