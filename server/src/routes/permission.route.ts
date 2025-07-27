@@ -1,6 +1,6 @@
 // server/src/routes/permission.route.ts
 import { Router } from "express";
-import { PermissionController } from "../controllers/permission.controller";
+import { PermissionController } from "../controllers/permissions/permission.controller";
 
 const permissionRouter = Router();
 const permissionController = new PermissionController();
