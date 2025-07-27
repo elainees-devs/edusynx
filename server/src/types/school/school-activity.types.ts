@@ -5,7 +5,8 @@ import { BaseDocument } from "../common/base.types";
 import { IStudent } from "../people/student.types";
 import { IBaseUser } from "../people/user.types";
 import { Term, ExamType, AttendanceStatus } from "../enum/enum";
-import { ISchool, IClass, ISubject } from "./school-core.types";
+import { ISchool, IClass } from "./school-core.types";
+import { ISubject } from "./academic.types";
 
 export interface IExam extends BaseDocument {
   school: Types.ObjectId | ISchool;
