@@ -7,3 +7,4 @@ export * from "./logger";
 export * from "./slugify";
 export * from "./userEmail"
 export * from "./normalizeSchoolId"
+export * from "./generateTeacherId"
