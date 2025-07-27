@@ -20,6 +20,7 @@ const baseUserSchema = z.object({
   isLocked: z.boolean().default(false),
   passwordChangedAt: z.coerce.date().optional(),
   isTwoFactorEnabled: z.boolean().default(false),
+  classId: z.string().optional(), 
 }).strict(); // Add strict() to prevent extra properties
 
 // Teacher schema
@@ -27,8 +28,7 @@ const teacherSchema = baseUserSchema.extend({
   role: z.literal("teacher"), 
   teacherId: z.string().optional(),
   isClassTeacher: z.boolean().optional(),
-  class: objectId.optional(),
-  teachingSubjects: z.array(z.string()).optional(),
+  assignedClass: z.string().optional(),
 });
 
 // Guardian schema
