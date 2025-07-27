@@ -1,6 +1,6 @@
 // server/src/routes/feePayment.route.ts
 import { Router } from "express";
-import { FeePaymentController } from "../controllers/feePayment.controller";
+import { FeePaymentController } from "../controllers/finance/feePayment.controller";
 
 const feePaymentRouter = Router();
 const feePaymentController = new FeePaymentController();
