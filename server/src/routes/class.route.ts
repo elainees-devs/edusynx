@@ -63,7 +63,7 @@ classRouter.get("/", classController.getAllClasses);
  *       200:
  *         description: Classes found for the given school
  */
-classRouter.get("/school/:schoolId", classController.getClassesBySchoolId);
+classRouter.get("/school/:schoolId", classController.getClassesByFilter);
 
 /**
  * @swagger
