@@ -1,6 +1,6 @@
 // server/src/routes/fee.route.ts
 import { Router } from "express";
-import { FeeController } from "../controllers/fee.controller";
+import { FeeController } from "../controllers/finance/fee.controller";
 import { createFeeSchema, updateFeeSchema } from "../validation/fee.schema";
 import { validate } from "../middlewares/validate";
 
