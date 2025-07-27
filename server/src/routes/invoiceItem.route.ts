@@ -1,6 +1,6 @@
 // server/src/routes/invoiceItem.routes.ts
 import { Router } from "express";
-import { InvoiceItemController } from "../controllers/invoiceItem.controller";
+import { InvoiceItemController } from "../controllers/finance/invoiceItem.controller";
 import { validate } from "../middlewares/validate";
 import { createInvoiceItemSchema, updateInvoiceItemSchema } from "../validation/invoiceItem.schema";
 
