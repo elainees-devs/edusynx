@@ -1,6 +1,7 @@
 //src/models/teacherSubject.model.ts
 import { Schema, Types, model } from "mongoose";
-import { ITeacherSubject } from "../types/school/school-core.types";
+import { ITeacherSubject } from "../types";
+
 
 const teacherSubjectSchema = new Schema<ITeacherSubject>(
   {
