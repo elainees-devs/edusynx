@@ -208,6 +208,6 @@ schoolRouter.get("/:id", validateObjectId("id"), schoolController.getSchoolById)
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-schoolRouter.get("/:slug", schoolController.getSchoolBySlug);
+schoolRouter.get("/slug/:slug", schoolController.getSchoolBySlug);
 
 export { schoolRouter };
