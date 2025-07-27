@@ -1,6 +1,6 @@
 // server/src/utils/getUserEmail.ts
 import { UserModel } from "../models";
-import { SuperAdminModel } from "../models/super-admin.model";
+import { SuperAdminModel } from "../models/people/super-admin.model";
 
 export async function getUserEmail(userId?: string, superAdminId?: string): Promise<string | null> {
   if (userId) {
