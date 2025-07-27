@@ -1,6 +1,6 @@
 // server/src/routes/password-reset.route.ts
 import express from "express";
-import { PasswordResetTokenController } from "../controllers/password-reset.controller";
+import { PasswordResetTokenController } from "../controllers/security/password-reset.controller";
 
 const resetRouter = express.Router();
 const controller = new PasswordResetTokenController();
