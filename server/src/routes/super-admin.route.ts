@@ -1,6 +1,6 @@
 // server/src/routes/super-admin.route.ts
 import { Router } from "express";
-import { SuperAdminController } from "../controllers/super-admin.controller";
+import { SuperAdminController } from "../controllers/people/super-admin.controller";
 
 const adminRouter = Router();
 const superAdminController = new SuperAdminController();
