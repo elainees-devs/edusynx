@@ -1,5 +1,5 @@
-//src/models/event.model.ts
-import { Schema, model, Types } from 'mongoose';
+// server/src/models/event.model.ts
+import { Schema, model} from 'mongoose';
 import { IEvent } from '../types/school/school-activity.types'; 
 
 const eventSchema = new Schema<IEvent>(
