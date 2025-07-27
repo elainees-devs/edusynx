@@ -2,9 +2,14 @@
 
 import { ILoginResponseFailure, ILoginResponseSuccess } from "./auth/auth.types";
 export * from "./school/school-core.types";
+export * from "./school/academic.types"
 export * from "./school/school-activity.types";
 export * from "./school/allocation.types"
 export * from "./people/user.types";
+export * from "./security/login.types"
+export * from "./security/session.types"
+export * from "./security/permission.types"
+export * from "./security/role.types"
 export * from "./people/student.types";
 export * from "./finance/finance.types";
 export * from "./enum/enum";
