@@ -1,6 +1,6 @@
-//src/models/notification.model.ts
-import { Schema, model, Types } from 'mongoose';
-import { INotification } from '../types/school/school-activity.types'; // Adjust import path as needed
+// server/src/models/notification.model.ts
+import { Schema, model} from 'mongoose';
+import { INotification } from '../types/school/school-activity.types'; 
 
 const notificationSchema = new Schema<INotification>(
   {
