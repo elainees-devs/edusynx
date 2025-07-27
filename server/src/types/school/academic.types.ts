@@ -7,8 +7,8 @@ import { IBaseUser, ITeacher } from "../people/user.types";
 export interface IDepartment{
   school: string | ISchool
   departmentName: string;
-  headOfDepartment?:string | ITeacher
-  teachers?: string | ITeacher[]
+  headOfDepartment?: (Types.ObjectId | ITeacher)[]
+   teachers?: (Types.ObjectId | ITeacher)[]
 }
 export interface ISubject extends BaseDocument {
   school: Types.ObjectId | ISchool
@@ -17,7 +17,7 @@ export interface ISubject extends BaseDocument {
 }
 
 export interface ITeacherSubject extends BaseDocument {
-  school: Types.ObjectId | ISchool;
+  school: Types.ObjectId | ISchool
   teacherId: Types.ObjectId | IBaseUser
   subjectId: Types.ObjectId | ISubject
 }
