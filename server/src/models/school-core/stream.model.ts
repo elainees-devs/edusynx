@@ -29,5 +29,14 @@ const StreamSchemaFields = new Schema<IStream>(
 
 );
 
+// Add indexes
+StreamSchemaFields.index({ school: 1 });
+StreamSchemaFields.index({ streamName: 1 });
+StreamSchemaFields.index({ academicYear: 1 });
+
+// Optional: compound index for filtering by school and academic year
+StreamSchemaFields.index({ school: 1, academicYear: 1 });
 
 export const StreamModel = model<IStream>('Stream', StreamSchemaFields);
+
+
