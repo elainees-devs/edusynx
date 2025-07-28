@@ -31,6 +31,12 @@ const SchoolSchema: Schema = new Schema<ISchool>(
   }
 );
 
+// Indexes
+SchoolSchema.index({ schoolCode: 1 }, { unique: true });
+SchoolSchema.index({ slug: 1 }, { unique: true });
+SchoolSchema.index({ accessUrl: 1 });
+SchoolSchema.index({ isActive: 1 });
+
 // Create the model
 const SchoolModel = model<ISchool>("School", SchoolSchema);
 
