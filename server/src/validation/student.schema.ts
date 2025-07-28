@@ -15,8 +15,11 @@ export const createStudentSchema = z.object({
   previousSchool: z.string().optional(),
   guardian: objectId,
   classId: objectId,
+  stream: objectId,
   status: z.nativeEnum(StudentStatus),
   studentId: z.string().optional(),
+  studentPhotoUrl: z.string().url().optional(),
+  familyNumber: z.number().int().optional(),
 });
 
-export const updateStudentSchema = createStudentSchema.partial();    
+export const updateStudentSchema = createStudentSchema.partial();
