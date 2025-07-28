@@ -4,6 +4,7 @@ import { IClass, ISchool } from "../school/school-core.types";
 import { UserRole } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 import { IDepartment } from "../school/academic.types";
+import { IStudent } from "./student.types";
 
 export interface IBaseUser extends BaseDocument {
   school: Types.ObjectId | ISchool
@@ -40,6 +41,13 @@ export interface IGuardian extends IBaseUser {
   role: UserRole.GUARDIAN
   familyNumber: number
 }
+export interface IFamily {
+  familyNumber: number;
+  guardians: (Types.ObjectId | IGuardian)[];
+  students: (Types.ObjectId | IStudent)[];
+  address?: string;
+}
+
 // SuperAdmin interface with literal role
 export interface ISuperAdmin extends Document {
   _id: Types.ObjectId; // or `string` if you're stringifying it later
