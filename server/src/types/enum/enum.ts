@@ -21,10 +21,10 @@ export enum StudentGender {
 }
 
 export enum StudentStatus {
-  ACTIVE = "active",
-  INACTIVE = "inactive",
-  COMPLETED = "completed",
+  ENROLLED = "enrolled",
   TRANSFERRED = "transferred",
+  GRADUATED = "graduated",
+ 
 }
 
 export enum ExamType {
