@@ -1,5 +1,5 @@
 // server/src/models/academics/attendance.model.ts
-import { Schema, model} from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { AttendanceStatus, IAttendance } from '../../types';
 
 const attendanceSchema = new Schema<IAttendance>(
@@ -19,9 +19,8 @@ const attendanceSchema = new Schema<IAttendance>(
     timestamps: true,
   }
 );
-//Indexes
-attendanceSchema.index({ classRef: 1, date: 1 }); // For daily class queries
-attendanceSchema.index({ school: 1 });            // For school-wide queries
-attendanceSchema.index({ schoolYear: 1 });        // Optional: year-based reporting
+
+// Optimized compound index for common query patterns
+attendanceSchema.index({ school: 1, schoolYear: 1, classRef: 1, date: 1 });
 
 export const AttendanceModel = model<IAttendance>('Attendance', attendanceSchema);
