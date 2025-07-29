@@ -1,8 +1,13 @@
 // src/pages/dashboard/school-admin.tsx
+import { Sidebar, Topbar } from "../../shared/layout/dashboard"
+
+
 const SchoolAdminDashBoard: React.FC = () =>{
     return(
         <div>
-            <h1>School Admin Dashboard</h1>
+             <Topbar role="school-admin" />
+            <Sidebar role="school-admin" />
+            
         </div>
     )
 }
