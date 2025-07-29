@@ -20,8 +20,6 @@ const DepartmentSchema = new Schema<IDepartment>(
   }
 );
 
-// Single-field index for efficient filtering by school
-DepartmentSchema.index({ school: 1 });
 
 //Compound index for optimized filtering by school + departmentName + headOfDepartment
 DepartmentSchema.index({ school: 1, departmentName: 1, headOfDepartment: 1});
