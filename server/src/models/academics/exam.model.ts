@@ -1,5 +1,5 @@
 // server/src/models/academics/exam.model.ts
-import { Schema, model} from "mongoose";
+import { Schema, model } from "mongoose";
 import { ExamType, IExam, Term } from "../../types";
 
 const examSchema = new Schema<IExam>(
@@ -17,5 +17,10 @@ const examSchema = new Schema<IExam>(
     timestamps: true,
   }
 );
+
+// Indexes
+examSchema.index({ school: 1, academicYear: 1, term: 1 });
+examSchema.index({ classRef: 1, subject: 1, academicYear: 1, term: 1 });
+examSchema.index({ school: 1, classRef: 1, subject: 1, examType: 1, academicYear: 1, term: 1 }, { unique: true });
 
 export const ExamModel = model<IExam>('Exam', examSchema);
