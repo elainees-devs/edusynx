@@ -2,7 +2,6 @@
 import { Schema, Types, model } from "mongoose";
 import { ISubject } from "../../types";
 
-
 const SubjectSchema = new Schema<ISubject>(
   {
     school: { type: Types.ObjectId, ref: 'School', required: true },
@@ -13,5 +12,9 @@ const SubjectSchema = new Schema<ISubject>(
     timestamps: true,
   }
 );
+
+// Indexes
+SubjectSchema.index({ school: 1, classRef: 1 });
+SubjectSchema.index({ school: 1, classRef: 1, subjectName: 1 }, { unique: true });
 
 export const SubjectModel = model<ISubject>('Subject', SubjectSchema);
