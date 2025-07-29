@@ -15,6 +15,7 @@ import {
   ViewClass,
   RegisterStream,
   ViewTeachers,
+  Logout,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -38,6 +39,7 @@ function App() {
           <Route path="/:slug/sign-up" element={<SignUp />} />
           <Route path="/super-admin/sign-up" element={<SuperAdminSignUp />} />
           <Route path="/super-admin/sign-in" element={<SuperAdminSignIn />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/register-school" element={<SchoolRegistrationPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
