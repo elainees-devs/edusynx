@@ -2,6 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import {
   headTeacherNavItems,
+  schoolAdminNavItems,
   superAdminNavItems,
 } from "../../../constants/sidebarMenu";
 import EduSynxLogo from "../../edusynx-logo";
@@ -16,7 +17,8 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
 
   const navMap: Record<string, typeof superAdminNavItems> = {
     "super-admin": superAdminNavItems,
-    headteacher: headTeacherNavItems,
+    "headteacher": headTeacherNavItems,
+    "school-admin": schoolAdminNavItems,
     // Add more roles here
   };
 
