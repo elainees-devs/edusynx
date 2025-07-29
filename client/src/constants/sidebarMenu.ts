@@ -13,7 +13,7 @@ import {
   FaStream,
 } from "react-icons/fa";
 import type { IconType } from "react-icons";
-import { teacherNavChildren } from "./sidebar-submenu";
+import { studentNavChildren, teacherNavChildren } from "./sidebar-submenu";
 
 export interface NavItem {
   name: string;
@@ -47,7 +47,7 @@ export const headTeacherNavItems: NavItem[] = [
 
 export const schoolAdminNavItems: NavItem[] = [
   { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
-  { name: "Students", icon: FaSchool, path: "/dashboard/students" },
+  { name: "Students", icon: FaSchool, path: "/dashboard/students",  children: studentNavChildren, },
   { name: "Reports", icon: FaUser, path: "/dashboard/reports" },
   { name: "Settings", icon: FaCog, path: "/dashboard/settings" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
