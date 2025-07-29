@@ -20,10 +20,7 @@ const GuardianSchema: Schema = new Schema({
 });
 
 // Indexes
-GuardianSchema.index({ email: 1 }, { unique: true }); // Assuming email is in UserSchemaFields
-GuardianSchema.index({ phoneNumber: 1 });             // For quick lookup by phone
 GuardianSchema.index({ familyNumber: 1 });            // For grouping family-related students/guardians
-GuardianSchema.index({ role: 1 });   
 
 export const GuardianModel = mongoose.model<IGuardian>(
   "GuardianUser",

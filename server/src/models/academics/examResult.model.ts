@@ -17,9 +17,4 @@ const examResultSchema = new Schema<IExamResult>(
   }
 );
 
-// Indexes
-examResultSchema.index({ student: 1, exam: 1 });
-examResultSchema.index({ student: 1, exam: 1, subject: 1 }, { unique: true });
-examResultSchema.index({ exam: 1 });
-
 export const ExamResultModel = model<IExamResult>('ExamResult', examResultSchema);

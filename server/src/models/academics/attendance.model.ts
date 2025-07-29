@@ -21,6 +21,6 @@ const attendanceSchema = new Schema<IAttendance>(
 );
 
 // Optimized compound index for common query patterns
-attendanceSchema.index({ school: 1, schoolYear: 1, classRef: 1, date: 1 });
+attendanceSchema.index({date: 1 });
 
 export const AttendanceModel = model<IAttendance>('Attendance', attendanceSchema);

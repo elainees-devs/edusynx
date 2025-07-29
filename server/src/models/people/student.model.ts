@@ -27,16 +27,10 @@ const studentSchema = new Schema<IStudent>(
   }
 );
 
-// Individual field indexes
-studentSchema.index({ adm: 1 }, { unique: true });
-studentSchema.index({ studentId: 1 });
-studentSchema.index({ familyNumber: 1 });
+// Individual field index
 studentSchema.index({ guardian: 1 });
-studentSchema.index({ school: 1 });
-studentSchema.index({ classId: 1 });
-studentSchema.index({ stream: 1 });
 
-// Optional: Compound index for performance optimization (e.g., class list filters)
+// Compound index for performance optimization (e.g., class list filters)
 studentSchema.index({ school: 1, classId: 1, stream: 1, status: 1 });
 
 

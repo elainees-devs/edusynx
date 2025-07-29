@@ -23,9 +23,6 @@ const PaymentSchema = new Schema<IPayment>(
 );
 
 //Add indexes to optimize queries
-PaymentSchema.index({ student: 1 });
-PaymentSchema.index({ invoice: 1 });
-PaymentSchema.index({ school: 1 });
 PaymentSchema.index({ paymentDate: -1 }); // descending: useful for sorting
 // compound index to filter by student + date
 PaymentSchema.index({ student: 1, paymentDate: -1 });

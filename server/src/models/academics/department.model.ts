@@ -21,7 +21,7 @@ const DepartmentSchema = new Schema<IDepartment>(
 );
 
 
-//Compound index for optimized filtering by school + departmentName + headOfDepartment
-DepartmentSchema.index({ school: 1, departmentName: 1, headOfDepartment: 1});
+//Compound index for optimized filtering by departmentName + headOfDepartment
+DepartmentSchema.index({ departmentName: 1, headOfDepartment: 1});
 
 export const DepartmentModel = model<IDepartment>("Department", DepartmentSchema);

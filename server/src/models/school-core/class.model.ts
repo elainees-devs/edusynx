@@ -14,10 +14,7 @@ const ClassSchema = new Schema<IClass>(
   }
 );
 
-// Single-field index for efficient filtering by school
-ClassSchema.index({ school: 1 });
-
 //Compound index for optimized filtering by school + className + stream + academicYear
-ClassSchema.index({ school: 1, className: 1, stream: 1, academicYear: 1 });
+ClassSchema.index({ className:1});
 
 export const ClassModel = model<IClass>("Class", ClassSchema);

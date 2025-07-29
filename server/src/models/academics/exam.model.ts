@@ -18,9 +18,5 @@ const examSchema = new Schema<IExam>(
   }
 );
 
-// Indexes
-examSchema.index({ school: 1, academicYear: 1, term: 1 });
-examSchema.index({ classRef: 1, subject: 1, academicYear: 1, term: 1 });
-examSchema.index({ school: 1, classRef: 1, subject: 1, examType: 1, academicYear: 1, term: 1 }, { unique: true });
 
 export const ExamModel = model<IExam>('Exam', examSchema);

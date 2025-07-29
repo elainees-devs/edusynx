@@ -14,7 +14,6 @@ const SubjectSchema = new Schema<ISubject>(
 );
 
 // Indexes
-SubjectSchema.index({ school: 1, classRef: 1 });
-SubjectSchema.index({ school: 1, classRef: 1, subjectName: 1 }, { unique: true });
+SubjectSchema.index({subjectName: 1 });
 
 export const SubjectModel = model<ISubject>('Subject', SubjectSchema);
