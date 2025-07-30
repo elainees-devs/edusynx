@@ -9,3 +9,6 @@ export { default as LoginForm } from "./forms/login-form";
 export { default as ClassDetails } from "./class/class-details";
 export { default as ViewTeachersDetails } from "./teachers/view-teachers-details";
 
+// Dashboard Components
+export { default as SchoolAdminDashboardOverview } from "./dashboard/school-admin/dashboard-overview";
+
