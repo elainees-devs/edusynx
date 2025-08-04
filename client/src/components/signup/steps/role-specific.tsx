@@ -1,9 +1,8 @@
 // client/src/components/signup/steps/role-specific.tsx
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSignUpContext } from "../../../context/signup/useSignUpContext";
-import { getClassesByFilter } from "../../../api/class.api";
-import { getSchoolBySlug } from "../../../api/school-api";
+import { useSchoolBySlug } from "../../../hooks/useSchoolBySlug";
+import { useClassOptions } from "../../../hooks/useClassOptions";
 
 type SignUpRole = "teacher" | "headteacher" | "school-admin" | "accountant";
 const allowedRoles: SignUpRole[] = [
@@ -29,67 +28,14 @@ const RoleSpecificStep = ({
   const { formData, updateForm } = useSignUpContext();
   const { slug } = useParams();
 
-  const [schoolId, setSchoolId] = useState<string | null>(null);
-  const [classOptions, setClassOptions] = useState<
-    { value: string; label: string }[]
-  >([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { schoolId, error: schoolError } = useSchoolBySlug(slug);
+  const { classOptions, loading, error: classError } = useClassOptions(schoolId);
 
-  // 🔹 Fetch school ID by slug
-  useEffect(() => {
-    const fetchSchoolAndClasses = async () => {
-      if (!slug) return;
+  // 🔹 Sync schoolId to formData
+  if (schoolId && formData.school !== schoolId) {
+    updateForm({ school: schoolId });
+  }
 
-      try {
-        const school = await getSchoolBySlug(slug);
-        setSchoolId(school._id ?? null);
-        updateForm({ school: school._id }); // ✅ Fixes missing "school" field
-      } catch (err) {
-        console.error("Failed to fetch school:", err);
-        setError("School not found.");
-      }
-    };
-
-    fetchSchoolAndClasses();
-  }, [slug]);
-
-  // 🔹 Fetch classes once schoolId is known
-  useEffect(() => {
-    const fetchClasses = async () => {
-      if (!schoolId) return;
-      setLoading(true);
-      try {
-        const classList = await getClassesByFilter(schoolId);
-        const options = classList.map((cls) => {
-          const streamName =
-            typeof cls.stream === "object" && "streamName" in cls.stream
-              ? cls.stream.streamName
-              : "Unknown Stream";
-
-          return {
-            value: cls._id,
-            label: `Grade ${cls.grade} - ${streamName}`,
-          };
-        });
-
-        setClassOptions(options);
-        setError("");
-      } catch (err: unknown) {
-        if (err && typeof err === "object" && "message" in err) {
-          setError((err as { message: string }).message);
-        } else {
-          setError("Failed to fetch classes.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchClasses();
-  }, [schoolId]);
-
-  // 🔹 Guard against missing required fields
   const isSubmitDisabled =
     !formData.role ||
     (formData.isClassTeacher && !formData.classId) ||
@@ -131,8 +77,8 @@ const RoleSpecificStep = ({
               <span className="text-gray-700">Select Class</span>
               {loading ? (
                 <p>Loading classes...</p>
-              ) : error ? (
-                <p className="text-red-500">{error}</p>
+              ) : schoolError || classError ? (
+                <p className="text-red-500">{schoolError || classError}</p>
               ) : (
                 <select
                   className="w-full p-2 border rounded"
@@ -154,7 +100,9 @@ const RoleSpecificStep = ({
 
       {/* Navigation Buttons */}
       <div className="flex justify-between">
-            <button onClick={back} className="px-4 py-2 text-white rounded bg-gray">Back</button>
+        <button onClick={back} className="px-4 py-2 text-white rounded bg-gray">
+          Back
+        </button>
         <button
           onClick={submit}
           disabled={isSubmitDisabled}
