@@ -16,6 +16,7 @@ import {
   RegisterStream,
   ViewTeachers,
   Logout,
+  RegisterStudent,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -65,6 +66,9 @@ function App() {
 
           {/* === Allocation === */}
           <Route path="/:slug/allocation/class-teacher" element={<ClassTeacher />} />
+
+            {/* === Students === */}
+          <Route path="/:slug/student/new" element={<RegisterStudent />} />
         </Routes>
       </Router>
     </GlobalStateProvider>
