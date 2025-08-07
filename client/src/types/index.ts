@@ -2,3 +2,4 @@
 export * from './school/school-core.types';
 export * from './school/academic.types';
 export * from './people/user.types';
+export * from './people/student.types';
