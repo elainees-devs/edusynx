@@ -33,6 +33,7 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<StudentFormData>();
 
@@ -97,9 +98,8 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
           className="w-full border border-gray-300 rounded px-3 py-2"
         >
           <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
         </select>
         {errors.studentGender && (
           <p className="text-red-500 text-sm">Required</p>
@@ -147,6 +147,16 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
           <select
             {...register("classId", { required: true })}
             className="w-full border border-gray-300 rounded px-3 py-2"
+            onChange={(e) => {
+              const selectedClassId = e.target.value;
+              const selectedClass = classOptions.find(
+                (cls) => cls.value === selectedClassId
+              );
+              if (selectedClass) {
+                setValue("classId", selectedClass.value); // classId
+                setValue("stream", selectedClass.streamId); // ✅ streamId
+              }
+            }}
           >
             <option value="">Select Class</option>
             {classOptions.map((cls: Option) => (
@@ -166,8 +176,7 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
           className="w-full border border-gray-300 rounded px-3 py-2"
         >
           <option value="">Select Status</option>
-          <option value="Active">Active</option>
-      
+          <option value="active">Active</option>
         </select>
         {errors.status && <p className="text-red-500 text-sm">Required</p>}
       </div>
