@@ -17,6 +17,7 @@ import {
   ViewTeachers,
   Logout,
   RegisterStudent,
+  ViewStudents,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -69,6 +70,9 @@ function App() {
 
             {/* === Students === */}
           <Route path="/:slug/student/new" element={<RegisterStudent />} />
+          <Route path="/:slug/students" element={<ViewStudents />} />
+
+          {/* === Miscellaneous === */}
         </Routes>
       </Router>
     </GlobalStateProvider>
