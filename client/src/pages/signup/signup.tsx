@@ -1,5 +1,5 @@
-// client/src/pages/signup.tsx
-import SignUpStepper from '../../components/signup/signup-stepper';
+// client/src/pages/signup/signup.tsx
+import { SignUpStepper } from '../../components';
 import SignUpProvider from '../../context/signup/SignUpProvider';
 
 const SignUp = () => {
