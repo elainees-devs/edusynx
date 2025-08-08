@@ -1,25 +1,77 @@
 // client/src/pages/view-class.tsx
 import { useState } from "react";
-import { ClassDetails } from "../../components";
+import { ClassList } from "../../components";
 import { classOptions } from "../../constants/class-options";
 import type { IClass } from "../../types";
-import Topbar from "../../shared/layout/dashboard/topbar";
-import Sidebar from "../../shared/layout/dashboard/sidebar";
+import { Sidebar, Topbar } from "../../shared";
+
 
 const ViewClass: React.FC = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStream, setSelectedStream] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const dummyClasses: IClass[] = [
-    { id: "1", ClassName: "Grade 1", stream: "North", academicYear: "2025" },
-    { id: "2", ClassName: "Grade 2", stream: "East", academicYear: "2025" },
-  ];
+const dummyClasses: IClass[] = [
+  {
+    _id: 'class001',
+    grade: 'Grade 1',
+    stream: {
+      _id: 'streamA',
+      streamName: 'Stream A',
+    },
+    school: {
+      _id: 'school001',
+      name: 'Sunrise Primary School',
+    },
+    academicYear: '2025-2026',
+  },
+  {
+    _id: 'class002',
+    grade: 'Grade 2',
+    stream: 'streamB', // just the ID
+    school: 'school002', // just the ID
+    academicYear: '2025-2026',
+  },
+  {
+    _id: 'class003',
+    grade: 'Grade 3',
+    stream: {
+      _id: 'streamC',
+      streamName: 'Stream C',
+    },
+    school: {
+      _id: 'school003',
+      name: 'Green Valley Academy',
+    },
+    academicYear: '2024-2025',
+  },
+  {
+    _id: 'class004',
+    grade: 'Grade 4',
+    stream: 'streamD',
+    school: {
+      _id: 'school004',
+      name: 'Hilltop School',
+    },
+    academicYear: '2025-2026',
+  },
+  {
+    _id: 'class005',
+    grade: 'Grade 5',
+    stream: {
+      _id: 'streamE',
+      streamName: 'Stream E',
+    },
+    school: 'school005',
+    academicYear: '2023-2024',
+  },
+];
+
 
   const streams = ["North", "South", "East", "West"];
 
-  const handleFilterChange = (filters: { ClassName: string; stream: string }) => {
-    setSelectedClass(filters.ClassName);
+  const handleFilterChange = (filters: { grade: string; stream: string }) => {
+    setSelectedClass(filters.grade);
     setSelectedStream(filters.stream);
     setCurrentPage(1);
   };
@@ -34,12 +86,16 @@ const ViewClass: React.FC = () => {
     console.log("Edit class:", cls);
   };
 
-  const filteredClasses = dummyClasses.filter((cls) => {
-    return (
-      (!selectedClass || cls.ClassName === selectedClass) &&
-      (!selectedStream || cls.stream === selectedStream)
-    );
-  });
+const filteredClasses = dummyClasses.filter((cls) => {
+  const streamValue =
+    typeof cls.stream === "string" ? cls.stream : cls.stream.streamName;
+
+  return (
+    (!selectedClass || cls.grade === selectedClass) &&
+    (!selectedStream || streamValue === selectedStream)
+  );
+});
+
 
   const ITEMS_PER_PAGE = 10;
   const totalPages = Math.ceil(filteredClasses.length / ITEMS_PER_PAGE);
@@ -64,7 +120,7 @@ const ViewClass: React.FC = () => {
 
         {/* Main Content */}
         <div className="flex-1 p-6 overflow-y-auto">
-          <ClassDetails
+          <ClassList
             classOptions={classOptions}
             streams={streams}
             classes={paginatedClasses}
