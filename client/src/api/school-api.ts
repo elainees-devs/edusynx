@@ -47,6 +47,7 @@ export const registerSchool = async (data: ISchool) => {
  */
 export const getSchoolBySlug = async (slug: string): Promise<ISchool> => {
   const response = await axios.get(`${API_BASE}/school/slug/${slug}`);
+  console.log("response data:", response.data);
   return response.data;
 };
 
