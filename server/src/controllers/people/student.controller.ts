@@ -19,6 +19,7 @@ generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
   res.status(201).json(student);
 });
 
+
   getAllStudents = handleAsync(async (_req, res) => {
     const students = await studentRepo.findAllStudents();
     res.json(students);
