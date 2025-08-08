@@ -10,8 +10,9 @@ import {
 } from "react-icons/fa";
 import type { NavItem } from "./sidebarMenu";
 
+ 
 // Export the children array using NavItem[] type
-export const teacherNavChildren: NavItem[] = [
+export const teacherNavChildren : NavItem[] = [
   {
     name: "View Teachers",
     icon: FaEye,
@@ -45,16 +46,16 @@ export const teacherNavChildren: NavItem[] = [
   },
 ];
 
-export const studentNavChildren: NavItem[] = [
+export const studentNavChildren = (slug: string): NavItem[] => [
   {
     name: "Add Student",
     icon: FaEye,
-    path: "/:slug/student/new",
+    path: `/${slug}/student/new`,
   },
   {
     name: "View Student",
     icon: FaEye,
-    path: "/:slug/students",
+    path: `/${slug}/students`,
   },
   {
     name: "Add Guardian",
