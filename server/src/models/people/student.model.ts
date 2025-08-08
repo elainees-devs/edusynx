@@ -1,6 +1,6 @@
 // server/src/models/people/student.model.ts
 import { Schema, model} from 'mongoose';
-import { StudentGender, StudentStatus } from '../../types/enum/enum';
+import { Gender, StudentStatus } from '../../types/enum/enum';
 import { IStudent } from '../../types';
 
 const studentSchema = new Schema<IStudent>(
@@ -9,12 +9,12 @@ const studentSchema = new Schema<IStudent>(
     studentFirstName: { type: String, required: true },
     studentMiddleName: { type: String, required: true },
     studentLastName: { type: String, required: true },
-    studentGender: { type: String, enum: Object.values(StudentGender), required: true },
+    studentGender: { type: String, enum: Object.values (Gender), required: true },
     dateOfBirth: { type: Date, required: true },
-    adm: { type: Number, required: true, unique: true },
+    adm: { type: Number, unique: true, required: true },
     admissionDate: { type: Date, required: true },
     previousSchool: { type: String },
-    guardian: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    guardian: { type: Schema.Types.ObjectId, ref: 'User'},
     classId: { type: Schema.Types.ObjectId, ref: 'Class', required: true },
     stream: { type: Schema.Types.ObjectId, ref: 'Stream', required: true },
     status: { type: String, enum: Object.values(StudentStatus), required: true },
