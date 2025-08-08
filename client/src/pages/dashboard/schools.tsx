@@ -1,7 +1,7 @@
 // client/src/pages/dashboard/schools.tsx
 import { useNavigate } from "react-router-dom";
-import SchoolTable from "../../components/dashboard/super-admin/school-list";
 import { FiArrowLeft } from "react-icons/fi";
+import { SchoolList } from "../../components";
 
 
 const Schools: React.FC = () => {
@@ -21,7 +21,7 @@ const Schools: React.FC = () => {
         Back
       </button>
   
-            <SchoolTable />
+            <SchoolList />
           </div>
 
   );
