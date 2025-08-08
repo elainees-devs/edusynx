@@ -1,18 +1,19 @@
+// client/src/hooks/useUserAuth.ts
 import { useState, useEffect } from "react";
-import type { ISuperAdmin, IUser } from "../types/people/user.types";
+import type { ISuperAdmin, IBaseUser } from "../types/people/user.types";
 
 interface UseLoggedInStatus {
   isLoggedIn: boolean;
-  savedUser: IUser | null;
+  savedUser: IBaseUser | null;
   savedAdmin: ISuperAdmin | null;
-  loginUser: (user: IUser) => void;
+  loginUser: (user: IBaseUser) => void;
   loginSuperAdmin: (admin: ISuperAdmin) => void;
   logoutUser: () => void;
 }
 
-const useUserAuth = (): UseLoggedInStatus => {
+export const useUserAuth = (): UseLoggedInStatus => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [savedUser, setUserDetails] = useState<IUser | null>(null);
+  const [savedUser, setUserDetails] = useState<IBaseUser | null>(null);
   const [savedAdmin, setAdmin] = useState<ISuperAdmin | null>(null);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const useUserAuth = (): UseLoggedInStatus => {
     return () => clearInterval(interval);
   }, []);
 
-  const loginUser = (user: IUser): void => {
+  const loginUser = (user: IBaseUser): void => {
     localStorage.setItem("savedUser", JSON.stringify(user));
     setIsLoggedIn(true);
     setUserDetails(user);
@@ -74,4 +75,4 @@ const useUserAuth = (): UseLoggedInStatus => {
   };
 };
 
-export default useUserAuth;
+
