@@ -2,12 +2,12 @@
 import React from "react";
 import type { StudentFormData } from "../../types";
 import Swal from "sweetalert2";
-import { StudentFormProvider } from "../../context/student/student-form-context";
+import { StudentFormProvider } from "../../context/student/student-form-provider";
 import { Sidebar, Topbar } from "../../shared/layout/dashboard";
 import { registerStudent } from "../../api/student.api";
-import { useGlobalState } from "../../hooks/useGlobalContext";
 import { getSchoolId } from "../../utils/getSchoolId";
-import { RegisterStudentForm } from "../../components/forms";
+import { useGlobalState } from "../../hooks";
+import { RegisterStudentForm } from "../../components";
 
 const RegisterStudent: React.FC = () => {
     const { state } = useGlobalState();
