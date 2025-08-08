@@ -1,4 +1,4 @@
-// src/components/index.ts
+// client/src/components/index.ts
 export { default as NavBar } from "./navbar";
 export { default as Hero } from "./hero";
 export { default as KeyFetures } from "./key-features";
@@ -11,4 +11,7 @@ export { default as ViewTeachersDetails } from "./teachers/view-teachers-details
 
 // Dashboard Components
 export { default as SchoolAdminDashboardOverview } from "./dashboard/school-admin/dashboard-overview";
+
+// data table components
+export {default as StudentList} from "./data-table/view-students-list";
 
