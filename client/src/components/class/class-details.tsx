@@ -11,7 +11,7 @@ interface ClassProps {
   selectedStream: string;
   currentPage: number;
   totalPages: number;
-  onFilterChange: (filters: { ClassName: string; stream: string }) => void;
+  onFilterChange: (filters: { grade: string; stream: string }) => void;
   onResetFilters: () => void;
   onEdit: (cls: IClass) => void;
   onPageChange: (newPage: number) => void;
@@ -33,16 +33,16 @@ const ClassDetails: React.FC<ClassProps> = ({
 }) => {
     const {register,handleSubmit, setValue} = useForm({
             defaultValues:{
-                ClassName: selectedClass,
+                grade: selectedClass,
                 stream: selectedStream
             },
         });
-    const onSubmit = (data: {ClassName: string, stream: string}) => {
+    const onSubmit = (data: {grade: string, stream: string}) => {
         onFilterChange(data);
     };
 
   const reset = () => {
-  setValue("ClassName", "");
+  setValue("grade", "");
   setValue("stream", "");
   onResetFilters(); // optional if you want to clear filtered results on reset
 };
@@ -53,7 +53,7 @@ const ClassDetails: React.FC<ClassProps> = ({
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4 items-end">
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700">Class</label>
-          <select {...register("ClassName")} className="w-full px-4 py-2 border rounded-lg">
+          <select {...register("grade")} className="w-full px-4 py-2 border rounded-lg">
             <option value="">All Classes</option>
             {classOptions.map((opt) => (
               <option key={opt} value={opt}>
@@ -105,8 +105,8 @@ const ClassDetails: React.FC<ClassProps> = ({
             {classes.length > 0 ? (
               classes.map((cls) => (
                 <tr key={cls._id} className="hover:bg-gray-50">
-                  <td className="p-3 border-b">{cls.ClassName}</td>
-                  <td className="p-3 border-b">{cls.stream}</td>
+                  <td className="p-3 border-b">{cls.grade}</td>
+                    {typeof cls.stream === "string" ? cls.stream : cls.stream.streamName}
                   <td className="p-3 border-b">{cls.academicYear}</td>
                   <td className="p-3 border-b">
                     <button
