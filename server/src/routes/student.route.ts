@@ -32,6 +32,13 @@ const studentController = new StudentController();
  */
 studentRouter.post("/", validate(createStudentSchema), studentController.createStudent);
 
+// PATCH route to assign guardian & generate admission number
+studentRouter.patch(
+  "/:id/assign-guardian",
+  studentController.generateAdmissionAndCreateStudent
+);
+
+
 /**
  * @swagger
  * /api/students/generate-admission:
