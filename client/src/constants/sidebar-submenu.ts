@@ -54,7 +54,7 @@ export const studentNavChildren: NavItem[] = [
   {
     name: "View Student",
     icon: FaEye,
-    path: "/dashboard/school-admin/students/view",
+    path: "/:slug/students",
   },
   {
     name: "Add Guardian",
