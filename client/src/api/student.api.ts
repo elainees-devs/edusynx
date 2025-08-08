@@ -1,5 +1,4 @@
 // client/src/api/student.api.ts
-
 import axios from "axios";
 import type { Student, StudentFormData } from "../types";
 
