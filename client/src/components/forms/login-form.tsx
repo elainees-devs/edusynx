@@ -1,7 +1,7 @@
 // client/src/components/forms/login-form.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import LoginButton from "../login-button";
+import LoginButton from "../buttons/login-button";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 
