@@ -1,7 +1,7 @@
 //src/types/people/student.types.ts
 import { Types } from "mongoose";
 import { IBaseUser } from "./user.types";
-import { StudentGender, StudentStatus } from "../enum/enum";
+import { Gender, StudentStatus } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 import { IClass, ISchool, IStream } from "../school/school-core.types";
 
@@ -10,7 +10,7 @@ export interface IStudent extends BaseDocument{
   studentFirstName: string
   studentMiddleName: string
   studentLastName: string
-  studentGender: StudentGender
+  studentGender: Gender
   dateOfBirth: Date
   adm: number
   admissionDate: Date
