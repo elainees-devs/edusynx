@@ -1,5 +1,5 @@
 // client/src/types/people/student.types.ts
-export type StudentGender = "Male" | "Female" | "Other";
+export type StudentGender = "male" | "female";
 export type StudentStatus = "Active" | "Inactive" | "Suspended" | "Graduated";
 
 export interface Option {
@@ -20,6 +20,8 @@ export interface StudentFormData {
   stream: string;
   status: StudentStatus;
   studentPhotoUrl: string | undefined;
+  adm?: string;
+  guardianId?: string;
 }
 
 export interface StudentFormContextType {
@@ -30,3 +32,8 @@ export interface StudentFormContextType {
   loading: boolean;
   error?: string;
 }
+
+export interface Student extends StudentFormData {
+  _id: string; 
+}
+
