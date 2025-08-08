@@ -15,13 +15,13 @@ export enum UserRole {
   SUPER_ADMIN = "super-admin",
 }
 
-export enum StudentGender {
-  BOY = "boy",
-  GIRL = "girl",
+export enum Gender {
+  MALE = "male",
+  FEMALE = "female",
 }
 
 export enum StudentStatus {
-  ENROLLED = "enrolled",
+  ACTIVE = "active",
   TRANSFERRED = "transferred",
   GRADUATED = "graduated",
  
