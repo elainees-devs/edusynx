@@ -1,11 +1,14 @@
 // client/src/shared/layout/dashboard/sidebar.tsx
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   headTeacherNavItems,
   schoolAdminNavItems,
   superAdminNavItems,
+  type NavItem,
 } from "../../../constants/sidebarMenu";
+import { studentNavChildren } from "../../../constants/sidebar-submenu";
 import EduSynxLogo from "../../edusynx-logo";
+
 
 interface SidebarProps {
   role: string;
@@ -13,16 +16,21 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
+  const { slug = "" } = useParams<{ slug: string }>();
   const normalizedRole = role.toLowerCase().replace(/\s+/g, "-");
 
-  const navMap: Record<string, typeof superAdminNavItems> = {
-    "super-admin": superAdminNavItems,
-    "headteacher": headTeacherNavItems,
-    "school-admin": schoolAdminNavItems,
-    // Add more roles here
+  const navMap: Record<string, () => NavItem[]> = {
+    "super-admin": () => superAdminNavItems,
+    "headteacher": () => headTeacherNavItems,
+    "school-admin": () =>
+      schoolAdminNavItems.map((item) =>
+        item.name === "Students"
+          ? { ...item, children: studentNavChildren(slug) }
+          : item
+      ),
   };
 
-  const navItems = navMap[normalizedRole] || [];
+  const navItems = navMap[normalizedRole]?.() || [];
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-48 bg-white text-gray-900 shadow-lg overflow-visible z-50">
