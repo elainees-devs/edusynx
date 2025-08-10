@@ -13,7 +13,6 @@ const GuardianSchema: Schema = new Schema({
   },
   familyNumber: {
     type: Number,
-    required: true,
   },
 }, {
   timestamps: true,
