@@ -28,9 +28,9 @@ export interface IBaseUser extends BaseDocument {
 
 // Teacher interface with literal role
 export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
-   role: UserRole.TEACHER;
+   role: UserRole.TEACHER
   isClassTeacher?:boolean
-  assignedClass?: Types.ObjectId | IClass;
+  assignedClass?: Types.ObjectId | IClass
   department?: Types.ObjectId |IDepartment
   isHeadOfDepartment?:boolean
   teacherId: string
@@ -39,18 +39,18 @@ export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "
 // Guardian interface with literal role
 export interface IGuardian extends IBaseUser {
   role: UserRole.GUARDIAN
-  familyNumber: number
+  familyNumber: string
 }
 export interface IFamily {
-  familyNumber: number;
-  guardians: (Types.ObjectId | IGuardian)[];
-  students: (Types.ObjectId | IStudent)[];
-  address?: string;
+  familyNumber: number
+  guardians: (Types.ObjectId | IGuardian)[]
+  students: (Types.ObjectId | IStudent)[]
+  address?: string
 }
 
 // SuperAdmin interface with literal role
 export interface ISuperAdmin extends Document {
-  _id: Types.ObjectId; // or `string` if you're stringifying it later
+  _id: Types.ObjectId // or `string` if you're stringifying it later
   email: string
   password: string
   role: UserRole.SUPER_ADMIN
