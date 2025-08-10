@@ -3,23 +3,9 @@ import mongoose from "mongoose";
 import { IStudent } from "../../types";
 import { ClassModel, StudentModel } from "../../models";
 import { CreateStudentDTO } from "../../dto";
+import { generateAdmissionNumber } from "../../utils";
 
 export class StudentRepository {
-  // Generate next available admission number for a school
-  private async generateAdmissionNumber(schoolId: mongoose.Types.ObjectId) {
-    const fetchedAdmissionNumbers = await StudentModel.find(
-      { school: schoolId },
-      { adm: 1 }
-    );
-
-    const studentAdmissionNumbers = fetchedAdmissionNumbers
-      .map((student) => student.adm)
-      .filter((adm) => adm != null);
-
-    return studentAdmissionNumbers.length > 0
-      ? Math.max(...studentAdmissionNumbers) + 1
-      : 500;
-  }
 
   // Create student and associate with guardian
   async generateAdmissionNumberAndCreateStudent(reqBody: any, guardian: any) {
@@ -33,7 +19,8 @@ export class StudentRepository {
     } = reqBody;
 
     const schoolObjectId = new mongoose.Types.ObjectId(guardian.school._id);
-    const createdAdm = await this.generateAdmissionNumber(schoolObjectId);
+      // Generate the next admission number
+    const createdAdm = await generateAdmissionNumber(schoolObjectId);
 
     const student = new StudentModel({
       studentFirstName,
