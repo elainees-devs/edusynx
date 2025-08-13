@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import type { IClass } from "../../types";
 import { classOptions } from "../../constants/class-options";
-
+import { SubmitButton } from "../../shared";
 
 type Props = {
   onSubmit: (data: IClass) => void;
@@ -11,7 +11,11 @@ type Props = {
   streams: { value: string; label: string }[];
 };
 
-const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => {
+const RegisterClassForm: React.FC<Props> = ({
+  onSubmit,
+  schoolId,
+  streams,
+}) => {
   const {
     register,
     handleSubmit,
@@ -26,12 +30,17 @@ const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => 
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="space-y-6 max-w-md mx-auto bg-white p-6 rounded shadow">
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="space-y-6 max-w-md mx-auto bg-white p-6 rounded shadow"
+    >
       <h2 className="text-xl font-bold text-center">Register New Class</h2>
 
       {/* Grade/Class Name Select */}
       <div>
-        <label htmlFor="grade" className="block font-medium">Grade/Class Name</label>
+        <label htmlFor="grade" className="block font-medium">
+          Grade/Class Name
+        </label>
         <select
           id="grade"
           {...register("grade", { required: "Grade is required" })}
@@ -39,7 +48,9 @@ const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => 
         >
           <option value="">Select a class</option>
           {classOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
         </select>
         {errors.grade && (
@@ -49,11 +60,15 @@ const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => 
 
       {/* Academic Year Input */}
       <div>
-        <label htmlFor="academicYear" className="block font-medium">Academic Year</label>
+        <label htmlFor="academicYear" className="block font-medium">
+          Academic Year
+        </label>
         <input
           type="text"
           id="academicYear"
-          {...register("academicYear", { required: "Academic year is required" })}
+          {...register("academicYear", {
+            required: "Academic year is required",
+          })}
           className="border p-2 rounded w-full"
         />
         {errors.academicYear && (
@@ -63,7 +78,9 @@ const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => 
 
       {/* Stream Select */}
       <div>
-        <label htmlFor="stream" className="block font-medium">Stream</label>
+        <label htmlFor="stream" className="block font-medium">
+          Stream
+        </label>
         <select
           id="stream"
           {...register("stream", { required: "Stream is required" })}
@@ -82,13 +99,11 @@ const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId, streams }) => 
       </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-teal-400 text-white px-4 py-2 rounded hover:bg-teal-200 hover:text-gray w-full"
-      >
-        {isSubmitting ? "Registering..." : "Register Class"}
-      </button>
+      <SubmitButton
+        label="Register Class"
+        loadingLabel="Registering..."
+        loading={isSubmitting}
+      />
     </form>
   );
 };
