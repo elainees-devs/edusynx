@@ -32,10 +32,19 @@ export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "
   isHeadOfDepartment?:boolean
 }
 
-// Guardian interface with literal role
-export interface IGuardian extends IBaseUser {
-  role: typeof UserRole.GUARDIAN;
-  familyNumber: number;
+export interface RegisterGuardianInput {
+  school: string; // Assuming ID string here; adjust if different
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  email: string;
+  secondaryEmail?: string;
+  primaryPhoneNumber: string;
+  secondaryPhoneNumber?: string;
+  password?: string;
+  nationality: string;
+  avatarUrl?: string;
+  isTwoFactorEnabled?: boolean;
 }
 
 // SuperAdmin interface with literal role
