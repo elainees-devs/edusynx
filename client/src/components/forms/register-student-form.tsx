@@ -6,7 +6,7 @@ import { useSchoolBySlug } from "../../hooks/useSchoolBySlug";
 import { useClassOptions } from "../../hooks/useClassOptions";
 import { useStudentFormContext } from "../../hooks/useStudentFormContext";
 import type { Option, StudentFormData } from "../../types";
-import { ImageDropzone } from "../../shared";
+import { ImageDropzone, SubmitButton } from "../../shared";
 
 interface RegisterStudentFormProps {
   onSubmit: (data: StudentFormData) => Promise<void>;
@@ -192,13 +192,12 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
         />
       </div>
 
-      <button
-        type="submit"
-        className="w-full bg-teal-600 text-white font-medium py-2 px-4 rounded hover:bg-teal-700 transition"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Registering..." : "Register Student"}
-      </button>
+        {/* Submit Button */}
+       <SubmitButton
+            label="Register Student"
+            loadingLabel="Registering..."
+            loading={isSubmitting}
+          />
     </form>
   );
 };

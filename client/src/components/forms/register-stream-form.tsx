@@ -2,6 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import type { IStream } from "../../types";
+import { SubmitButton } from "../../shared";
 
 type Props = {
   onSubmit: (data: IStream) => void;
@@ -12,12 +13,12 @@ const RegisterStreamForm: React.FC<Props> = ({ onSubmit, schoolId }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<IStream>();
 
   const submitHandler = (data: IStream) => {
-    const payload = { ...data, school: schoolId }; 
+    const payload = { ...data, school: schoolId };
     onSubmit(payload);
     reset(); // Optional: reset after submit
   };
@@ -38,13 +39,13 @@ const RegisterStreamForm: React.FC<Props> = ({ onSubmit, schoolId }) => {
           <p className="text-red-500 text-sm">{errors.streamName.message}</p>
         )}
       </div>
-
-      <button
-        type="submit"
-        className="bg-teal-400 text-white px-4 py-2 rounded hover:bg-teal-200 hover:text-gray"
-      >
-        Add Stream
-      </button>
+      
+        {/* Submit button */}
+      <SubmitButton
+        label="Register Stream"
+        loadingLabel="Registering..."
+        loading={isSubmitting}
+      />
     </form>
   );
 };
