@@ -1,7 +1,7 @@
 // client/src/components/data-table/teacher-list.tsx
 import React, { useState } from "react";
-import SearchBar from "../../shared/layout/ui/SearchBar";
 import type { Teacher } from "../../types/school/allocation";
+import { SearchBar } from "../../shared";
 
 
 export interface TeacherDetailsProps {
