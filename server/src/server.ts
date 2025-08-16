@@ -7,7 +7,7 @@ import connectDB from "./config/db";
 import logger from "./utils/logger";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { options } from "./docs/swagger";
+import { options, setupSwagger } from "./docs/swagger";
 import {
   userRouter,
   schoolRouter,
@@ -42,18 +42,7 @@ const apiRouter = express.Router();
 const PORT: number = parseInt(process.env.PORT || "5000", 10);
 const FRONTEND_BASE_URL =
   process.env.FRONTEND_BASE_URL || "http://localhost:5173";
-// Swagger setup
-const swaggerSpec = swaggerJsdoc(options);
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    explorer: true,
-    swaggerOptions: {
-      url: "/api-docs/swagger.json",
-    },
-  })
-);
+
 
 // Middleware
 app.use(express.json());
@@ -64,6 +53,9 @@ const schoolController = new SchoolController();
 
 // Database connection
 connectDB();
+
+// Mount Swagger before your API routes
+setupSwagger(app);
 
 // Health check route
 apiRouter.get("/", (req: Request, res: Response) => {
@@ -96,6 +88,7 @@ apiRouter.use("/super-admin", adminRouter);
 apiRouter.use("/password-reset", resetRouter);
 apiRouter.use("/allocations", allocationRouter);
 apiRouter.use("/stream", streamRouter);
+
 
 app.use("/api/v1", apiRouter);
 
