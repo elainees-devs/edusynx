@@ -1,4 +1,4 @@
-// client/src/api/school-api.ts
+// client/src/api/school.api.ts
 import axios from 'axios';
 import type { ISchool } from '../types';
 
