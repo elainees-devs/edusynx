@@ -2,9 +2,9 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { SuperAdminLoginForm } from "../../components/forms";
-import useUserAuth from "../../hooks/useUserAuth";
-import { loginSuperAdmin } from "../../api/auth/super-admin-auth";
 import { useNavigate } from "react-router-dom"; 
+import { useUserAuth } from "../../hooks";
+import { loginSuperAdmin } from "../../api";
 
 const SuperAdminSignIn: React.FC = () => {
   const [email, setEmail] = useState('');
