@@ -1,6 +1,7 @@
 // src/components/key-features.tsx
 import React from "react";
-import { keyFeatures } from "../constants";
+import { keyFeatures } from "../../constants";
+
 
 interface FeatureSection {
   title: string;
