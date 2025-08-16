@@ -1,5 +1,7 @@
 // server/src/docs/swagger.ts
 import swaggerJSDoc from "swagger-jsdoc";
+import { Express } from "express";
+import swaggerUi from "swagger-ui-express";
 import {
   classSchema,
   sendLinkSchema,
@@ -21,6 +23,8 @@ import {
   userSchema,
 } from "./components/schemas";
 
+
+
 export const options: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
@@ -31,7 +35,7 @@ export const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:5000",
         description: "Local development server",
       },
     ],
@@ -67,6 +71,14 @@ export const options: swaggerJSDoc.Options = {
     security: [{ bearerAuth: [] }],
   },
   apis: ["./src/routes/*.ts"],
+};
+
+export const setupSwagger = (app: Express) => {
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, { explorer: true })
+  );
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
