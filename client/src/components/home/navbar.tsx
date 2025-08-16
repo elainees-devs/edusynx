@@ -1,8 +1,9 @@
 // client/src/components/navbar.tsx
 import { useState } from "react";
-import { NAV_LINKS } from "../constants";
 import { FiMenu, FiX } from "react-icons/fi";
-import EduSynxLogo from "../shared/edusynx-logo";
+import { EduSynxLogo } from "../../shared";
+import { NAV_LINKS } from "../../constants";
+
 
 const NavBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
