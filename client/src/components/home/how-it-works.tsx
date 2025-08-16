@@ -1,6 +1,6 @@
 // src/components/how-it-works.tsx
 import React from "react";
-import { steps } from "../constants";
+import { steps } from "../../constants";
 
 const HowItWorks: React.FC = () => {
   return (
