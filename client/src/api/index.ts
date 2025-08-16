@@ -5,3 +5,4 @@ export * from "./class.api";
 export * from "./school.api";
 export * from "./email.api";
 export * from "./auth.api";
+export {loginSuperAdmin, sendPasswordResetEmail} from "./auth/super-admin-auth";
