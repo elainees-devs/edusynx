@@ -30,7 +30,7 @@ const studentController = new StudentController();
  *       201:
  *         description: Student created successfully
  */
-studentRouter.post("/", validate(createStudentSchema), studentController.createStudent);
+studentRouter.post("/", validate(createStudentSchema), studentController.generateAdmissionAndCreateStudent);
 
 // PATCH route to assign guardian & generate admission number
 studentRouter.patch(
