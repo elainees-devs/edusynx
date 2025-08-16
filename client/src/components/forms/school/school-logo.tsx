@@ -1,28 +1,26 @@
 // src/components/SchoolLogoDropzone.tsx
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import type { ISchool } from "../../../types";
-
 
 interface Props {
-  formData: ISchool;
-  setFormData: React.Dispatch<React.SetStateAction<ISchool>>;
+  value: string;
+  onChange: (url: string) => void;
 }
 
-const SchoolLogoDropzone: React.FC<Props> = ({ formData, setFormData }) => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setFormData((prev) => ({
-          ...prev,
-          logoUrl: reader.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  }, [setFormData]);
+const SchoolLogoDropzone: React.FC<Props> = ({ value, onChange }) => {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          onChange(reader.result as string); // update logoUrl in form
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [onChange]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -38,12 +36,8 @@ const SchoolLogoDropzone: React.FC<Props> = ({ formData, setFormData }) => {
       }`}
     >
       <input {...getInputProps()} />
-      {formData.logoUrl ? (
-        <img
-          src={formData.logoUrl}
-          alt="Logo preview"
-          className="mx-auto max-h-24"
-        />
+      {value ? (
+        <img src={value} alt="Logo preview" className="mx-auto max-h-24" />
       ) : (
         <p className="text-center text-gray-500">
           {isDragActive
