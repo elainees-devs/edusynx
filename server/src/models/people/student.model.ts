@@ -14,7 +14,7 @@ const studentSchema = new Schema<IStudent>(
     adm: { type: Number, unique: true},
     admissionDate: { type: Date, required: true },
     previousSchool: { type: String },
-    guardian: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    guardian: { type: Schema.Types.ObjectId, ref: 'User'},
     classId: { type: Schema.Types.ObjectId, ref: 'Class', required: true },
     stream: { type: Schema.Types.ObjectId, ref: 'Stream', required: true },
     status: { type: String, enum: Object.values(StudentStatus), required: true },
