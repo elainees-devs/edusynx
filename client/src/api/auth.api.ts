@@ -1,15 +1,15 @@
 // client/src/api/auth.ts
 import axios from "axios";
 import { logger } from "../utils/logger";
-import type { IUser } from "../types/people/user.types";
 import type { NewPasswordBody } from "../types/auth/new-password.types";
+import type { IBaseUser } from "../types";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 interface LoginResponse {
   message: string;
   token: string;
-  user: IUser;
+  user: IBaseUser;
 }
 
 export const loginUser = async (
