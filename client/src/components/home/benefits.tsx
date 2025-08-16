@@ -1,6 +1,7 @@
 // src/components/benefits.tsx
 import React from "react";
-import { benefits } from "../constants";
+import { benefits } from "../../constants";
+
 
 const Benefits: React.FC = () => {
   return (
