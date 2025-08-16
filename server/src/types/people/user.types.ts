@@ -37,10 +37,12 @@ export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "
 }
 
 // Guardian interface with literal role
-export interface IGuardian extends IBaseUser {
-  role: UserRole.GUARDIAN
-  familyNumber: string
+export interface IGuardian extends Omit<IBaseUser, "password" | "lastLogin" | "isLocked" | "passwordChangedAt" | "isTwoFactorEnabled"> {
+  role: UserRole.GUARDIAN;
+  familyNumber: string;
+  adm: Types.ObjectId |IStudent; // links guardian to student 
 }
+
 export interface IFamily {
   familyNumber: number
   guardians: (Types.ObjectId | IGuardian)[]
