@@ -29,7 +29,8 @@ import {
   resetRouter,
   allocationRouter,
   streamRouter,
-  departmentRouter
+  departmentRouter,
+  guardianRouter
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -70,12 +71,14 @@ apiRouter.get("/", (req: Request, res: Response) => {
 });
 
 // Routes
-apiRouter.use("/users", userRouter);
+
 apiRouter.use("/school", schoolRouter);
+apiRouter.use("/users", userRouter);
+apiRouter.use("/guardians", guardianRouter);
+apiRouter.use("/student", studentRouter);
 app.get("/:slug/signup", schoolController.getSchoolBySlug);
 apiRouter.use("/class", classRouter);
 apiRouter.use("/department", departmentRouter);
-apiRouter.use("/student", studentRouter);
 apiRouter.use("/auth", loginRouter);
 apiRouter.use("/exam", examRouter);
 apiRouter.use("/rolePermission", rolePermissionRouter);
