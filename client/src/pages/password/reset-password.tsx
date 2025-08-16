@@ -4,9 +4,9 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Swal from "sweetalert2";
 import type { SendResetTokenBody } from "../../types/email/email.types";
 import { ResetPasswordForm } from "../../components/forms";
-import { sendPasswordResetEmail } from "../../api/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import { HiArrowNarrowLeft } from "react-icons/hi";
+import { sendPasswordResetEmail } from "../../api";
 
 const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const ResetPassword: React.FC = () => {
 
   const onSubmit: SubmitHandler<SendResetTokenBody> = async (data) => {
     try {
-      await sendPasswordResetEmail(data.email); // ✅ only email needed
+      await sendPasswordResetEmail(data.email); 
 
       await Swal.fire({
         icon: "success",
