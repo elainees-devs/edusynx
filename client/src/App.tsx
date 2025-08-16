@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   HomePage,
   SignIn,
-  SchoolRegistrationPage,
+  SchoolSignupPage,
   SignUp,
   Schools,
   SuperAdminSignUp,
@@ -42,7 +42,7 @@ function App() {
           <Route path="/super-admin/sign-up" element={<SuperAdminSignUp />} />
           <Route path="/super-admin/sign-in" element={<SuperAdminSignIn />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/register-school" element={<SchoolRegistrationPage />} />
+          <Route path="/signup-school" element={<SchoolSignupPage />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/new-password" element={<NewPassword />} />
 
