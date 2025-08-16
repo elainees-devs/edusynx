@@ -14,7 +14,7 @@ export { default as NewPassword } from './password/new-password';
 export { default as HomePage } from './home';
 
 // ---------- School Registration ----------
-export { default as SchoolRegistrationPage } from './school-register';
+export { default as SchoolSignupPage } from './signup/signup-school'
 
 // ---------- Class and Stream Management ----------
 export { default as RegisterClass } from './class/register-class';
