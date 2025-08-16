@@ -107,8 +107,6 @@ const SchoolRegistrationForm: React.FC<Props> = ({
         <label className="block mb-1">Established Year</label>
         <input
           type="number"
-          min={1800}
-          max={new Date().getFullYear()}
           {...register("establishedYear", {
             required: "Established year is required",
           })}
