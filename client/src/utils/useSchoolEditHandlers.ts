@@ -1,7 +1,7 @@
 // client/src/utils/useSchoolEditHandlers.ts
 import { useState } from "react";
 import type { ISchool } from "../types";
-import { deleteSchool, updateSchool } from "../api/school-api";
+import { deleteSchool, updateSchool } from "../api/school.api";
 
 export const useSchoolEditHandlers = (
   setSchools: React.Dispatch<React.SetStateAction<ISchool[]>>
