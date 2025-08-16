@@ -5,7 +5,8 @@ import Swal from "sweetalert2";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { NewPasswordBody } from "../../types/auth/new-password.types";
 import { NewPasswordForm } from "../../components/forms";
-import { confirmPasswordReset } from "../../api/auth";
+import { confirmPasswordReset } from "../../api";
+
 
 const NewPassword: React.FC = () => {
   const navigate = useNavigate();
