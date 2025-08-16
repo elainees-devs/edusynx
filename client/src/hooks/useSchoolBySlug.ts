@@ -1,6 +1,7 @@
 // client/src/hooks/useSchoolBySlug.ts
 import { useEffect, useState } from "react";
-import { getSchoolBySlug } from "../api/school-api";
+import { getSchoolBySlug } from "../api";
+
 
 export const useSchoolBySlug = (slug?: string) => {
   const [schoolId, setSchoolId] = useState<string | null>(null);
