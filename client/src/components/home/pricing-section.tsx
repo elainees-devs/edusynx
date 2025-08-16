@@ -1,6 +1,7 @@
 // src/components/pricing-section.tsx
 import React, { useState } from "react";
-import { pricingPlans } from "../constants/pricingPlans";
+import { pricingPlans } from "../../constants";
+
 
 const PricingSection: React.FC = () => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
