@@ -18,7 +18,6 @@ export const studentSchema ={
               example: "Male",
             },
             classId: { type: "string", example: "64c23bcf9f2b1b0b8d6c6abc" },
-            guardianId: { type: "string", example: "64c456edab12fe99d0cd1123" },
             dateOfBirth: {
               type: "string",
               format: "date",
