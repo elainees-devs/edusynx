@@ -1,12 +1,11 @@
 // client/src/pages/signin.tsx
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useUserAuth from "../../hooks/useUserAuth";
-import { useGlobalState } from "../../hooks/useGlobalContext";
 import { UserRole } from "../../constants";
 import Swal from "sweetalert2";
 import { LoginForm } from "../../components";
-import { loginUser } from "../../api/auth";
+import { loginUser } from "../../api";
+import { useGlobalState, useUserAuth } from "../../hooks";
 
 
 const SignIn: React.FC = () => {
