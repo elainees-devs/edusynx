@@ -1,5 +1,5 @@
 // client/src/pages/teachers/ViewTeachers.tsx
-import { ViewTeachersDetails } from "../../components";
+import { TeacherList } from "../../components";
 import { sampleTeachers } from "../../data/sampleTeachers";
 import { Sidebar, Topbar } from "../../shared/layout/dashboard";
 
@@ -30,7 +30,7 @@ const ViewTeachersPage = () => {
         {/* Page Content */}
         <div className="flex-1 overflow-y-auto p-4">
           <h1 className="text-xl font-bold mb-4">Teachers List</h1>
-          <ViewTeachersDetails
+          <TeacherList
             teachers={sampleTeachers}
             onEdit={handleEdit}
             onToggleStatus={handleToggle}
