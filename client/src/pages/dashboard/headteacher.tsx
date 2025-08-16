@@ -1,5 +1,5 @@
 // client/src/pages/dashboard/headteacher.tsx
-import PrincipalDashboard from "../../components/dashboard/head-teacher/dashboard-overview"
+import PrincipalDashboard from "../../components/dashboard/principal/dashboard-overview"
 import { Sidebar, Topbar } from "../../shared/layout/dashboard"
 
 const HeadTeacherDashboard: React.FC = () =>{
