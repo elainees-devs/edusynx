@@ -32,7 +32,7 @@ export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "
   isHeadOfDepartment?:boolean
 }
 
-export interface RegisterGuardianInput {
+export interface GuardianFormInput {
   school: string; // Assuming ID string here; adjust if different
   firstName: string;
   middleName?: string;
@@ -45,6 +45,10 @@ export interface RegisterGuardianInput {
   nationality: string;
   avatarUrl?: string;
   isTwoFactorEnabled?: boolean;
+}
+export interface Guardian extends GuardianFormInput {
+  _id: string; 
+  familyNumber?: string;
 }
 
 // SuperAdmin interface with literal role
