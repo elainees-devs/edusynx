@@ -63,7 +63,7 @@ function App() {
           <Route path="/head-teacher/streams/new" element={<RegisterStream />} />
 
           {/* === Principal submenus === */}
-          <Route path="/:slug/head-teacher/teachers" element={<ViewTeachers />} />
+          <Route path="/:slug/principal/teachers/view" element={<ViewTeachers />} />
 
           {/* === Allocation === */}
           <Route path="/:slug/allocation/class-teacher" element={<ClassTeacher />} />
