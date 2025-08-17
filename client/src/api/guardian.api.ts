@@ -5,7 +5,7 @@ import type {Guardian, GuardianFormInput } from "../types";
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 export const registerGuardian = async (data: GuardianFormInput) => {
   try {
-    const response = await axios.post(`${API_BASE}/guardian`, data);
+    const response = await axios.post(`${API_BASE}/guardians/`, data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -26,7 +26,7 @@ export const registerGuardian = async (data: GuardianFormInput) => {
 };
 
 export const getAllGuardians = async (): Promise<Guardian[]> => {
-  const response = await axios.get(`${API_BASE}/guardian`);
+  const response = await axios.get(`${API_BASE}/guardians/list/`);
 
   const data = response.data;
   console.log("Fetched guardians:", data);
