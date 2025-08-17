@@ -2,13 +2,31 @@
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  HomePage,SignIn,SchoolSignupPage,SignUp,Schools,SuperAdminSignUp,ResetPassword,
-  SuperAdminSignIn,NewPassword,RegisterClass,ViewClass,RegisterStream,ViewTeachers,
-  Logout,RegisterStudent,ViewStudents,
+  HomePage,
+  SignIn,
+  SchoolSignupPage,
+  SignUp,
+  Schools,
+  SuperAdminSignUp,
+  ResetPassword,
+  SuperAdminSignIn,
+  NewPassword,
+  RegisterClass,
+  ViewClass,
+  RegisterStream,
+  ViewTeachers,
+  Logout,
+  RegisterStudent,
+  ViewStudents,
+  ViewGuardian,
 } from "./pages";
 import {
-  AccountantDashboard,GuardianDashboard,HeadTeacherDashboard,SchoolAdminDashboard,
-  SuperAdminDashboard,TeacherDashboard,
+  AccountantDashboard,
+  GuardianDashboard,
+  HeadTeacherDashboard,
+  SchoolAdminDashboard,
+  SuperAdminDashboard,
+  TeacherDashboard,
 } from "./pages/dashboard/";
 import GlobalStateProvider from "./context/global/useGlobalState";
 import ClassTeacher from "./pages/allocation/class-teacher";
@@ -30,12 +48,30 @@ function App() {
           <Route path="/new-password" element={<NewPassword />} />
 
           {/* === Dashboards === */}
-          <Route path="/:slug/dashboard/teacher" element={<TeacherDashboard />} />
-          <Route path="/:slug/dashboard/head-teacher" element={<HeadTeacherDashboard />} />
-          <Route path="/:slug/dashboard/guardian" element={<GuardianDashboard />} />
-          <Route path="/:slug/dashboard/accountant" element={<AccountantDashboard />} />
-          <Route path="/:slug/dashboard/school-admin" element={<SchoolAdminDashboard />} />
-          <Route path="/super-admin/dashboard" element={<SuperAdminDashboard />} />
+          <Route
+            path="/:slug/dashboard/teacher"
+            element={<TeacherDashboard />}
+          />
+          <Route
+            path="/:slug/dashboard/head-teacher"
+            element={<HeadTeacherDashboard />}
+          />
+          <Route
+            path="/:slug/dashboard/guardian"
+            element={<GuardianDashboard />}
+          />
+          <Route
+            path="/:slug/dashboard/accountant"
+            element={<AccountantDashboard />}
+          />
+          <Route
+            path="/:slug/dashboard/school-admin"
+            element={<SchoolAdminDashboard />}
+          />
+          <Route
+            path="/super-admin/dashboard"
+            element={<SuperAdminDashboard />}
+          />
           <Route path="/super-admin/schools" element={<Schools />} />
 
           {/* === Classes === */}
@@ -43,17 +79,27 @@ function App() {
           <Route path="/:slug/classes" element={<ViewClass />} />
 
           {/* === Streams === */}
-          <Route path="/head-teacher/streams/new" element={<RegisterStream />} />
+          <Route
+            path="/head-teacher/streams/new"
+            element={<RegisterStream />}
+          />
 
           {/* === Principal submenus === */}
-          <Route path="/:slug/principal/teachers/view" element={<ViewTeachers />} />
+          <Route
+            path="/:slug/principal/teachers/view"
+            element={<ViewTeachers />}
+          />
 
           {/* === Allocation === */}
-          <Route path="/:slug/allocation/class-teacher" element={<ClassTeacher />} />
+          <Route
+            path="/:slug/allocation/class-teacher"
+            element={<ClassTeacher />}
+          />
 
-            {/* === Students === */}
+          {/* === Students and Guardian === */}
           <Route path="/:slug/student/new" element={<RegisterStudent />} />
           <Route path="/:slug/students/view" element={<ViewStudents />} />
+          <Route path="/:slug/guardian/view" element={<ViewGuardian />} />
 
           {/* === Miscellaneous === */}
         </Routes>
