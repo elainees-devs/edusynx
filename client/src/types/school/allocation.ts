@@ -8,6 +8,7 @@ export type Teacher = Pick<
 > & {
   id: string
   isActive: boolean
+  employmentNo: string
 };
 
 
