@@ -2,30 +2,13 @@
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  HomePage,
-  SignIn,
-  SchoolSignupPage,
-  SignUp,
-  Schools,
-  SuperAdminSignUp,
-  ResetPassword,
-  SuperAdminSignIn,
-  NewPassword,
-  RegisterClass,
-  ViewClass,
-  RegisterStream,
-  ViewTeachers,
-  Logout,
-  RegisterStudent,
-  ViewStudents,
+  HomePage,SignIn,SchoolSignupPage,SignUp,Schools,SuperAdminSignUp,ResetPassword,
+  SuperAdminSignIn,NewPassword,RegisterClass,ViewClass,RegisterStream,ViewTeachers,
+  Logout,RegisterStudent,ViewStudents,
 } from "./pages";
 import {
-  AccountantDashboard,
-  GuardianDashboard,
-  HeadTeacherDashboard,
-  SchoolAdminDashboard,
-  SuperAdminDashboard,
-  TeacherDashboard,
+  AccountantDashboard,GuardianDashboard,HeadTeacherDashboard,SchoolAdminDashboard,
+  SuperAdminDashboard,TeacherDashboard,
 } from "./pages/dashboard/";
 import GlobalStateProvider from "./context/global/useGlobalState";
 import ClassTeacher from "./pages/allocation/class-teacher";
@@ -70,7 +53,7 @@ function App() {
 
             {/* === Students === */}
           <Route path="/:slug/student/new" element={<RegisterStudent />} />
-          <Route path="/:slug/students" element={<ViewStudents />} />
+          <Route path="/:slug/students/view" element={<ViewStudents />} />
 
           {/* === Miscellaneous === */}
         </Routes>
