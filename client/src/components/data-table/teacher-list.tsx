@@ -4,7 +4,6 @@ import type { Teacher } from "../../types/school/allocation";
 import { SearchBar } from "../../shared";
 import { searchConfig } from "../../constants";
 
-
 export interface TeacherDetailsProps {
   teachers: Teacher[];
   onEdit: (teacherId: string) => void;
@@ -25,12 +24,11 @@ const TeacherList: React.FC<TeacherDetailsProps> = ({
 
   const filteredTeachers = teachers.filter((teacher) =>
     keys.some((key) =>
-    String(teacher[key] ?? "")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  )
-);
-
+      String(teacher[key] ?? "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    )
+  );
 
   const sortedTeachers = [...filteredTeachers].sort((a, b) => {
     const nameA = `${a.firstName} ${a.middleName} ${a.lastName}`.toLowerCase();
@@ -53,54 +51,59 @@ const TeacherList: React.FC<TeacherDetailsProps> = ({
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300">
           <thead className="bg-gray-100">
-            <tr>
-              <th className="border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700">#</th>
+            <tr className="text-left text-sm font-semibold text-gray-700">
+              <th className="px-4 py-2 border">#</th>
+              <th className="px-4 py-2 border">Adm No</th>
+
+              {/* Sortable column */}
               <th
+                className="px-4 py-2 border cursor-pointer select-none"
                 onClick={handleSort}
-                className="cursor-pointer border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700"
-                title="Click to sort by name"
               >
-                Full Name {sortAsc ? "▲" : "▼"}
+                Name <span className="ml-1">{sortAsc ? "▲" : "▼"}</span>
               </th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                Employment No.
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                Email
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                Primary Phone
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                Secondary Phone
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                Status
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                Actions
-              </th>
+
+              <th className="px-4 py-2 border">Gender</th>
+              <th className="px-4 py-2 border">Previous School</th>
+              <th className="px-4 py-2 border">Class</th>
+              <th className="px-4 py-2 border">Stream</th>
+              <th className="px-4 py-2 border">Guardian</th>
+              <th className="px-4 py-2 border">Actions</th>
             </tr>
           </thead>
+
           <tbody className="text-sm text-gray-800">
             {sortedTeachers.map((teacher, index) => (
-              <tr key={teacher.id} className="border border-gray-300 hover:bg-gray-50">
+              <tr
+                key={teacher.id}
+                className="border border-gray-300 hover:bg-gray-50"
+              >
                 <td className="border border-gray-300 px-4 py-2 text-center font-mono text-sm text-gray-600">
                   {index + 1}
                 </td>
                 <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
                   {teacher.firstName} {teacher.middleName} {teacher.lastName}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">{teacher.employmentNo}</td>
-                <td className="border border-gray-300 px-4 py-2">{teacher.email}</td>
-                <td className="border border-gray-300 px-4 py-2">{teacher.primaryPhoneNumber}</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {teacher.secondaryPhoneNumber || <span className="text-gray-400">—</span>}
+                  {teacher.employmentNo}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {teacher.email}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {teacher.primaryPhoneNumber}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {teacher.secondaryPhoneNumber || (
+                    <span className="text-gray-400">—</span>
+                  )}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      teacher.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                      teacher.isActive
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
                     }`}
                   >
                     {teacher.isActive ? "Active" : "Inactive"}
@@ -126,7 +129,10 @@ const TeacherList: React.FC<TeacherDetailsProps> = ({
             ))}
             {sortedTeachers.length === 0 && (
               <tr>
-                <td colSpan={8} className="text-center px-4 py-6 text-gray-500 italic border border-gray-300">
+                <td
+                  colSpan={8}
+                  className="text-center px-4 py-6 text-gray-500 italic border border-gray-300"
+                >
                   No teachers found.
                 </td>
               </tr>
