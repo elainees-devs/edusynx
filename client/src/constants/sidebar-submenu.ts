@@ -16,7 +16,7 @@ export const teacherNavChildren : NavItem[] = [
   {
     name: "View Teachers",
     icon: FaEye,
-    path: "/dashboard/headteacher/teachers/view",
+    path: "/dashboard/principal/teachers/view",
   },
   {
     name: "Assign Subjects/Classes",
