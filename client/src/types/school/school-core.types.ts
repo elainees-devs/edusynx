@@ -1,5 +1,7 @@
 // client/src/types/school/school-core.types.ts
 import type { BaseDocument } from "../common/base.types";
+import type { Student } from "../people/student.types";
+import type { ITeacher } from "../people/user.types";
 
 export interface ISchool extends BaseDocument {
   name: string;
@@ -26,13 +28,15 @@ export interface IClass {
   grade: string;
   stream: string | {
     _id: string;
-    streamName: string;
+    streamName: string
   };
   school: string | {
     _id: string;
     name: string;
   };
   academicYear: string;
+  classTeacher?: string | ITeacher
+  students?: Array<string | Student>
 }
 
 
