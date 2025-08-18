@@ -26,8 +26,9 @@ export interface IBaseUser extends BaseDocument {
 }
 
 export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
-   role: typeof UserRole.TEACHER;
+   role: typeof UserRole.TEACHER
   isClassTeacher?:boolean
+  classId?: string // assign class when isClassTeacher is true
   department?: string |IDepartment
   isHeadOfDepartment?:boolean
 }
