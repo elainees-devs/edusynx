@@ -6,8 +6,10 @@ const ClassSchema = new Schema<IClass>(
   {
     school: { type: Types.ObjectId, ref: "School", required: true },
     grade: { type: String, required: true },
-   stream: { type: Schema.Types.ObjectId, ref: "Stream"},
+    stream: { type: Schema.Types.ObjectId, ref: "Stream" },
     academicYear: { type: String, required: true },
+    classTeacher: { type: Schema.Types.ObjectId, ref: "Teacher" },
+    students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
   },
   {
     timestamps: true,
@@ -15,6 +17,6 @@ const ClassSchema = new Schema<IClass>(
 );
 
 //Compound index for optimized filtering by school + className + stream + academicYear
-ClassSchema.index({ className:1});
+ClassSchema.index({ className: 1 });
 
 export const ClassModel = model<IClass>("Class", ClassSchema);
