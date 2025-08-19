@@ -39,13 +39,6 @@ export type ITeacher = Pick<
   teacherId: string;
 };
 
-export interface IClassTeacher {
-  school: Types.ObjectId | ISchool;
-  teacher: Types.ObjectId | ITeacher;
-  grade: string | IClass;
-  stream: string | IStream;
-  totalStudents: number;
-}
 
 // Guardian interface with literal role
 export interface IGuardian
