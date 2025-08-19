@@ -25,7 +25,7 @@ export interface ITeacherSubject extends BaseDocument {
 export interface IClassTeacher {
   school: Types.ObjectId | ISchool;
   teacher: Types.ObjectId | ITeacher;
-  grade: string | IClass;
-  stream: string | IStream;
+  grade: Types.ObjectId| IClass;
+  stream: Types.ObjectId | IStream;
   totalStudents: number;
 }
