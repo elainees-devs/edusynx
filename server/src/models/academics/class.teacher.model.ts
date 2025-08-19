@@ -13,5 +13,5 @@ const classTeacherSchema = new Schema<IClassTeacher>(
   { timestamps: true } 
 );
 
-export const ClassTeacher = model<IClassTeacher>("ClassTeacher", classTeacherSchema);
+export const ClassTeacherModel = model<IClassTeacher>("ClassTeacher", classTeacherSchema);
 
