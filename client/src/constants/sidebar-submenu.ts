@@ -7,6 +7,9 @@ import {
   FaBookOpen,
   FaEnvelope,
   FaFileAlt,
+  FaPlusCircle,
+  FaListAlt,
+  FaChalkboardTeacher,
 } from "react-icons/fa";
 import type { NavItem } from "./sidebarMenu";
 
@@ -68,3 +71,24 @@ export const studentNavChildren = (slug: string): NavItem[] => [
     path: "/dashboard/school-admin/guardians/view",
   },
 ];
+
+// Export the children array using NavItem[] type
+export const classNavChildren : NavItem[] = [
+  {
+    name: "Add Class",
+    icon: FaPlusCircle,   
+    path: "/dashboard/class/new",
+  },
+  {
+    name: "View Registered Classes",
+    icon: FaListAlt,      
+    path: "/dashboard/class/view",
+  },
+  {
+    name: "Class Overview",
+    icon: FaChalkboardTeacher,
+    path: "/dashboard/class-overview",
+  }
+]
+
+
