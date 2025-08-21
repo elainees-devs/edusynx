@@ -20,6 +20,7 @@ export { default as SchoolSignupPage } from './signup/signup-school'
 export { default as RegisterClass } from './class/register-class'
 export { default as ViewClass } from './class/view-class'
 export { default as RegisterStream } from './stream/register-stream'
+export { default as ClassOverview} from './class/class-overview'
 
 // ---------- Student Management ----------
 export { default as RegisterStudent } from './student/register-student'
