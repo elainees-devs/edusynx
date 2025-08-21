@@ -1,8 +1,7 @@
 // client/src/components/forms/signup/steps/role-specific.tsx
 import { useParams } from "react-router-dom";
 import { useSignUpContext } from "../../../../context/signup/useSignUpContext";
-import { useSchoolBySlug } from "../../../../hooks/useSchoolBySlug";
-import { useClassOptions } from "../../../../hooks/useClassOptions";
+import { useClassOptions, useSchoolBySlug } from "../../../../hooks";
 
 type SignUpRole = "teacher" | "headteacher" | "school-admin" | "accountant";
 const allowedRoles: SignUpRole[] = [
