@@ -29,7 +29,8 @@ import {
   TeacherDashboard,
 } from "./pages/dashboard/";
 import GlobalStateProvider from "./context/global/useGlobalState";
-import ClassTeacher from "./pages/allocation/class-teacher";
+// import ClassTeacher from "./pages/allocation/class-teacher";
+import ClassOverView from "./pages/class/class-overview";
 
 function App() {
   return (
@@ -91,9 +92,9 @@ function App() {
           />
 
           {/* === Allocation === */}
-          <Route
-            path="/:slug/allocation/class-teacher"
-            element={<ClassTeacher />}
+            <Route
+            path="/dashboard/class-overview"
+            element={<ClassOverView />}
           />
 
           {/* === Students and Guardian === */}
