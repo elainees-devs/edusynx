@@ -1,9 +1,10 @@
 // client/src/hooks/useGuardian.ts
-// client/src/hooks/useGuardians.ts
 import { useEffect, useState } from "react";
 import type { Guardian } from "../types";
 import { getAllGuardians } from "../api";
 import { searchConfig } from "../constants";
+import { capitalizeWord } from "../utils";
+
 
 export const useGuardians = () => {
   const [guardians, setGuardians] = useState<Guardian[]>([]);
@@ -34,7 +35,16 @@ export const useGuardians = () => {
     const fetchGuardians = async () => {
       try {
         const data = await getAllGuardians();
-        setGuardians(data);
+
+            // Capitalize names before storing
+        const formattedNames = data.map((g: Guardian) => ({
+          ...g,
+          firstName: capitalizeWord(g.firstName),
+          middleName: g.middleName ? capitalizeWord(g.middleName) : "",
+          lastName: capitalizeWord(g.lastName),
+        }));
+
+        setGuardians(formattedNames);
       } catch (err) {
         setError("Failed to fetch guardians");
         console.error(err);
