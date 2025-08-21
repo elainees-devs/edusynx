@@ -1,8 +1,9 @@
 // client/src/components/data-table/index.tsx
 /* === This file aggregates exports from various data table components === */
 
-export {default as StudentList} from "./student-list"
-export {default as GuardianList} from "./guardian-list"
-export {default as ClassList} from "./class-list"
-export {default as SchoolList} from "./school-list"
-export {default as TeacherList} from "./teacher-list"
+export {default as ClassOverviewTable} from'./class-overview-table.tsx'
+export {default as ClassTable} from'./class-table.tsx'
+export {default as TeacherTable} from'./teacher-table.tsx'
+export {default as GuardianTable} from'./guardian-table.tsx'
+export {default as StudentTable} from'./student-table.tsx'
+
