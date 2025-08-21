@@ -9,7 +9,8 @@ const ViewStudents: React.FC = () => {
     <div className="flex h-screen">
       {/* Sidebar */}
       <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
-        <Sidebar role="school-admin" />
+       <Sidebar role={["school-admin", "head-teacher"]} />
+
       </div>
 
       {/* Main Content Area */}
