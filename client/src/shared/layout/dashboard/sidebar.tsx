@@ -11,13 +11,16 @@ import EduSynxLogo from "../../edusynx-logo";
 
 
 interface SidebarProps {
-  role: string;
+  role: string | string[];
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
   const { slug = "" } = useParams<{ slug: string }>();
-  const normalizedRole = role.toLowerCase().replace(/\s+/g, "-");
+const normalizedRole = Array.isArray(role)
+  ? role[0].toLowerCase().replace(/\s+/g, "-") 
+  : role.toLowerCase().replace(/\s+/g, "-");
+
 
   const navMap: Record<string, () => NavItem[]> = {
     "super-admin": () => superAdminNavItems,
