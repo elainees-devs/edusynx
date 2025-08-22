@@ -22,7 +22,7 @@ export interface ITeacherSubject extends BaseDocument {
   subjectId: Types.ObjectId | ISubject
 }
 
-export interface IClassTeacher {
+export interface IClassTeacher extends ITeacher, BaseDocument {
   school: Types.ObjectId | ISchool;
   teacher: Types.ObjectId | ITeacher;
   grade: Types.ObjectId| IClass;
