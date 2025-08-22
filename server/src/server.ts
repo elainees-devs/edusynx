@@ -5,9 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import connectDB from "./config/db";
 import logger from "./utils/logger";
-import swaggerJsdoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
-import { options, setupSwagger } from "./docs/swagger";
+import { setupSwagger } from "./docs/swagger";
 import {
   userRouter,
   schoolRouter,
@@ -30,7 +28,8 @@ import {
   allocationRouter,
   streamRouter,
   departmentRouter,
-  guardianRouter
+  guardianRouter,
+  classTeacherRoute
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -70,6 +69,7 @@ apiRouter.use("/guardians", guardianRouter);
 apiRouter.use("/student", studentRouter);
 app.get("/:slug/signup", schoolController.getSchoolBySlug);
 apiRouter.use("/class", classRouter);
+apiRouter.use("/class-overview", classTeacherRoute);
 apiRouter.use("/department", departmentRouter);
 apiRouter.use("/auth", loginRouter);
 apiRouter.use("/exam", examRouter);
