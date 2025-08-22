@@ -17,6 +17,9 @@ export {sessionSchema} from './session.schema'
 export {studentSchema} from './student.schema'
 export {subjectSchema} from './subject.schema'
 export {userSchema} from './user.schema'
+export {classTeacherSchema} from './class.teacher.schema'
+
+
 
 
 
