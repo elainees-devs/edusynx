@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
           {/* Hero Image */}
           <div className="flex-1 mt-12 text-center md:mt-0">
             <img
-              src="/images/graph.webp"
+              src="/images/data-report.svg"
               alt="Bar Graph Analytics - School Dashboard"
               className="max-w-full rounded-[20px] shadow-2xl animate-float"
             />
