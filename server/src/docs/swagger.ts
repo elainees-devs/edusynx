@@ -21,6 +21,7 @@ import {
   studentSchema,
   subjectSchema,
   userSchema,
+  classTeacherSchema,
 } from "./components/schemas";
 
 
@@ -66,6 +67,7 @@ export const options: swaggerJSDoc.Options = {
         ...studentSchema,
         ...subjectSchema,
         ...userSchema,
+        ...classTeacherSchema
       },
     },
     security: [{ bearerAuth: [] }],
