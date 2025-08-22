@@ -1,6 +1,7 @@
 // server/src/routes/index.ts
 export { schoolRouter } from './school.route';
 export { classRouter } from './class.route';
+export {classTeacherRoute} from './class.teacher.route'
 export { userRouter } from './user.route';
 export {guardianRouter} from './guardian.route'
 export { studentRouter } from './student.route';
