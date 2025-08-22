@@ -8,7 +8,7 @@ const ClassSchema = new Schema<IClass>(
     grade: { type: String, required: true },
     stream: { type: Schema.Types.ObjectId, ref: "Stream" },
     academicYear: { type: String, required: true },
-    classTeacher: { type: Schema.Types.ObjectId, ref: "Teacher" },
+    classTeacher: { type: Schema.Types.ObjectId, ref: "User" },
     students: [{ type: Schema.Types.ObjectId, ref: "Student" }],
   },
   {
