@@ -1,7 +1,7 @@
 // server/src/repositories/academics/class.teacher.repository.ts
 import { CreateClassTeacherDTO } from "../../dto";
 import { ClassTeacherModel } from "../../models";
-import { IClass, IClassTeacher, IStream } from "../../types";
+import { IBaseUser, IClass, IClassTeacher, IStream, ITeacher } from "../../types";
 
 export class ClassTeacherRepository {
   // 1. Add new department
@@ -12,18 +12,43 @@ export class ClassTeacherRepository {
     return await classTeacher.save();
   }
 
-  // 2. Get class teacher by Id
-  async getClassTeacherById(
-    classTeacherId: string
-  ): Promise<IClassTeacher | null> {
-    return await ClassTeacherModel.findById(classTeacherId).populate("school");
-  }
+// 2. Get class teacher full name by ID
+async getClassTeacherById(id: string): Promise<string | null> {
+  if (!id) return null;
 
-  // 3. Get all class teachers
-  async getAllClassTeachers(): Promise<IClassTeacher[]> {
-    return await ClassTeacherModel.find().populate("school");
-  }
+  const teacher = await ClassTeacherModel.findById(id).populate("school");
+  return teacher
+    ? `${teacher.firstName} ${teacher.middleName ?? ""} ${teacher.lastName}`.trim()
+    : null;
+}
 
+
+// 3. Get all class teachers
+async getAllClassTeachers() {
+  const classTeachers = await ClassTeacherModel.find()
+  .populate({
+      path: "teacher",
+      select: "firstName middleName lastName", 
+      model: "User" 
+    })
+   .populate({
+    path:"grade",
+    select:"grade",
+    model: "Class"
+  
+  })
+    .populate("stream");
+  
+  // Debug: Check which teachers are not populating
+  classTeachers.forEach(ct => {
+    if (ct.teacher === null && ct.teacherId) {
+      console.log(`Teacher reference exists but populate failed for ID: ${ct.teacherId}`);
+      console.log(`ClassTeacher ID: ${ct._id}`);
+    }
+  });
+  
+  return classTeachers;
+}
   // 4. Update class teacher by Id
   async updateClassTeacher(
     classTeacherId: string,
@@ -79,4 +104,6 @@ export class ClassTeacherRepository {
 
     return result;
   }
-}
+
+  }
+
