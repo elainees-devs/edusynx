@@ -18,7 +18,7 @@ export class ClassTeacherController {
     });
 
   // 3. Get all class teachers
-  getAllClassTeacher = handleAsync(async (_req, res) => {
+  getAllClassTeachers = handleAsync(async (_req, res) => {
     const classTeachers = await classTeacherRepo.getAllClassTeachers();
     res.json(classTeachers);
   });
@@ -57,4 +57,6 @@ export class ClassTeacherController {
     const totals = await classTeacherRepo.countTotalStudentsPerClass();
     res.json(totals);
   });
+
+
 }
