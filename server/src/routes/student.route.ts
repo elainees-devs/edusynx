@@ -68,25 +68,7 @@ studentRouter.post("/generate-admission", studentController.generateAdmissionAnd
  *       200:
  *         description: Student name
  */
-studentRouter.get("/student/:id", studentController.getStudentNameById);
 
-/**
- * @swagger
- * /api/students/student/guardian/{id}:
- *   get:
- *     summary: Get student and guardian by ID
- *     tags: [Students]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Student ID
- *     responses:
- *       200:
- *         description: Student with guardian info
- */
 studentRouter.get("/student/guardian/:id", studentController.getStudentWithGuardianById);
 
 /**
@@ -174,7 +156,7 @@ studentRouter.get("/students/count/:id", studentController.countStudents);
  *       200:
  *         description: Student updated
  */
-studentRouter.put("/student/update/:id", validate(updateStudentSchema), studentController.updateStudentById);
+studentRouter.put("/update/:id", validate(updateStudentSchema), studentController.updateStudentById);
 
 /**
  * @swagger
@@ -193,7 +175,7 @@ studentRouter.put("/student/update/:id", validate(updateStudentSchema), studentC
  *       204:
  *         description: Student deleted
  */
-studentRouter.delete("/student/:id", studentController.deleteStudentById);
+studentRouter.delete("/:id", studentController.deleteStudentById);
 
 /**
  * @swagger
