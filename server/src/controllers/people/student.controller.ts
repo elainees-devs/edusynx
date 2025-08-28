@@ -26,12 +26,12 @@ generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
     res.json(student);
   });
 
-  // 4. Method to get a student's full name by ID
-  getStudentNameById = handleAsync(async (req, res) => {
-    const name = await studentRepo.findStudentNameById(req.params.id);
-    if (!name) throw new AppError("Student not found", 404);
-    res.json({ fullName: name });
-  });
+  // // 4. Method to get a student's full name by ID
+  // getStudentNameById = handleAsync(async (req, res) => {
+  //   const name = await studentRepo.findStudentNameById(req.params.id);
+  //   if (!name) throw new AppError("Student not found", 404);
+  //   res.json({ fullName: name });
+  // });
 
   // 5. Method to get students by class name
   getStudentsByClassName = handleAsync(async (req, res) => {
