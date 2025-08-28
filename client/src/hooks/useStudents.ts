@@ -1,4 +1,4 @@
-// cliet/src/hooks/useStudents.ts
+// client/src/hooks/useStudents.ts
 import { useEffect, useState } from "react";
 import { getAllStudents } from "../api/student.api";
 import type { Student } from "../types";
@@ -15,6 +15,7 @@ export const useStudents = () => {
 
   const handleSort = () => setSortAsc((prev) => !prev);
 
+  // 🔍 filtering
   const filteredStudents = students.filter((student) =>
     keys.some((key) =>
       String(student[key as keyof Student] ?? "")
@@ -23,6 +24,7 @@ export const useStudents = () => {
     )
   );
 
+  // 🔢 sorting
   const sortedStudents = [...filteredStudents].sort((a, b) => {
     const nameA =
       `${a.studentFirstName} ${a.studentMiddleName} ${a.studentLastName}`.toLowerCase();
@@ -48,7 +50,9 @@ export const useStudents = () => {
   }, []);
 
   return {
-    students: sortedStudents,
+    students,           // raw state (for updates like delete/edit)
+    setStudents,
+    sortedStudents,     // derived state (for UI display)
     loading,
     error,
     sortAsc,
