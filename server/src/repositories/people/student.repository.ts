@@ -50,21 +50,28 @@ export class StudentRepository {
 
   // 2. Method to find all students
   async findAllStudents() {
-    return await StudentModel.find().populate("school");
-  }
-
+    return await StudentModel.find()
+     .populate({
+    path:"classId",
+    select:"grade",
+    model: "Class"
+  
+  })
+     .populate("stream");
+} 
+ 
   // 3. Method to find Student by Guardian ID
   async findStudentWithGuardianById(id: string) {
     return await StudentModel.findById(id).populate("guardian");
   }
 
-  // 4. Method to find Student by ID
-  async findStudentNameById(id: string) {
-    const student = await StudentModel.findById(id);
-    return student
-      ? `${student.studentFirstName} ${student.studentLastName}`
-      : null;
-  }
+  // // 4. Method to find Student by ID
+  // async findStudentNameById(id: string) {
+  //   const student = await StudentModel.findById(id);
+  //   return student
+  //     ? `${student.studentFirstName} ${student.studentLastName}`
+  //     : null;
+  // }
 
   // 5. Method to find students by class name
   async findStudentsByClassName(className: string) {
