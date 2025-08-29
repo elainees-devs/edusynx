@@ -3,9 +3,11 @@ import { Router } from "express";
 import { StudentController } from "../controllers";
 import { createStudentSchema, updateStudentSchema } from "../validation/student.schema";
 import { validate } from "../middlewares/validate";
+import multer from "multer";
 
 const studentRouter = Router();
 const studentController = new StudentController();
+const upload = multer({ storage: multer.memoryStorage() });
 
 /**
  * @swagger
@@ -13,6 +15,45 @@ const studentController = new StudentController();
  *   name: Students
  *   description: Manage students in the system
  */
+
+/**
+ * @swagger
+ * /students/upload:
+ *   post:
+ *     summary: Upload students via CSV or Excel file
+ *     tags: [Students]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: CSV or Excel file containing students
+ *     responses:
+ *       201:
+ *         description: Students successfully uploaded
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 students:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Student'
+ *       400:
+ *         description: No file uploaded
+ *       500:
+ *         description: Server error
+ */
+studentRouter.post("/upload", upload.single("file"), studentController.uploadStudentsData);
+
 
 /**
  * @swagger
