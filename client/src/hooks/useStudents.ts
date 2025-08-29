@@ -1,11 +1,15 @@
 // client/src/hooks/useStudents.ts
 import { useEffect, useState } from "react";
 import { getAllStudents } from "../api/student.api";
-import type { Student } from "../types";
+import type { IClass, IStream, Student } from "../types";
 import { searchConfig } from "../constants";
+import { getAllClasses } from "../api";
+import { getAllStreams } from "../api/stream.api";
 
 export const useStudents = () => {
   const [students, setStudents] = useState<Student[]>([]);
+  const [classes,setClasses] = useState<IClass[]>([]);
+  const [streams,setStreams] = useState<IStream[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortAsc, setSortAsc] = useState(true);
@@ -15,7 +19,7 @@ export const useStudents = () => {
 
   const handleSort = () => setSortAsc((prev) => !prev);
 
-  // 🔍 filtering
+  // filtering
   const filteredStudents = students.filter((student) =>
     keys.some((key) =>
       String(student[key as keyof Student] ?? "")
@@ -24,7 +28,7 @@ export const useStudents = () => {
     )
   );
 
-  // 🔢 sorting
+  // sorting
   const sortedStudents = [...filteredStudents].sort((a, b) => {
     const nameA =
       `${a.studentFirstName} ${a.studentMiddleName} ${a.studentLastName}`.toLowerCase();
@@ -34,26 +38,34 @@ export const useStudents = () => {
   });
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getAllStudents();
-        setStudents(data);
+        const [studentData, classData, streamData] = await Promise.all([
+          getAllStudents(),
+          getAllClasses(),
+          getAllStreams(), 
+        ]);
+        setStudents(studentData);
+        setClasses(classData);
+        setStreams(streamData); 
       } catch (err) {
-        setError("Failed to fetch students");
+        setError("Failed to fetch students or classes");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
+    fetchData();
   }, []);
 
   return {
-    students,           // raw state (for updates like delete/edit)
+    students, // raw state (for updates like delete/edit)
     setStudents,
-    sortedStudents,     // derived state (for UI display)
+    sortedStudents, // derived state (for UI display)
     loading,
+    classes,
+    streams,
     error,
     sortAsc,
     searchTerm,
