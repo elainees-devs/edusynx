@@ -37,6 +37,21 @@ export const getAllStudents = async (): Promise<Student[]> => {
   return data as Student[];
 };
 
+// Fetch all active students
+export const getActiveStudents = async (): Promise<Student[]> => {
+  try {
+    const response = await axios.get(`${API_BASE}/student/active`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching active students:", error.response?.data);
+      throw error.response?.data || { message: "Failed to fetch active students" };
+    }
+    throw new Error("Unexpected error while fetching active students");
+  }
+};
+
+
 export const updateStudent = async (id: string, data: Partial<Student>) => {
   const payload: Partial<Student> = {};
 
