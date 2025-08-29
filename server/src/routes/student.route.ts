@@ -53,6 +53,29 @@ studentRouter.post("/generate-admission", studentController.generateAdmissionAnd
 
 /**
  * @swagger
+ * /students/active:
+ *   get:
+ *     summary: Retrieve all students with active status
+ *     tags: [Students]
+ *     responses:
+ *       200:
+ *         description: List of active students
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Student'
+ *       500:
+ *         description: Server error
+ */
+studentRouter.get("/active", studentController.getActiveStudents);
+
+
+
+
+/**
+ * @swagger
  * /api/students/student/{id}:
  *   get:
  *     summary: Get student name by ID
@@ -68,6 +91,8 @@ studentRouter.post("/generate-admission", studentController.generateAdmissionAnd
  *       200:
  *         description: Student name
  */
+
+
 
 studentRouter.get("/student/guardian/:id", studentController.getStudentWithGuardianById);
 
