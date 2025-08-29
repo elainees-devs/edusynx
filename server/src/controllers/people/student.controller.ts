@@ -33,6 +33,13 @@ generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
   //   res.json({ fullName: name });
   // });
 
+  // 4. Method to get all active students
+getActiveStudents = handleAsync(async (_req, res) => {
+  const students = await studentRepo.findActiveStudents();
+  res.json(students);
+});
+
+
   // 5. Method to get students by class name
   getStudentsByClassName = handleAsync(async (req, res) => {
     const students = await studentRepo.findStudentsByClassName(req.params.className);
