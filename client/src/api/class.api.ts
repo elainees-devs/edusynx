@@ -26,6 +26,20 @@ export const registerClass = async (data: IClass) => {
   }
 };
 
+// Retrieve all classes
+export const getAllClasses = async (): Promise<IClass[]> => {
+  try {
+    const response = await axios.get(`${API_BASE}/class`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching classes:", error.response?.data);
+      throw error.response?.data || { message: "Failed to fetch classes" };
+    }
+    throw new Error("Unexpected error while fetching classes");
+  }
+};
+
 // Get classes by dynamic filter: schoolId (required), academicYear (optional)
 export const getClassesByFilter = async (
   schoolId: string,
