@@ -1,12 +1,13 @@
 // client/src/components/tables/student-table.tsx
 import React, { useState } from "react";
 import { FaUserPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
-import type { Student } from "../../types";
-
+import type { IClass, IStream, Student } from "../../types";
 
 interface StudentTableProps {
   students: Student[];
   sortAsc: boolean;
+  classes: IClass[];
+  streams: IStream[];
   onSort: () => void;
   onAdd: () => void;
   onEdit: (id: string, updatedData: Partial<Student>) => void;
@@ -15,6 +16,8 @@ interface StudentTableProps {
 
 const StudentTable: React.FC<StudentTableProps> = ({
   students,
+  classes,
+  streams,
   sortAsc,
   onSort,
   onAdd,
@@ -31,7 +34,16 @@ const StudentTable: React.FC<StudentTableProps> = ({
       studentFirstName: student.studentFirstName,
       studentMiddleName: student.studentMiddleName,
       studentLastName: student.studentLastName,
-      // Add other editable string fields here if needed
+      studentGender: student.studentGender,
+      classId:
+        typeof student.classId === "object"
+          ? student.classId._id
+          : student.classId,
+      stream:
+        typeof student.stream === "object"
+          ? student.stream._id
+          : student.stream,
+      status: student.status,
     });
   };
 
@@ -44,7 +56,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
     setEditData((prev) => ({ ...prev, [field]: value }));
   };
 
-
   const saveEdit = () => {
     if (!editingId) return;
 
@@ -53,6 +64,10 @@ const StudentTable: React.FC<StudentTableProps> = ({
       studentFirstName: editData.studentFirstName,
       studentMiddleName: editData.studentMiddleName,
       studentLastName: editData.studentLastName,
+      studentGender: editData.studentGender,
+      classId: editData.classId,
+      stream: editData.stream,
+      status: editData.status,
     };
 
     console.log("Final update payload:", updatedData);
@@ -81,6 +96,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
             <th className="px-4 py-2 border">Previous School</th>
             <th className="px-4 py-2 border">Class</th>
             <th className="px-4 py-2 border">Stream</th>
+            <th className="px-4 py-2 border">Status</th>
             <th className="px-4 py-2 border">Guardian</th>
             <th className="px-4 py-2 border">Actions</th>
           </tr>
@@ -157,10 +173,83 @@ const StudentTable: React.FC<StudentTableProps> = ({
                   )}
                 </td>
 
-                <td className="px-4 py-2 border">{student.studentGender}</td>
+                {/* Gender */}
+                <td className="px-4 py-2 border">
+                  {isEditing ? (
+                    <select
+                      value={editData.studentGender || ""}
+                      onChange={(e) => handleChange("status", e.target.value)}
+                      className="border p-1 rounded w-full"
+                    >
+                      <option value="">-- Select Gender --</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  ) : (
+                    student.studentGender
+                  )}
+                </td>
+
                 <td className="px-4 py-2 border">{student.previousSchool}</td>
-                <td className="px-4 py-2 border">{className}</td>
-                <td className="px-4 py-2 border">{streamName}</td>
+                
+                {/* Class */}
+                <td className="px-4 py-2 border">
+                  {isEditing ? (
+                    <select
+                      value={String(editData.classId || "")}
+                      onChange={(e) => handleChange("classId", e.target.value)}
+                      className="border p-1 rounded w-full"
+                    >
+                      <option value="">-- Select Class --</option>
+                      {classes.map((cls) => (
+                        <option key={cls._id} value={cls._id}>
+                          {cls.grade}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    className
+                  )}
+                </td>
+
+                {/* Streams */}
+                <td className="px-4 py-2 border">
+                  {isEditing ? (
+                    <select
+                      value={String(editData.stream || "")}
+                      onChange={(e) => handleChange("stream", e.target.value)}
+                      className="border p-1 rounded w-full"
+                    >
+                      <option value="">-- Select Stream --</option>
+                      {streams.map((stream) => (
+                        <option key={stream._id} value={stream._id}>
+                          {stream.streamName}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    streamName
+                  )}
+                </td>
+
+                {/* Status */}
+                <td className="px-4 py-2 border">
+                  {isEditing ? (
+                    <select
+                      value={editData.status || ""}
+                      onChange={(e) => handleChange("status", e.target.value)}
+                      className="border p-1 rounded w-full"
+                    >
+                      <option value="">-- Select Status --</option>
+                      <option value="active">Active</option>
+                      <option value="suspended">Suspended</option>
+                      <option value="transferred">Transferred</option>
+                    </select>
+                  ) : (
+                    student.status
+                  )}
+                </td>
+
                 <td className="px-4 py-2 border">{guardianName}</td>
 
                 {/* Actions */}
