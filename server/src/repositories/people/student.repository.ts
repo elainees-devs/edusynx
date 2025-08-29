@@ -73,6 +73,16 @@ export class StudentRepository {
   //     : null;
   // }
 
+  
+  // Method to find all active students
+async findActiveStudents() {
+  return await StudentModel.find({ status: "active" })
+    .populate("classId")
+    .populate("stream")
+    // .populate("guardianId");
+}
+
+
   // 5. Method to find students by class name
   async findStudentsByClassName(className: string) {
     const classObj = await ClassModel.findOne({ className });
