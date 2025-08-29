@@ -10,6 +10,7 @@ import {
   FaPlusCircle,
   FaListAlt,
   FaChalkboardTeacher,
+  FaPlus,
 } from "react-icons/fa";
 import type { NavItem } from "./sidebarMenu";
 
@@ -52,17 +53,22 @@ export const teacherNavChildren : NavItem[] = [
 export const studentNavChildren = (slug: string): NavItem[] => [
   {
     name: "Add Student",
-    icon: FaEye,
+    icon: FaPlus,
     path: `/${slug}/student/new`,
   },
   {
-    name: "View Student",
+    name: "View Active Students",
+    icon: FaEye,
+    path: `/${slug}/active/students`,
+  },
+  {
+    name: "View Other Students",
     icon: FaEye,
     path: `/${slug}/students`,
   },
   {
     name: "Add Guardian",
-    icon: FaEye,
+    icon: FaPlus,
     path: "/dashboard/school-admin/guardians/new",
   },
   {
