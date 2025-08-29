@@ -1,5 +1,6 @@
 // server/src/controllers/people/student.controller.ts
 import { StudentRepository } from "../../repositories";
+import { uploadStudentsFromBuffer } from "../../utils";
 import { AppError } from "../../utils/AppError";
 import { handleAsync } from "../../utils/handleAsync";
 
@@ -80,4 +81,20 @@ getActiveStudents = handleAsync(async (_req, res) => {
     const names = await studentRepo.getAllStudentNames();
     res.json(names);
   });
+
+
+  // Upload students file (CSV or Excel)
+uploadStudentsData = handleAsync(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded" });
+  }
+
+  const { buffer, originalname } = req.file;
+  const students = await uploadStudentsFromBuffer(buffer, originalname);
+
+  res.status(201).json({
+    message: `Successfully uploaded ${students.length} students`,
+    students,
+  });
+});
 }
