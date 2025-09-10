@@ -4,7 +4,7 @@ import { FaMoneyBillWave, FaExclamationTriangle, FaUserCheck } from "react-icons
 import { MdNotificationsActive } from "react-icons/md";
 import type { AttendanceAlert, FeeAlert, FinancialSummary } from "../../../constants/data/head-teacher-dashboard";
 
-const PrincipalDashboard: React.FC = () => {
+const PrincipalDashboardOverview: React.FC = () => {
   const [finance, setFinance] = useState<FinancialSummary>({
     totalIncome: 0,
     totalExpenses: 0,
@@ -97,4 +97,4 @@ const PrincipalDashboard: React.FC = () => {
   );
 };
 
-export default PrincipalDashboard;
+export default PrincipalDashboardOverview;

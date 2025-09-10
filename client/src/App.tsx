@@ -23,7 +23,7 @@ import {
 import {
   AccountantDashboard,
   GuardianDashboard,
-  HeadTeacherDashboard,
+  PrincipalDashboard,
   SchoolAdminDashboard,
   SuperAdminDashboard,
   TeacherDashboard,
@@ -54,8 +54,8 @@ function App() {
             element={<TeacherDashboard />}
           />
           <Route
-            path="/:slug/dashboard/head-teacher"
-            element={<HeadTeacherDashboard />}
+            path="/:slug/dashboard/principal"
+            element={<PrincipalDashboard />}
           />
           <Route
             path="/:slug/dashboard/guardian"
@@ -77,7 +77,7 @@ function App() {
 
           {/* === Classes === */}
           <Route path="/head-teacher/class/new" element={<RegisterClass />} />
-          <Route path="/:slug/classes" element={<ViewClass />} />
+          <Route path="/:slug/dashboard/class/view" element={<ViewClass />} />
 
           {/* === Streams === */}
           <Route

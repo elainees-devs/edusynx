@@ -88,7 +88,7 @@ export const classNavChildren : NavItem[] = [
   {
     name: "View Registered Classes",
     icon: FaListAlt,      
-    path: "/dashboard/class/view",
+    path: "/:slug/dashboard/class/view",
   },
   {
     name: "Class Overview",

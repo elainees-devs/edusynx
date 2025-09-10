@@ -1,4 +1,3 @@
-// client/src/shared/layout/dashboard/sidebar.tsx
 import { Link, useLocation, useParams } from "react-router-dom";
 import {
   headTeacherNavItems,
@@ -9,7 +8,6 @@ import {
 import { studentNavChildren } from "../../../constants/sidebar-submenu";
 import EduSynxLogo from "../../edusynx-logo";
 
-
 interface SidebarProps {
   role: string | string[];
 }
@@ -17,10 +15,10 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
   const { slug = "" } = useParams<{ slug: string }>();
-const normalizedRole = Array.isArray(role)
-  ? role[0].toLowerCase().replace(/\s+/g, "-") 
-  : role.toLowerCase().replace(/\s+/g, "-");
-
+  
+  const normalizedRole = Array.isArray(role)
+    ? role[0].toLowerCase().replace(/\s+/g, "-") 
+    : role.toLowerCase().replace(/\s+/g, "-");
 
   const navMap: Record<string, () => NavItem[]> = {
     "super-admin": () => superAdminNavItems,
@@ -35,6 +33,10 @@ const normalizedRole = Array.isArray(role)
 
   const navItems = navMap[normalizedRole]?.() || [];
 
+  // Function to replace :slug in paths
+  const resolvePath = (path: string) =>
+    path.includes(":slug") ? path.replace(":slug", slug) : path;
+
   return (
     <aside className="fixed top-0 left-0 h-screen w-48 bg-white text-gray-900 shadow-lg overflow-visible z-50">
       <EduSynxLogo className="ml-8 text-[1rem]" />
@@ -43,9 +45,11 @@ const normalizedRole = Array.isArray(role)
           {navItems.map(({ name, icon: Icon, path, children }) => (
             <li key={name} className="group relative">
               <Link
-                to={path || "#"}
+                to={path ? resolvePath(path) : "#"}
                 className={`flex items-center px-6 py-3 hover:bg-teal-200 transition ${
-                  location.pathname === path ? "bg-gray-700 text-white" : ""
+                  location.pathname === resolvePath(path)
+                    ? "bg-gray-700 text-white"
+                    : ""
                 }`}
               >
                 <Icon className="mr-3" />
@@ -58,9 +62,9 @@ const normalizedRole = Array.isArray(role)
                     ({ name: childName, icon: ChildIcon, path: childPath }) => (
                       <li key={childName}>
                         <Link
-                          to={childPath || "#"}
+                          to={childPath ? resolvePath(childPath) : "#"}
                           className={`flex items-center px-4 py-2 hover:bg-teal-100 transition ${
-                            location.pathname === childPath
+                            location.pathname === resolvePath(childPath)
                               ? "bg-gray-700 text-white"
                               : ""
                           }`}

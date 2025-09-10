@@ -31,7 +31,7 @@ export const superAdminNavItems: NavItem[] = [
 ];
 
 export const headTeacherNavItems: NavItem[] = [
-  { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
+  { name: "Dashboard", icon: FaTachometerAlt, path: "/:slug/dashboard/head-teacher" },
   {
     name: "Teachers",
     icon: FaChalkboardTeacher,

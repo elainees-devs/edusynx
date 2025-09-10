@@ -8,6 +8,7 @@ import { registerStudent } from "../../api/student.api";
 import { getSchoolId } from "../../utils/getSchoolId";
 import { useGlobalState } from "../../hooks";
 import { RegisterStudentForm } from "../../components";
+import UploadStudentsButton from "../../components/buttons/upload-student-data";
 
 const RegisterStudent: React.FC = () => {
     const { state } = useGlobalState();
@@ -74,6 +75,7 @@ const RegisterStudent: React.FC = () => {
         <div className="flex-shrink-0">
           <Topbar role="headteacher" />
         </div>
+        <UploadStudentsButton />
         {/* Scrollable Form Area */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
           <StudentFormProvider>

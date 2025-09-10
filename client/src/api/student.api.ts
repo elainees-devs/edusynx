@@ -51,6 +51,19 @@ export const getActiveStudents = async (): Promise<Student[]> => {
   }
 };
 
+export const uploadStudentsFile = async (file: File): Promise<Student[]> => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await axios.post<{ students: Student[] }>(
+    `${API_BASE}/student/upload`,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+
+  return response.data.students;
+};
+
 
 export const updateStudent = async (id: string, data: Partial<Student>) => {
   const payload: Partial<Student> = {};
