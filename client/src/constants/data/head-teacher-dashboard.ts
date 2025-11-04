@@ -1,4 +1,4 @@
-// client/src/constants/data/head-teacher-dashboard.ts
+// client/src/constants/data/principal-dashboard.ts
 export interface FinancialSummary {
   totalIncome: number;
   totalExpenses: number;
