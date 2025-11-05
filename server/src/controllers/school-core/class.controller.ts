@@ -1,4 +1,3 @@
-// server/src/controllers/school-core/class.controller.ts
 import { ClassRepository } from "../../repositories";
 import { AppError } from "../../utils/AppError";
 import { handleAsync } from "../../utils/handleAsync";
@@ -17,9 +16,27 @@ export class ClassController {
     res.json(foundClass);
   });
 
-  getAllClasses = handleAsync(async (_req, res) => {
-    const classes = await classRepo.getAllClasses();
-    res.json(classes);
+  /**
+   * GET /classes?page=1&limit=10
+   * Supports pagination with defaults.
+   */
+  getAllClasses = handleAsync(async (req, res) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const [classes, total] = await Promise.all([
+      classRepo.getAllClasses({ skip, limit }),
+      classRepo.countClasses(),
+    ]);
+
+    res.json({
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      data: classes,
+    });
   });
 
   updateClass = handleAsync<{ id: string }, any, Partial<any>>(async (req, res) => {
@@ -39,22 +56,35 @@ export class ClassController {
     res.status(204).send();
   });
 
-getClassesByFilter = handleAsync<{ schoolId: string }>(async (req, res) => {
-  const { schoolId } = req.params;
-  const { academicYear } = req.query;
+  /**
+   * GET /classes/filter/:schoolId?academicYear=2025&page=1&limit=10
+   */
+  getClassesByFilter = handleAsync<{ schoolId: string }>(async (req, res) => {
+    const { schoolId } = req.params;
+    const { academicYear, page = "1", limit = "10" } = req.query;
 
-  if (!schoolId) throw new AppError("schoolId parameter is required", 400);
+    if (!schoolId) throw new AppError("schoolId parameter is required", 400);
 
-  const filter: Record<string, any> = { school: schoolId };
-  if (academicYear) {
-    filter.academicYear = academicYear;
-  }
+    const filter: Record<string, any> = { school: schoolId };
+    if (academicYear) filter.academicYear = academicYear;
 
-  const classes = await classRepo.getClassesByFilter(filter);
-  res.json(classes);
-});
+    const pageNum = parseInt(page as string);
+    const limitNum = parseInt(limit as string);
+    const skip = (pageNum - 1) * limitNum;
 
+    const [classes, total] = await Promise.all([
+      classRepo.getClassesByFilter(filter, { skip, limit: limitNum }),
+      classRepo.countClasses(filter),
+    ]);
 
+    res.json({
+      page: pageNum,
+      limit: limitNum,
+      total,
+      totalPages: Math.ceil(total / limitNum),
+      data: classes,
+    });
+  });
 
   getClassesByAcademicYear = handleAsync(async (req, res) => {
     const { academicYear } = req.query;
