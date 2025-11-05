@@ -68,7 +68,7 @@ apiRouter.use("/users", userRouter);
 apiRouter.use("/guardians", guardianRouter);
 apiRouter.use("/student", studentRouter);
 app.get("/:slug/signup", schoolController.getSchoolBySlug);
-apiRouter.use("/class", classRouter);
+apiRouter.use("/classes", classRouter);
 apiRouter.use("/class-overview", classTeacherRoute);
 apiRouter.use("/department", departmentRouter);
 apiRouter.use("/auth", loginRouter);
