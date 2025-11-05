@@ -16,7 +16,7 @@ const classController = new ClassController();
 
 /**
  * @swagger
- * /api/classes:
+ * /api/v1/classes:
  *   post:
  *     summary: Create a new class
  *     tags: [Classes]
@@ -36,7 +36,7 @@ classRouter.post("/", validate(createClassSchema), classController.createClass);
 
 /**
  * @swagger
- * /api/classes:
+ * /api/v1/classes:
  *   get:
  *     summary: Get all classes
  *     tags: [Classes]
@@ -48,7 +48,7 @@ classRouter.get("/", classController.getAllClasses);
 
 /**
  * @swagger
- * /api/classes/school/{schoolId}:
+ * /api/v1/classes/school/{schoolId}:
  *   get:
  *     summary: Get classes by school ID
  *     tags: [Classes]
@@ -67,7 +67,7 @@ classRouter.get("/school/:schoolId", classController.getClassesByFilter);
 
 /**
  * @swagger
- * /api/classes/year/{academicYear}:
+ * /api/v1/classes/year/{academicYear}:
  *   get:
  *     summary: Get classes by academic year
  *     tags: [Classes]
@@ -86,7 +86,7 @@ classRouter.get("/year/:academicYear", classController.getClassesByAcademicYear)
 
 /**
  * @swagger
- * /api/classes/{id}:
+ * /api/v1/classes/{id}:
  *   get:
  *     summary: Get a class by ID
  *     tags: [Classes]
@@ -105,7 +105,7 @@ classRouter.get("/:id", classController.getClassById);
 
 /**
  * @swagger
- * /api/classes/{id}:
+ * /api/v1/classes/{id}:
  *   put:
  *     summary: Update a class by ID
  *     tags: [Classes]
@@ -129,7 +129,7 @@ classRouter.put("/:id", validate(updateClassSchema), classController.updateClass
 
 /**
  * @swagger
- * /api/classes/{id}:
+ * /api/v1/classes/{id}:
  *   delete:
  *     summary: Delete a class by ID
  *     tags: [Classes]
@@ -147,7 +147,7 @@ classRouter.delete("/:id", classController.deleteClass);
 
 /**
  * @swagger
- * /api/classes:
+ * /api/v1/classes:
  *   delete:
  *     summary: Delete all classes
  *     tags: [Classes]
