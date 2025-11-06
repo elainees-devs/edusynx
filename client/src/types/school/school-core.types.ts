@@ -39,5 +39,11 @@ export interface IClass {
   students?: Array<string | Student>
 }
 
+export interface ISubject{
+  _id: string
+  subjectName: string
+  classRef: string | IClass
+}
+
 
 

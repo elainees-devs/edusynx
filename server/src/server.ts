@@ -29,7 +29,8 @@ import {
   streamRouter,
   departmentRouter,
   guardianRouter,
-  classTeacherRoute
+  classTeacherRoute,
+  feePaymentRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -45,7 +46,14 @@ const FRONTEND_BASE_URL =
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [FRONTEND_BASE_URL], // allow your frontend
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true, // if you need cookies/auth
+  })
+);
+
 app.use(helmet());
 
 const schoolController = new SchoolController();
@@ -70,24 +78,25 @@ apiRouter.use("/student", studentRouter);
 app.get("/:slug/signup", schoolController.getSchoolBySlug);
 apiRouter.use("/classes", classRouter);
 apiRouter.use("/class-overview", classTeacherRoute);
-apiRouter.use("/department", departmentRouter);
+apiRouter.use("/departments", departmentRouter);
 apiRouter.use("/auth", loginRouter);
-apiRouter.use("/exam", examRouter);
+apiRouter.use("/exams", examRouter);
 apiRouter.use("/rolePermission", rolePermissionRouter);
-apiRouter.use("/subject", subjectRouter);
-apiRouter.use("/fee", feeRouter);
-apiRouter.use("/invoice", invoiceRouter);
-apiRouter.use("/invoiceItem", invoiceItemRouter);
-apiRouter.use("/notification", notificationRouter);
-apiRouter.use("/payment", paymentRouter);
-apiRouter.use("/permission", permissionRouter);
-apiRouter.use("/session", sessionRouter);
-apiRouter.use("/event", eventRouter);
-apiRouter.use("/email", emailRouter);
+apiRouter.use("/subjects", subjectRouter);
+apiRouter.use("/fees", feeRouter);
+apiRouter.use("/invoices", invoiceRouter);
+apiRouter.use("/invoice-items", invoiceItemRouter);
+apiRouter.use("/notifications", notificationRouter);
+apiRouter.use("/payments", paymentRouter);
+apiRouter.use("/fee-payments",  feePaymentRouter);
+apiRouter.use("/permissions", permissionRouter);
+apiRouter.use("/sessions", sessionRouter);
+apiRouter.use("/events", eventRouter);
+apiRouter.use("/emails", emailRouter);
 apiRouter.use("/super-admin", adminRouter);
 apiRouter.use("/password-reset", resetRouter);
 apiRouter.use("/allocations", allocationRouter);
-apiRouter.use("/stream", streamRouter);
+apiRouter.use("/streams", streamRouter);
 
 
 app.use("/api/v1", apiRouter);
