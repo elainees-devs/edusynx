@@ -16,7 +16,7 @@ const eventController = new EventController();
 
 /**
  * @swagger
- * /api/events:
+ * /api/v1/events:
  *   post:
  *     summary: Create a new event
  *     tags: [Events]
@@ -36,7 +36,7 @@ eventRouter.post("/", validate(createEventSchema), eventController.createEvent);
 
 /**
  * @swagger
- * /api/events:
+ * /api/v1/events:
  *   get:
  *     summary: Get all events
  *     tags: [Events]
@@ -48,7 +48,7 @@ eventRouter.get("/", eventController.getAllEvents);
 
 /**
  * @swagger
- * /api/events/{id}:
+ * /api/v1/events/{id}:
  *   get:
  *     summary: Get a specific event by ID
  *     tags: [Events]
@@ -69,7 +69,7 @@ eventRouter.get("/:id", eventController.getEventById);
 
 /**
  * @swagger
- * /api/events/{id}:
+ * /api/v1/events/{id}:
  *   put:
  *     summary: Update an event by ID
  *     tags: [Events]
@@ -97,7 +97,7 @@ eventRouter.put("/:id", validate(updateEventSchema), eventController.updateEvent
 
 /**
  * @swagger
- * /api/events/{id}:
+ * /api/v1/events/{id}:
  *   delete:
  *     summary: Delete an event by ID
  *     tags: [Events]
@@ -116,7 +116,7 @@ eventRouter.delete("/:id", eventController.deleteEvent);
 
 /**
  * @swagger
- * /api/events:
+ * /api/v1/events:
  *   delete:
  *     summary: Delete all events
  *     tags: [Events]
