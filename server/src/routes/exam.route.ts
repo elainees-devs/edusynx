@@ -16,7 +16,7 @@ const examController = new ExamController();
 
 /**
  * @swagger
- * /api/exams:
+ * /api/v1/exams:
  *   post:
  *     summary: Create a new exam
  *     tags: [Exams]
@@ -36,7 +36,7 @@ examRouter.post("/", validate(createExamSchema), examController.createExam);
 
 /**
  * @swagger
- * /api/exams:
+ * /api/v1/exams:
  *   get:
  *     summary: Get all exams
  *     tags: [Exams]
@@ -48,7 +48,7 @@ examRouter.get("/", examController.getAllExams);
 
 /**
  * @swagger
- * /api/exams/{id}:
+ * /api/v1/exams/{id}:
  *   get:
  *     summary: Get a specific exam by ID
  *     tags: [Exams]
@@ -69,7 +69,7 @@ examRouter.get("/:id", examController.getExamById);
 
 /**
  * @swagger
- * /api/exams/{id}:
+ * /api/v1/exams/{id}:
  *   put:
  *     summary: Update an exam by ID
  *     tags: [Exams]
@@ -98,7 +98,7 @@ examRouter.put("/:id", validate(updateExamSchema), examController.updateExam);
 
 /**
  * @swagger
- * /api/exams/{id}:
+ * /api/v1/exams/{id}:
  *   delete:
  *     summary: Delete an exam by ID
  *     tags: [Exams]
@@ -117,7 +117,7 @@ examRouter.delete("/:id", examController.deleteExam);
 
 /**
  * @swagger
- * /api/exams:
+ * /api/v1/exams:
  *   delete:
  *     summary: Delete all exams
  *     tags: [Exams]
