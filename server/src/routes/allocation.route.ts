@@ -7,7 +7,7 @@ const allocationController = new AllocationController();
 
 /**
  * @openapi
- * /api/allocations/:
+ * /api/v1/allocations/:
  *   post:
  *     summary: Create allocation for a school
  *     tags:
@@ -26,7 +26,7 @@ allocationRouter.post("/", allocationController.createAllocation);
 
 /**
  * @openapi
- * /api/allocations/{schoolId}:
+ * /api/v1/allocations/{schoolId}:
  *   get:
  *     summary: Get allocation by schoolId
  *     tags:
@@ -45,7 +45,7 @@ allocationRouter.get("/:schoolId", allocationController.getAllocationBySchoolId)
 
 /**
  * @openapi
- * /api/allocations/{schoolId}:
+ * /api/v1/allocations/{schoolId}:
  *   put:
  *     summary: Update allocation by schoolId
  *     tags:
@@ -70,7 +70,7 @@ allocationRouter.put("/:schoolId", allocationController.updateAllocationBySchool
 
 /**
  * @openapi
- * /api/allocations/{schoolId}:
+ * /api/v1/allocations/{schoolId}:
  *   delete:
  *     summary: Delete allocation by schoolId
  *     tags:
@@ -89,7 +89,7 @@ allocationRouter.delete("/:schoolId", allocationController.deleteAllocationBySch
 
 /**
  * @openapi
- * /api/allocations/:
+ * /api/v1/allocations/:
  *   get:
  *     summary: Get all allocations
  *     tags:
