@@ -15,7 +15,7 @@ const guardianController = new GuardianController();
 
 /**
  * @swagger
- * /guardians:
+ * /api/v1/guardians:
  *   post:
  *     summary: Generate or reuse family number and create a guardian
  *     tags: [Guardians]
@@ -59,7 +59,7 @@ guardianRouter.post("/", guardianController.generateFamilyNumberAndcreateGuardia
 
 /**
  * @swagger
- * /guardians/list:
+ * /api/v1/guardians/list:
  *   get:
  *     summary: Retrieve all guardians
  *     tags: [Guardians]
