@@ -16,7 +16,7 @@ const rolePermissionController = new RolePermissionController();
 
 /**
  * @swagger
- * /api/role-permissions:
+ * /api/v1/role-permissions:
  *   post:
  *     summary: Assign a permission to a role
  *     tags: [RolePermissions]
@@ -36,7 +36,7 @@ rolePermissionRouter.post("/", validate(createRolePermissionSchema), rolePermiss
 
 /**
  * @swagger
- * /api/role-permissions:
+ * /api/v1/role-permissions:
  *   get:
  *     summary: Get all role-permission assignments
  *     tags: [RolePermissions]
@@ -48,7 +48,7 @@ rolePermissionRouter.get("/", rolePermissionController.getAllRolePermissions);
 
 /**
  * @swagger
- * /api/role-permissions/{id}:
+ * /api/v1/role-permissions/{id}:
  *   get:
  *     summary: Get role-permission mapping by ID
  *     tags: [RolePermissions]
@@ -69,7 +69,7 @@ rolePermissionRouter.get("/:id", rolePermissionController.getRolePermissionById)
 
 /**
  * @swagger
- * /api/role-permissions/{id}:
+ * /api/v1/role-permissions/{id}:
  *   put:
  *     summary: Update a role-permission mapping
  *     tags: [RolePermissions]
@@ -96,7 +96,7 @@ rolePermissionRouter.put("/:id", validate(updateRolePermissionSchema), rolePermi
 
 /**
  * @swagger
- * /api/role-permissions/{id}:
+ * /api/v1/role-permissions/{id}:
  *   delete:
  *     summary: Delete a role-permission mapping
  *     tags: [RolePermissions]
@@ -115,7 +115,7 @@ rolePermissionRouter.delete("/:id", rolePermissionController.deleteRolePermissio
 
 /**
  * @swagger
- * /api/role-permissions/role/{roleId}:
+ * /api/v1/role-permissions/role/{roleId}:
  *   get:
  *     summary: Get permissions for a specific role
  *     tags: [RolePermissions]
@@ -134,7 +134,7 @@ rolePermissionRouter.get("/role/:roleId", rolePermissionController.getRolePermis
 
 /**
  * @swagger
- * /api/role-permissions/permission/{permissionId}:
+ * /api/v1/role-permissions/permission/{permissionId}:
  *   get:
  *     summary: Get roles assigned to a specific permission
  *     tags: [RolePermissions]
@@ -153,7 +153,7 @@ rolePermissionRouter.get("/permission/:permissionId", rolePermissionController.g
 
 /**
  * @swagger
- * /api/role-permissions/school/{schoolId}:
+ * /api/v1/role-permissions/school/{schoolId}:
  *   get:
  *     summary: Get all role-permission mappings for a school
  *     tags: [RolePermissions]
