@@ -82,7 +82,7 @@ apiRouter.use("/class-overview", classTeacherRoute);
 apiRouter.use("/departments", departmentRouter);
 apiRouter.use("/auth", loginRouter);
 apiRouter.use("/exams", examRouter);
-apiRouter.use("/rolePermission", rolePermissionRouter);
+apiRouter.use("/role-permissions", rolePermissionRouter);
 apiRouter.use("/subjects", subjectRouter);
 apiRouter.use("/fees", feeRouter);
 apiRouter.use("/invoices", invoiceRouter);
