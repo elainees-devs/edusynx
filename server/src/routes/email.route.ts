@@ -15,7 +15,7 @@ const emailRouter = express.Router();
 
 /**
  * @swagger
- * /api/email/send-access-link:
+ * /api/v1/email/send-access-link:
  *   post:
  *     summary: Send access link via email
  *     tags: [Email]
@@ -54,7 +54,7 @@ emailRouter.post(
 
 /**
  * @swagger
- * /api/email/send-reset-token:
+ * /api/v1/email/send-reset-token:
  *   post:
  *     summary: Send password reset token via email
  *     tags: [Email]
