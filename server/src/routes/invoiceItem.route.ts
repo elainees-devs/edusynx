@@ -16,7 +16,7 @@ const controller = new InvoiceItemController();
 
 /**
  * @swagger
- * /api/invoice-items:
+ * /api/v1/invoice-items:
  *   post:
  *     summary: Create a new invoice item
  *     tags: [InvoiceItems]
@@ -36,7 +36,7 @@ invoiceItemRouter.post("/", validate(createInvoiceItemSchema), controller.create
 
 /**
  * @swagger
- * /api/invoice-items/{id}:
+ * /api/v1/invoice-items/{id}:
  *   get:
  *     summary: Get an invoice item by ID
  *     tags: [InvoiceItems]
@@ -57,7 +57,7 @@ invoiceItemRouter.get("/:id", controller.getInvoiceItemById);
 
 /**
  * @swagger
- * /api/invoice-items:
+ * /api/v1/invoice-items:
  *   get:
  *     summary: Get all invoice items
  *     tags: [InvoiceItems]
@@ -69,7 +69,7 @@ invoiceItemRouter.get("/", controller.getAllInvoiceItems);
 
 /**
  * @swagger
- * /api/invoice-items/{id}:
+ * /api/v1/invoice-items/{id}:
  *   put:
  *     summary: Update an invoice item by ID
  *     tags: [InvoiceItems]
@@ -98,7 +98,7 @@ invoiceItemRouter.put("/:id", validate(updateInvoiceItemSchema), controller.upda
 
 /**
  * @swagger
- * /api/invoice-items/{id}:
+ * /api/v1/invoice-items/{id}:
  *   delete:
  *     summary: Delete an invoice item by ID
  *     tags: [InvoiceItems]
@@ -116,7 +116,7 @@ invoiceItemRouter.delete("/:id", controller.deleteInvoiceItem);
 
 /**
  * @swagger
- * /api/invoice-items:
+ * /api/v1/invoice-items:
  *   delete:
  *     summary: Delete all invoice items
  *     tags: [InvoiceItems]
