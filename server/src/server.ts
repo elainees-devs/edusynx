@@ -72,7 +72,7 @@ apiRouter.get("/", (req: Request, res: Response) => {
 
 // Routes
 
-apiRouter.use("/school", schoolRouter);
+apiRouter.use("/schools", schoolRouter);
 apiRouter.use("/users", userRouter);
 apiRouter.use("/guardians", guardianRouter);
 apiRouter.use("/student", studentRouter);
