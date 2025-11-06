@@ -14,7 +14,7 @@ const paymentController = new PaymentController();
 
 /**
  * @swagger
- * /api/payments:
+ * /api/v1/payments:
  *   post:
  *     summary: Create a new payment
  *     tags: [Payments]
@@ -34,7 +34,7 @@ paymentRouter.post("/", paymentController.createPayment);
 
 /**
  * @swagger
- * /api/payments:
+ * /api/v1/payments:
  *   get:
  *     summary: Get all payments
  *     tags: [Payments]
@@ -46,7 +46,7 @@ paymentRouter.get("/", paymentController.getAllPayments);
 
 /**
  * @swagger
- * /api/payments/{id}:
+ * /api/v1/payments/{id}:
  *   get:
  *     summary: Get a payment by ID
  *     tags: [Payments]
@@ -67,7 +67,7 @@ paymentRouter.get("/:id", paymentController.getPaymentById);
 
 /**
  * @swagger
- * /api/payments/{id}:
+ * /api/v1/payments/{id}:
  *   put:
  *     summary: Update a payment by ID
  *     tags: [Payments]
@@ -94,7 +94,7 @@ paymentRouter.put("/:id", paymentController.updatePayment);
 
 /**
  * @swagger
- * /api/payments/{id}:
+ * /api/v1/payments/{id}:
  *   delete:
  *     summary: Delete a payment by ID
  *     tags: [Payments]
@@ -115,7 +115,7 @@ paymentRouter.delete("/:id", paymentController.deletePayment);
 
 /**
  * @swagger
- * /api/payments/student/{studentId}:
+ * /api/v1/payments/student/{studentId}:
  *   get:
  *     summary: Get all payments by a specific student
  *     tags: [Payments]
@@ -134,7 +134,7 @@ paymentRouter.get("/student/:studentId", paymentController.getPaymentsByStudent)
 
 /**
  * @swagger
- * /api/payments/invoice/{invoiceId}:
+ * /api/v1/payments/invoice/{invoiceId}:
  *   get:
  *     summary: Get all payments for a specific invoice
  *     tags: [Payments]
