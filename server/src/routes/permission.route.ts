@@ -14,7 +14,7 @@ const permissionController = new PermissionController();
 
 /**
  * @swagger
- * /api/permissions:
+ * /api/v1/permissions:
  *   post:
  *     summary: Create a new permission
  *     tags: [Permissions]
@@ -34,7 +34,7 @@ permissionRouter.post("/", permissionController.createPermission);
 
 /**
  * @swagger
- * /api/permissions:
+ * /api/v1/permissions:
  *   get:
  *     summary: Get all permissions
  *     tags: [Permissions]
@@ -46,7 +46,7 @@ permissionRouter.get("/", permissionController.getAllPermissions);
 
 /**
  * @swagger
- * /api/permissions/{id}:
+ * /api/v1/permissions/{id}:
  *   get:
  *     summary: Get a permission by ID
  *     tags: [Permissions]
@@ -67,7 +67,7 @@ permissionRouter.get("/:id", permissionController.getPermissionById);
 
 /**
  * @swagger
- * /api/permissions/{id}:
+ * /api/v1/permissions/{id}:
  *   put:
  *     summary: Update a permission by ID
  *     tags: [Permissions]
@@ -94,7 +94,7 @@ permissionRouter.put("/:id", permissionController.updatePermission);
 
 /**
  * @swagger
- * /api/permissions/{id}:
+ * /api/v1/permissions/{id}:
  *   delete:
  *     summary: Delete a permission by ID
  *     tags: [Permissions]
@@ -115,7 +115,7 @@ permissionRouter.delete("/:id", permissionController.deletePermission);
 
 /**
  * @swagger
- * /api/permissions/role/{role}:
+ * /api/v1/permissions/role/{role}:
  *   get:
  *     summary: Get permissions assigned to a specific role
  *     tags: [Permissions]
@@ -136,7 +136,7 @@ permissionRouter.get("/role/:role", permissionController.getPermissionsByRole);
 
 /**
  * @swagger
- * /api/permissions/school/{schoolId}:
+ * /api/v1/permissions/school/{schoolId}:
  *   get:
  *     summary: Get permissions for a specific school
  *     tags: [Permissions]
