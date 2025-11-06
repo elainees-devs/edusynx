@@ -20,7 +20,7 @@ const schoolController = new SchoolController();
 
 /**
  * @swagger
- * /api/schools/register:
+ * /api/v1/schools/register:
  *   post:
  *     summary: Register a new school
  *     tags: [Schools]
@@ -44,7 +44,7 @@ schoolRouter.post(
 
 /**
  * @swagger
- * /api/schools:
+ * /api/v1/schools:
  *   get:
  *     summary: Get all registered schools (paginated)
  *     tags: [Schools]
@@ -56,7 +56,7 @@ schoolRouter.get("/", schoolController.getPaginatedSchools);
 
 /**
  * @swagger
- * /api/schools/all:
+ * /api/v1/schools/all:
  *   get:
  *     summary: Get all schools without pagination
  *     tags: [Schools]
@@ -68,7 +68,7 @@ schoolRouter.get("/", schoolController.getAllSchools);
 
 /**
  * @swagger
- * /api/schools/{id}/activate:
+ * /api/v1/schools/{id}/activate:
  *   patch:
  *     summary: Activate a school by ID
  *     tags: [Schools]
@@ -89,7 +89,7 @@ schoolRouter.patch(":id/activate", schoolController.activateSchool);
 
 /**
  * @swagger
- * /api/schools/{id}:
+ * /api/v1/schools/{id}:
  *   put:
  *     summary: Update a school's details
  *     tags: [Schools]
@@ -122,7 +122,7 @@ schoolRouter.put(
 
 /**
  * @swagger
- * /api/schools/{id}:
+ * /api/v1/schools/{id}:
  *   delete:
  *     summary: Delete a school by ID
  *     tags: [Schools]
@@ -143,7 +143,7 @@ schoolRouter.delete("/:id", schoolController.deleteSchoolById);
 
 /**
  * @swagger
- * /api/schools:
+ * /api/v1/schools:
  *   delete:
  *     summary: Delete all schools
  *     tags: [Schools]
@@ -155,7 +155,7 @@ schoolRouter.delete("/", schoolController.deleteAllSchools);
 
 /**
  * @swagger
- * /api/schools/{id}:
+ * /api/v1/schools/{id}:
  *   get:
  *     summary: Get a school by ID
  *     tags: [Schools]
@@ -183,7 +183,7 @@ schoolRouter.get("/:id", validateObjectId("id"), schoolController.getSchoolById)
 
 /**
  * @swagger
- * /api/school/{slug}:
+ * /api/v1/school/{slug}:
  *   get:
  *     summary: Get school by slug
  *     tags: [Schools]
