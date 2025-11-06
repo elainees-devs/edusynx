@@ -16,7 +16,7 @@ const departmentController = new DepartmentController();
 
 /**
  * @swagger
- * /departments:
+ * /api/v1/departments:
  *   post:
  *     summary: Create a new department
  *     tags: [Departments]
@@ -36,7 +36,7 @@ departmentRouter.post('/', validate(createDepartmentSchema), departmentControlle
 
 /**
  * @swagger
- * /departments/{id}:
+ * /api/v1/departments/{id}:
  *   get:
  *     summary: Get a department by ID
  *     tags: [Departments]
@@ -57,7 +57,7 @@ departmentRouter.get('/:id', departmentController.getDepartmentById);
 
 /**
  * @swagger
- * /departments:
+ * /api/v1/departments:
  *   get:
  *     summary: Get all departments
  *     tags: [Departments]
@@ -69,7 +69,7 @@ departmentRouter.get('/', departmentController.getAllDepartments);
 
 /**
  * @swagger
- * /departments/{id}:
+ * /api/v1/departments/{id}:
  *   put:
  *     summary: Update a department by ID
  *     tags: [Departments]
@@ -97,7 +97,7 @@ departmentRouter.put('/:id', validate(updateDepartmentSchema), departmentControl
 
 /**
  * @swagger
- * /departments/{id}:
+ * /api/v1/departments/{id}:
  *   delete:
  *     summary: Delete a department by ID
  *     tags: [Departments]
@@ -117,7 +117,7 @@ departmentRouter.delete('/:id', departmentController.deleteDepartment); // Fixed
 
 /**
  * @swagger
- * /departments:
+ * /api/v1/departments:
  *   delete:
  *     summary: Delete all departments
  *     tags: [Departments]
