@@ -16,7 +16,7 @@ const feeController = new FeeController();
 
 /**
  * @swagger
- * /api/fees:
+ * /api/v1/fees:
  *   post:
  *     summary: Create a new fee
  *     tags: [Fees]
@@ -36,7 +36,7 @@ feeRouter.post("/", validate(createFeeSchema), feeController.createFee);
 
 /**
  * @swagger
- * /api/fees/school/{schoolId}:
+ * /api/v1/fees/school/{schoolId}:
  *   get:
  *     summary: Get all fees for a specific school
  *     tags: [Fees]
@@ -55,7 +55,7 @@ feeRouter.get("/school/:schoolId", feeController.getFeesBySchool);
 
 /**
  * @swagger
- * /api/fees/{id}:
+ * /api/v1/fees/{id}:
  *   get:
  *     summary: Get a fee by ID
  *     tags: [Fees]
@@ -76,7 +76,7 @@ feeRouter.get("/:id", feeController.getFeeById);
 
 /**
  * @swagger
- * /api/fees/{id}:
+ * /api/v1/fees/{id}:
  *   put:
  *     summary: Update a fee by ID
  *     tags: [Fees]
@@ -105,7 +105,7 @@ feeRouter.put("/:id", validate(updateFeeSchema), feeController.updateFee);
 
 /**
  * @swagger
- * /api/fees/{id}:
+ * /api/v1/fees/{id}:
  *   delete:
  *     summary: Delete a fee by ID
  *     tags: [Fees]
