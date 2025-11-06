@@ -16,7 +16,7 @@ const sessionController = new SessionController();
 
 /**
  * @swagger
- * /api/sessions:
+ * /api/v1/sessions:
  *   post:
  *     summary: Create a new session
  *     tags: [Sessions]
@@ -36,7 +36,7 @@ sessionRouter.post("/", validate(createSessionSchema), sessionController.createS
 
 /**
  * @swagger
- * /api/sessions:
+ * /api/v1/sessions:
  *   get:
  *     summary: Get all sessions
  *     tags: [Sessions]
@@ -48,7 +48,7 @@ sessionRouter.get("/", sessionController.getAllSessions);
 
 /**
  * @swagger
- * /api/sessions/active:
+ * /api/v1/sessions/active:
  *   get:
  *     summary: Get all active sessions
  *     tags: [Sessions]
@@ -60,7 +60,7 @@ sessionRouter.get("/active", sessionController.getActiveSessions);
 
 /**
  * @swagger
- * /api/sessions/user/{userId}:
+ * /api/v1/sessions/user/{userId}:
  *   get:
  *     summary: Get all sessions for a user
  *     tags: [Sessions]
@@ -79,7 +79,7 @@ sessionRouter.get("/user/:userId", sessionController.getSessionsByUserId);
 
 /**
  * @swagger
- * /api/sessions/{id}:
+ * /api/v1/sessions/{id}:
  *   get:
  *     summary: Get a session by ID
  *     tags: [Sessions]
@@ -100,7 +100,7 @@ sessionRouter.get("/:id", sessionController.getSessionById);
 
 /**
  * @swagger
- * /api/sessions/{id}:
+ * /api/v1/sessions/{id}:
  *   put:
  *     summary: Update a session
  *     tags: [Sessions]
@@ -127,7 +127,7 @@ sessionRouter.put("/:id", validate(updateSessionSchema), sessionController.updat
 
 /**
  * @swagger
- * /api/sessions/{id}:
+ * /api/v1/sessions/{id}:
  *   delete:
  *     summary: Delete a session by ID
  *     tags: [Sessions]
@@ -146,7 +146,7 @@ sessionRouter.delete("/:id", sessionController.deleteSession);
 
 /**
  * @swagger
- * /api/sessions:
+ * /api/v1/sessions:
  *   delete:
  *     summary: Delete all sessions
  *     tags: [Sessions]
