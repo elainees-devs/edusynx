@@ -14,7 +14,7 @@ const feePaymentController = new FeePaymentController();
 
 /**
  * @swagger
- * /api/fee-payments:
+ * /api/v1/fee-payments:
  *   post:
  *     summary: Create a new fee payment summary
  *     tags: [FeePayments]
@@ -32,7 +32,7 @@ feePaymentRouter.post("/", feePaymentController.createFeePaymentSummary);
 
 /**
  * @swagger
- * /api/fee-payments:
+ * /api/v1/fee-payments:
  *   get:
  *     summary: Get all fee payment summaries
  *     tags: [FeePayments]
@@ -44,7 +44,7 @@ feePaymentRouter.get("/", feePaymentController.getAllFeePaymentSummaries);
 
 /**
  * @swagger
- * /api/fee-payments/{id}:
+ * /api/v1/fee-payments/{id}:
  *   get:
  *     summary: Get a fee payment summary by ID
  *     tags: [FeePayments]
@@ -65,7 +65,7 @@ feePaymentRouter.get("/:id", feePaymentController.getFeePaymentSummaryById);
 
 /**
  * @swagger
- * /api/fee-payments/student/{studentId}:
+ * /api/v1/fee-payments/student/{studentId}:
  *   get:
  *     summary: Get all fee payment summaries for a student
  *     tags: [FeePayments]
@@ -84,7 +84,7 @@ feePaymentRouter.get("/student/:studentId", feePaymentController.getFeePaymentSu
 
 /**
  * @swagger
- * /api/fee-payments/{id}:
+ * /api/v1/fee-payments/{id}:
  *   put:
  *     summary: Update a fee payment summary by ID
  *     tags: [FeePayments]
@@ -109,7 +109,7 @@ feePaymentRouter.put("/:id", feePaymentController.updateFeePaymentSummary);
 
 /**
  * @swagger
- * /api/fee-payments/{id}:
+ * /api/v1/fee-payments/{id}:
  *   delete:
  *     summary: Delete a fee payment summary by ID
  *     tags: [FeePayments]
@@ -127,7 +127,7 @@ feePaymentRouter.delete("/:id", feePaymentController.deleteFeePaymentSummary);
 
 /**
  * @swagger
- * /api/fee-payments/totals/student/{studentId}:
+ * /api/v1/fee-payments/totals/student/{studentId}:
  *   get:
  *     summary: Calculate total fees paid by a specific student
  *     tags: [FeePayments]
@@ -145,7 +145,7 @@ feePaymentRouter.get("/totals/student/:studentId", feePaymentController.calculat
 
 /**
  * @swagger
- * /api/fee-payments/totals:
+ * /api/v1/fee-payments/totals:
  *   get:
  *     summary: Calculate total fees paid by all students
  *     tags: [FeePayments]
@@ -157,7 +157,7 @@ feePaymentRouter.get("/totals", feePaymentController.calculateTotalFeesPaidByAll
 
 /**
  * @swagger
- * /api/fee-payments/add-payment:
+ * /api/v1/fee-payments/add-payment:
  *   post:
  *     summary: Add a payment to a fee payment summary
  *     tags: [FeePayments]
