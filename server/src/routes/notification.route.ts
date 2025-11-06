@@ -16,7 +16,7 @@ const notificationController = new NotificationController();
 
 /**
  * @swagger
- * /api/notifications:
+ * /api/v1/notifications:
  *   post:
  *     summary: Create a new notification
  *     tags: [Notifications]
@@ -36,7 +36,7 @@ notificationRouter.post("/", validate(createNotificationSchema), notificationCon
 
 /**
  * @swagger
- * /api/notifications/user/{userId}:
+ * /api/v1/notifications/user/{userId}:
  *   get:
  *     summary: Get notifications for a specific user
  *     tags: [Notifications]
@@ -57,7 +57,7 @@ notificationRouter.get("/user/:userId", notificationController.getUserNotificati
 
 /**
  * @swagger
- * /api/notifications/{id}/read:
+ * /api/v1/notifications/{id}/read:
  *   put:
  *     summary: Mark a notification as read
  *     tags: [Notifications]
@@ -84,7 +84,7 @@ notificationRouter.put("/:id/read", validate(updateNotificationSchema), notifica
 
 /**
  * @swagger
- * /api/notifications/{id}:
+ * /api/v1/notifications/{id}:
  *   delete:
  *     summary: Delete a notification by ID
  *     tags: [Notifications]
