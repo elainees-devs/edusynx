@@ -17,7 +17,7 @@ const loginsController = new LoginController();
 
 /**
  * @swagger
- * /api/login:
+ * /api/v1/login:
  *   post:
  *     summary: Login and receive a JWT token
  *     tags: [Auth]
