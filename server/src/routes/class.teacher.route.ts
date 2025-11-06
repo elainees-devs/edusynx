@@ -16,7 +16,7 @@ const classTeacherController = new ClassTeacherController();
 
 /**
  * @swagger
- * /class-teachers:
+ * /api/v1/class-teachers:
  *   post:
  *     summary: Add a new class teacher
  *     tags: [ClassTeachers]
@@ -40,7 +40,7 @@ classTeacherRoute.post(
 
 /**
  * @swagger
- * /class-teachers/{id}:
+ * /api/v1/class-teachers/{id}:
  *   get:
  *     summary: Get a class teacher by ID
  *     tags: [ClassTeachers]
@@ -61,7 +61,7 @@ classTeacherRoute.get("/:id", classTeacherController.getClassTeacherById);
 
 /**
  * @swagger
- * /class-teachers:
+ * /api/v1/class-teachers:
  *   get:
  *     summary: Get all class teachers
  *     tags: [ClassTeachers]
@@ -73,7 +73,7 @@ classTeacherRoute.get("/", classTeacherController.getAllClassTeachers);
 
 /**
  * @swagger
- * /class-teachers/{id}:
+ * /api/v1/class-teachers/{id}:
  *   delete:
  *     summary: Delete a class teacher by ID
  *     tags: [ClassTeachers]
@@ -94,7 +94,7 @@ classTeacherRoute.delete("/:id", classTeacherController.deleteClassTeacher);
 
 /**
  * @swagger
- * /class-teachers:
+ * /api/v1/class-teachers:
  *   delete:
  *     summary: Delete all class teachers
  *     tags: [ClassTeachers]
