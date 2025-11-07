@@ -9,7 +9,7 @@ const streamController = new StreamController();
 
 /**
  * @openapi
- * /api/streams:
+ * /api/v1/streams:
  *   post:
  *     summary: Create a new stream
  *     tags:
@@ -30,7 +30,7 @@ streamRouter.post('/', validate(createStreamSchema), streamController.createStre
 
 /**
  * @openapi
- * /api/streams/{id}:
+ * /api/v1/streams/{id}:
  *   get:
  *     summary: Get a stream by ID
  *     tags:
@@ -51,7 +51,7 @@ streamRouter.get('/:id', streamController.findStreamById);
 
 /**
  * @swagger
- * /api/streams/school/{schoolId}:
+ * /api/v1/streams/school/{schoolId}:
  *   get:
  *     summary: Get all streams for a specific school
  *     tags: [Streams]
@@ -82,7 +82,7 @@ streamRouter.get("/school/:schoolId", streamController.getStreamsBySchool);
 
 /**
  * @openapi
- * /api/streams:
+ * /api/v1/streams:
  *   get:
  *     summary: Get all streams
  *     tags:
@@ -95,7 +95,7 @@ streamRouter.get('/', streamController.getAllStreams);
 
 /**
  * @openapi
- * /api/streams/{id}:
+ * /api/v1/streams/{id}:
  *   put:
  *     summary: Update a stream by ID
  *     tags:
@@ -122,7 +122,7 @@ streamRouter.put('/:id', validate(updateStreamSchema), streamController.updateSt
 
 /**
  * @openapi
- * /api/streams/{id}:
+ * /api/v1/streams/{id}:
  *   delete:
  *     summary: Delete a stream by ID
  *     tags:
@@ -143,7 +143,7 @@ streamRouter.delete('/:id', streamController.deleteStreamById);
 
 /**
  * @openapi
- * /api/streams:
+ * /api/v1/streams:
  *   delete:
  *     summary: Delete all streams
  *     tags:
