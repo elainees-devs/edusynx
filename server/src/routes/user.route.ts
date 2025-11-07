@@ -16,7 +16,7 @@ const userController = new UserController();
 
 /**
  * @swagger
- * /api/users:
+ * /api/v1/users:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
@@ -36,7 +36,7 @@ userRouter.post("/", validate(createUserSchema), userController.createUser);
 
 /**
  * @swagger
- * /api/users:
+ * /api/v1/users:
  *   get:
  *     summary: Get all users
  *     tags: [Users]
@@ -48,7 +48,7 @@ userRouter.get("/", userController.getAllUsers);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/v1/users/{id}:
  *   get:
  *     summary: Get user by ID
  *     tags: [Users]
@@ -69,7 +69,7 @@ userRouter.get("/:id", userController.getUserById);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/v1/users/{id}:
  *   put:
  *     summary: Update user by ID
  *     tags: [Users]
@@ -98,7 +98,7 @@ userRouter.put("/:id", validate(updateUserSchema), userController.updateUser);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/v1/users/{id}:
  *   delete:
  *     summary: Delete user by ID
  *     tags: [Users]
@@ -117,7 +117,7 @@ userRouter.delete("/:id", userController.deleteUser);
 
 /**
  * @swagger
- * /api/users:
+ * /api/v1/users:
  *   delete:
  *     summary: Delete all users
  *     tags: [Users]
