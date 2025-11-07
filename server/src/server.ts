@@ -75,7 +75,7 @@ apiRouter.get("/", (req: Request, res: Response) => {
 apiRouter.use("/schools", schoolRouter);
 apiRouter.use("/users", userRouter);
 apiRouter.use("/guardians", guardianRouter);
-apiRouter.use("/student", studentRouter);
+apiRouter.use("/students", studentRouter);
 app.get("/:slug/signup", schoolController.getSchoolBySlug);
 apiRouter.use("/classes", classRouter);
 apiRouter.use("/class-overview", classTeacherRoute);
