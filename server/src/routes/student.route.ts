@@ -18,7 +18,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 /**
  * @swagger
- * /students/upload:
+ * /api/v1/students/upload:
  *   post:
  *     summary: Upload students via CSV or Excel file
  *     tags: [Students]
@@ -57,7 +57,7 @@ studentRouter.post("/upload", upload.single("file"), studentController.uploadStu
 
 /**
  * @swagger
- * /api/students:
+ * /api/v1/students:
  *   post:
  *     summary: Create a new student
  *     tags: [Students]
@@ -73,7 +73,52 @@ studentRouter.post("/upload", upload.single("file"), studentController.uploadStu
  */
 studentRouter.post("/", validate(createStudentSchema), studentController.generateAdmissionAndCreateStudent);
 
-// PATCH route to assign guardian & generate admission number
+/**
+ * @openapi
+ * /api/v1/students/{id}/assign-guardian:
+ *   patch:
+ *     summary: Assign a guardian and generate an admission number for a student
+ *     tags:
+ *       - Students
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the student to assign guardian and generate admission number
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               guardianId:
+ *                 type: string
+ *                 description: ID of the guardian to assign to the student
+ *             required:
+ *               - guardianId
+ *     responses:
+ *       200:
+ *         description: Guardian assigned and admission number generated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Guardian assigned and admission number generated successfully
+ *                 student:
+ *                   $ref: '#/components/schemas/Student'
+ *       400:
+ *         description: Bad request (e.g., missing guardian ID or invalid data)
+ *       404:
+ *         description: Student or guardian not found
+ *       500:
+ *         description: Internal server error
+ */
 studentRouter.patch(
   "/:id/assign-guardian",
   studentController.generateAdmissionAndCreateStudent
@@ -82,7 +127,7 @@ studentRouter.patch(
 
 /**
  * @swagger
- * /api/students/generate-admission:
+ * /api/v1/students/generate-admission:
  *   post:
  *     summary: Generate admission number and register student
  *     tags: [Students]
@@ -94,7 +139,7 @@ studentRouter.post("/generate-admission", studentController.generateAdmissionAnd
 
 /**
  * @swagger
- * /students/active:
+ * /api/v1/students/active:
  *   get:
  *     summary: Retrieve all students with active status
  *     tags: [Students]
@@ -117,7 +162,7 @@ studentRouter.get("/active", studentController.getActiveStudents);
 
 /**
  * @swagger
- * /api/students/student/{id}:
+ * /api/v1/students/student/{id}:
  *   get:
  *     summary: Get student name by ID
  *     tags: [Students]
@@ -139,7 +184,7 @@ studentRouter.get("/student/guardian/:id", studentController.getStudentWithGuard
 
 /**
  * @swagger
- * /api/students:
+ * /api/v1/students:
  *   get:
  *     summary: Get all students
  *     tags: [Students]
@@ -151,7 +196,7 @@ studentRouter.get("/students", studentController.getAllStudents);
 
 /**
  * @swagger
- * /api/students/class/{className}:
+ * /api/v1/students/class/{className}:
  *   get:
  *     summary: Get students by class name
  *     tags: [Students]
@@ -170,7 +215,7 @@ studentRouter.get("/students/class/:className", studentController.getStudentsByC
 
 /**
  * @swagger
- * /api/students/names:
+ * /api/v1/students/names:
  *   get:
  *     summary: Get names of all students
  *     tags: [Students]
@@ -182,7 +227,7 @@ studentRouter.get("/students/names", studentController.getAllStudentNames);
 
 /**
  * @swagger
- * /api/students/count/{id}:
+ * /api/v1/students/count/{id}:
  *   get:
  *     summary: Count students by school or class ID
  *     tags: [Students]
@@ -201,7 +246,7 @@ studentRouter.get("/students/count/:id", studentController.countStudents);
 
 /**
  * @swagger
- * /api/students/student/update/{id}:
+ * /api/v1/students/student/update/{id}:
  *   put:
  *     summary: Update student by ID
  *     tags: [Students]
@@ -226,7 +271,7 @@ studentRouter.put("/update/:id", validate(updateStudentSchema), studentControlle
 
 /**
  * @swagger
- * /api/students/student/{id}:
+ * /api/v1/students/student/{id}:
  *   delete:
  *     summary: Delete student by ID
  *     tags: [Students]
@@ -245,7 +290,7 @@ studentRouter.delete("/:id", studentController.deleteStudentById);
 
 /**
  * @swagger
- * /api/students:
+ * /api/v1/students:
  *   delete:
  *     summary: Delete all students
  *     tags: [Students]
