@@ -19,7 +19,7 @@ const subjectController = new SubjectController();
 
 /**
  * @swagger
- * /api/subjects:
+ * /api/v1/subjects:
  *   post:
  *     summary: Create a new subject
  *     tags: [Subjects]
@@ -43,7 +43,7 @@ subjectRouter.post(
 
 /**
  * @swagger
- * /api/subjects/school/{schoolId}:
+ * /api/v1/subjects/school/{schoolId}:
  *   get:
  *     summary: Get all subjects for a specific school
  *     tags: [Subjects]
@@ -62,7 +62,7 @@ subjectRouter.get("/school/:schoolId", subjectController.getSubjectsBySchool);
 
 /**
  * @swagger
- * /api/subjects/{id}:
+ * /api/v1/subjects/{id}:
  *   get:
  *     summary: Get a subject by ID
  *     tags: [Subjects]
@@ -83,7 +83,7 @@ subjectRouter.get("/:id", subjectController.getSubjectById);
 
 /**
  * @swagger
- * /api/subjects/{id}:
+ * /api/v1/subjects/{id}:
  *   put:
  *     summary: Update a subject by ID
  *     tags: [Subjects]
@@ -116,7 +116,7 @@ subjectRouter.put(
 
 /**
  * @swagger
- * /api/subjects/{id}:
+ * /api/v1/subjects/{id}:
  *   delete:
  *     summary: Delete a subject by ID
  *     tags: [Subjects]
