@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts"
@@ -35,7 +35,6 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.17.0",
-    "xlsx": "^0.18.5",
     "zod": "^3.25.36"
   },
   "devDependencies": {
@@ -46,15 +45,20 @@
     "@types/detect-browser": "^4.0.3",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/moment-timezone": "^0.5.30",
     "@types/multer": "^1.4.13",
     "@types/node": "^22.15.24",
+    "@types/supertest": "^6.0.3",
     "@types/swagger-ui-express": "^4.1.8",
     "@types/winston": "^2.4.4",
     "@types/xlsx": "^0.0.35",
     "dotenv": "^16.6.1",
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
