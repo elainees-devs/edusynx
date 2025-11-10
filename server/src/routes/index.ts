@@ -24,3 +24,4 @@ export { allocationRouter } from './allocation.route';
 export {departmentRouter} from './department.route'
 export { feePaymentRouter } from './feePayment.route';
 export {profileRouter} from './profile.route'
+export {analyticsRouter} from './analytics.route'
