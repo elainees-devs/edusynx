@@ -32,6 +32,7 @@ import {
   classTeacherRoute,
   feePaymentRouter,
   profileRouter,
+  analyticsRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -99,6 +100,7 @@ apiRouter.use("/password-reset", resetRouter);
 apiRouter.use("/allocations", allocationRouter);
 apiRouter.use("/streams", streamRouter);
 apiRouter.use("/profile", profileRouter);
+apiRouter.use("/analytics", analyticsRouter);
 
 
 app.use("/api/v1", apiRouter);
