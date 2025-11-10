@@ -16,6 +16,7 @@ export * from "./enum/enum";
 export * from "./auth/auth.types"
 export * from "./security/session.types"
 export * from "./email/email.types"
+export * from "./analytics/analytics.types"
 export type ILoginResponse = ILoginResponseSuccess | ILoginResponseFailure;
 
 
