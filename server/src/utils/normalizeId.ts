@@ -1,5 +1,5 @@
 
-// server/src/utils/normalizeSchoolId.ts
+// server/src/utils/normalizeId.ts
 import { Types } from "mongoose";
 import { ISchool } from "../types"; 
 import { AppError } from "./AppError"; 
@@ -11,7 +11,7 @@ import { AppError } from "./AppError";
  * @returns Types.ObjectId
  * @throws AppError if invalid
  */
-export function normalizeSchoolId(
+export function normalizeId(
   school: Types.ObjectId | ISchool | string
 ): Types.ObjectId {
   if (typeof school === "string") {
