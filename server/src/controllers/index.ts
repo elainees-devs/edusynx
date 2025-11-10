@@ -22,4 +22,5 @@ export * from "./school-core/school.controller";
 export * from "./school-core/stream.controller";
 export * from "./security/login.controller";
 export * from "./security/session.controller";
+export * from "./analytics/analytics.controller";
 
