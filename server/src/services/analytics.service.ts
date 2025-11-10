@@ -1,8 +1,8 @@
 // server/src/services/analytics.service.ts
 
 import { Types } from "mongoose";
-import { IPerformanceSummary } from "../types/analytics/analytics.types";
 import { normalizeId } from "../utils";
+import { IPerformanceSummary } from "../types";
 // import ExamResultModel from "../models/ExamResult"; // Uncomment when you have the model
 
 export const computePerformanceSummary = async (
