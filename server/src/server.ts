@@ -1,4 +1,5 @@
 // server/src/server.ts
+/// <reference types="./types/express" />
 import express, { Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import cors from "cors";
