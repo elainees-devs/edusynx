@@ -2,7 +2,7 @@
 import { Types } from "mongoose";
 import { StreamModel } from "../../models";
 import { IStream } from "../../types";
-import { AppError, normalizeSchoolId } from "../../utils";
+import { AppError, normalizeId } from "../../utils";
 import { CreateStreamDTO } from "../../dto";
 
 class StreamRepository {
@@ -11,7 +11,7 @@ class StreamRepository {
     try {
       const processedData = {
         ...streamData,
-        school: normalizeSchoolId(streamData.school),
+        school: normalizeId(streamData.school),
       };
 
       const streamInstance = new StreamModel(processedData);
@@ -31,7 +31,7 @@ class StreamRepository {
   ): Promise<IStream | null> {
     try {
       if (updates.school) {
-        updates.school = normalizeSchoolId(updates.school);
+        updates.school = normalizeId(updates.school);
       }
 
       return await StreamModel.findByIdAndUpdate(
