@@ -1,7 +1,7 @@
 // server/src/controllers/school-core/stream.controller.ts
 import { handleAsync } from "../../utils/handleAsync";
 import { AppError } from "../../utils/AppError";
-import { normalizeSchoolId } from "../../utils";
+import { normalizeId } from "../../utils";
 import StreamRepository from "../../repositories/school-core/stream.repository";
 // import redisClient from "../redisClient"; // Uncomment if using Redis for caching
 
@@ -26,7 +26,7 @@ export class StreamController {
   const newStream = await this.streamRepo.createStream({
     streamName,
     academicYear,
-    school: normalizeSchoolId(school),
+    school: normalizeId(school),
   });
 
   res.status(201).json(newStream);
