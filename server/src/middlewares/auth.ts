@@ -1,4 +1,4 @@
-//src/middlewares/auth.ts
+// src/middlewares/auth.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { GuardianModel, TeacherModel, UserModel } from "../models";
@@ -7,6 +7,9 @@ import { UserRole } from "../types/enum/enum";
 import { ILoginBase } from "../types/common/auth-context.types";
 
 type Role = UserRole;
+
+// Use union type for user to satisfy TypeScript
+type AuthenticatedUser = IGuardian | ITeacher | IBaseUser;
 
 export const authenticateUser = (role: Role) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -27,19 +30,22 @@ export const authenticateUser = (role: Role) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
 
-      let user: IBaseUser | null = null;
+      let user: AuthenticatedUser | null = null;
 
       switch (role) {
         case UserRole.GUARDIAN:
-          user = await GuardianModel.findById(decoded.id).populate("school") as IGuardian;
+          user = await GuardianModel.findById(decoded.id)
+            .populate("school") as IGuardian;
           break;
         case UserRole.TEACHER:
-          user = await TeacherModel.findById(decoded.id).populate(["school", "class"]) as ITeacher;
+          user = await TeacherModel.findById(decoded.id)
+            .populate(["school", "class"]) as ITeacher;
           break;
         case UserRole.SCHOOL_ADMIN:
         case UserRole.HEADTEACHER:
         case UserRole.ACCOUNTANT:
-          user = await UserModel.findById(decoded.id).populate("school") as IBaseUser;
+          user = await UserModel.findById(decoded.id)
+            .populate("school") as IBaseUser;
           break;
         default:
           const error = new Error("Unsupported user role");
@@ -60,6 +66,7 @@ export const authenticateUser = (role: Role) => {
         deviceInfo: req.headers["user-agent"] || undefined,
       };
 
+      // Assign user and loginInfo to request (matches your global Express augmentation)
       req.user = user;
       req.loginInfo = loginInfo;
 
