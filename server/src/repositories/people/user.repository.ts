@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 import bcrypt from "bcrypt";
 import { AppError } from "../../utils/AppError";
 import { CreateUserDTO } from "../../dto";
-import { normalizeSchoolId } from "../../utils";
+import { normalizeId } from "../../utils";
 import { UserModel } from "../../models";
 import { IBaseUser } from "../../types";
 
@@ -12,7 +12,7 @@ export class UserRepository {
     try {
       const processedData = {
         ...userData,
-        school:normalizeSchoolId(userData.school),
+        school:normalizeId(userData.school),
       };
 
       if (processedData.password) {
@@ -39,7 +39,7 @@ export class UserRepository {
   ): Promise<IBaseUser | null> {
     try {
       if (updates.school) {
-        updates.school = normalizeSchoolId(updates.school);
+        updates.school = normalizeId(updates.school);
       }
 
       return await UserModel.findByIdAndUpdate(
