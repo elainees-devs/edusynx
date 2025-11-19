@@ -3,7 +3,7 @@ import { AppError } from "../../utils/AppError";
 import redisClient from "../../redisClient";
 import { handleAsync } from "../../utils/handleAsync";
 import { UserRole } from "../../types/enum/enum";
-import { generateTeacherId, normalizeSchoolId } from "../../utils";
+import { generateTeacherId, normalizeId } from "../../utils";
 import mongoose, { Mongoose } from "mongoose";
 import { UserRepository } from "../../repositories";
 
@@ -25,7 +25,7 @@ export class UserController {
     const newUser = await this.userRepo.createUser({
       ...rest,
       role,
-      school: normalizeSchoolId(school),
+      school: normalizeId(school),
     });
 
     // Handle teacher-specific fields
