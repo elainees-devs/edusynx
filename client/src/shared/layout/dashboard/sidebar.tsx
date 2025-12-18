@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
 
   const navMap: Record<string, () => NavItem[]> = {
     "super-admin": () => superAdminNavItems,
-    "headteacher": () => headTeacherNavItems,
+    "principal": () => headTeacherNavItems,
     "school-admin": () =>
       schoolAdminNavItems.map((item) =>
         item.name === "Students"
