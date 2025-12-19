@@ -1,4 +1,4 @@
-// client/src/pages/dashboard/headteacher.tsx
+// client/src/pages/dashboard/principal.tsx
 import PrincipalDashboardOverview from "../../components/dashboard/principal/dashboard-overview"
 import { Sidebar, Topbar } from "../../shared/layout/dashboard"
 
