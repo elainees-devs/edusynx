@@ -44,6 +44,23 @@ export interface ISubject{
   subjectName: string
   classRef: string | IClass
 }
+export interface SubjectData extends ISubject {
+  school: string;
+}
+
+export interface Option {
+  value: string;
+  label: string;
+}
+
+export interface SubjectFormContextType {
+  formData: SubjectData;
+  updateForm: (data: Partial<SubjectData>) => void;
+  resetForm: () => void;
+  classOptions: Option[];
+  loading: boolean;
+  error?: string;
+}
 
 
 
