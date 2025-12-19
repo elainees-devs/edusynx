@@ -22,6 +22,9 @@ export { default as ViewClass } from './class/view-class'
 export { default as RegisterStream } from './stream/register-stream'
 export { default as ClassOverview} from './class/class-overview'
 
+// ---------- Subject Management ----------
+export { default as RegisterSubject} from './subject/register-subject'
+
 // ---------- Student Management ----------
 export { default as RegisterStudent } from './student/register-student'
 export { default as ViewStudents } from './student/view-students'
