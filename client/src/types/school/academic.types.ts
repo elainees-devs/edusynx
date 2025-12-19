@@ -1,5 +1,4 @@
 // server/src/types/school/academic.types.ts
-import type { BaseDocument } from "../common/base.types";
 import type { ITeacher } from "../people/user.types";
 import type { IClass, ISchool, IStream } from "./school-core.types";
 
@@ -9,13 +8,6 @@ export interface IDepartment{
   departmentName: string;
   headOfDepartment?:string | ITeacher
   teachers?: string | ITeacher[]
-}
-export interface ISubject extends BaseDocument {
-  school: string | ISchool
-  subjectName: string
-  departmentRef: string | IDepartment
-  classRef: string | IClass
-  teachers?: ITeacher[]
 }
 
 export interface IClassTeacher {
