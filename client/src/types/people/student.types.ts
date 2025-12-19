@@ -1,7 +1,7 @@
+// client/src/types/people/student.types.ts
 import type { IClass, IStream } from "../school/school-core.types";
 import type { Guardian } from "./user.types";
 
-// client/src/types/people/student.types.ts
 export type StudentGender = "male" | "female";
 export type StudentStatus = "Active" | "Inactive" | "Suspended" | "Graduated";
 
