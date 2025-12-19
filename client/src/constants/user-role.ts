@@ -1,6 +1,6 @@
 // client/src/constants/user-role.ts
 export const UserRole = {
-  HEADTEACHER: "headteacher",
+  PRINCIPAL: "principal",
   TEACHER: "teacher",
   SCHOOL_ADMIN: "school-admin",
   GUARDIAN: "guardian",
