@@ -21,7 +21,7 @@ const SignIn: React.FC = () => {
   const roleRedirectMap: Record<UserRole, string> = {
     [UserRole.SCHOOL_ADMIN]: "school-admin",
     [UserRole.TEACHER]: "teacher",
-    [UserRole.HEADTEACHER]: "headteacher",
+    [UserRole.PRINCIPAL]: "principal",
     [UserRole.ACCOUNTANT]: "accountant",
     [UserRole.GUARDIAN]: "guardian",
     "super-admin": "super-admin"
