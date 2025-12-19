@@ -30,7 +30,7 @@ export const superAdminNavItems: NavItem[] = [
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
 
-export const headTeacherNavItems: NavItem[] = [
+export const PrincipalNavItems: NavItem[] = [
   { name: "Dashboard", icon: FaTachometerAlt, path: "/:slug/dashboard/principal" },
   {
     name: "Teachers",
