@@ -2,7 +2,7 @@
 import { NotificationButton,Profile } from "./top-bar";
 interface TopbarProps {
   title?: string;
-  role: 'admin' | 'headteacher' | 'teacher' | 'accountant' | string;
+  role: 'admin' | 'principal' | 'teacher' | 'accountant' | string;
 }
 
 const Topbar: React.FC<TopbarProps> = ({ title, role }) => {
