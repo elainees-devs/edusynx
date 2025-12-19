@@ -19,6 +19,7 @@ import {
   RegisterStudent,
   ViewStudents,
   ViewGuardian,
+  RegisterSubject,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -97,6 +98,11 @@ function App() {
             element={<ClassOverView />}
           />
 
+   {/* === Subjects === */}
+          <Route
+            path="/subjects/new"
+            element={<RegisterSubject />}
+          />
           {/* === Students and Guardian === */}
           <Route path="/:slug/student/new" element={<RegisterStudent />} />
           <Route path="/:slug/students/view" element={<ViewStudents />} />
