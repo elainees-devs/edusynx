@@ -1,3 +1,4 @@
+//client/src/components/dashboard/accountant/dashboard-overview.tsx
 import React from "react";
 
 
@@ -86,7 +87,7 @@ const MOCK_STUDENTS: StudentBalance[] = [
 
 const formatKES = (n: number) => `KES ${n.toLocaleString()}`;
 
-const AccountantDashboard: React.FC = () => {
+const AccountantDashboardOverview: React.FC = () => {
   // Replace these with hooks that fetch from your API
   const totalFeesCollected = 1250000;
   const outstandingBalances = 45200;
@@ -297,4 +298,4 @@ const AccountantDashboard: React.FC = () => {
   );
 };
 
-export default AccountantDashboard;
+export default AccountantDashboardOverview;
