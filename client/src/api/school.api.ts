@@ -46,7 +46,7 @@ export const registerSchool = async (data: ISchool) => {
  * @returns A Promise that resolves to a school object.
  */
 export const getSchoolBySlug = async (slug: string): Promise<ISchool> => {
-  const response = await axios.get(`${API_BASE}/school/slug/${slug}`);
+  const response = await axios.get(`${API_BASE}/schools/slug/${slug}`);
   console.log("response data:", response.data);
   return response.data;
 };
