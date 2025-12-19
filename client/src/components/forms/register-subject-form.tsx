@@ -1,45 +1,51 @@
 // client/src/components/forms/register-subject-form.tsx
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import type { ISubject, IClass } from "../../types";
 
+import { useSchoolBySlug } from "../../hooks/useSchoolBySlug";
+import { useClassOptions } from "../../hooks/useClassOptions";
+import { SubmitButton } from "../../shared";
 
-export default function RegisterSubjectForm() {
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ISubject>();
-  const [classes, setClasses] = useState<IClass[]>([]);
+import type { Option, ISubject, SubjectData } from "../../types";
 
-  // ✅ Fetch class list dynamically (replace with your API endpoint)
-  useEffect(() => {
-    async function fetchClasses() {
-      try {
-        const res = await fetch("/api/classes");
-        const data = await res.json();
-        setClasses(data);
-      } catch (err) {
-        console.error("Failed to load classes", err);
-      }
-    }
-    fetchClasses();
-  }, []);
+interface RegisterSubjectFormProps {
+  onSubmit: (data: SubjectData) => Promise<void>;
+}
 
-  // ✅ Form submit handler
-  const onSubmit = async (data: ISubject) => {
+const RegisterSubjectForm: React.FC<RegisterSubjectFormProps> = ({
+  onSubmit,
+}) => {
+  const { slug } = useParams();
+  const { schoolId } = useSchoolBySlug(slug);
+
+  const { classOptions, loading, error: classError } =
+    useClassOptions(schoolId);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<ISubject>();
+
+  /** -----------------------------------
+   *  Submit Handler
+   * ----------------------------------- */
+  const submitHandler = async (data: ISubject) => {
     try {
-      const res = await fetch("/api/subjects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Failed to register subject");
+      await onSubmit({ ...data, school: schoolId || "" });
 
       Swal.fire({
         icon: "success",
-        title: "Subject Registered!",
-        text: `${data.subjectName} added successfully.`,
+        title: "Subject Registered",
+        text: `${data.subjectName} added successfully`,
         confirmButtonColor: "#2563eb",
       });
+
       reset();
     } catch (error) {
       Swal.fire({
@@ -50,53 +56,71 @@ export default function RegisterSubjectForm() {
     }
   };
 
+  /** -----------------------------------
+   *  Handle class select → setValue()
+   * ----------------------------------- */
+  const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedClassId = e.target.value;
+
+    const selectedClass = classOptions.find(
+      (cls) => cls.value === selectedClassId
+    );
+
+    if (selectedClass) {
+      setValue("classRef", selectedClass.value);       // classId
+      
+    }
+  };
+
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4 text-center">Register New Subject</h2>
+    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
+      {classError && <p className="text-red-500">{classError}</p>}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Subject Name */}
-        <div>
-          <label className="block mb-1 font-medium">Subject Name</label>
-          <input
-            type="text"
-            {...register("subjectName", { required: "Subject name is required" })}
-            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
-            placeholder="e.g. Mathematics"
-          />
-          {errors.subjectName && (
-            <p className="text-red-500 text-sm mt-1">{errors.subjectName.message}</p>
-          )}
-        </div>
+      {/* SUBJECT NAME */}
+      <div>
+        <label className="block mb-1 font-medium">Subject Name</label>
+        <input
+          type="text"
+          {...register("subjectName", { required: true })}
+          className="w-full border border-gray-300 rounded px-3 py-2"
+          placeholder="e.g. Mathematics"
+        />
+        {errors.subjectName && (
+          <p className="text-red-500 text-sm">Required</p>
+        )}
+      </div>
 
-        {/* Class Reference */}
-        <div>
-          <label className="block mb-1 font-medium">Select Grade</label>
+      {/* SELECT CLASS */}
+      <div>
+        <label className="block mb-1 font-medium">Select Grade</label>
+
+        {loading ? (
+          <p>Loading classes...</p>
+        ) : (
           <select
-            {...register("classRef", { required: "Please select a grade" })}
-            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+            {...register("classRef", { required: true })}
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            onChange={handleClassChange}
           >
-            <option value="">-- Select Grade --</option>
-            {classes.map((cls) => (
-              <option key={cls._id} value={cls._id}>
-                {cls.grade}
+            <option value="">Select Grade</option>
+            {classOptions.map((cls: Option) => (
+              <option key={cls.value} value={cls.value}>
+                {cls.label}
               </option>
             ))}
           </select>
-          {errors.classRef && (
-            <p className="text-red-500 text-sm mt-1">{errors.classRef.message}</p>
-          )}
-        </div>
+        )}
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          {isSubmitting ? "Saving..." : "Register Subject"}
-        </button>
-      </form>
-    </div>
+        {errors.classRef && <p className="text-red-500 text-sm">Required</p>}
+      </div>
+
+      <SubmitButton
+        label="Register Subject"
+        loadingLabel="Saving..."
+        loading={isSubmitting}
+      />
+    </form>
   );
-}
+};
+
+export default RegisterSubjectForm;
