@@ -1,14 +1,11 @@
 // client/src/components/forms/register-subject-form.tsx
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-
 import { useSchoolBySlug } from "../../hooks/useSchoolBySlug";
 import { useClassOptions } from "../../hooks/useClassOptions";
 import { SubmitButton } from "../../shared";
-
 import type { Option, ISubject, SubjectData } from "../../types";
 
 interface RegisterSubjectFormProps {
