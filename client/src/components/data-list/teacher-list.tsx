@@ -8,13 +8,29 @@ import TeacherTable from "../data-table/teacher-table";
 
 interface TeacherListProps {
   teachers: Teacher[];
-  onEdit: (teacherId: string) => void;
-  onToggleStatus: (teacherId: string) => void;
+
+  /* inline edit state */
+  editingId: string | null;
+  editData: Partial<Teacher>;
+
+  /* handlers */
+  onEditStart: (teacher: Teacher) => void;
+  onEditChange: (field: keyof Teacher, value: string) => void;
+  onEditSave: (id: string) => void;
+  onEditCancel: () => void;
+  onDelete: (id: string) => void;
+  onToggleStatus: (id: string) => void;
 }
 
 const TeacherList: React.FC<TeacherListProps> = ({
   teachers,
-  onEdit,
+  editingId,
+  editData,
+  onEditStart,
+  onEditChange,
+  onEditSave,
+  onEditCancel,
+  onDelete,
   onToggleStatus,
 }) => {
   const {
@@ -40,9 +56,15 @@ const TeacherList: React.FC<TeacherListProps> = ({
       <TeacherTable
         teachers={sortedTeachers}
         sortAsc={sortAsc}
+        editingId={editingId}
+        editData={editData}
         onToggleSort={toggleSort}
-        onEdit={onEdit}
         onToggleStatus={onToggleStatus}
+        onEditStart={onEditStart}
+        onEditChange={onEditChange}
+        onEditSave={onEditSave}
+        onEditCancel={onEditCancel}
+        onDelete={onDelete}
       />
     </div>
   );
