@@ -10,6 +10,7 @@ import { registerUser } from "../../../api/base-user.api";
 import { useSignUpContext } from "../../../context/signup/useSignUpContext";
 import Swal from "sweetalert2";
 import type { IBaseUser } from "../../../types";
+import { UserRole } from "../../../constants";
 
 const steps = [
   "Personal Info",
@@ -67,7 +68,7 @@ const SignUpStepper = () => {
         password: formData.password,
         primaryPhoneNumber: formData.primaryPhoneNumber,
         nationality: formData.nationality,
-        role: formData.role,
+        role: UserRole[formData.role.toUpperCase() as keyof typeof UserRole],
 
         // Optional fields
         secondaryEmail: formData.secondaryEmail,
