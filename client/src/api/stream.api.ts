@@ -18,10 +18,10 @@ export const registerStream = async (data: {
 }
 
 
-//  feetch all streams
+//  fetch all streams
 export const getAllStreams = async (): Promise<IStream[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/stream`);
+    const response = await axios.get(`${BASE_URL}/streams`);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch streams:", error);
