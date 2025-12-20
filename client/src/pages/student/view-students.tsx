@@ -17,7 +17,7 @@ const ViewStudents: React.FC = () => {
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Topbar */}
         <div className="flex-shrink-0">
-          <Topbar role="school-admin" />
+          <Topbar role={["school-admin", "principal"]} />
         </div>
 
         {/* Student List */}
