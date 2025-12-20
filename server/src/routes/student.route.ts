@@ -192,7 +192,7 @@ studentRouter.get("/student/guardian/:id", studentController.getStudentWithGuard
  *       200:
  *         description: List of all students
  */
-studentRouter.get("/students", studentController.getAllStudents);
+studentRouter.get("/", studentController.getAllStudents);
 
 /**
  * @swagger
