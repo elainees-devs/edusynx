@@ -13,7 +13,11 @@ import {
   FaStream,
 } from "react-icons/fa";
 import type { IconType } from "react-icons";
-import { classNavChildren, teacherNavChildren, subjectNavChildren } from "./sidebar-submenu";
+import {
+  classNavChildren,
+  teacherNavChildren,
+  subjectNavChildren,
+} from "./sidebar-submenu";
 
 export interface NavItem {
   name: string;
@@ -30,22 +34,27 @@ export const superAdminNavItems: NavItem[] = [
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
 
-export const PrincipalNavItems: NavItem[] = [
-  { name: "Dashboard", icon: FaTachometerAlt, path: "/:slug/dashboard/principal" },
+export const principalNavItems: NavItem[] = [
+  {
+    name: "Dashboard",
+    icon: FaTachometerAlt,
+    path: "/:slug/dashboard/principal",
+  },
   {
     name: "Teachers",
     icon: FaChalkboardTeacher,
     path: "/dashboard/teachers",
     children: teacherNavChildren,
   },
-  { name: "Students", icon: FaUsers, path: "/dashboard/students" },
+  { name: "Students", icon: FaUsers, path: "/:slug/students/view" },
   { name: "Streams", icon: FaStream, path: "/dashboard/streams" },
-  { name: "Classes", 
-    icon: FaBook, 
+  {
+    name: "Classes",
+    icon: FaBook,
     path: "/dashboard/classes",
-  children: classNavChildren
-},
-{
+    children: classNavChildren,
+  },
+  {
     name: "Subjects",
     icon: FaBook,
     path: "/dashboard/subjects",
@@ -55,11 +64,13 @@ export const PrincipalNavItems: NavItem[] = [
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
 
-export const schoolAdminNavItems: NavItem[] =[
+export const schoolAdminNavItems: NavItem[] = [
   { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
   {
-  name: "Students",icon: FaSchool,path: "/dashboard/students",
-},
+    name: "Students",
+    icon: FaSchool,
+    path: "/dashboard/students",
+  },
 
   { name: "Reports", icon: FaUser, path: "/dashboard/reports" },
   { name: "Settings", icon: FaCog, path: "/dashboard/settings" },
