@@ -1,6 +1,7 @@
+//client/src/shared/layout/dashboard/sidebar.tsx
 import { Link, useLocation, useParams } from "react-router-dom";
 import {
-  headTeacherNavItems,
+  principalNavItems,
   schoolAdminNavItems,
   superAdminNavItems,
   type NavItem,
@@ -22,7 +23,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
 
   const navMap: Record<string, () => NavItem[]> = {
     "super-admin": () => superAdminNavItems,
-    "principal": () => headTeacherNavItems,
+    "principal": () => principalNavItems,
     "school-admin": () =>
       schoolAdminNavItems.map((item) =>
         item.name === "Students"
