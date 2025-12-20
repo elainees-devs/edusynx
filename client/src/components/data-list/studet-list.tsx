@@ -39,21 +39,26 @@ const StudentsList: React.FC = () => {
   };
 
   const handleEditStudent = async (
-    id: string,
-    updatedData: Partial<Student>
-  ) => {
-    try {
-      const updatedStudent = await updateStudent(id, updatedData);
-      console.log("Student updated:", updatedStudent);
+  id: string,
+  updatedData: Partial<Student>
+) => {
+  try {
+    // Call API to update student
+    const updatedStudent = await updateStudent(id, updatedData);
+    console.log("Student updated:", updatedStudent);
 
-      //Update local state so UI re-renders
-      setLocalStudents((prev) =>
-        prev.map((s) => (s._id === id ? updatedStudent : s))
-      );
-    } catch (error) {
-      console.error("Error updating student:", error);
-    }
-  };
+    // Update both local state AND hook state
+    setLocalStudents((prev) =>
+      prev.map((s) => (s._id === id ? updatedStudent : s))
+    );
+    setStudents((prev) =>
+      prev.map((s) => (s._id === id ? updatedStudent : s))
+    );
+  } catch (error) {
+    console.error("Error updating student:", error);
+  }
+};
+
   const handleDeleteStudent = async (student: Student) => {
     if (
       !confirm(`Are you sure you want to delete ${student.studentFirstName}?`)
