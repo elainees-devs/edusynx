@@ -29,7 +29,7 @@ export const registerClass = async (data: IClass) => {
 // Retrieve all classes
 export const getAllClasses = async (): Promise<IClass[]> => {
   try {
-    const response = await axios.get(`${API_BASE}/class`);
+    const response = await axios.get(`${API_BASE}/classes`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
