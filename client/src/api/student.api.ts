@@ -82,13 +82,13 @@ export const updateStudent = async (id: string, data: Partial<Student>) => {
 
   console.log("Final update payload:", payload);
 
-  const response = await axios.put(`${API_BASE}/student/update/${id}`, payload);
+  const response = await axios.put(`${API_BASE}/students/update/${id}`, payload);
   return response.data;
 };
 
 
 
 export const deleteStudent = async (id: string): Promise<{ message: string }> => {
-  const response = await axios.delete(`${API_BASE}/student/${id}`);
+  const response = await axios.delete(`${API_BASE}/students/${id}`);
   return response.data; // e.g. { message: "Student deleted successfully" }
 };
