@@ -1,6 +1,6 @@
 // client/src/hooks/useStudents.ts
 import { useEffect, useState } from "react";
-import { getActiveStudents } from "../api/student.api";
+import { getAllStudents } from "../api/student.api";
 import type { IClass, IStream, Student } from "../types";
 import { searchConfig } from "../constants";
 import { getAllClasses } from "../api";
@@ -41,7 +41,7 @@ export const useStudents = () => {
     const fetchData = async () => {
       try {
         const [studentData, classData, streamData] = await Promise.all([
-          getActiveStudents(),
+          getAllStudents(),
           getAllClasses(),
           getAllStreams(), 
         ]);
