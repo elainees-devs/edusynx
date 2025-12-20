@@ -1,4 +1,4 @@
-// client/src/constants/data/principal-dashboard.ts
+// client/src/types/data/principal.ts
 export interface FinancialSummary {
   totalIncome: number;
   totalExpenses: number;
