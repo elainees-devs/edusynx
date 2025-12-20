@@ -191,6 +191,10 @@ studentRouter.get("/student/guardian/:id", studentController.getStudentWithGuard
  *     responses:
  *       200:
  *         description: List of all students
+ * 
+
+
+
  */
 studentRouter.get("/", studentController.getAllStudents);
 
@@ -246,7 +250,7 @@ studentRouter.get("/students/count/:id", studentController.countStudents);
 
 /**
  * @swagger
- * /api/v1/students/student/update/{id}:
+ * /api/v1/students/update/{id}:
  *   put:
  *     summary: Update student by ID
  *     tags: [Students]
