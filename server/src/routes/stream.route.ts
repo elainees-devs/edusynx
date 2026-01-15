@@ -19,7 +19,7 @@ const streamController = new StreamController();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateStream'
+ *             $ref: '#/components/schemas/StreamCreate'
  *     responses:
  *       201:
  *         description: Stream created successfully
