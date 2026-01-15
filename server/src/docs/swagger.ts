@@ -22,7 +22,9 @@ import {
   subjectSchema,
   userSchema,
   classTeacherSchema,
+  streamSchema,
 } from "./components/schemas";
+import { Stream } from "winston/lib/winston/transports";
 
 
 
@@ -67,12 +69,13 @@ export const options: swaggerJSDoc.Options = {
         ...studentSchema,
         ...subjectSchema,
         ...userSchema,
-        ...classTeacherSchema
+        ...classTeacherSchema,
+        ...streamSchema
       },
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["./src/routes/*.ts"],
+  apis: ["./src/routes/**/*.ts"],
 };
 
 export const setupSwagger = (app: Express) => {
