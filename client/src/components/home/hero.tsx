@@ -13,9 +13,9 @@ const Hero: React.FC = () => {
               <span className="text-teal-400">Edusynx</span>
             </h1>
             <p className="max-w-xl mx-auto mb-8 text-lg md:text-xl md:mx-0">
-              Automate, Centralize, and Optimize Your School's Management with
-              AI-Driven Features
+              Automate, centralize, and manage admissions, fees, communication, and records from one secure platform.
             </p>
+            {/* CTA */}
             <div className="flex justify-center gap-5 md:justify-start">
               <a
                 href="#"
