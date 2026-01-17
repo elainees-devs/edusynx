@@ -1,9 +1,9 @@
 // client/src/components/forms/login-form.tsx
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../buttons/login-button";
 import { MdEmail } from "react-icons/md";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { RiEyeLine, RiEyeOffLine, RiLockPasswordLine } from "react-icons/ri";
 
 export interface LoginFormProps {
   email: string;
@@ -29,7 +29,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
   slug,
 }) => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false); 
   if (!slug) return <div>Invalid school slug</div>;
+  
 
   return (
     <form
@@ -61,18 +63,27 @@ const LoginForm: React.FC<LoginFormProps> = ({
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-
           <label htmlFor="password">Password:</label>
+
           <div className="flex items-center border border-gray rounded mb-4 p-2">
             <RiLockPasswordLine className="text-gray-500 mr-2" />
+
             <input
               className="w-full outline-none"
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="........"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="ml-2 text-gray-500 focus:outline-none"
+            >
+              {showPassword ? <RiEyeOffLine /> : <RiEyeLine />}
+            </button>
           </div>
 
           <div className="flex items-center justify-between text-sm">
