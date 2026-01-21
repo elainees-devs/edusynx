@@ -1,14 +1,30 @@
 # Edusynx: A Smart School Management System
 
-> A modern, AI-assisted school management solution focused on streamlining administrative and financial operations for schools in the digital era.
+> A modern, school management solution focused on streamlining administrative and financial operations for schools in the digital era.
 
 ---
 
 ## 🧭 Project Overview
 
-Edusynx is designed to centralize school administration—particularly fee tracking, invoicing, attendance, and student transfers—into a smart, role-based platform for principals, administrators, teachers, accountants, and parents. With real-time dashboards, multi-channel payments, automated reporting, and AI-powered analytics, Edusynx reduces manual workloads and enhances financial accuracy.
+Edusynx is designed to centralize school administration—particularly fee tracking, invoicing, attendance, and student transfers—into a smart, role-based platform for principals, administrators, teachers, accountants, and parents. With real-time dashboards, multi-channel payments, automated reporting, and analytics, Edusynx reduces manual workloads and enhances financial accuracy.
 
 ---
+## Architecture & Engineering Decisions
+
+EduSynx is designed for affordability, scalability, and reliability in school environments.
+
+- **Modular Monolith Architecture**  
+  Chosen over microservices to reduce deployment complexity and infrastructure cost while maintaining clear module boundaries for future scaling.
+
+- **Role-Based Access Control (RBAC)**  
+  Enables fine-grained permissions for different school roles while balancing performance and flexibility.
+
+- **Hybrid Real-Time Strategy**  
+  Uses WebSockets for critical updates (attendance, messaging) and polling for non-critical data to reduce server load.
+
+- **Optimized Data Modeling**  
+  Transactional data is normalized for integrity, while reporting data is denormalized to improve dashboard performance.
+
 
 ## 🚀 Features
 
@@ -19,7 +35,6 @@ Edusynx is designed to centralize school administration—particularly fee track
 - ✅ Student Transfer Analytics
 - ✅ Real-Time Financial Reporting
 - ✅ Secure Authentication & Authorization
-- ✅ AI-based Payment Predictions and Smart Alerts
 - ✅ Parent Portal with Payment History and Updates
 - ✅ Offline Attendance Sync and Mobile-Responsive UI
 
