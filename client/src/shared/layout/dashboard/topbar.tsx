@@ -1,11 +1,11 @@
 // client/src/shared/layout/dashboard/topbar.tsx
 import { NotificationButton, Profile } from "./top-bar";
 
-type UserRole = "admin" | "principal" | "teacher" | "accountant";
+type UserRole = "school-admin" | "principal" | "teacher" | "accountant";
 
 interface TopbarProps {
   title?: string;
-  role?: UserRole;
+    role?: UserRole | UserRole[]; // allow single or multiple roles
 }
 
 const getGreeting = (role?: unknown) => {
