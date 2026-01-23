@@ -1,14 +1,11 @@
 // client/src/types/people/student.types.ts
-import type { IClass, IStream } from "../school/school-core.types";
+
 import type { Guardian } from "./user.types";
+import type { Option } from "../school/school-core.types";
 
 export type StudentGender = "male" | "female";
 export type StudentStatus = "Active" | "Inactive" | "Suspended" | "Graduated";
 
-export interface Option {
-  value: string;
-  label: string;
-}
 
 export interface StudentFormData {
   school: string;
@@ -19,8 +16,8 @@ export interface StudentFormData {
   dateOfBirth: string;
   admissionDate: string;
   previousSchool?: string;
-  classId: string | IClass;
-  stream: string | IStream;
+  classId: string;
+  stream: string;
   status: StudentStatus;
   studentPhotoUrl: string | undefined;
   adm?: string;
