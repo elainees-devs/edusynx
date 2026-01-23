@@ -1,101 +1,94 @@
-// client/src/components/data-list/student-list.tsx
-import React, { useState } from "react";
-import { SearchBar } from "../../shared";
-import { searchConfig } from "../../constants";
-import { useStudents } from "../../hooks/useStudents";
-import { StudentTable } from "../data-table";
+import React, { useEffect, useState, useCallback } from "react";
 import type { Student } from "../../types";
-import { deleteStudent, updateStudent } from "../../api";
+import { getStudents } from "../../api";
+import { StudentTable } from "../data-table";
+import { Pagination, SearchBar } from "../../shared";
+import { searchConfig } from "../../constants";
 
 const StudentsList: React.FC = () => {
-  const {
-    students,
-    classes,
-    streams,
-    loading,
-    error,
-    sortAsc,
-    searchTerm,
-    setSearchTerm,
-    handleSort,
-    setStudents,
-  } = useStudents();
+  const [students, setStudents] = useState<Student[]>([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Search input
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sortAsc, setSortAsc] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const limit = 10;
 
-  //Local copy of students for updates
-  const [localStudents, setLocalStudents] = useState<Student[]>(students);
+  // Load students from API (with backend search & pagination)
+  const loadStudents = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await getStudents({
+        page,
+        limit,
+        sort: sortAsc ? "asc" : "desc",
+        search: searchTerm, // send searchTerm to backend
+      });
 
-  // Keep local in sync when hook updates
-  React.useEffect(() => {
-    setLocalStudents(students);
-  }, [students]);
+      setStudents(res.data);
+      console.log("Loaded students:", res.data);
+      setTotalPages(res.totalPages);
+    } catch (err) {
+      console.error("Failed to load students:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, limit, sortAsc, searchTerm]);
+
+  useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
 
   const { placeholder } = searchConfig.student;
 
-  if (loading) return <div className="p-4">Loading students...</div>;
-  if (error) return <div className="p-4 text-red-600">{error}</div>;
-
-  const handleAddStudent = () => {
-    // TODO: implement
+  const handleEdit = (id: string, updatedData: Partial<Student>) => {
+    console.log("Edit:", id, updatedData);
   };
 
-  const handleEditStudent = async (
-  id: string,
-  updatedData: Partial<Student>
-) => {
-  try {
-    // Call API to update student
-    const updatedStudent = await updateStudent(id, updatedData);
-    console.log("Student updated:", updatedStudent);
+  const handleDelete = (student: Student) => {
+    console.log("Delete:", student);
+  };
 
-    // Update both local state AND hook state
-    setLocalStudents((prev) =>
-      prev.map((s) => (s._id === id ? updatedStudent : s))
-    );
-    setStudents((prev) =>
-      prev.map((s) => (s._id === id ? updatedStudent : s))
-    );
-  } catch (error) {
-    console.error("Error updating student:", error);
-  }
-};
-
-  const handleDeleteStudent = async (student: Student) => {
-    if (
-      !confirm(`Are you sure you want to delete ${student.studentFirstName}?`)
-    )
-      return;
-
-    try {
-      const res = await deleteStudent(student._id);
-      console.log(res.message);
-
-      // remove student from UI
-      setStudents((prev) => prev.filter((s) => s._id !== student._id));
-    } catch (error) {
-      console.error("Error deleting student:", error);
-    }
+  const handleAddGuardian = () => {
+    console.log("Add guardian");
   };
 
   return (
-    <div className="mt-4 space-y-4">
+    <div className="p-4 space-y-4">
+      <h1 className="text-xl font-semibold">Students</h1>
+
       {/* Search */}
       <SearchBar
         placeholder={placeholder}
         value={searchTerm}
-        onChange={setSearchTerm}
+        onChange={(val) => {
+          setSearchTerm(val);
+          setPage(1); // reset to first page when searching
+        }}
       />
 
-      {/* Table */}
-      <StudentTable
-        students={localStudents} // use local copy for immediate UI updates
-        sortAsc={sortAsc}
-        onSort={handleSort}
-        onAdd={handleAddStudent}
-        onEdit={handleEditStudent}
-        onDelete={handleDeleteStudent}
-        classes={classes}
-        streams={streams}
-      />
+      {loading ? (
+        <div className="text-center py-6 text-gray-500">Loading students...</div>
+      ) : (
+        <div className="flex flex-col gap-4">
+          <StudentTable
+            students={students} // data already filtered & paginated from backend
+            sortAsc={sortAsc}
+            page={page}
+            limit={limit}
+            onSort={() => setSortAsc((prev) => !prev)}
+            onAdd={handleAddGuardian}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+
+          <Pagination
+            page={page}
+            totalPages={totalPages} // use backend totalPages
+            onPageChange={(newPage) => setPage(newPage)}
+          />
+        </div>
+      )}
     </div>
   );
 };
