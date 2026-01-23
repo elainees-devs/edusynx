@@ -2,6 +2,20 @@
 import axios from "axios";
 import type { Student, StudentFormData } from "../types";
 
+interface GetStudentsParams {
+  page: number;
+  limit: number;
+  search?: string;
+  sort?: "asc" | "desc";
+}
+
+interface GetStudentsResponse {
+  data: Student[];
+  page: number;
+  totalPages: number;
+  total: number;
+}
+
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 export const registerStudent = async (data: StudentFormData) => {
   try {
@@ -29,12 +43,20 @@ export const getAllStudents = async (): Promise<Student[]> => {
   const response = await axios.get(`${API_BASE}/students`);
 
   const data = response.data;
+  console.log("Fetched students data:", data);
 
   if (!Array.isArray(data)) {
     throw new Error("Expected an array of students from the API.");
   }
 
   return data as Student[];
+};
+
+export const getStudents = async (
+  params: GetStudentsParams
+): Promise<GetStudentsResponse> => {
+  const res = await axios.get(`${API_BASE}/students`, { params });
+  return res.data; 
 };
 
 // // Fetch all active students
@@ -56,7 +78,7 @@ export const uploadStudentsFile = async (file: File): Promise<Student[]> => {
   formData.append("file", file);
 
   const response = await axios.post<{ students: Student[] }>(
-    `${API_BASE}/student/upload`,
+    `${API_BASE}/students/upload`,
     formData,
     { headers: { "Content-Type": "multipart/form-data" } }
   );
