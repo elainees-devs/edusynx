@@ -5,6 +5,7 @@ import type { IClass, IStream } from "../../types";
 import type { Student } from "../../types/people/student.types";
 import { getAllClasses } from "../../api";
 import { getAllStreams } from "../../api/stream.api";
+import { resolveId } from "../../utils";
 
 interface StudentTableProps {
   students: Student[];
@@ -29,7 +30,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
 }) => {
   const [classes, setClasses] = useState<IClass[]>([]);
   const [streams, setStreams] = useState<IStream[]>([]);
-
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Student>>({});
 
@@ -72,10 +72,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
       studentMiddleName: student.studentMiddleName,
       studentLastName: student.studentLastName,
       studentGender: student.studentGender,
-      classId:
-        typeof student.classId === "object" && student.classId !== null
-          ? (student.classId as IClass)._id
-          : student.classId,
+      classId: resolveId(student.classId),
       stream:
         typeof student.stream === "object" && student.stream !== null
           ? (student.stream as IStream)._id
@@ -113,9 +110,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
   // Guard: no students
   if (!students || students.length === 0) {
     return (
-      <div className="text-center py-4 text-gray-500">
-        No students found.
-      </div>
+      <div className="text-center py-4 text-gray-500">No students found.</div>
     );
   }
 
@@ -147,11 +142,14 @@ const StudentTable: React.FC<StudentTableProps> = ({
           {(students || []).map((student, index) => {
             const isEditing = editingId === student._id;
 
+            const classId = resolveId(student.classId);
+
             // Resolve guardian
             const guardianName =
-              typeof student.guardianId === "object" && student.guardianId !== null
+              typeof student.guardianId === "object" &&
+              student.guardianId !== null
                 ? student.guardianId.firstName
-                : student.guardianId ?? "";
+                : (student.guardianId ?? "");
 
             return (
               <tr key={student._id} className="hover:bg-gray-50 text-sm">
@@ -239,14 +237,14 @@ const StudentTable: React.FC<StudentTableProps> = ({
                       className="border p-1 rounded w-full"
                     >
                       <option value="">-- Select Class --</option>
-                      {(classes || []).map((cls) => (
+                      {classes.map((cls) => (
                         <option key={cls._id} value={cls._id}>
                           {cls.clasName}
                         </option>
                       ))}
                     </select>
                   ) : (
-                    classMap.get(student.classId as string) ?? "Unknown Class"
+                    (classMap.get(classId!) ?? "Unknown Class")
                   )}
                 </td>
 
@@ -266,7 +264,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
                       ))}
                     </select>
                   ) : (
-                    streamMap.get(student.stream) ?? "Unknown Stream"
+                    (streamMap.get(student.stream) ?? "Unknown Stream")
                   )}
                 </td>
 
@@ -290,7 +288,11 @@ const StudentTable: React.FC<StudentTableProps> = ({
                     </>
                   ) : (
                     <>
-                      <button type="button" title="Add Guardian" onClick={onAdd}>
+                      <button
+                        type="button"
+                        title="Add Guardian"
+                        onClick={onAdd}
+                      >
                         <FaUserPlus className="text-blue-600 hover:text-blue-800" />
                       </button>
                       <button
