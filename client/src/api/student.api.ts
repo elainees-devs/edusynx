@@ -1,6 +1,10 @@
-// client/src/api/student.api.ts
+// src/api/student.api.ts
 import axios from "axios";
 import type { Student, StudentFormData } from "../types";
+
+/* ==============================
+   Types
+================================ */
 
 interface GetStudentsParams {
   page: number;
@@ -16,101 +20,151 @@ interface GetStudentsResponse {
   total: number;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
-export const registerStudent = async (data: StudentFormData) => {
+/* ==============================
+   Axios config
+================================ */
+
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+
+/* ==============================
+   Create student
+================================ */
+
+export const registerStudent = async (
+  data: StudentFormData
+): Promise<Student> => {
   try {
     const response = await axios.post(`${API_BASE}/students`, data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Axios error response:", error.response?.data);
+      console.error("Register student error:", error.response?.data);
 
-      // Log validation issues specifically
       if (error.response?.data?.issues) {
         console.table(error.response.data.issues);
       }
 
-      throw error.response?.data || { message: "A network error occurred" };
+      throw error.response?.data || { message: "Network error" };
     }
 
-    // Fallback for non-Axios errors
-    console.error("Unknown error occurred:", error);
-    throw { message: "An unknown error occurred" };
+    console.error("Unknown error:", error);
+    throw { message: "Unknown error occurred" };
   }
 };
+
+/* ==============================
+   Fetch students (no pagination)
+================================ */
 
 export const getAllStudents = async (): Promise<Student[]> => {
   const response = await axios.get(`${API_BASE}/students`);
-
   const data = response.data;
-  console.log("Fetched students data:", data);
 
   if (!Array.isArray(data)) {
-    throw new Error("Expected an array of students from the API.");
+    throw new Error("Expected students array from API");
   }
 
-  return data as Student[];
+  return data;
 };
+
+/* ==============================
+   Fetch students (paginated)
+================================ */
 
 export const getStudents = async (
   params: GetStudentsParams
 ): Promise<GetStudentsResponse> => {
-  const res = await axios.get(`${API_BASE}/students`, { params });
-  return res.data; 
+  const response = await axios.get(`${API_BASE}/students`, {
+    params,
+  });
+
+  return response.data;
 };
 
-// // Fetch all active students
-// export const getActiveStudents = async (): Promise<Student[]> => {
-//   try {
-//     const response = await axios.get(`${API_BASE}/student/active`);
-//     return response.data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       console.error("Error fetching active students:", error.response?.data);
-//       throw error.response?.data || { message: "Failed to fetch active students" };
-//     }
-//     throw new Error("Unexpected error while fetching active students");
-//   }
-// };
+/* ==============================
+   Upload students file
+================================ */
 
-export const uploadStudentsFile = async (file: File): Promise<Student[]> => {
+export const uploadStudentsFile = async (
+  file: File
+): Promise<Student[]> => {
   const formData = new FormData();
   formData.append("file", file);
 
   const response = await axios.post<{ students: Student[] }>(
     `${API_BASE}/students/upload`,
     formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
   );
 
   return response.data.students;
 };
 
+/* ==============================
+   Update student (PATCH)
+================================ */
 
-export const updateStudent = async (id: string, data: Partial<Student>) => {
+export const updateStudent = async (
+  id: string,
+  data: Partial<Student>
+): Promise<Student> => {
   const payload: Partial<Student> = {};
 
-  if (data.studentFirstName) payload.studentFirstName = data.studentFirstName;
-  if (data.studentMiddleName) payload.studentMiddleName = data.studentMiddleName;
-  if (data.studentLastName) payload.studentLastName = data.studentLastName;
-  if (data.studentGender) payload.studentGender = data.studentGender;
-  if (data.dateOfBirth) payload.dateOfBirth = new Date(data.dateOfBirth).toISOString();
-  if (data.admissionDate) payload.admissionDate = new Date(data.admissionDate).toISOString();
-  if (data.previousSchool) payload.previousSchool = data.previousSchool;
-  if (data.classId) payload.classId = data.classId; 
-  if (data.stream) payload.stream = data.stream;
-  if (data.status) payload.status = data.status;
-  if (data.studentPhotoUrl) payload.studentPhotoUrl = data.studentPhotoUrl;
+  if (data.studentFirstName !== undefined)
+    payload.studentFirstName = data.studentFirstName;
 
-  console.log("Final update payload:", payload);
+  if (data.studentMiddleName !== undefined)
+    payload.studentMiddleName = data.studentMiddleName;
 
-  const response = await axios.put(`${API_BASE}/students/update/${id}`, payload);
+  if (data.studentLastName !== undefined)
+    payload.studentLastName = data.studentLastName;
+
+  if (data.studentGender !== undefined)
+    payload.studentGender = data.studentGender;
+
+  if (data.dateOfBirth !== undefined)
+    payload.dateOfBirth = new Date(data.dateOfBirth).toISOString();
+
+  if (data.admissionDate !== undefined)
+    payload.admissionDate = new Date(data.admissionDate).toISOString();
+
+  if (data.previousSchool !== undefined)
+    payload.previousSchool = data.previousSchool;
+
+  if (data.classId !== undefined)
+    payload.classId = data.classId;
+
+  if (data.stream !== undefined)
+    payload.stream = data.stream;
+
+  if (data.status !== undefined)
+    payload.status = data.status;
+
+  if (data.studentPhotoUrl !== undefined)
+    payload.studentPhotoUrl = data.studentPhotoUrl;
+
+  console.log("Update payload:", payload);
+
+  const response = await axios.patch(
+    `${API_BASE}/students/${id}`,
+    payload
+  );
+
   return response.data;
 };
 
+/* ==============================
+   Delete student
+================================ */
 
-
-export const deleteStudent = async (id: string): Promise<{ message: string }> => {
+export const deleteStudent = async (
+  id: string
+): Promise<{ message: string }> => {
   const response = await axios.delete(`${API_BASE}/students/${id}`);
-  return response.data; // e.g. { message: "Student deleted successfully" }
+  return response.data;
 };
