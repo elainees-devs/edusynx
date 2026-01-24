@@ -7,54 +7,51 @@ import { handleAsync } from "../../utils/handleAsync";
 const studentRepo = new StudentRepository();
 
 export class StudentController {
-
   // 1. Create student
   generateAdmissionAndCreateStudent = handleAsync(async (req, res) => {
-    const student = await studentRepo.generateAdmissionNumberAndCreateStudent(req.body);
+    const student = await studentRepo.generateAdmissionNumberAndCreateStudent(
+      req.body,
+    );
     res.status(201).json(student);
   });
 
   // 2. Get all students
-getAllStudents = handleAsync(async (req, res) => {
-  // Get page, limit, and search from query
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 10;
-  const search = (req.query.search as string) || "";
+  getAllStudents = handleAsync(async (req, res) => {
+    // Get page, limit, and search from query
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const search = (req.query.search as string) || "";
 
-  // Fetch all students from repo
-  let allStudents = await studentRepo.findAllStudents();
+    // Fetch all students from repo
+    let allStudents = await studentRepo.findAllStudents();
 
-  // Filter by search if provided
-  if (search) {
-    const lowerSearch = search.toLowerCase();
-    allStudents = allStudents.filter(
-      (student) =>
-        student.studentFirstName.toLowerCase().includes(lowerSearch) ||
-        student.studentLastName.toLowerCase().includes(lowerSearch) ||
-        student.adm.toString().includes(lowerSearch)
-    );
-  }
+    // Filter by search if provided
+    if (search) {
+      const lowerSearch = search.toLowerCase();
+      allStudents = allStudents.filter(
+        (student) =>
+          student.studentFirstName.toLowerCase().includes(lowerSearch) ||
+          student.studentLastName.toLowerCase().includes(lowerSearch) ||
+          student.adm.toString().includes(lowerSearch),
+      );
+    }
 
-  const total = allStudents.length;
-  const totalPages = Math.ceil(total / limit);
+    const total = allStudents.length;
+    const totalPages = Math.ceil(total / limit);
 
-  // Paginate students
-  const start = (page - 1) * limit;
-  const paginatedStudents = allStudents.slice(start, start + limit);
+    // Paginate students
+    const start = (page - 1) * limit;
+    const paginatedStudents = allStudents.slice(start, start + limit);
 
-  // Return paginated response
-  res.json({
-    data: paginatedStudents,
-    page,
-    totalPages,
-    total,
+    // Return paginated response
+    res.json({ data: paginatedStudents, search,page, totalPages, total });
   });
-});
-
 
   // 3. Get student with guardian
   getStudentWithGuardianById = handleAsync(async (req, res) => {
-    const student = await studentRepo.findStudentWithGuardianById(req.params.id);
+    const student = await studentRepo.findStudentWithGuardianById(
+      req.params.id,
+    );
     if (!student) throw new AppError("Student not found", 404);
     res.json(student);
   });
@@ -79,7 +76,10 @@ getAllStudents = handleAsync(async (req, res) => {
 
   // 6. Update student
   updateStudentById = handleAsync(async (req, res) => {
-    const updatedStudent = await studentRepo.updateStudentById(req.params.id, req.body);
+    const updatedStudent = await studentRepo.updateStudentById(
+      req.params.id,
+      req.body,
+    );
     if (!updatedStudent) throw new AppError("Student not found", 404);
     res.json(updatedStudent);
   });
@@ -123,7 +123,11 @@ getAllStudents = handleAsync(async (req, res) => {
       return res.status(400).json({ message: "School ID is required" });
     }
 
-    const students = await uploadStudentsFromBuffer(buffer, originalname, schoolId);
+    const students = await uploadStudentsFromBuffer(
+      buffer,
+      originalname,
+      schoolId,
+    );
 
     res.status(201).json({
       message: `Successfully uploaded ${students.saved} students`,
