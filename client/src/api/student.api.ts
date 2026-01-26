@@ -1,24 +1,7 @@
 // src/api/student.api.ts
 import axios from "axios";
-import type { Student, StudentFormData } from "../types";
+import type { GetPageParams, PaginatedStudents, Student, StudentFormData } from "../types";
 
-/* ==============================
-   Types
-================================ */
-
-interface GetStudentsParams {
-  page: number;
-  limit: number;
-  search?: string;
-  sort?: "asc" | "desc";
-}
-
-interface GetStudentsResponse {
-  data: Student[];
-  page: number;
-  totalPages: number;
-  total: number;
-}
 
 /* ==============================
    Axios config
@@ -54,27 +37,12 @@ export const registerStudent = async (
 };
 
 /* ==============================
-   Fetch students (no pagination)
-================================ */
-
-export const getAllStudents = async (): Promise<Student[]> => {
-  const response = await axios.get(`${API_BASE}/students`);
-  const data = response.data;
-
-  if (!Array.isArray(data)) {
-    throw new Error("Expected students array from API");
-  }
-
-  return data;
-};
-
-/* ==============================
    Fetch students (paginated)
 ================================ */
 
 export const getStudents = async (
-  params: GetStudentsParams
-): Promise<GetStudentsResponse> => {
+  params: GetPageParams
+): Promise<PaginatedStudents> => {
   const response = await axios.get(`${API_BASE}/students`, {
     params,
   });
@@ -168,3 +136,11 @@ export const deleteStudent = async (
   const response = await axios.delete(`${API_BASE}/students/${id}`);
   return response.data;
 };
+
+/* ==============================
+   Count students
+================================ */
+export const countStudents = async (): Promise<{ count: number }> => {
+  const response = await axios.get(`${API_BASE}/students/count`);
+  return response.data;
+}
