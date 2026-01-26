@@ -5,11 +5,10 @@ import type { IClass, IStream } from "../../types";
 import type { Student } from "../../types/people/student.types";
 import { countStudents, getAllClasses } from "../../api";
 import { getAllStreams } from "../../api/stream.api";
-import { resolveId } from "../../utils";
+import { resolveId, sortByAdmissionNumber, sortByFirstName } from "../../utils";
 
 interface StudentTableProps {
   students: Student[];
-  sortAsc: boolean;
   onSort: () => void;
   onAdd: () => void;
   onEdit: (id: string, updatedData: Partial<Student>) => void;
@@ -20,8 +19,6 @@ interface StudentTableProps {
 
 const StudentTable: React.FC<StudentTableProps> = ({
   students,
-  sortAsc,
-  onSort,
   onAdd,
   onEdit,
   onDelete,
@@ -33,22 +30,28 @@ const StudentTable: React.FC<StudentTableProps> = ({
   const [totalStudents, setTotalStudents] = useState<number>(0);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Student>>({});
+  const [sortAsc, setSortAsc] = useState(true);
+  const [sortField, setSortField] = useState<"adm" | "studentFirstName">("adm");
 
   // Load classes and streams
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [studentClasses, streamsData, totalStudentsData] = await Promise.all([
-          getAllClasses(),
-          getAllStreams(),
-          countStudents(),
-        ]);
+        const [studentClasses, streamsData, totalStudentsData] =
+          await Promise.all([
+            getAllClasses(),
+            getAllStreams(),
+            countStudents(),
+          ]);
 
         setClasses(studentClasses || []);
         setStreams(streamsData || []);
         setTotalStudents(totalStudentsData.count || 0);
       } catch (error) {
-        console.error("Failed to load classes or streams or total students:", error);
+        console.error(
+          "Failed to load classes or streams or total students:",
+          error,
+        );
         setClasses([]);
         setStreams([]);
         setTotalStudents(0);
@@ -118,6 +121,17 @@ const StudentTable: React.FC<StudentTableProps> = ({
     );
   }
 
+  let sortedStudents = [...students];
+
+  if (sortField === "adm") {
+    sortedStudents = sortByAdmissionNumber(sortedStudents);
+  } else if (sortField === "studentFirstName") {
+    sortedStudents = sortByFirstName(sortedStudents);
+  }
+
+  if (!sortAsc) {
+    sortedStudents.reverse(); // flip ascending → descending
+  }
   return (
     <div className="overflow-x-auto">
       {/* Total number of students */}
@@ -128,12 +142,34 @@ const StudentTable: React.FC<StudentTableProps> = ({
         <thead className="bg-gray-100">
           <tr className="text-left text-sm font-semibold text-gray-700">
             <th className="px-4 py-2 border">#</th>
-            <th className="px-4 py-2 border">Adm No</th>
             <th
               className="px-4 py-2 border cursor-pointer select-none"
-              onClick={onSort}
+              onClick={() => {
+                if (sortField === "adm") setSortAsc(!sortAsc);
+                else {
+                  setSortField("adm");
+                  setSortAsc(true);
+                }
+              }}
             >
-              First {sortAsc ? "▲" : "▼"}
+              Adm No{" "}
+              <span>{sortField === "adm" ? (sortAsc ? "▲" : "▼") : "↕"}</span>
+            </th>
+
+            <th
+              className="px-4 py-2 border cursor-pointer select-none"
+              onClick={() => {
+                if (sortField === "studentFirstName") setSortAsc(!sortAsc);
+                else {
+                  setSortField("studentFirstName");
+                  setSortAsc(true);
+                }
+              }}
+            >
+              First Name{" "}
+              <span>
+                {sortField === "studentFirstName" ? (sortAsc ? "▲" : "▼") : "↕"}
+              </span>
             </th>
             <th className="px-4 py-2 border">Middle</th>
             <th className="px-4 py-2 border">Last</th>
@@ -147,7 +183,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
         </thead>
 
         <tbody>
-          {(students || []).map((student, index) => {
+          {(sortedStudents || []).map((student, index) => {
             const isEditing = editingId === student._id;
 
             const classId = resolveId(student.classId);
