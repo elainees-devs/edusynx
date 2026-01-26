@@ -1,5 +1,5 @@
 import React from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -29,6 +29,17 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onChange={(e) => onChange(e.target.value)}
         className="flex-1 px-3 py-2 focus:outline-none text-sm"
       />
+
+      {/* Clear Button (X) */}
+      {value && (
+        <button
+          type="button"
+          onClick={() => onChange("")} // Clears the input
+          className="text-gray-400 hover:text-gray-600 px-2"
+        >
+          <FaTimes className="w-3 h-3" />
+        </button>
+      )}
 
       {/* Search Button */}
       <button
