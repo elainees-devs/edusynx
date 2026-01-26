@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaUserPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 import type { IClass, IStream } from "../../types";
 import type { Student } from "../../types/people/student.types";
-import { getAllClasses } from "../../api";
+import { countStudents, getAllClasses } from "../../api";
 import { getAllStreams } from "../../api/stream.api";
 import { resolveId } from "../../utils";
 
@@ -30,6 +30,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
 }) => {
   const [classes, setClasses] = useState<IClass[]>([]);
   const [streams, setStreams] = useState<IStream[]>([]);
+  const [totalStudents, setTotalStudents] = useState<number>(0);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<Student>>({});
 
@@ -37,17 +38,20 @@ const StudentTable: React.FC<StudentTableProps> = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [studentClasses, streamsData] = await Promise.all([
+        const [studentClasses, streamsData, totalStudentsData] = await Promise.all([
           getAllClasses(),
           getAllStreams(),
+          countStudents(),
         ]);
 
         setClasses(studentClasses || []);
         setStreams(streamsData || []);
+        setTotalStudents(totalStudentsData.count || 0);
       } catch (error) {
-        console.error("Failed to load classes or streams:", error);
+        console.error("Failed to load classes or streams or total students:", error);
         setClasses([]);
         setStreams([]);
+        setTotalStudents(0);
       }
     };
 
@@ -116,6 +120,10 @@ const StudentTable: React.FC<StudentTableProps> = ({
 
   return (
     <div className="overflow-x-auto">
+      {/* Total number of students */}
+      <p className="mb-2 mr-8 text-right font-semibold text-gray-700">
+        Total number of students: {totalStudents}
+      </p>
       <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
         <thead className="bg-gray-100">
           <tr className="text-left text-sm font-semibold text-gray-700">
