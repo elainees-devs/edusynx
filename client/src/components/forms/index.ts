@@ -7,9 +7,10 @@ export {default as NewPasswordForm} from "./new-password-form";
 export {default as RegisterClassForm} from "./register-class-form";
 export {default as RegisterStreamForm} from "./register-stream-form";
 export {default as RegisterStudentForm} from "./register-student-form";
+export {default as GuardianFormModal} from "./register-guardian-form-modal";
 export {default as RegisterSubjectForm} from "./register-subject-form";
 export { default as SchoolRegistrationForm} from "./register-school-form"
 export { default as SignUpStepper } from "./signup/signup-stepper";
 export {default as SchoolLogoDropzone} from "./school/school-logo";
-export { default as RegisterGuardianForm } from "./register-guardian-form";
+export { default as RegisterGuardianForm } from "./register-guardian-form-modal";
 export{default as ClassFilterForm} from "./class-filter-form"
