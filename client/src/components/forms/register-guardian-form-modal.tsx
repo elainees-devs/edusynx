@@ -5,6 +5,7 @@ import type { SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 import type { Guardian, GuardianFormInput } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 
 interface GuardianFormModalProps {
@@ -14,6 +15,7 @@ interface GuardianFormModalProps {
 }
 
 const GuardianFormModal: React.FC<GuardianFormModalProps> = ({ student, onClose, onSuccess }) => {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm<GuardianFormInput>({
     defaultValues: {
       school: student.school,
@@ -26,20 +28,33 @@ const GuardianFormModal: React.FC<GuardianFormModalProps> = ({ student, onClose,
     },
   });
 
-  const onSubmit: SubmitHandler<GuardianFormInput> = async (data) => {
-    try {
-      // Include ADM in request for linking to student
-      const payload = { ...data, adm: student.adm };
-      const response = await axios.post("/api/v1/guardians", payload);
-      const guardian: Guardian = response.data.guardian;
-      Swal.fire("Success", "Guardian added successfully!", "success");
-      onSuccess(guardian); // pass typed guardian to parent
-      onClose();
-    } catch (error) {
-      const message = axios.isAxiosError(error) ? error.response?.data?.message : "Something went wrong";
-      Swal.fire("Error", message || "Something went wrong", "error");
-    }
-  };
+
+ const onSubmit: SubmitHandler<GuardianFormInput> = async (data) => {
+  try {
+    const payload = { ...data, adm: student.adm };
+
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/guardians",
+      payload
+    );
+
+    const guardian: Guardian = response.data.guardian;
+
+    await Swal.fire("Success", "Guardian added successfully!", "success");
+
+    onSuccess(guardian);
+    onClose();
+
+    // Redirect after success
+    navigate(`/${student.school}/guardian/view`);
+  } catch (error) {
+    const message = axios.isAxiosError(error)
+      ? error.response?.data?.message
+      : "Something went wrong";
+
+    Swal.fire("Error", message || "Something went wrong", "error");
+  }
+};
 
   return (
    <div className="pt-12 fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
