@@ -8,14 +8,14 @@ const ViewGuardian: React.FC = () => {
     <div className="flex h-screen">
       {/* Sidebar */}
       <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
-        <Sidebar role="headteacher"/>
+         <Sidebar role={["school-admin", "principal"]} />
       </div>
 
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Topbar */}
         <div className="flex-shrink-0">
-          <Topbar role="headteacher" />
+          <Topbar role={["school-admin", "principal"]} />
         </div>
 
         {/* Student List */}
