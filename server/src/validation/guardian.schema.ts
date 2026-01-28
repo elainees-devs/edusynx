@@ -6,7 +6,7 @@ export const createGuardianSchema = z.object({
   middleName: z.string().min(1).optional(),
   lastName: z.string().min(1),
   email: z.string().email(),
-  secondaryEmail: z.string().email().optional(),
+  secondaryEmail: z.string().email().or(z.literal("")).optional(),
   primaryPhoneNumber: z.string().min(1),
   secondaryPhoneNumber: z.string().min(1).optional(),
 })
