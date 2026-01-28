@@ -52,7 +52,7 @@ export interface IGuardian
   > {
   role: UserRole.GUARDIAN;
   familyNumber: string;
-  adm: Types.ObjectId | IStudent; // links guardian to student
+  student: Types.ObjectId | IStudent; // links guardian to student
 }
 
 export interface IFamily {
