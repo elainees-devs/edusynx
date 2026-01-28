@@ -19,6 +19,7 @@ export {subjectSchema} from './subject.schema'
 export {userSchema} from './user.schema'
 export {classTeacherSchema} from './class.teacher.schema'
 export {streamSchema} from './stream.schema'
+export {guardianSchema} from './guardian.schema'
 
 
 
