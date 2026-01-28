@@ -13,6 +13,9 @@ interface SidebarProps {
   role: string | string[];
 }
 
+
+
+
 const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
   const { slug = "" } = useParams<{ slug: string }>();
