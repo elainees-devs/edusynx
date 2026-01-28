@@ -1,4 +1,4 @@
-// src/validation/user.schema.ts
+// server/src/validation/user.schema.ts
 import { z } from "zod";
 import { objectId } from "./util";
 
@@ -47,9 +47,9 @@ const accountantSchema = baseUserSchema.extend({
   role: z.literal("accountant"),
 });
 
-// Headteacher schema
-const headteacherSchema = baseUserSchema.extend({
-  role: z.literal("headteacher"),
+// Principal schema
+const principalSchema = baseUserSchema.extend({
+  role: z.literal("principal"),
 });
 
 // Create discriminated union
@@ -58,7 +58,7 @@ export const createUserSchema = z.discriminatedUnion("role", [
   guardianSchema,
   schoolAdminSchema,
   accountantSchema,
-  headteacherSchema,
+  principalSchema,
 ]);
 
 // Update schemas (partial)
@@ -67,5 +67,5 @@ export const updateUserSchema = z.union([
   guardianSchema.partial(),
   schoolAdminSchema.partial(),
   accountantSchema.partial(),
-  headteacherSchema.partial(),
+  principalSchema.partial(),
 ]);
