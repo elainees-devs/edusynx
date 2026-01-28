@@ -69,7 +69,7 @@ const schoolController = new SchoolController();
 ========================= */
 /**
  * @swagger
- * /schools/register:
+ * /api/v1schools/register:
  *   post:
  *     summary: Create a new school
  *     tags: [Schools]
@@ -100,7 +100,7 @@ schoolRouter.post(
 ========================= */
 /**
  * @swagger
- * /schools:
+ * /api/v1/schools:
  *   get:
  *     summary: Get paginated list of schools
  *     tags: [Schools]
@@ -129,7 +129,7 @@ schoolRouter.get("/", schoolController.getPaginatedSchools);
 
 /**
  * @swagger
- * /schools/all:
+ * /api/v1/schools/all:
  *   get:
  *     summary: Get all schools
  *     tags: [Schools]
@@ -147,7 +147,7 @@ schoolRouter.get("/all", schoolController.getAllSchools);
 
 /**
  * @swagger
- * /schools/slug/{slug}:
+ * /api/v1/schools/{slug}:
  *   get:
  *     summary: Get school by slug
  *     tags: [Schools]
@@ -163,11 +163,11 @@ schoolRouter.get("/all", schoolController.getAllSchools);
  *       404:
  *         description: School not found
  */
-schoolRouter.get("/slug/:slug", schoolController.getSchoolBySlug);
+schoolRouter.get("/:slug", schoolController.getSchoolBySlug);
 
 /**
  * @swagger
- * /schools/{id}:
+ * /api/v1/schools/{id}:
  *   get:
  *     summary: Get school by ID
  *     tags: [Schools]
@@ -194,7 +194,7 @@ schoolRouter.get(
 ========================= */
 /**
  * @swagger
- * /schools/{id}:
+ * /api/v1/schools/{id}:
  *   put:
  *     summary: Update a school
  *     tags: [Schools]
@@ -223,7 +223,7 @@ schoolRouter.put(
 
 /**
  * @swagger
- * /schools/{id}/activate:
+ * /api/v1/schools/{id}/activate:
  *   patch:
  *     summary: Activate a school
  *     tags: [Schools]
@@ -244,7 +244,7 @@ schoolRouter.patch(
 ========================= */
 /**
  * @swagger
- * /schools/{id}:
+ * /api/v1/schools/{id}:
  *   delete:
  *     summary: Delete a school by ID
  *     tags: [Schools]
@@ -262,7 +262,7 @@ schoolRouter.delete(
 
 /**
  * @swagger
- * /schools:
+ * /api/v1/schools:
  *   delete:
  *     summary: Delete all schools
  *     tags: [Schools]
