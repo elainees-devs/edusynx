@@ -1,4 +1,4 @@
-//server/src/repositories/class.repository.t
+//server/src/repositories/class.repository.ts
 import { CreateClassDTO } from "../../dto";
 import { ClassModel } from "../../models";
 import { IClass } from "../../types";
@@ -21,7 +21,6 @@ export class ClassRepository {
     const { skip = 0, limit = 10 } = options || {};
     return await ClassModel.find()
       .populate("school")
-      .populate("stream", "streamName")
       .skip(skip)
       .limit(limit);
   }
@@ -62,7 +61,6 @@ export class ClassRepository {
     const { skip = 0, limit = 10 } = options || {};
     return await ClassModel.find(filter)
       .populate("school")
-      .populate("stream", "streamName")
       .skip(skip)
       .limit(limit);
   }
