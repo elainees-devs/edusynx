@@ -15,7 +15,8 @@ interface RegisterStudentFormProps {
 const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
   onSubmit,
 }) => {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
+
   const { schoolId, error: schoolError } = useSchoolBySlug(slug);
   const {
     classOptions,
@@ -25,10 +26,6 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
 
   const { updateForm, formData } = useStudentFormContext();
 
-  // 🔹 Sync schoolId to formData
-  if (schoolId && formData.school !== schoolId) {
-    updateForm({ school: schoolId });
-  }
   const {
     register,
     handleSubmit,
@@ -37,7 +34,10 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
     formState: { errors, isSubmitting },
   } = useForm<StudentFormData>();
 
-  // Keep formData.school in sync with current schoolId
+  /**
+   * ✅ Correct place to sync schoolId into context
+   * (runs AFTER render, never during render)
+   */
   useEffect(() => {
     if (schoolId && formData.school !== schoolId) {
       updateForm({ school: schoolId });
@@ -45,7 +45,10 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
   }, [schoolId, formData.school, updateForm]);
 
   const submitHandler = async (data: StudentFormData) => {
-    await onSubmit({ ...data, school: schoolId || "" });
+    await onSubmit({
+      ...data,
+      school: schoolId || "",
+    });
     reset();
   };
 
@@ -55,47 +58,48 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
         <p className="text-red-500">{schoolError || classError}</p>
       )}
 
+      {/* First Name */}
       <div>
         <label className="block mb-1 font-medium">First Name</label>
         <input
-          type="text"
           {...register("studentFirstName", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         />
         {errors.studentFirstName && (
           <p className="text-red-500 text-sm">Required</p>
         )}
       </div>
 
+      {/* Middle Name */}
       <div>
         <label className="block mb-1 font-medium">Middle Name</label>
         <input
-          type="text"
           {...register("studentMiddleName", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         />
         {errors.studentMiddleName && (
           <p className="text-red-500 text-sm">Required</p>
         )}
       </div>
 
+      {/* Last Name */}
       <div>
         <label className="block mb-1 font-medium">Last Name</label>
         <input
-          type="text"
           {...register("studentLastName", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         />
         {errors.studentLastName && (
           <p className="text-red-500 text-sm">Required</p>
         )}
       </div>
 
+      {/* Gender */}
       <div>
         <label className="block mb-1 font-medium">Gender</label>
         <select
           {...register("studentGender", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         >
           <option value="">Select Gender</option>
           <option value="male">Male</option>
@@ -106,39 +110,44 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
         )}
       </div>
 
+      {/* Date of Birth */}
       <div>
         <label className="block mb-1 font-medium">Date of Birth</label>
         <input
           type="date"
           {...register("dateOfBirth", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         />
-        {errors.dateOfBirth && <p className="text-red-500 text-sm">Required</p>}
+        {errors.dateOfBirth && (
+          <p className="text-red-500 text-sm">Required</p>
+        )}
       </div>
 
+      {/* Admission Date */}
       <div>
         <label className="block mb-1 font-medium">Admission Date</label>
         <input
           type="date"
           {...register("admissionDate", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         />
         {errors.admissionDate && (
           <p className="text-red-500 text-sm">Required</p>
         )}
       </div>
 
+      {/* Previous School */}
       <div>
         <label className="block mb-1 font-medium">
           Previous School (Optional)
         </label>
         <input
-          type="text"
           {...register("previousSchool")}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         />
       </div>
 
+      {/* Class */}
       <div>
         <label className="block mb-1 font-medium">Class</label>
         {loading ? (
@@ -146,15 +155,14 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
         ) : (
           <select
             {...register("classId", { required: true })}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            className="w-full border rounded px-3 py-2"
             onChange={(e) => {
-              const selectedClassId = e.target.value;
-              const selectedClass = classOptions.find(
-                (cls) => cls.value === selectedClassId
+              const selected = classOptions.find(
+                (cls) => cls.value === e.target.value
               );
-              if (selectedClass) {
-                setValue("classId", selectedClass.value); // classId
-                setValue("stream", selectedClass.streamId); // ✅ streamId
+              if (selected) {
+                setValue("classId", selected.value);
+                setValue("stream", selected.streamId);
               }
             }}
           >
@@ -166,22 +174,27 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
             ))}
           </select>
         )}
-        {errors.classId && <p className="text-red-500 text-sm">Required</p>}
+        {errors.classId && (
+          <p className="text-red-500 text-sm">Required</p>
+        )}
       </div>
 
+      {/* Status */}
       <div>
         <label className="block mb-1 font-medium">Status</label>
         <select
           {...register("status", { required: true })}
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2"
         >
           <option value="">Select Status</option>
           <option value="active">Active</option>
         </select>
-        {errors.status && <p className="text-red-500 text-sm">Required</p>}
+        {errors.status && (
+          <p className="text-red-500 text-sm">Required</p>
+        )}
       </div>
 
-      {/* Student Photo Upload */}
+      {/* Student Photo */}
       <div>
         <label className="block mb-1 font-medium">Student Photo</label>
         <ImageDropzone<StudentFormData, "studentPhotoUrl">
@@ -192,12 +205,12 @@ const RegisterStudentForm: React.FC<RegisterStudentFormProps> = ({
         />
       </div>
 
-        {/* Submit Button */}
-       <SubmitButton
-            label="Register Student"
-            loadingLabel="Registering..."
-            loading={isSubmitting}
-          />
+      {/* Submit */}
+      <SubmitButton
+        label="Register Student"
+        loadingLabel="Registering..."
+        loading={isSubmitting}
+      />
     </form>
   );
 };
