@@ -1,39 +1,46 @@
 // client/src/api/guardian.api.ts
 import axios from "axios";
-import type {Guardian, GuardianFormInput } from "../types";
+import type { GetPageParams, Guardian, PaginatedGuardians } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
-export const registerGuardian = async (data: GuardianFormInput) => {
-  try {
-    const response = await axios.post(`${API_BASE}/guardians/`, data);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error response:", error.response?.data);
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
 
-      // Log validation issues specifically
-      if (error.response?.data?.issues) {
-        console.table(error.response.data.issues);
-      }
+/* ==============================
+   Fetch guardians (paginated)
+================================ */
 
-      throw error.response?.data || { message: 'A network error occurred' };
-    }
+export const getGuardians = async (
+  params: GetPageParams,
+): Promise<PaginatedGuardians> => {
+  const response = await axios.get(`${API_BASE}/guardians`, {
+    params,
+  });
 
-    // Fallback for non-Axios errors
-    console.error("Unknown error occurred:", error);
-    throw { message: 'An unknown error occurred' };
-  }
+  return response.data;
 };
 
-export const getAllGuardians = async (): Promise<Guardian[]> => {
-  const response = await axios.get(`${API_BASE}/guardians/list/`);
+/* ==============================
+Update guardian (PATCH)
+================================ */
+export const updateGuardian = async (
+  id: string,
+  data: Partial<Omit<Guardian, "_id" | "createdAt" | "updatedAt">>,
+): Promise<Guardian> => {
+  // Remove undefined or empty string fields
+  const payload = Object.fromEntries(
+    Object.entries(data).filter(
+      ([, value]) => value !== undefined && value !== "",
+    ),
+  );
 
-  const data = response.data;
-  console.log("Fetched guardians:", data);
-
-  if (!Array.isArray(data)) {
-    throw new Error("Expected an array of guardian from the API.");
+  if (Object.keys(payload).length === 0) {
+    throw new Error("No valid fields provided to update.");
   }
 
-  return data as Guardian[];
+  const { data: updatedGuardian } = await axios.patch(
+    `${API_BASE}/guardians/${id}`,
+    payload,
+  );
+
+  return updatedGuardian;
 };
