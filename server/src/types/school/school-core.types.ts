@@ -25,8 +25,7 @@ export interface IStream extends BaseDocument{
 }
 export interface IClass extends BaseDocument {
   school: Types.ObjectId | ISchool
-  grade: string
-  stream: Types.ObjectId | IStream
+  clasName: string
   academicYear: string
   classTeacher?: Types.ObjectId | ITeacher
   students?: Array<Types.ObjectId | IStudent >
