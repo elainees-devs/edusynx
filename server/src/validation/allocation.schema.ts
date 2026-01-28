@@ -11,7 +11,7 @@ export const SubjectAllocationSchema = z.object({
 });
 
 export const ClassAllocationSchema = z.object({
-  className: z.string(),
+  clasName: z.string(),
   classTeacher: objectId.optional(),
   subjects: z.array(SubjectAllocationSchema).min(1, "Each class must have subjects"),
 });
