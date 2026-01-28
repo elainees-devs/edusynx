@@ -3,12 +3,12 @@
 import {
   FaTachometerAlt,
   FaUser,
+  FaUserGraduate,
   FaCog,
   FaSchool,
   FaSignOutAlt,
   FaChalkboardTeacher,
   FaBook,
-  FaUsers,
   FaClipboardList,
   FaStream,
 } from "react-icons/fa";
@@ -17,6 +17,7 @@ import {
   classNavChildren,
   teacherNavChildren,
   subjectNavChildren,
+  studentNavChildren
 } from "./sidebar-submenu";
 
 export interface NavItem {
@@ -46,7 +47,11 @@ export const principalNavItems: NavItem[] = [
     path: "/dashboard/teachers",
     children: teacherNavChildren,
   },
-  { name: "Students", icon: FaUsers, path: "/:slug/students/view" },
+  { 
+    name: "Students", icon: FaUserGraduate, 
+    path: "/:slug/students/view" ,
+    children: studentNavChildren(":slug"),
+  },
   { name: "Streams", icon: FaStream, path: "/dashboard/streams" },
   {
     name: "Classes",
