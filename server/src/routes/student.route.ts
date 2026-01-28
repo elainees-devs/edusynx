@@ -2,7 +2,10 @@
 import { Router } from "express";
 import multer from "multer";
 import { StudentController } from "../controllers";
-import { createStudentSchema, updateStudentSchema } from "../validation/student.schema";
+import {
+  createStudentSchema,
+  updateStudentSchema,
+} from "../validation/student.schema";
 import { validate } from "../middlewares/validate";
 import { UserRole } from "../types";
 import { authenticateUser } from "../middlewares/auth";
@@ -59,8 +62,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 studentRouter.post(
   "/upload",
   authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]), // ✅ allow multiple roles
-  upload.single("file"),                                           // ✅ handle CSV/Excel
-  studentController.uploadStudentsData                             // ✅ uses req.user.school
+  upload.single("file"), // ✅ handle CSV/Excel
+  studentController.uploadStudentsData, // ✅ uses req.user.school
 );
 
 /**
@@ -79,7 +82,11 @@ studentRouter.post(
  *       201:
  *         description: Student created successfully
  */
-studentRouter.post("/", validate(createStudentSchema), studentController.generateAdmissionAndCreateStudent);
+studentRouter.post(
+  "/",
+  validate(createStudentSchema),
+  studentController.generateAdmissionAndCreateStudent,
+);
 
 /**
  * @swagger
@@ -109,7 +116,10 @@ studentRouter.post("/", validate(createStudentSchema), studentController.generat
  *       200:
  *         description: Guardian assigned and admission number generated successfully
  */
-studentRouter.patch("/:id/assign-guardian", studentController.generateAdmissionAndCreateStudent);
+studentRouter.patch(
+  "/:id/assign-guardian",
+  studentController.generateAdmissionAndCreateStudent,
+);
 
 /**
  * @swagger
@@ -142,9 +152,10 @@ studentRouter.get("/active", studentController.getActiveStudents);
  *     summary: Get student along with guardian by ID
  *     tags: [Students]
  */
-studentRouter.get("/student/guardian/:id", studentController.getStudentWithGuardianById);
-
-
+studentRouter.get(
+  "/student/guardian/:id",
+  studentController.getStudentWithGuardianById,
+);
 
 /**
  * @swagger
@@ -157,12 +168,12 @@ studentRouter.get("/students/names", studentController.getAllStudentNames);
 
 /**
  * @swagger
- * /api/v1/students/count/{id}:
+ * /api/v1/students/count:
  *   get:
- *     summary: Count students by school or class ID
+ *     summary: Count students
  *     tags: [Students]
  */
-studentRouter.get("/count/:id", studentController.countStudents);
+studentRouter.get("/count", studentController.countStudents);
 
 /**
  * @swagger
@@ -170,8 +181,60 @@ studentRouter.get("/count/:id", studentController.countStudents);
  *   patch:
  *     summary: Update student by ID
  *     tags: [Students]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the student
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 example: John
+ *               lastName:
+ *                 type: string
+ *                 example: Doe
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *                 example: 2010-05-20
+ *               gender:
+ *                 type: string
+ *                 enum: [male, female]
+ *                 example: male
+ *               classId:
+ *                 type: string
+ *                 example: 695d29b347d57b0dc35577d3
+ *               streamId:
+ *                 type: string
+ *                 example: 695d29b347d57b0dc35577d4
+ *               status:
+ *                 type: string
+ *                 enum: [active, inactive]
+ *                 example: active
+ *             required: []
+ *     responses:
+ *       200:
+ *         description: Student updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Student'
+ *       404:
+ *         description: Student not found
  */
-studentRouter.patch("/:id", validate(updateStudentSchema), studentController.updateStudentById);
+studentRouter.patch(
+  "/:id",
+  validate(updateStudentSchema),
+  studentController.updateStudentById,
+);
 
 /**
  * @swagger
