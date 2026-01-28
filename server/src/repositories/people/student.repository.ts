@@ -1,128 +1,240 @@
 // server/src/repositories/people/student.repository.ts
 import mongoose from "mongoose";
-import { IStudent } from "../../types";
+import crypto from "crypto";
+import { IClass, IStream, IStudent } from "../../types";
 import { ClassModel, StudentModel } from "../../models";
 import { generateAdmissionNumber } from "../../utils";
 
 export class StudentRepository {
-  // 1. Method to generate admission number and create a student
+  // ===============================
+  // CREATE STUDENT
+  // ===============================
   async generateAdmissionNumberAndCreateStudent(reqBody: any) {
     const {
       studentFirstName,
       studentMiddleName,
       studentLastName,
       studentGender,
-      classId,
+      clasName,
+      stream, 
       status,
       previousSchool,
-      stream,
       dateOfBirth,
       school,
     } = reqBody;
 
-    // Generate the next admission number
-    const createdAdm = await generateAdmissionNumber(
-      new mongoose.Types.ObjectId(school)
-    );
+    if (!clasName || !stream) {
+      throw new Error("Grade and Stream are required");
+    }
 
-    // Create new student document
+    // Find class by grade (stream is now separate)
+    let classDoc = await ClassModel.findOne({
+      grade: clasName,
+      school: school,
+    });
+
+    // Optional: auto-create class if it doesn't exist
+    if (!classDoc) {
+      classDoc = await ClassModel.create({
+        clasName,
+        stream: stream.toLowerCase(),
+        school,
+      });
+    }
+
+    // Generate admission number
+    const createdAdm = await generateAdmissionNumber(new mongoose.Types.ObjectId(school));
+
+    // Create student
     const student = new StudentModel({
       studentFirstName,
       studentMiddleName,
       studentLastName,
       studentGender,
-      classId,
+      classId: classDoc._id, // reference class
+      stream: stream.toLowerCase(), // store separately as string
       status,
-      stream,
       previousSchool,
-      admissionDate: Date.now(),
+      admissionDate: new Date(),
       dateOfBirth,
       adm: createdAdm,
-     school: new mongoose.Types.ObjectId(school),
-      studentId: crypto.randomUUID(), // <-- make it unique
+      school: new mongoose.Types.ObjectId(school),
+      studentId: crypto.randomUUID(),
     });
 
-    // Save student to database
     await student.save();
-
     return student;
   }
 
-  // 2. Method to find all students
+  // ===============================
+  // GET ALL STUDENTS
+  // ===============================
   async findAllStudents() {
-    return await StudentModel.find()
-     .populate({
-    path:"classId",
-    select:"grade",
-    model: "Class"
-  
-  })
-     .populate("stream");
-} 
- 
-  // 3. Method to find Student by Guardian ID
-  async findStudentWithGuardianById(id: string) {
-    return await StudentModel.findById(id).populate("guardian");
-  }
+  const students = await StudentModel.find()
+    .populate({
+      path: "classId",
+      select: "clasName", // only return grade
+    })
+    .populate({
+      path: "stream",
+      select: "streamName", // only return streamName
+    });
 
-  // // 4. Method to find Student by ID
-  // async findStudentNameById(id: string) {
-  //   const student = await StudentModel.findById(id);
-  //   return student
-  //     ? `${student.studentFirstName} ${student.studentLastName}`
-  //     : null;
-  // }
+  return students.map((s) => {
+    // Narrow classId type
+    let classId: string | undefined;
+     let clasName: string | undefined;
 
-  
-  // Method to find all active students
-async findActiveStudents() {
-  return await StudentModel.find({ status: "active" })
-    .populate("classId")
-    .populate("stream")
-    // .populate("guardianId");
+    if (s.classId && typeof s.classId !== "string") {
+      // populated document
+      classId = (s.classId as IClass)._id.toString();
+      clasName = (s.classId as IClass).clasName;
+    } else if (typeof s.classId === "string") {
+      // not populated, just ObjectId string
+      classId = s.classId;
+      clasName = undefined;
+    }
+
+    // Narrow stream type
+    let stream: string | undefined;
+    let streamName: string | undefined;
+
+    if (s.stream && typeof s.stream !== "string") {
+      stream = (s.stream as IStream)._id.toString();
+      streamName = (s.stream as IStream).streamName;
+    } else if (typeof s.stream === "string") {
+      stream = s.stream;
+      streamName = undefined;
+    }
+
+    return {
+      _id: s._id,
+      studentFirstName: s.studentFirstName,
+      studentMiddleName: s.studentMiddleName,
+      studentLastName: s.studentLastName,
+      studentGender: s.studentGender,
+      dateOfBirth: s.dateOfBirth,
+      admissionDate: s.admissionDate,
+      status: s.status,
+      previousSchool: s.previousSchool,
+      adm: s.adm,
+      studentId: s.studentId,
+      school: s.school,
+      classId,
+      clasName,
+      stream,
+      streamName,
+    };
+  });
 }
 
 
-  // 5. Method to find students by class name
-  async findStudentsByClassName(className: string) {
-    const classObj = await ClassModel.findOne({ className });
-    if (!classObj) return null;
-    return await StudentModel.find({ clas: classObj._id }).populate("school");
+  // ===============================
+  // GET ACTIVE STUDENTS
+  // ===============================
+  async findActiveStudents() {
+    const students = await StudentModel.find({ status: "active" }).populate({
+      path: "classId",
+      select: "clasName",
+    });
+
+
+    return students.map((s) => {
+      const classDoc = s.classId as IClass; // cast
+        return {
+          ...s.toObject(),
+          clasName: classDoc?.clasName,
+          stream: s.stream,
+          classId: undefined,
+        };
+      });
+    }
+
+  // ===============================
+// GET STUDENT WITH GUARDIAN
+// ===============================
+async findStudentWithGuardianById(id: string) {
+  const student = await StudentModel.findById(id)
+    .populate({
+      path: "classId",
+      select: "clasName",
+    })
+    .populate({
+      path: "stream",
+      select: "streamName",
+    });
+
+  if (!student) return null;
+
+  // Narrow classId
+  let clasName: string | undefined;
+  let classId: string | undefined;
+
+  if (student.classId && typeof student.classId !== "string") {
+    clasName = (student.classId as IClass).clasName;
+    classId = (student.classId as IClass)._id.toString();
+  } else if (typeof student.classId === "string") {
+    classId = student.classId;
+    clasName = undefined;
   }
 
-  // 6. Method to delete a student by ID
+  // Narrow stream
+  let streamId: string | undefined;
+  let streamName: string | undefined;
+
+  if (student.stream && typeof student.stream !== "string") {
+    streamId = (student.stream as IStream)._id.toString();
+    streamName = (student.stream as IStream).streamName;
+  } else if (typeof student.stream === "string") {
+    streamId = student.stream;
+    streamName = undefined;
+  }
+
+  return {
+    ...student.toObject(),
+    clasName,
+    streamId,
+    streamName,
+    classId: undefined, // hide original populated classId
+  };
+}
+
+
+  // ===============================
+  // DELETE / UPDATE / COUNT
+  // ===============================
   async deleteStudentById(id: string) {
-    return await StudentModel.findByIdAndDelete(id);
+    return StudentModel.findByIdAndDelete(id);
   }
 
-  // 7. Method to delete all students
   async deleteAllStudents() {
-    return await StudentModel.deleteMany({});
+    return StudentModel.deleteMany({});
   }
 
-  // 8. Method to update a student by ID
   async updateStudentById(id: string, data: Partial<IStudent>) {
-    return await StudentModel.findByIdAndUpdate(id, data, { new: true });
+    return StudentModel.findByIdAndUpdate(id, data, { new: true }).populate({
+      path: "classId",
+      select: "clasName",
+    });
   }
 
-  // 9. Method to count students
   async countStudents(id?: string) {
-    if (!id) return await StudentModel.countDocuments({});
+    if (!id) return StudentModel.countDocuments({});
     if (!mongoose.Types.ObjectId.isValid(id)) return null;
-    return await StudentModel.countDocuments({ _id: id });
+    return StudentModel.countDocuments({ _id: id });
   }
 
-  // 10. Method to get all student names
   async getAllStudentNames() {
     const students = await StudentModel.find(
       {},
       "studentFirstName studentMiddleName studentLastName"
     );
+
     return students.map((s) => ({
       _id: s._id,
-      fullName: `${s.studentFirstName} ${s.studentMiddleName ?? ""} ${
-        s.studentLastName
-      }`.trim(),
+      fullName: `${s.studentFirstName} ${s.studentMiddleName ?? ""} ${s.studentLastName}`.trim(),
     }));
   }
 }
+
+export const studentRepo = new StudentRepository();
