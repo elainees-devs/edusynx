@@ -2,8 +2,6 @@
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import type { ISchool } from "../../types";
-import { renderCell } from "./render-cell";
-import { normalizeValue } from "../../utils";
 import { sendAccessLink } from "../../api";
 import { logger } from "../../utils/logger";
 
@@ -42,25 +40,166 @@ const SchoolRow: React.FC<SchoolRowProps> = ({
 
   return (
     <tr key={s._id} className="border-t">
-      <td className="p-2 text-center border">{(page - 1) * limit + index + 1}</td>
+      <td className="p-2 text-center border">
+        {(page - 1) * limit + index + 1}
+      </td>
+      
+      {/* Name */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="text"
+            name="name"
+            value={editForm.name || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.name
+        )}
+      </td>
 
-      {/* Dynamic fields */}
-      {Object.keys(editForm).map((key) => (
-        <td
-          key={key}
-          className={`p-2 border ${
-            ["email", "website"].includes(key) ? "break-all" : "text-center"
-          }`}
-        >
-          {renderCell(
-            { key, label: key },
-            normalizeValue(s[key as keyof ISchool]),
-            normalizeValue(editForm[key as keyof ISchool]),
-            isEditing,
-            handleChange
-          )}
-        </td>
-      ))}
+      {/* Address */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="text"
+            name="address"
+            value={editForm.address || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.address
+        )}
+      </td>
+
+      {/* Phone */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="text"
+            name="phone"
+            value={editForm.phoneNumber || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.phoneNumber
+        )}
+      </td>
+
+      {/* Email*/}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="email"
+            name="email"
+            value={editForm.email || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.email
+        )}
+      </td>
+
+      {/* Website */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="text"
+            name="website"
+            value={editForm.website || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.website
+        )}
+      </td>
+
+      {/* Year */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="number"
+            name="establishedYear"
+            value={editForm.establishedYear || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.establishedYear
+        )}
+      </td>
+
+      {/* Status */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="checkbox"
+            name="isActive"
+            checked={editForm.isActive || false}
+            onChange={(e) => {
+              handleChange({
+                target: {
+                  name: "isActive",
+                  value: e.target.checked.toString(),
+                  type: "checkbox",
+                  checked: e.target.checked,
+                },
+              } as React.ChangeEvent<HTMLInputElement>);
+            }}
+            className="w-4 h-4 cursor-pointer"
+          />
+        ) : (
+          <span
+            className={`font-medium ${
+              s.isActive ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {s.isActive ? "Active" : "Inactive"}
+          </span>
+        )}
+      </td>
+
+      {/* School Code */}
+      <td className="p-2 text-center border">
+        {isEditing ? (
+          <input
+            type="text"
+            name="schoolCode"
+            value={editForm.schoolCode || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+          />
+        ) : (
+          s.schoolCode
+        )}
+      </td>
+      {/* Access Link */}
+      <td className="p-2 text-center border break-all">
+        {isEditing ? (
+          <input
+            type="url"
+            name="accessUrl"
+            value={editForm.accessUrl || ""}
+            onChange={handleChange}
+            className="border rounded p-1 w-full"
+            placeholder="https://example.com"
+          />
+        ) : (
+          <a
+            href={s.accessUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            {s.accessUrl}
+          </a>
+        )}
+      </td>
 
       {/* Logo */}
       <td className="p-2 text-center border">
@@ -109,7 +248,8 @@ const SchoolRow: React.FC<SchoolRowProps> = ({
         <button
           disabled={sendingId === s._id}
           onClick={async () => {
-            if (!s.accessUrl) return alert("Access URL is missing for this school.");
+            if (!s.accessUrl)
+              return alert("Access URL is missing for this school.");
             try {
               setSendingId(s._id!);
               logger.info(`Sending access link to ${s.email}`);
