@@ -1,4 +1,4 @@
-//client/
+//client/src/components/data-list/student-list.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import type { Student } from "../../types";
 import { deleteStudent, getStudents, updateStudent } from "../../api";
@@ -115,7 +115,7 @@ const StudentsList: React.FC = () => {
         <div className="flex flex-col gap-4">
           <StudentTable
             students={students} // data already filtered & paginated from backend
-            sortAsc={sortAsc}
+            // sortAsc={sortAsc}
             page={page}
             limit={limit}
             onSort={() => setSortAsc((prev) => !prev)}
