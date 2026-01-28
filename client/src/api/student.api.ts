@@ -76,54 +76,32 @@ export const uploadStudentsFile = async (
 /* ==============================
    Update student (PATCH)
 ================================ */
-
 export const updateStudent = async (
   id: string,
-  data: Partial<Student>
+  data: Partial<Omit<Student, "_id" | "createdAt" | "updatedAt">>,
 ): Promise<Student> => {
-  const payload: Partial<Student> = {};
-
-  if (data.studentFirstName !== undefined)
-    payload.studentFirstName = data.studentFirstName;
-
-  if (data.studentMiddleName !== undefined)
-    payload.studentMiddleName = data.studentMiddleName;
-
-  if (data.studentLastName !== undefined)
-    payload.studentLastName = data.studentLastName;
-
-  if (data.studentGender !== undefined)
-    payload.studentGender = data.studentGender;
-
-  if (data.dateOfBirth !== undefined)
-    payload.dateOfBirth = new Date(data.dateOfBirth).toISOString();
-
-  if (data.admissionDate !== undefined)
-    payload.admissionDate = new Date(data.admissionDate).toISOString();
-
-  if (data.previousSchool !== undefined)
-    payload.previousSchool = data.previousSchool;
-
-  if (data.classId !== undefined)
-    payload.classId = data.classId;
-
-  if (data.stream !== undefined)
-    payload.stream = data.stream;
-
-  if (data.status !== undefined)
-    payload.status = data.status;
-
-  if (data.studentPhotoUrl !== undefined)
-    payload.studentPhotoUrl = data.studentPhotoUrl;
-
-  console.log("Update payload:", payload);
-
-  const response = await axios.patch(
-    `${API_BASE}/students/${id}`,
-    payload
+  // Remove undefined or empty string fields, and convert date fields to ISO
+  const payload = Object.fromEntries(
+    Object.entries(data)
+      .filter(([, value]) => value !== undefined && value !== "")
+      .map(([key, value]) => {
+        if (key === "dateOfBirth" || key === "admissionDate") {
+          return [key, new Date(value as string).toISOString()];
+        }
+        return [key, value];
+      }),
   );
 
-  return response.data;
+  if (Object.keys(payload).length === 0) {
+    throw new Error("No valid fields provided to update.");
+  }
+
+  const { data: updatedStudent } = await axios.patch(
+    `${API_BASE}/students/${id}`,
+    payload,
+  );
+
+  return updatedStudent;
 };
 
 /* ==============================
