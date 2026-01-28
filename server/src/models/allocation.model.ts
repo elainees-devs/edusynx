@@ -12,7 +12,7 @@ const SubjectAllocationSchema = new Schema({
 
 // Nested schema: ClassAllocation
 const ClassAllocationSchema = new Schema({
-  className: { type: String, required: true },
+  clasName: { type: String, required: true },
   classTeacher: { type: Schema.Types.ObjectId, ref: "Teacher" },
   subjects: { type: [SubjectAllocationSchema], required: true }
 }, { _id: false });
