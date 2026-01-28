@@ -18,7 +18,7 @@ export class AllocationController {
     const transformedData: Partial<ISchoolAllocation> = {
       school: new Types.ObjectId(data.school),
       classes: data.classes.map(cls => ({
-        className: cls.className,
+        clasName: cls.clasName,
         classTeacher: cls.classTeacher ? new Types.ObjectId(cls.classTeacher) : undefined,
         subjects: cls.subjects.map(sub => ({
           subjectName: sub.subjectName,
@@ -55,7 +55,7 @@ export class AllocationController {
     const transformedData: Partial<ISchoolAllocation> = {
       school: new Types.ObjectId(data.school),
       classes: data.classes.map(cls => ({
-        className: cls.className,
+        clasName: cls.clasName,
         classTeacher: cls.classTeacher ? new Types.ObjectId(cls.classTeacher) : undefined,
         subjects: cls.subjects.map(sub => ({
           subjectName: sub.subjectName,
