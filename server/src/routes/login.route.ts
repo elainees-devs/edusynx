@@ -17,7 +17,7 @@ const loginsController = new LoginController();
 
 /**
  * @swagger
- * /api/v1/login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: Login and receive a JWT token
  *     tags: [Auth]
@@ -44,7 +44,7 @@ const loginsController = new LoginController();
  *         description: Invalid credentials
  */
 loginRouter.post(
-  "/",
+  "/login",
   sanitizeHeaders,
   validate(loginSchema),
   loginsController.login
