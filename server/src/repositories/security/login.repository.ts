@@ -1,4 +1,5 @@
 // server/src/repositories/login.repository.ts
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 import { Login } from "../../models/security/login.model";
@@ -12,10 +13,17 @@ import { LoginFailureReason } from "../../types/enum/enum";
 import { IBaseUser, ISchool } from "../../types";
 import { UserModel } from "../../models/people/user.model";
 
+dotenv.config();
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 15;
-const JWT_SECRET = process.env.JWT_SECRET || "secret";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined");
+}
+
+
 
 export class LoginRepository implements ILoginRepository {
   private failedAttempts: Record<string, { count: number; lastAttempt: Date }> =
