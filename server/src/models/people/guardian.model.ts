@@ -12,7 +12,7 @@ const GuardianSchema: Schema = new Schema({
     default: UserRole.GUARDIAN,
   },
  
-  adm: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
+  student: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
   
   familyNumber: {
     type: String,
