@@ -55,7 +55,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           <div className="flex items-center border border-gray rounded mb-4 p-2">
             <MdEmail className="text-gray-500 mr-2" />
             <input
-              className="w-full outline-none"
+              className="w-full focus:border-2 focus:border-blue-500 focus:outline-none"
               id="email"
               type="text"
               placeholder="example@gmail.com"
