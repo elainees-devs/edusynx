@@ -4,76 +4,83 @@ import type { StudentFormData } from "../../types";
 import Swal from "sweetalert2";
 import { StudentFormProvider } from "../../context/student/student-form-provider";
 import { Sidebar, Topbar } from "../../shared/layout/dashboard";
-import { registerStudent } from "../../api/student.api";
 import { getSchoolId } from "../../utils/getSchoolId";
 import { useGlobalState } from "../../hooks";
 import { RegisterStudentForm } from "../../components";
 import UploadStudentsButton from "../../components/buttons/upload-student-data";
+import { UserRole } from "../../constants";
+import { registerStudent } from "../../api";
 
 const RegisterStudent: React.FC = () => {
-    const { state } = useGlobalState();
-  
-    const user = state.loggedInUser as
-      | { role: string; school?: string | { _id: string; isActive: boolean } }
-      | undefined;
-  
-    const schoolId = getSchoolId(user);
+  type Role = "school-admin" | "principal";
+  const { state } = useGlobalState();
+
+  const user = state.loggedInUser as
+    | { role: string; school?: string | { _id: string; isActive: boolean } }
+    | undefined;
+
+  const topbarRole: UserRole | undefined =
+    user?.role === UserRole.SCHOOL_ADMIN
+      ? UserRole.SCHOOL_ADMIN
+      : user?.role === UserRole.PRINCIPAL
+        ? UserRole.PRINCIPAL
+        : undefined;
+
+  const schoolId = getSchoolId(user);
   const handleStudentSubmit = async (data: StudentFormData): Promise<void> => {
-  if (!schoolId) {
-    Swal.fire("Error", "School ID is missing. Please log in again.", "error");
-    return;
-  }
-
-  try {
-    const payload: StudentFormData = {
-      ...data,
-      school: schoolId,
-    };
-
-    const savedStudent = await registerStudent(payload); // Expecting admNo in response
-
-    Swal.fire({
-      icon: "success",
-      title: "Student Registered!",
-      html: `<p>Admission Number: <strong>${savedStudent.adm}</strong></p>`,
-      confirmButtonText: "OK",
-    });
-  } catch (error) {
-    let message = "Something went wrong. Please try again.";
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (
-      typeof error === "object" &&
-      error !== null &&
-      "message" in error &&
-      typeof (error as { message: unknown }).message === "string"
-    ) {
-      message = (error as { message: string }).message;
+    if (!schoolId) {
+      Swal.fire("Error", "School ID is missing. Please log in again.", "error");
+      return;
     }
 
-    Swal.fire({
-      icon: "error",
-      title: "Registration failed",
-      text: message,
-    });
-  }
-};
+    try {
+      const payload: StudentFormData = {
+        ...data,
+        school: schoolId,
+      };
 
+      const savedStudent = await registerStudent(payload); // Expecting admNo in response
 
+      Swal.fire({
+        icon: "success",
+        title: "Student Registered!",
+        html: `<p>Admission Number: <strong>${savedStudent.adm}</strong></p>`,
+        confirmButtonText: "OK",
+      });
+    } catch (error) {
+      let message = "Something went wrong. Please try again.";
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof (error as { message: unknown }).message === "string"
+      ) {
+        message = (error as { message: string }).message;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "Registration failed",
+        text: message,
+      });
+    }
+  };
 
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
-        <Sidebar role="school-admin" />
+        <Sidebar role={["school-admin", "principal"] as Role[]} />
       </div>
 
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Topbar */}
         <div className="flex-shrink-0">
-          <Topbar role="headteacher" />
+          <Topbar title="Register Student" role={topbarRole} />
         </div>
         <UploadStudentsButton />
         {/* Scrollable Form Area */}
