@@ -1,7 +1,7 @@
 // server/src/repositories/people/guardian.repository.ts
 import mongoose from "mongoose";
 import { GuardianModel, StudentModel } from "../../models";
-import { UserRole } from "../../types";
+import { IGuardian, UserRole } from "../../types";
 import { generateFamilyNumber } from "../../utils";
 
 export class GuardianRepository {
@@ -21,8 +21,8 @@ async generateFamilyNumberAndCreateGuardian(reqBody: any) {
   } = reqBody;
 
   // Verify that the student exists and belongs to the same school
-  const student = await StudentModel.findOne({ adm, school });
-  if (!student) {
+  const studentDoc = await StudentModel.findOne({ adm, school });
+  if (!studentDoc) {
     throw new Error(
       `No student found with admission number ${adm} in this school`
     );
@@ -30,14 +30,15 @@ async generateFamilyNumberAndCreateGuardian(reqBody: any) {
 
   // Check if there is already a guardian linked to this student
   let existingGuardian = await GuardianModel.findOne({
-    adm: student._id, // store student _id, not admission number
+    student: studentDoc._id, // 'student' field is ObjectId ref
     school,
   });
 
+  // Determine family number
   let familyNumber: string;
   if (existingGuardian) {
     // Reuse the existing family number
-    familyNumber = existingGuardian.familyNumber;
+    familyNumber = existingGuardian.familyNumber!;
   } else {
     // Generate a new family number
     familyNumber = await generateFamilyNumber(
@@ -55,7 +56,7 @@ async generateFamilyNumberAndCreateGuardian(reqBody: any) {
     primaryPhoneNumber,
     secondaryPhoneNumber,
     nationality,
-    adm: student._id,   // link to student document
+    student: studentDoc._id,   // link to student document
     school,
     familyNumber,
     role: UserRole.GUARDIAN,
@@ -63,14 +64,26 @@ async generateFamilyNumberAndCreateGuardian(reqBody: any) {
 
   await guardian.save();
 
-  // Populate to include student's admission number in response
-  return await guardian.populate('adm', 'adm firstName lastName');
-}
+  // 5️Populate to include student's admission number and name
+  await guardian.populate({
+    path: "student",                 // populate the 'student' field
+    select: "adm studentFirstName studentLastName",
+  });
 
+  return guardian;
+}
 
   // 2. Method to find all guardians
   async findAllGuardians() {
     const guardians = await GuardianModel.find().populate("school");
     return guardians;
   }
+
+   async updateGuardianById(id: string, data: Partial<IGuardian>) {
+  return GuardianModel.findByIdAndUpdate(id,data,{ new: true} ).populate({
+    path: "student",      
+    select: "adm" 
+  });
 }
+}
+
