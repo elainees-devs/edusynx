@@ -10,7 +10,7 @@ export interface SubjectAllocation {
 }
 
 export interface ClassAllocation {
-  className: string;
+  clasName: string;
   classTeacher?: string | Types.ObjectId;         
   subjects: SubjectAllocation[];
 }
