@@ -4,8 +4,7 @@ import { objectId } from "./util";
 
 export const createClassSchema = z.object({
   school: objectId,
-  grade: z.string().min(1),
-  stream: z.string().min(3),
+  clasName: z.string().min(1),
   academicYear: z.string().min(4),
 });
 
