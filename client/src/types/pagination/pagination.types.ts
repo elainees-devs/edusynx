@@ -1,6 +1,6 @@
 // client/src/types/pagination/pagination.types.ts
 import type { Student } from "../people/student.types";
-import type { ITeacher } from "../people/user.types";
+import type { Guardian, ITeacher } from "../people/user.types";
 import type { IClass } from "../school/school-core.types";
 
 export interface GetPageParams{
@@ -20,6 +20,7 @@ export interface PaginatedResponse<T> {
 }
 
 export type PaginatedStudents = PaginatedResponse<Student>;
+export type PaginatedGuardians = PaginatedResponse<Guardian>;
 export type PaginatedTeachers = PaginatedResponse<ITeacher>;
 export type PaginatedClasses = PaginatedResponse<IClass>;
 
