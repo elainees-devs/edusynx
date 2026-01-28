@@ -30,7 +30,7 @@ const studentSchema = new Schema<IStudent>(
 studentSchema.index({ guardian: 1 });
 
 // Compound index for performance optimization (e.g., class list filters)
-studentSchema.index({ school: 1, classId: 1, stream: 1, status: 1 });
+studentSchema.index({ school: 1, classId: 1, status: 1 });
 
 
 export const StudentModel = model<IStudent>('Student', studentSchema);
