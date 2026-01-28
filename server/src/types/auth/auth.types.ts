@@ -1,5 +1,8 @@
 // server/src/types/auth/auth.types.ts
 import { Types } from "mongoose";
+import { Request } from "express";
+import { IBaseUser } from "../people/user.types";
+
 
 export interface ILoginRequest {
   email: string;
@@ -56,3 +59,6 @@ export interface ILoginResponseFailure {
   isLocked?: boolean;
 }
 
+export interface AuthenticatedRequest extends Request {
+  user?: IBaseUser; // or Guardian/Teacher if you want union
+}
