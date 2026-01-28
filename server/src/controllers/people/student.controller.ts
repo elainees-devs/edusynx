@@ -62,18 +62,6 @@ export class StudentController {
     res.json(students);
   });
 
-  // // 5. ✅ Get students by CLASS GRADE (FIXED)
-  // getStudentsByGrade = handleAsync(async (req, res) => {
-  //   const { grade } = req.params;
-
-  //   const students = await studentRepo.(grade);
-  //   if (!students.length) {
-  //     throw new AppError("No students found for this grade", 404);
-  //   }
-
-  //   res.json(students);
-  // });
-
   // 6. Update student
   updateStudentById = handleAsync(async (req, res) => {
     const updatedStudent = await studentRepo.updateStudentById(
