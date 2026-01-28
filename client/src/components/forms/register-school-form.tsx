@@ -109,6 +109,7 @@ const SchoolRegistrationForm: React.FC<Props> = ({
           type="number"
           {...register("establishedYear", {
             required: "Established year is required",
+            valueAsNumber: true,
           })}
           className={`w-full border rounded px-3 py-2 ${
             errors.establishedYear ? "border-red-500" : "border-gray-300"
@@ -153,7 +154,7 @@ const SchoolRegistrationForm: React.FC<Props> = ({
         <label className="block mb-1">Role</label>
         <input
           {...register("role")}
-          value="HEADTEACHER"
+          value="principal"
           disabled
           readOnly
           className="w-full px-3 py-2 border rounded bg-gray-100 text-gray-600 cursor-not-allowed"
