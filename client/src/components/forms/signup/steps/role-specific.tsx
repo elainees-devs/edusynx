@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { useSignUpContext } from "../../../../context/signup/useSignUpContext";
 import { useClassOptions, useSchoolBySlug } from "../../../../hooks";
 
-type SignUpRole = "teacher" | "headteacher" | "school-admin" | "accountant";
+type SignUpRole = "teacher" | "principal" | "school-admin" | "accountant";
 const allowedRoles: SignUpRole[] = [
   "teacher",
-  "headteacher",
+  "principal",
   "school-admin",
   "accountant",
 ];
@@ -28,7 +28,7 @@ const RoleSpecificStep = ({
   const { slug } = useParams();
 
   const { schoolId, error: schoolError } = useSchoolBySlug(slug);
-  const { classOptions, loading, error: classError } = useClassOptions(schoolId);
+  const { classOptions, loading, error: classError } = useClassOptions();
 
   // 🔹 Sync schoolId to formData
   if (schoolId && formData.school !== schoolId) {
