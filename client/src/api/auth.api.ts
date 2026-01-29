@@ -18,7 +18,7 @@ export const loginUser = async (
 ): Promise<LoginResponse> => {
   try {
     const response = await axios.post(
-      `${API_BASE}/auth`,
+      `${API_BASE}/auth/login`,
       { email, password },
       {
         headers: {
