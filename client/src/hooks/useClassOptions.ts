@@ -1,58 +1,76 @@
 // client/src/hooks/useClassOptions.ts
-import { useEffect, useState } from "react";
-import { getClassesByFilter } from "../api/class.api";
+import { useEffect, useState, useMemo } from "react";
+import type { IClass, IStream } from "../types";
+import { getAllClasses } from "../api/class.api";
+import { getAllStreams } from "../api/stream.api";
 
-type ClassOption = {
-  value: string;         // class _id
-  label: string;         // e.g., "Grade 6 - East"
-  grade: string;         // grade from API (string)
-  streamId: string;      // stream ObjectId string
-  streamName: string;    // stream name
+export type ClassOption = {
+  value: string;
+  label: string;
+  clasName: string;
 };
 
-export const useClassOptions = (schoolId: string | null) => {
-  const [classOptions, setClassOptions] = useState<ClassOption[]>([]);
+export type StreamOption = {
+  value: string;
+  label: string;
+  streamName: string;
+};
+
+export const useClassOptions = () => {
+  const [classes, setClasses] = useState<ClassOption[]>([]);
+  const [streams, setStreams] = useState<StreamOption[]>([]);
+
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchClasses = async () => {
-      if (!schoolId) return;
-
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const classList = await getClassesByFilter(schoolId);
+        const [classList, streamList]: [IClass[], IStream[]] =
+          await Promise.all([getAllClasses(), getAllStreams()]);
 
-        const options: ClassOption[] = classList.map((cls) => {
-          const stream =
-            typeof cls.stream === "object" && cls.stream
-              ? cls.stream
-              : { _id: "unknown", streamName: "Unknown Stream" };
+        // Map streams for dropdown
+        const streamOptions: StreamOption[] = streamList.map((s) => ({
+          value: s._id,   
+          streamName: s.streamName,
+          label: s.streamName,
+        }))
+        setStreams(streamOptions);
 
-          return {
-            value: cls._id,
-            label: `Grade ${cls.grade} - ${stream.streamName}`,
-            grade: cls.grade,
-            streamId: stream._id,
-            streamName: stream.streamName,
-          };
-        });
+        // Map classes
+        const classOptions: ClassOption[] = classList.map((cls) => ({
+          value: cls._id,
+          clasName: cls.clasName,
+          label: cls.clasName, 
+        }));
 
-        setClassOptions(options);
+        setClasses(classOptions);
         setError("");
       } catch (err: unknown) {
-        if (err && typeof err === "object" && "message" in err) {
-          setError((err as { message: string }).message);
-        } else {
-          setError("Failed to fetch classes.");
-        }
+        setError(
+          err && typeof err === "object" && "message" in err
+            ? (err as { message: string }).message
+            : "Failed to fetch classes or streams"
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    fetchClasses();
-  }, [schoolId]);
+    fetchData();
+  }, []);
 
-  return { classOptions, loading, error };
+  // Classes remain flat, but you could filter by stream manually if you want
+  const filteredClassOptions = useMemo(() => classes, [classes]);
+  const filteredStreamOptions = useMemo(() => streams, [streams]);
+
+  return {
+    classOptions: filteredClassOptions,
+    streamOptions: filteredStreamOptions,
+   
+    loading,
+    error,
+  };
 };
