@@ -8,8 +8,7 @@ export const registerStream = async (data: {
   streamName: string;
 }): Promise<IStream> => {
   try {
-    const response = await axios.post(`${BASE_URL}/stream`, data);
-
+    const response = await axios.post(`${BASE_URL}/streams`, data);
     return response.data;
   } catch (error) {
     console.error("Failed to add stream:", error);
@@ -18,16 +17,14 @@ export const registerStream = async (data: {
 }
 
 
-//  fetch all streams
+// Fetch all streams
 export const getAllStreams = async (): Promise<IStream[]> => {
-  try {
-    const response = await axios.get(`${BASE_URL}/streams`);
-    return response.data;
-  } catch (error) {
-    console.error("Failed to fetch streams:", error);
-    throw error;
-  }
+  const response = await axios.get(`${BASE_URL}/streams`);
+  console.log("📦 Full response.data:", response.data);
+  return response.data // array of objects {_id, streamName}
 };
+
+
 
 // Fetch all streams for a specific school
 
