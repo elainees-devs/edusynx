@@ -1,5 +1,5 @@
 // client/src/types/school/signup.types.ts
-export type Role = 'school-admin' | 'teacher' | 'headteacher' | 'accountant';
+export type Role = 'school-admin' | 'teacher' | 'principal' | 'accountant';
 
 export interface SignUpFormData {
   role?: Role
