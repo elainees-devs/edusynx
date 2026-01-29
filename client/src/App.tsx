@@ -20,6 +20,7 @@ import {
   ViewStudents,
   ViewGuardian,
   RegisterSubject,
+  ViewStream,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -77,13 +78,17 @@ function App() {
           <Route path="/super-admin/schools" element={<Schools />} />
 
           {/* === Classes === */}
-          <Route path="/principal/class/new" element={<RegisterClass />} />
-          <Route path="/:slug/dashboard/class/view" element={<ViewClass />} />
+          <Route path="/class/new" element={<RegisterClass />} />
+          <Route path="/dashboard/classes" element={<ViewClass />} />
 
           {/* === Streams === */}
           <Route
-            path="/principal/streams/new"
+            path="/streams/new"
             element={<RegisterStream />}
+          />
+          <Route
+            path="/dashboard/streams/view"
+            element={<ViewStream />}
           />
 
           {/* === Principal submenus === */}
