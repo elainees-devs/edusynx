@@ -57,7 +57,7 @@ const SuperAdminDashboardOverView: React.FC = () => {
         />
         <KpiCard
           label="Active Users"
-          value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.accountants}, HT:${kpiData.activeUsers.headTeachers}, P:${kpiData.activeUsers.parents} `}
+          value={`A:${kpiData.activeUsers.admins}, T:${kpiData.activeUsers.teachers}, S:${kpiData.activeUsers.accountants}, HT:${kpiData.activeUsers.principals}, P:${kpiData.activeUsers.parents} `}
           icon={<FaUsers />}
         />
         <KpiCard
@@ -105,7 +105,7 @@ const SuperAdminDashboardOverView: React.FC = () => {
                 fill="#8884d8"
                 label
               >
-                {activeUsersByRole.map((entry, index) => (
+                {activeUsersByRole.map((_, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
