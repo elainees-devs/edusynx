@@ -26,7 +26,7 @@ const SchoolSignupPage: React.FC = () => {
       logoUrl: "",
       isActive: false,
       schoolCode: "",
-      role: "HEADTEACHER",
+      role: "principal",
     },
   });
 
