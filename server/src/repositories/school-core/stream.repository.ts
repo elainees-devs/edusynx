@@ -5,7 +5,7 @@ import { IStream } from "../../types";
 import { AppError, normalizeId } from "../../utils";
 import { CreateStreamDTO } from "../../dto";
 
-class StreamRepository {
+export class StreamRepository {
   // Add new stream
   async createStream(streamData: CreateStreamDTO): Promise<IStream> {
     try {
@@ -112,4 +112,4 @@ async deleteAllStreams(): Promise<void> {
   }
 }
 
-export default StreamRepository;
+
