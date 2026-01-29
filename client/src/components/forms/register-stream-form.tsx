@@ -1,52 +1,85 @@
-// client/src/components/forms/RegisterStreamForm.tsx
-import React from "react";
+// client/src/components/forms/register-stream-form.tsx
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { IStream } from "../../types";
 import { SubmitButton } from "../../shared";
 
-type Props = {
-  onSubmit: (data: IStream) => void;
+interface StreamFormData {
+  streamName?: string;
+  bulkStreams?: string;
+  academicYear: string;
+}
+
+interface Props {
+  onSubmit: (data: { streamName?: string; bulkStreams?: string; academicYear: string; school: string }) => void;
   schoolId: string;
-};
+}
 
 const RegisterStreamForm: React.FC<Props> = ({ onSubmit, schoolId }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<IStream>();
+  const { register, handleSubmit, reset } = useForm<StreamFormData>();
+  const [mode, setMode] = useState<"single" | "bulk">("single");
 
-  const submitHandler = (data: IStream) => {
-    const payload = { ...data, school: schoolId };
-    onSubmit(payload);
-    reset(); // Optional: reset after submit
+  const submitHandler = (data: StreamFormData) => {
+    // Attach schoolId to data and call the page handler
+    onSubmit({ ...data, school: schoolId });
+    reset();
   };
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
-      <div>
-        <label htmlFor="streamName" className="block font-medium">
-          Stream Name
-        </label>
-        <input
-          type="text"
-          id="streamName"
-          {...register("streamName", { required: "Stream name is required" })}
-          className="border p-2 rounded w-1/2"
-        />
-        {errors.streamName && (
-          <p className="text-red-500 text-sm">{errors.streamName.message}</p>
-        )}
+    <div className="max-w-md mx-auto p-4 border rounded shadow">
+      {/* Mode toggle */}
+      <div className="mb-4">
+        <button
+          type="button"
+          className={`mr-2 px-4 py-2 border rounded ${mode === "single" ? "bg-blue-500 text-white" : ""}`}
+          onClick={() => setMode("single")}
+        >
+          Single
+        </button>
+        <button
+          type="button"
+          className={`px-4 py-2 border rounded ${mode === "bulk" ? "bg-blue-500 text-white" : ""}`}
+          onClick={() => setMode("bulk")}
+        >
+          Bulk
+        </button>
       </div>
-      
-        {/* Submit button */}
-      <SubmitButton
-        label="Register Stream"
-        loadingLabel="Registering..."
-        loading={isSubmitting}
-      />
-    </form>
+
+      <form onSubmit={handleSubmit(submitHandler)}>
+        {mode === "single" && (
+          <div className="mb-4">
+            <label className="block mb-1">Stream Name</label>
+            <input
+              type="text"
+              {...register("streamName")}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+        )}
+
+        {mode === "bulk" && (
+          <div className="mb-4">
+            <label className="block mb-1">Streams (one per line)</label>
+            <textarea
+              {...register("bulkStreams")}
+              rows={5}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+        )}
+
+        <div className="mb-4">
+          <label className="block mb-1">Academic Year</label>
+          <input
+            type="text"
+            {...register("academicYear", { required: true })}
+            placeholder="e.g., 2025-2026"
+            className="w-full border px-2 py-1 rounded"
+          />
+        </div>
+
+        <SubmitButton label="Register Stream(s)" />
+      </form>
+    </div>
   );
 };
 
