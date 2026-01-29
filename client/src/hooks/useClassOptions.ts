@@ -62,7 +62,6 @@ export const useClassOptions = () => {
     fetchData();
   }, []);
 
-  // Classes remain flat, but you could filter by stream manually if you want
   const filteredClassOptions = useMemo(() => classes, [classes]);
   const filteredStreamOptions = useMemo(() => streams, [streams]);
 
