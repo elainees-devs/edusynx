@@ -1,4 +1,4 @@
-// src/api/student.api.ts
+// client/src/api/student.api.ts
 import axios from "axios";
 import type { GetPageParams, PaginatedStudents, Student, StudentFormData } from "../types";
 
@@ -20,6 +20,7 @@ export const registerStudent = async (
   try {
     const response = await axios.post(`${API_BASE}/students`, data);
     return response.data;
+    
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Register student error:", error.response?.data);
@@ -34,6 +35,7 @@ export const registerStudent = async (
     console.error("Unknown error:", error);
     throw { message: "Unknown error occurred" };
   }
+
 };
 
 /* ==============================
