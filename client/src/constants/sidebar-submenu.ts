@@ -1,3 +1,4 @@
+// client/src/constants/sidebar-submenu.ts
 import {
   FaEye,
   FaTasks,
@@ -38,6 +39,12 @@ export const classNavChildren: NavItem[] = [
   { name: "Add Class", icon: FaPlusCircle, path: "/dashboard/class/new" },
   { name: "View Registered Classes", icon: FaListAlt, path: "/:slug/dashboard/class/view" },
   { name: "Class Overview", icon: FaChalkboardTeacher, path: "/dashboard/class-overview" },
+];
+
+// ---STREAMS ---
+export const streamNavChildren: NavItem[] = [
+  { name: "View Streams", icon: FaListAlt, path: "/dashboard/streams/view" },
+  { name: "Add Stream", icon: FaPlusCircle, path: "/streams/new" },
 ];
 
 // ----- SUBJECTS -----
