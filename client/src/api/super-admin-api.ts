@@ -25,3 +25,4 @@ export const signupSuperAdmin = async (data: ISuperAdmin) => {
     throw { message: 'An unknown error occurred' };
   }
 };
+
