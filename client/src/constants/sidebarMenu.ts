@@ -17,7 +17,8 @@ import {
   classNavChildren,
   teacherNavChildren,
   subjectNavChildren,
-  studentNavChildren
+  studentNavChildren,
+  streamNavChildren
 } from "./sidebar-submenu";
 
 export interface NavItem {
@@ -52,7 +53,12 @@ export const principalNavItems: NavItem[] = [
     path: "/:slug/students/view" ,
     children: studentNavChildren(":slug"),
   },
-  { name: "Streams", icon: FaStream, path: "/dashboard/streams" },
+  { 
+    name: "Streams", 
+    icon: FaStream, 
+    path: "/dashboard/streams",
+    children: streamNavChildren,
+  },
   {
     name: "Classes",
     icon: FaBook,
