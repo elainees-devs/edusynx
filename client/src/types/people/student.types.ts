@@ -17,7 +17,9 @@ export interface StudentFormData {
   admissionDate: string;
   previousSchool?: string;
   classId: string;
+  clasName?: string;
   stream: string;
+  streamName?: string;
   status: StudentStatus;
   studentPhotoUrl: string | undefined;
   adm?: string;
