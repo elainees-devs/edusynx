@@ -1,72 +1,83 @@
 // client/src/api/school.api.ts
-import axios from 'axios';
-import type { ISchool } from '../types';
+import axios from "axios";
+import type { ISchool } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+// Base URL for all school-related API requests
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
+/* ==============================
+   Paginated School Response Interface
+================================ */
 export interface PaginatedSchoolResponse {
-  page: number;
-  limit: number;
-  totalPages: number;
-  totalSchools: number;
-  schools: ISchool[];
+  page: number; // Current page number
+  limit: number; // Number of schools per page
+  totalPages: number; // Total number of pages available
+  totalSchools: number; // Total number of schools in the database
+  schools: ISchool[]; // Array of school objects
 }
 
+/* ==============================
+   Get school by ID
+================================ */
 export const getSchoolById = async (id: string): Promise<ISchool> => {
   const response = await axios.get(`${API_BASE}/school/${id}`);
   return response.data;
 };
 
-
-export const registerSchool = async (data: ISchool) => {
+/* ==============================
+   Register a new school
+================================ */
+export const registerSchool = async (data: ISchool): Promise<ISchool> => {
   try {
-    const response = await axios.post(`${API_BASE}/school/register`, data);
+    const response = await axios.post(`${API_BASE}/schools/register`, data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);
 
-      // Log validation issues specifically
       if (error.response?.data?.issues) {
         console.table(error.response.data.issues);
       }
 
-      throw error.response?.data || { message: 'A network error occurred' };
+      throw error.response?.data || { message: "A network error occurred" };
     }
 
-    // Fallback for non-Axios errors
     console.error("Unknown error occurred:", error);
-    throw { message: 'An unknown error occurred' };
+    throw { message: "An unknown error occurred" };
   }
 };
 
-/**
- * Fetches a school document by slug.
- * @param slug - The unique slug used in the signup URL.
- * @returns A Promise that resolves to a school object.
- */
+/* ==============================
+   Get school by slug
+================================ */
 export const getSchoolBySlug = async (slug: string): Promise<ISchool> => {
-  const response = await axios.get(`${API_BASE}/schools/slug/${slug}`);
-  console.log("response data:", response.data);
+  const response = await axios.get(`${API_BASE}/schools/${slug}`);
   return response.data;
 };
 
+/* ==============================
+   Fetch paginated list of schools
+================================ */
 export const fetchSchools = async (
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
 ): Promise<PaginatedSchoolResponse> => {
-  const response = await axios.get(`${API_BASE}/school`, {
+  const response = await axios.get(`${API_BASE}/schools`, {
     params: { page, limit },
   });
 
-  console.log("✅ Fetched Schools Response:", response.data);
-  return response.data; 
+  return response.data;
 };
 
-
-export const updateSchool = async (id: string, updatedData: Partial<ISchool>): Promise<ISchool> => {
+/* ==============================
+   Update school by ID
+================================ */
+export const updateSchool = async (
+  id: string,
+  updatedData: Partial<ISchool>,
+): Promise<ISchool> => {
   try {
-    const response = await axios.put(`${API_BASE}/school/${id}`, updatedData);
+    const response = await axios.put(`${API_BASE}/schools/${id}`, updatedData);
     return response.data;
   } catch (error) {
     console.error("Failed to update school:", error);
@@ -74,6 +85,9 @@ export const updateSchool = async (id: string, updatedData: Partial<ISchool>): P
   }
 };
 
+/* ==============================
+   Delete school by ID
+================================ */
 export const deleteSchool = async (id: string): Promise<ISchool> => {
   try {
     const response = await axios.delete(`${API_BASE}/school/${id}`);
@@ -83,6 +97,3 @@ export const deleteSchool = async (id: string): Promise<ISchool> => {
     throw error;
   }
 };
-
-
-
