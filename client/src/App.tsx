@@ -79,7 +79,7 @@ function App() {
 
           {/* === Classes === */}
           <Route path="/class/new" element={<RegisterClass />} />
-          <Route path="/dashboard/class/view" element={<ViewClass />} />
+          <Route path="/:slug/dashboard/class/view" element={<ViewClass />} />
 
           {/* === Streams === */}
           <Route
@@ -105,7 +105,7 @@ function App() {
 
    {/* === Subjects === */}
           <Route
-            path="/subjects/new"
+            path="/dashboard/subjects/new"
             element={<RegisterSubject />}
           />
           {/* === Students and Guardian === */}
