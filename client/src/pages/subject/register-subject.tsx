@@ -1,93 +1,106 @@
-// client/src/pages/subject/register-subject.tsx
-import React from "react";
-
+// client/src/pages/subject/RegisterSubject.tsx
+import { useGlobalState } from "../../hooks/useGlobalContext"; 
+import RegisterSubjectForm from "../../components/forms/register-subject-form";
+import { registerSubject } from "../../api/subject.api"; 
 import Swal from "sweetalert2";
-
-import { Sidebar, Topbar } from "../../shared/layout/dashboard";
-import { registerSubject } from "../../api/subject.api"
-import { getSchoolId } from "../../utils/getSchoolId"
-import { useGlobalState } from "../../hooks";
-import { RegisterSubjectForm } from "../../components";
-import type { SubjectData } from "../../types";
-import { SubjectFormProvider } from "../../context/subject-form-provider";
-
+import Sidebar from "../../shared/layout/dashboard/sidebar";
+import Topbar from "../../shared/layout/dashboard/topbar";
+import { getSchoolId } from "../../utils/getSchoolId";
+import { useClassOptions } from "../../hooks";
 
 const RegisterSubject: React.FC = () => {
-    const { state } = useGlobalState();
-  
-    const user = state.loggedInUser as
-      | { role: string; school?: string | { _id: string; isActive: boolean } }
-      | undefined;
-  
-    const schoolId = getSchoolId(user);
-  const handleSubjectSubmit = async (data: SubjectData): Promise<void> => {
+  const { state } = useGlobalState();
+  const user = state.loggedInUser as
+    | { role: string; school?: string | { _id: string; isActive: boolean } }
+    | undefined;
+
+  const schoolId = getSchoolId(user);
+
+  // Call hook unconditionally (React rule)
+  const { classOptions, loading, error } = useClassOptions();
+
+  // If schoolId is missing
   if (!schoolId) {
-    Swal.fire("Error", "School ID is missing. Please log in again.", "error");
-    return;
+    return (
+      <div className="p-6 text-red-600">
+        Unable to load school ID. Please log in again or contact support.
+      </div>
+    );
   }
 
-  try {
-    const payload: SubjectData = {
-      ...data,
-      school: schoolId,
-    };
+  // Form submission handler
+  const handleSubjectSubmit = async (data: {
+    subjectName?: string;
+    bulkSubjects?: string;
+    classRef?: string;
+    school: string;
+  }) => {
+    try {
+      let subjectsToRegister: {
+        subjectName: string;
+        classRef: string;
+        school: string;
+      }[] = [];
 
-    const savedSubject = await registerSubject(payload); 
+      if (data.subjectName && data.classRef) {
+        subjectsToRegister.push({
+          subjectName: data.subjectName,
+          classRef: data.classRef,
+          school: data.school,
+        });
+      } else if (data.bulkSubjects) {
+        const names = data.bulkSubjects
+          .split("\n")
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0);
 
-    Swal.fire({
-      icon: "success",
-      title: "Subject Registered!",
-      html: `<p>Saved Subject: <strong>${savedSubject}</strong></p>`,
-      confirmButtonText: "OK",
-    });
-  } catch (error) {
-    let message = "Something went wrong. Please try again.";
+        subjectsToRegister = names.map((subjectName) => ({
+          subjectName,
+          classRef: data.classRef || "", // fallback if not selected
+          school: data.school,
+        }));
+      }
 
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (
-      typeof error === "object" &&
-      error !== null &&
-      "message" in error &&
-      typeof (error as { message: unknown }).message === "string"
-    ) {
-      message = (error as { message: string }).message;
+      // Register each subject via API
+      for (const subject of subjectsToRegister) {
+        await registerSubject(subject);
+      }
+
+      Swal.fire("Success", "Subject(s) created successfully", "success");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Something went wrong.";
+      Swal.fire("Failed to create subject", message, "error");
     }
-
-    Swal.fire({
-      icon: "error",
-      title: "Registration failed",
-      text: message,
-    });
-  }
-};
-
-
+  };
 
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
-        <Sidebar role="school-admin" />
+        <Sidebar role="principal" />
       </div>
 
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* Topbar */}
         <div className="flex-shrink-0">
-          <Topbar role="headteacher" />
+          <Topbar role="principal" />
         </div>
-       
-        {/* Scrollable Form Area */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          <SubjectFormProvider>
-            <div className="max-w-xl w-full mx-auto mt-6">
-              <h2 className="text-2xl font-semibold mb-4">
-                Register New Subject
-              </h2>
-              <RegisterSubjectForm onSubmit={handleSubjectSubmit} />
-            </div>
-          </SubjectFormProvider>
+
+        <div className="p-6">
+          <h1 className="text-2xl font-bold mb-4">Register Subject</h1>
+
+          {loading ? (
+            <p>Loading classes...</p>
+          ) : error ? (
+            <p className="text-red-600">{error}</p>
+          ) : (
+            <RegisterSubjectForm
+              onSubmit={handleSubjectSubmit}
+              schoolId={schoolId}
+              classes={classOptions} // use classOptions from hook
+            />
+          )}
         </div>
       </div>
     </div>
@@ -95,4 +108,3 @@ const RegisterSubject: React.FC = () => {
 };
 
 export default RegisterSubject;
-
