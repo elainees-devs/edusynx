@@ -118,7 +118,7 @@ streamRouter.get('/', streamController.getAllStreams);
  *       404:
  *         description: Stream not found
  */
-streamRouter.put('/:id', validate(updateStreamSchema), streamController.updateStreamById);
+streamRouter.patch('/:id', validate(updateStreamSchema), streamController.updateStreamById);
 
 /**
  * @openapi
