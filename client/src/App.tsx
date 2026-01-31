@@ -21,6 +21,7 @@ import {
   ViewGuardian,
   RegisterSubject,
   ViewStreams,
+  ViewSubjects,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -82,14 +83,8 @@ function App() {
           <Route path="/:slug/dashboard/class/view" element={<ViewClass />} />
 
           {/* === Streams === */}
-          <Route
-            path="/streams/new"
-            element={<RegisterStream />}
-          />
-          <Route
-            path="/dashboard/streams/view"
-            element={<ViewStreams />}
-          />
+          <Route path="/streams/new" element={<RegisterStream />} />
+          <Route path="/dashboard/streams/view" element={<ViewStreams />} />
 
           {/* === Principal submenus === */}
           <Route
@@ -98,16 +93,11 @@ function App() {
           />
 
           {/* === Allocation === */}
-            <Route
-            path="/dashboard/class-overview"
-            element={<ClassOverView />}
-          />
+          <Route path="/dashboard/class-overview" element={<ClassOverView />} />
 
-   {/* === Subjects === */}
-          <Route
-            path="/dashboard/subjects/new"
-            element={<RegisterSubject />}
-          />
+          {/* === Subjects === */}
+          <Route path="/dashboard/subjects/new" element={<RegisterSubject />} />
+          <Route path="/dashboard/subjects/view" element={<ViewSubjects />} />
           {/* === Students and Guardian === */}
           <Route path="/:slug/student/new" element={<RegisterStudent />} />
           <Route path="/:slug/students/view" element={<ViewStudents />} />
