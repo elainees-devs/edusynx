@@ -1,9 +1,12 @@
 // client/src/api/stream.api.ts
 import axios from "axios";
-import type { IStream } from "../types";
+import type { GetPageParams, IStream, PaginatedStreams } from "../types";
 
 const BASE_URL = "http://localhost:5000/api/v1";
 
+/* ==============================
+   Register stream (POST)
+================================ */
 export const registerStream = async (data: {
   streamName: string;
 }): Promise<IStream> => {
@@ -17,16 +20,59 @@ export const registerStream = async (data: {
 }
 
 
-// Fetch all streams
+// // Fetch all streams
 export const getAllStreams = async (): Promise<IStream[]> => {
   const response = await axios.get(`${BASE_URL}/streams`);
   console.log("📦 Full response.data:", response.data);
   return response.data // array of objects {_id, streamName}
 };
 
+/* ==============================
+   Fetch streams (paginated)
+================================ */
+
+export const getStreams = async (
+  params: GetPageParams
+): Promise<PaginatedStreams> => {
+  const response = await axios.get(`${BASE_URL}/streams`, {
+    params,
+  });
+
+  return response.data;
+};
+
+/* ==============================
+   Update stream (PATCH)
+================================ */
+export const updateStream = async (
+  id: string,
+  data: Partial<Omit<IStream, "_id" | "createdAt" | "updatedAt">>,
+): Promise<IStream> => {
+  // Remove undefined or empty string fields, and convert date fields to ISO
+  const payload = Object.fromEntries(
+    Object.entries(data)
+      .filter(([, value]) => value !== undefined && value !== "")
+      .map(([key, value]) => {
+        return [key, value];
+      }),
+  );
+
+  if (Object.keys(payload).length === 0) {
+    throw new Error("No valid fields provided to update.");
+  }
+
+  const { data: updatedStream } = await axios.patch(
+    `${BASE_URL}/streams/${id}`,
+    payload,
+  );
+
+  return updatedStream;
+};
 
 
-// Fetch all streams for a specific school
+/* ==============================
+   Get streams by school
+================================ */
 
 export const getStreamsBySchool = async (schoolId: string): Promise<IStream[]> => {
   try {
@@ -44,6 +90,25 @@ export const getStreamsBySchool = async (schoolId: string): Promise<IStream[]> =
     throw error;
   }
 };
+
+/* ==============================
+   Delete stream
+================================ */
+
+export const deleteStream = async (
+  id: string
+): Promise<{ message: string }> => {
+  const response = await axios.delete(`${BASE_URL}/streams/${id}`);
+  return response.data;
+};
+
+/* ==============================
+   Count streams
+================================ */
+export const countStreams = async (): Promise<{ count: number }> => {
+  const response = await axios.get(`${BASE_URL}/streams/count`);
+  return response.data;
+}
 
 
 
