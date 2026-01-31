@@ -20,11 +20,12 @@ export const registerStream = async (data: {
 }
 
 
-// // Fetch all streams
+//Fetch all streams
 export const getAllStreams = async (): Promise<IStream[]> => {
   const response = await axios.get(`${BASE_URL}/streams`);
-  console.log("📦 Full response.data:", response.data);
-  return response.data // array of objects {_id, streamName}
+  
+   // Extract the array of streams
+  return response.data.data || [];
 };
 
 /* ==============================
