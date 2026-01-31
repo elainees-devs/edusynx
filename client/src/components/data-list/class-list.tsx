@@ -1,7 +1,7 @@
 //client/src/components/data-list/class-list.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import type { IClass} from "../../types";
-import { deleteClass, getAllClasses, updateClass} from "../../api";
+import { deleteClass, getClasses, updateClass} from "../../api";
 import { ClassTable } from "../data-table";
 import { Pagination, SearchBar } from "../../shared";
 import { searchConfig } from "../../constants";
@@ -22,7 +22,7 @@ const ClassList: React.FC = () => {
     try {
       
       setLoading(true);
-      const res = await getAllClasses({
+      const res = await getClasses({
         page,
         limit,
         sort: sortAsc ? "asc" : "desc",
