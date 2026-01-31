@@ -19,8 +19,6 @@ export type StreamOption = {
 export const useClassOptions = () => {
   const [classes, setClasses] = useState<ClassOption[]>([]);
   const [streams, setStreams] = useState<StreamOption[]>([]);
-
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -33,17 +31,17 @@ export const useClassOptions = () => {
 
         // Map streams for dropdown
         const streamOptions: StreamOption[] = streamList.map((s) => ({
-          value: s._id,   
+          value: s._id,
           streamName: s.streamName,
           label: s.streamName,
-        }))
+        }));
         setStreams(streamOptions);
 
         // Map classes
         const classOptions: ClassOption[] = classList.map((cls) => ({
           value: cls._id,
           clasName: cls.clasName,
-          label: cls.clasName, 
+          label: cls.clasName,
         }));
 
         setClasses(classOptions);
@@ -52,7 +50,7 @@ export const useClassOptions = () => {
         setError(
           err && typeof err === "object" && "message" in err
             ? (err as { message: string }).message
-            : "Failed to fetch classes or streams"
+            : "Failed to fetch classes or streams",
         );
       } finally {
         setLoading(false);
@@ -68,8 +66,8 @@ export const useClassOptions = () => {
   return {
     classOptions: filteredClassOptions,
     streamOptions: filteredStreamOptions,
-   
     loading,
     error,
   };
 };
+export default useClassOptions;
