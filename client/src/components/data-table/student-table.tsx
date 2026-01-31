@@ -1,10 +1,8 @@
 // client/src/components/tables/student-table.tsx
 import React, { useEffect, useMemo, useState } from "react";
 import { FaUserPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
-import type { Guardian, IClass, IStream } from "../../types";
-import type { Student } from "../../types/people/student.types";
-import { countStudents, getAllClasses } from "../../api";
-import { getAllStreams } from "../../api/stream.api";
+import type { Guardian, IClass, IStream, Student } from "../../types";
+import { countStudents, getAllClasses, getAllStreams } from "../../api";
 import { resolveId, sortByAdmissionNumber, sortByFirstName } from "../../utils";
 import { GuardianFormModal } from "../forms";
 
@@ -129,7 +127,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
   return (
     <div className="overflow-x-auto">
       <p className="mb-2 mr-8 text-right font-semibold text-gray-700">
-        Total number of students: {totalStudents}
+        Total number of students: <span className="table-data-count">{totalStudents}</span>
       </p>
       <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
         <thead className="bg-gray-100">
@@ -361,7 +359,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
           student={{
             _id: guardianModalStudent._id,
             school: guardianModalStudent.school,
-            adm: Number(guardianModalStudent.adm), 
+            adm: Number(guardianModalStudent.adm),
           }}
           onClose={() => setGuardianModalStudent(null)}
           onSuccess={(newGuardian: Guardian) => {
