@@ -4,7 +4,7 @@ import { objectId } from "./util";
 
 export const createSubjectSchema = z.object({
   school: objectId,
-  subjectName: z.string().min(1),
+  subjectName: z.string().min(1).toLowerCase(),
   classRef: objectId,
 });
 
