@@ -20,7 +20,7 @@ import {
   ViewStudents,
   ViewGuardian,
   RegisterSubject,
-  ViewStream,
+  ViewStreams,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -79,7 +79,7 @@ function App() {
 
           {/* === Classes === */}
           <Route path="/class/new" element={<RegisterClass />} />
-          <Route path="/dashboard/classes" element={<ViewClass />} />
+          <Route path="/dashboard/class/view" element={<ViewClass />} />
 
           {/* === Streams === */}
           <Route
@@ -88,7 +88,7 @@ function App() {
           />
           <Route
             path="/dashboard/streams/view"
-            element={<ViewStream />}
+            element={<ViewStreams />}
           />
 
           {/* === Principal submenus === */}
