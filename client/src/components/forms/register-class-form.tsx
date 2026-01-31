@@ -1,110 +1,85 @@
-// client/src/components/forms/RegisterClassForm.tsx
-import React from "react";
+// client/src/components/forms/register-class-form.tsx
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { IClass } from "../../types";
-import { classOptions } from "../../constants/class-options";
 import { SubmitButton } from "../../shared";
 
-type Props = {
-  onSubmit: (data: IClass) => void;
+interface ClassFormData {
+  clasName?: string;
+  bulkClasses?: string;
+  academicYear: string;
+}
+
+interface Props {
+  onSubmit: (data: { clasName?: string; bulkClasses?: string; academicYear: string; school: string }) => void;
   schoolId: string;
-  streams: { value: string; label: string }[];
-};
+}
 
-const RegisterClassForm: React.FC<Props> = ({
-  onSubmit,
-  schoolId,
-  streams,
-}) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<IClass>();
+const RegisterClassForm: React.FC<Props> = ({ onSubmit, schoolId }) => {
+  const { register, handleSubmit, reset } = useForm<ClassFormData>();
+  const [mode, setMode] = useState<"single" | "bulk">("single");
 
-  const submitHandler = (data: IClass) => {
-    const payload = { ...data, school: schoolId };
-    onSubmit(payload);
-    reset(); // Optional
+  const submitHandler = (data: ClassFormData) => {
+    // Attach schoolId to data and call the page handler
+    onSubmit({ ...data, school: schoolId });
+    reset();
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(submitHandler)}
-      className="space-y-6 max-w-md mx-auto bg-white p-6 rounded shadow"
-    >
-      <h2 className="text-xl font-bold text-center">Register New Class</h2>
-
-      {/* Grade/Class Name Select */}
-      <div>
-        <label htmlFor="grade" className="block font-medium">
-          Grade/Class Name
-        </label>
-        <select
-          id="grade"
-          {...register("grade", { required: "Grade is required" })}
-          className="border p-2 rounded w-full"
+    <div className="max-w-md mx-auto p-4 border rounded shadow">
+      {/* Mode toggle */}
+      <div className="mb-4">
+        <button
+          type="button"
+          className={`mr-2 px-4 py-2 border rounded ${mode === "single" ? "bg-blue-500 text-white" : ""}`}
+          onClick={() => setMode("single")}
         >
-          <option value="">Select a class</option>
-          {classOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        {errors.grade && (
-          <p className="text-red-500 text-sm">{errors.grade.message}</p>
-        )}
-      </div>
-
-      {/* Academic Year Input */}
-      <div>
-        <label htmlFor="academicYear" className="block font-medium">
-          Academic Year
-        </label>
-        <input
-          type="text"
-          id="academicYear"
-          {...register("academicYear", {
-            required: "Academic year is required",
-          })}
-          className="border p-2 rounded w-full"
-        />
-        {errors.academicYear && (
-          <p className="text-red-500 text-sm">{errors.academicYear.message}</p>
-        )}
-      </div>
-
-      {/* Stream Select */}
-      <div>
-        <label htmlFor="stream" className="block font-medium">
-          Stream
-        </label>
-        <select
-          id="stream"
-          {...register("stream", { required: "Stream is required" })}
-          className="border p-2 rounded w-full"
+          Single
+        </button>
+        <button
+          type="button"
+          className={`px-4 py-2 border rounded ${mode === "bulk" ? "bg-blue-500 text-white" : ""}`}
+          onClick={() => setMode("bulk")}
         >
-          <option value="">Select a stream</option>
-          {streams.map((stream) => (
-            <option key={stream.value} value={stream.value}>
-              {stream.label}
-            </option>
-          ))}
-        </select>
-        {errors.stream && (
-          <p className="text-red-500 text-sm">{errors.stream.message}</p>
-        )}
+          Bulk
+        </button>
       </div>
 
-      {/* Submit Button */}
-      <SubmitButton
-        label="Register Class"
-        loadingLabel="Registering..."
-        loading={isSubmitting}
-      />
-    </form>
+      <form onSubmit={handleSubmit(submitHandler)}>
+        {mode === "single" && (
+          <div className="mb-4">
+            <label className="block mb-1">Class Name</label>
+            <input
+              type="text"
+              {...register("clasName")}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+        )}
+
+        {mode === "bulk" && (
+          <div className="mb-4">
+            <label className="block mb-1">Classes (one per line)</label>
+            <textarea
+              {...register("bulkClasses")}
+              rows={5}
+              className="w-full border px-2 py-1 rounded"
+            />
+          </div>
+        )}
+
+        <div className="mb-4">
+          <label className="block mb-1">Academic Year</label>
+          <input
+            type="text"
+            {...register("academicYear", { required: true })}
+            placeholder="e.g., 2025-2026"
+            className="w-full border px-2 py-1 rounded"
+          />
+        </div>
+
+        <SubmitButton label="Register Class(es)" />
+      </form>
+    </div>
   );
 };
 
