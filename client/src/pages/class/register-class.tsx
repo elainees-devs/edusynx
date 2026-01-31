@@ -1,102 +1,89 @@
 // client/src/pages/class/RegisterClass.tsx
-import { useEffect, useState } from "react";
+import { useGlobalState } from "../../hooks/useGlobalContext"; 
+
 import Swal from "sweetalert2";
-import { useGlobalState } from "../../hooks/useGlobalContext";
-import { getSchoolId } from "../../utils/getSchoolId";
-import { getStreamsBySchool } from "../../api/stream.api";
-import { registerClass } from "../../api/class.api";
 import Sidebar from "../../shared/layout/dashboard/sidebar";
 import Topbar from "../../shared/layout/dashboard/topbar";
-import RegisterClassForm from "../../components/forms/register-class-form";
+import { getSchoolId } from "../../utils/getSchoolId";
+import { registerClass } from "../../api";
+import { RegisterClassForm } from "../../components";
 import type { IClass } from "../../types";
+
 
 const RegisterClass: React.FC = () => {
   const { state } = useGlobalState();
 
-  const user = state.loggedInUser as
-    | { role: string; school?: string | { _id: string; isActive: boolean } }
-    | undefined;
+const user = state.loggedInUser as
+  | { role: string; school?: string | { _id: string; isActive: boolean } }
+  | undefined;
 
-  const schoolId = getSchoolId(user);
+const schoolId = getSchoolId(user);
 
-  const [streams, setStreams] = useState<{ value: string; label: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+// If schoolId is missing, show an error
+if (!schoolId) {
+  return (
+    <div className="p-6 text-red-600">
+      Unable to load school ID. Please log in again or contact support.
+    </div>
+  );
+}
 
-useEffect(() => {
-  const fetchStreams = async () => {
-    if (!schoolId) return;
+  // Form submission handler
+ const handleClassSubmit = async (data: {
+  clasName?: string;
+  bulkClasses?: string;
+  academicYear: string;
+  school: string;
+}) => {
+  try {
+    let classesToRegister: Omit<IClass, '_id'>[] = [];
 
-    try {
-      const streamList = await getStreamsBySchool(schoolId);
-      console.log("Stream List:", streamList);
+    if (data.clasName) {
+      classesToRegister.push({
+        clasName: data.clasName, 
+        academicYear: data.academicYear,
+        school: data.school,
+      });
+    } else if (data.bulkClasses) {
+      const names = data.bulkClasses
+        .split("\n")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
 
-      const options = streamList.map((s) => ({
-        value: s._id,
-        label: s.streamName,
+      classesToRegister = names.map((clasName) => ({
+        clasName, 
+        academicYear: data.academicYear,
+        school: data.school,
       }));
-
-      setStreams(options);
-      setError(null);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to load streams";
-      console.error("Stream fetch failed:", message);
-      setError(message);
-      Swal.fire("Error", message, "error");
-    } finally {
-      setLoading(false);  // Always stop loading regardless of success or failure
     }
-  };
 
-  fetchStreams();
-}, [schoolId]);
+    // Call API for each class
+    for (const clas of classesToRegister) {
+      await registerClass(clas as IClass);
+    }
 
-
-
-
-  if (!schoolId) {
-    return (
-      <div className="p-6 text-red-600">
-        Unable to load school ID. Please log in again or contact support.
-      </div>
-    );
+    Swal.fire("Success", "Class(es) created successfully", "success");
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Something went wrong.";
+    Swal.fire("Failed to create class", message, "error");
   }
-
-  const handleClassSubmit = async (data: IClass) => {
-    try {
-      const payload = { ...data, school: schoolId };
-      await registerClass(payload);
-      Swal.fire("Success", "Class registered successfully", "success");
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Something went wrong.";
-      Swal.fire("Failed to register class", message, "error");
-    }
-  };
-
+};
   return (
     <div className="flex h-screen">
+      {/* Sidebar */}
       <div className="w-64 flex-shrink-0 bg-gray-100 overflow-y-auto">
-        <Sidebar role="headteacher" />
+        <Sidebar role="principal"/>
       </div>
 
+      {/* Main Content Area */}
       <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Topbar */}
         <div className="flex-shrink-0">
-          <Topbar role="headteacher" />
+          <Topbar role="principal" />
         </div>
-
         <div className="p-6">
-
-          {loading ? (
-            <p>Loading streams...</p>
-          ) : error ? (
-            <p className="text-red-600">{error}</p>
-          ) : (
-            <RegisterClassForm
-              onSubmit={handleClassSubmit}
-              streams={streams}
-              schoolId={schoolId} 
-            />
-          )}
+          <h1 className="text-2xl font-bold mb-4">Register Class</h1>
+          <RegisterClassForm onSubmit={handleClassSubmit} schoolId={schoolId} />
         </div>
       </div>
     </div>
