@@ -12,13 +12,6 @@ const subjectController = new SubjectController();
 
 /**
  * @swagger
- * tags:
- *   name: Subjects
- *   description: Manage academic subjects in the school
- */
-
-/**
- * @swagger
  * /api/v1/subjects:
  *   post:
  *     summary: Create a new subject
@@ -35,11 +28,47 @@ const subjectController = new SubjectController();
  *       400:
  *         description: Validation error
  */
-subjectRouter.post(
-  "/",
-  validate(createSubjectSchema),
-  subjectController.createSubject
-);
+subjectRouter.post("/", validate(createSubjectSchema), subjectController.createSubject);
+
+/**
+ * @swagger
+ * /api/v1/subjects:
+ *   get:
+ *     summary: Get paginated list of subjects
+ *     tags: [Subjects]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: school
+ *         schema:
+ *           type: string
+ *         description: Filter by school ID
+ *     responses:
+ *       200:
+ *         description: Paginated list of subjects
+ */
+subjectRouter.get("/", subjectController.getSubjects);
+
+/**
+ * @swagger
+ * /api/v1/subjects/all:
+ *   get:
+ *     summary: Get all subjects without pagination
+ *     tags: [Subjects]
+ *     responses:
+ *       200:
+ *         description: List of all subjects
+ */
+subjectRouter.get("/all", subjectController.getAllSubjects);
 
 /**
  * @swagger
@@ -53,7 +82,6 @@ subjectRouter.post(
  *         required: true
  *         schema:
  *           type: string
- *         description: School ID
  *     responses:
  *       200:
  *         description: List of subjects for the school
@@ -72,7 +100,6 @@ subjectRouter.get("/school/:schoolId", subjectController.getSubjectsBySchool);
  *         required: true
  *         schema:
  *           type: string
- *         description: Subject ID
  *     responses:
  *       200:
  *         description: Subject found
@@ -84,7 +111,7 @@ subjectRouter.get("/:id", subjectController.getSubjectById);
 /**
  * @swagger
  * /api/v1/subjects/{id}:
- *   put:
+ *   patch:
  *     summary: Update a subject by ID
  *     tags: [Subjects]
  *     parameters:
@@ -93,7 +120,6 @@ subjectRouter.get("/:id", subjectController.getSubjectById);
  *         required: true
  *         schema:
  *           type: string
- *         description: Subject ID
  *     requestBody:
  *       required: true
  *       content:
@@ -103,12 +129,10 @@ subjectRouter.get("/:id", subjectController.getSubjectById);
  *     responses:
  *       200:
  *         description: Subject updated
- *       400:
- *         description: Validation error
  *       404:
  *         description: Subject not found
  */
-subjectRouter.put(
+subjectRouter.patch(
   "/:id",
   validate(updateSubjectSchema),
   subjectController.updateSubject
@@ -126,7 +150,6 @@ subjectRouter.put(
  *         required: true
  *         schema:
  *           type: string
- *         description: Subject ID
  *     responses:
  *       204:
  *         description: Subject deleted
@@ -134,5 +157,17 @@ subjectRouter.put(
  *         description: Subject not found
  */
 subjectRouter.delete("/:id", subjectController.deleteSubject);
+
+/**
+ * @swagger
+ * /api/v1/subjects:
+ *   delete:
+ *     summary: Delete all subjects
+ *     tags: [Subjects]
+ *     responses:
+ *       204:
+ *         description: All subjects deleted
+ */
+subjectRouter.delete("/", subjectController.deleteAllSubjects);
 
 export { subjectRouter };
