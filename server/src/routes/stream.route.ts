@@ -8,7 +8,7 @@ const streamRouter = Router();
 const streamController = new StreamController();
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/streams:
  *   post:
  *     summary: Create a new stream
@@ -27,9 +27,44 @@ const streamController = new StreamController();
  *         description: Validation error
  */
 streamRouter.post('/', validate(createStreamSchema), streamController.createStream);
+/**
+ * @swagger
+ * /api/v1/streams:
+ *   get:
+ *     summary: Get paginated list of streams
+ *     tags: [Streams]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of streams per page
+ *     responses:
+ *       200:
+ *         description: Paginated list of classes
+ */
+streamRouter.get("/", streamController.getStreams);
 
 /**
- * @openapi
+ * @swagger
+ * /api/v1/streams/all:
+ *   get:
+ *     summary: Get all streams without pagination
+ *     tags: [Streams]
+ *     responses:
+ *       200:
+ *         description: List of all streams
+ */
+streamRouter.get("/all", streamController.getAllStreams);
+/**
+ * @swagger
  * /api/v1/streams/{id}:
  *   get:
  *     summary: Get a stream by ID
@@ -47,56 +82,47 @@ streamRouter.post('/', validate(createStreamSchema), streamController.createStre
  *       404:
  *         description: Stream not found
  */
-streamRouter.get('/:id', streamController.findStreamById);
+
+streamRouter.get('/:id', streamController.getStreamById);
 
 /**
  * @swagger
- * /api/v1/streams/school/{schoolId}:
- *   get:
- *     summary: Get all streams for a specific school
- *     tags: [Streams]
- *     parameters:
- *       - in: path
- *         name: schoolId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the school
- *     responses:
- *       200:
- *         description: A list of streams
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Stream'
- *       400:
- *         description: Invalid school ID
- *       500:
- *         description: Server error
- */
-streamRouter.get("/school/:schoolId", streamController.getStreamsBySchool);
-
-
-
-/**
- * @openapi
  * /api/v1/streams:
  *   get:
  *     summary: Get all streams
  *     tags:
  *       - Streams
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of streams per page
+ *       - in: query
+ *         name: school
+ *         schema:
+ *           type: string
+ *         description: Filter by school ID
+ *       - in: query
+ *         name: streamName
+ *         schema:
+ *           type: string
+ *         description: Filter by stream name
  *     responses:
  *       200:
  *         description: List of streams
  */
-streamRouter.get('/', streamController.getAllStreams);
+streamRouter.get('/', streamController.getStreams);
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/streams/{id}:
- *   put:
+ *   patch:
  *     summary: Update a stream by ID
  *     tags:
  *       - Streams
@@ -118,10 +144,10 @@ streamRouter.get('/', streamController.getAllStreams);
  *       404:
  *         description: Stream not found
  */
-streamRouter.patch('/:id', validate(updateStreamSchema), streamController.updateStreamById);
+streamRouter.patch('/:id', validate(updateStreamSchema), streamController.updateStream);
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/streams/{id}:
  *   delete:
  *     summary: Delete a stream by ID
@@ -134,22 +160,22 @@ streamRouter.patch('/:id', validate(updateStreamSchema), streamController.update
  *         schema:
  *           type: string
  *     responses:
- *       200:
+ *       204:
  *         description: Stream deleted successfully
  *       404:
  *         description: Stream not found
  */
-streamRouter.delete('/:id', streamController.deleteStreamById);
+streamRouter.delete('/:id', streamController.deleteStream);
 
 /**
- * @openapi
+ * @swagger
  * /api/v1/streams:
  *   delete:
  *     summary: Delete all streams
  *     tags:
  *       - Streams
  *     responses:
- *       200:
+ *       204:
  *         description: All streams deleted successfully
  */
 streamRouter.delete('/', streamController.deleteAllStreams);
