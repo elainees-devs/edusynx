@@ -1,4 +1,4 @@
-//server/src/routes/class.route.ts
+// server/src/routes/class.route.ts
 import { Router } from "express";
 import { createClassSchema, updateClassSchema } from "../validation/class.schema";
 import { ClassController } from "../controllers";
@@ -38,19 +38,44 @@ classRouter.post("/", validate(createClassSchema), classController.createClass);
  * @swagger
  * /api/v1/classes:
  *   get:
- *     summary: Get all classes
+ *     summary: Get paginated list of classes
+ *     tags: [Classes]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of classes per page
+ *     responses:
+ *       200:
+ *         description: Paginated list of classes
+ */
+classRouter.get("/", classController.getClasses);
+
+/**
+ * @swagger
+ * /api/v1/classes/all:
+ *   get:
+ *     summary: Get all classes without pagination
  *     tags: [Classes]
  *     responses:
  *       200:
  *         description: List of all classes
  */
-classRouter.get("/", classController.getAllClasses);
+classRouter.get("/all", classController.getAllClasses);
 
 /**
  * @swagger
  * /api/v1/classes/school/{schoolId}:
  *   get:
- *     summary: Get classes by school ID
+ *     summary: Get classes by school ID (optional academicYear)
  *     tags: [Classes]
  *     parameters:
  *       - in: path
@@ -59,9 +84,24 @@ classRouter.get("/", classController.getAllClasses);
  *         schema:
  *           type: string
  *         description: ID of the school
+ *       - in: query
+ *         name: academicYear
+ *         schema:
+ *           type: string
+ *         description: Optional academic year filter
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
  *     responses:
  *       200:
- *         description: Classes found for the given school
+ *         description: List of classes for the given school and academic year
  */
 classRouter.get("/school/:schoolId", classController.getClassesByFilter);
 
@@ -77,10 +117,10 @@ classRouter.get("/school/:schoolId", classController.getClassesByFilter);
  *         required: true
  *         schema:
  *           type: string
- *         description: Academic year (e.g. 2024)
+ *         description: Academic year (e.g., 2024)
  *     responses:
  *       200:
- *         description: Classes found for the given year
+ *         description: List of classes for the given year
  */
 classRouter.get("/year/:academicYear", classController.getClassesByAcademicYear);
 
@@ -88,7 +128,7 @@ classRouter.get("/year/:academicYear", classController.getClassesByAcademicYear)
  * @swagger
  * /api/v1/classes/{id}:
  *   get:
- *     summary: Get a class by ID
+ *     summary: Get class by ID
  *     tags: [Classes]
  *     parameters:
  *       - in: path
@@ -100,14 +140,16 @@ classRouter.get("/year/:academicYear", classController.getClassesByAcademicYear)
  *     responses:
  *       200:
  *         description: Class details
+ *       404:
+ *         description: Class not found
  */
 classRouter.get("/:id", classController.getClassById);
 
 /**
  * @swagger
  * /api/v1/classes/{id}:
- *   put:
- *     summary: Update a class by ID
+ *   patch:
+ *     summary: Update a class by ID (partial update)
  *     tags: [Classes]
  *     parameters:
  *       - in: path
@@ -115,6 +157,7 @@ classRouter.get("/:id", classController.getClassById);
  *         required: true
  *         schema:
  *           type: string
+ *         description: ID of the class
  *     requestBody:
  *       required: true
  *       content:
@@ -124,8 +167,10 @@ classRouter.get("/:id", classController.getClassById);
  *     responses:
  *       200:
  *         description: Class updated successfully
+ *       404:
+ *         description: Class not found
  */
-classRouter.put("/:id", validate(updateClassSchema), classController.updateClass);
+classRouter.patch("/:id", validate(updateClassSchema), classController.updateClass);
 
 /**
  * @swagger
@@ -142,6 +187,8 @@ classRouter.put("/:id", validate(updateClassSchema), classController.updateClass
  *     responses:
  *       204:
  *         description: Class deleted successfully
+ *       404:
+ *         description: Class not found
  */
 classRouter.delete("/:id", classController.deleteClass);
 
@@ -153,7 +200,7 @@ classRouter.delete("/:id", classController.deleteClass);
  *     tags: [Classes]
  *     responses:
  *       204:
- *         description: All classes deleted
+ *         description: All classes deleted successfully
  */
 classRouter.delete("/", classController.deleteAllClasses);
 
