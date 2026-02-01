@@ -1,5 +1,5 @@
 // client/src/constants/searchConfig.ts
-import type { Guardian, IClass, IStream, Student } from "../types";
+import type { Guardian, IClass, IStream, ISubject, Student } from "../types";
 import type { Teacher } from "../types/school/allocation";
 
 
@@ -34,4 +34,9 @@ export const searchConfig = {
     placeholder: "Search by Stream Name...",
     keys: ["streamName"] as (keyof IStream)[],
   } satisfies SearchConfig<IStream>,
+
+  subject: {
+    placeholder: "Search by Subject Name ...",
+    keys: ["subjectName"] as (keyof ISubject)[],
+  } satisfies SearchConfig<ISubject>,
 };
