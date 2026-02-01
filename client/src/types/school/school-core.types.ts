@@ -41,6 +41,10 @@ export interface ISubject{
   _id: string
   subjectName: string
   classRef: string | IClass
+   school: string | {
+    _id: string;
+    name: string;
+  }
 }
 export interface SubjectData extends ISubject {
   school: string;
