@@ -25,6 +25,7 @@ export { default as ClassOverview} from './class/class-overview'
 
 // ---------- Subject Management ----------
 export { default as RegisterSubject} from './subject/register-subject'
+export { default as ViewSubjects} from './subject/view-subject'
 
 // ---------- Student Management ----------
 export { default as RegisterStudent } from './student/register-student'
