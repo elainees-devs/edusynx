@@ -3,6 +3,7 @@ export * from "./student.api";
 export * from "./guardian.api";
 export * from "./class.api";
 export * from "./stream.api"
+export * from "./subject.api";
 export * from "./school.api";
 export * from "./email.api";
 export * from "./auth.api";
