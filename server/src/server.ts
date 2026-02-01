@@ -35,6 +35,7 @@ import {
   feePaymentRouter,
   profileRouter,
   analyticsRouter,
+  teacherSubjectRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -93,6 +94,7 @@ apiRouter.use("/auth", loginRouter);
 apiRouter.use("/exams", examRouter);
 apiRouter.use("/role-permissions", rolePermissionRouter);
 apiRouter.use("/subjects", subjectRouter);
+apiRouter.use("/teacher-subjects", teacherSubjectRouter);
 apiRouter.use("/fees", feeRouter);
 apiRouter.use("/invoices", invoiceRouter);
 apiRouter.use("/invoice-items", invoiceItemRouter);
