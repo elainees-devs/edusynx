@@ -20,6 +20,8 @@ export interface ITeacherSubject extends BaseDocument {
   school: Types.ObjectId | ISchool
   teacherId: Types.ObjectId | IBaseUser
   subjectId: Types.ObjectId | ISubject
+  classId: Types.ObjectId | IClass
+  streamId?: Types.ObjectId | IStream
 }
 
 export interface IClassTeacher extends ITeacher, BaseDocument {
