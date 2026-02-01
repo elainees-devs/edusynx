@@ -2,7 +2,8 @@
 import { Router } from "express";
 import { TeacherSubjectController } from "../controllers";
 import { validate } from "../middlewares/validate";
-import { createTeacherSubjectSchema, updateTeacherSubjectSchema } from "../validation/teacherSubject.schema";
+import { createTeacherSubjectSchema, updateTeacherSubjectSchema } from "../validation";
+
 
 const teacherSubjectRouter = Router();
 const teacherSubjectController = new TeacherSubjectController();
