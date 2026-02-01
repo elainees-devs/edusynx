@@ -10,6 +10,7 @@ export { emailRouter } from './email.route';
 export { examRouter } from './exam.route';
 export { rolePermissionRouter } from './rolePermission.route';
 export { subjectRouter } from './subject.route';
+export { teacherSubjectRouter } from './teacher-subject.route';
 export { feeRouter } from './fee.route';
 export { invoiceRouter } from './invoice.route';
 export { invoiceItemRouter } from './invoiceItem.route';
