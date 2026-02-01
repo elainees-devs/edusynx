@@ -6,6 +6,7 @@ export * from "./academics/class.teacher.controller";
 export * from "./academics/department.controller";
 export * from "./academics/exam.controller";
 export * from "./academics/subject.controller";
+export * from "./academics/teacher-subject.controller";
 export * from "./event.controller";
 export * from "./finance/fee.controller";
 export * from "./finance/feePayment.controller";
