@@ -1,22 +1,20 @@
 // server/src/types/subscription/subscription.types.ts
 
-export interface ISubscription {
-    id: string;
-    schoolId: string;
-    planId: string;
-    startDate: Date;
-    endDate: Date;
-    isActive: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+import { Types } from "mongoose";
+import { BaseDocument } from "../common/base.types";
+import { ISchool } from "../school/school-core.types";
+
+export interface ISubscriptionPlan extends BaseDocument {
+  name: string;
+  price: number;
+  durationInMonths: number;
+  features: string[];
 }
 
-export interface ISubscriptionPlan {
-    id: string;
-    name: string;
-    price: number;
-    durationInMonths: number;
-    features: string[];
-    createdAt: Date;
-    updatedAt: Date;
+export interface ISubscription extends BaseDocument {
+  school: Types.ObjectId | ISchool;
+  planId: Types.ObjectId | ISubscriptionPlan;
+  startDate: Date;
+  endDate: Date;
+  isActive: boolean;
 }
