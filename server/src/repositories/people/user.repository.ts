@@ -83,6 +83,81 @@ export class UserRepository {
     }
   }
 
+  async findAllTeachers(): Promise<IBaseUser[]> {
+  try {
+    return await UserModel.find({ role: "teacher" })
+      .populate("school", "firstName")
+      .exec();
+  } catch (error) {
+    throw new AppError(
+      `Failed to find teachers: ${(error as Error).message}`,
+      500
+    );
+  }
+}
+
+async findTeachersPaginated({
+  page,
+  limit,
+  search,
+  sort,
+}: {
+  page: number;
+  limit: number;
+  search: string;
+  sort: 1 | -1;
+}) {
+  try {
+    const skip = (page - 1) * limit;
+
+    const query: any = { role: "teacher" };
+
+    // Search by name or email
+    if (search) {
+      query.$or = [
+        { firstName: { $regex: search, $options: "i" } },
+        { lastName: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const total = await UserModel.countDocuments(query);
+
+    const teachers = await UserModel.find(query)
+      .populate("school", "firstName")
+      .sort({ createdAt: sort })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    return {
+      data: teachers,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
+  } catch (error) {
+    throw new AppError(
+      `Failed to paginate teachers: ${(error as Error).message}`,
+      500
+    );
+  }
+}
+
+
+  async countTeachers(): Promise<number> {
+    try {
+      return await UserModel.countDocuments({ role: "teacher" }).exec();
+    } catch (error) {
+      throw new AppError(
+        `Failed to count teachers: ${(error as Error).message}`,
+        500
+      );
+    }
+  }
+
+
+
   async deleteUserById(id: string): Promise<IBaseUser | null> {
     try {
       return await UserModel.findByIdAndDelete(new Types.ObjectId(id)).exec();
