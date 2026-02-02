@@ -6,7 +6,7 @@ import { objectId } from "./util";
 const baseUserSchema = z.object({
   school: objectId,
   firstName: z.string().min(3),
-  middleName: z.string().min(3),
+  middleName: z.string().optional(),
   lastName: z.string().min(3),
   email: z.string().email(),
   secondaryEmail: z.string().email().optional(),
