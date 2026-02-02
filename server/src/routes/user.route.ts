@@ -48,6 +48,78 @@ userRouter.get("/", userController.getAllUsers);
 
 /**
  * @swagger
+ * /api/v1/users/teachers/count:
+ *   get:
+ *     summary: Get total number of teachers
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Total number of teachers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total:
+ *                   type: integer
+ *                   example: 42
+ */
+userRouter.get("/teachers/count", userController.countTeachers);
+
+/**
+ * @swagger
+ * /api/v1/users/teachers:
+ *   get:
+ *     summary: Get all users with role "teacher" (supports pagination, search, and sort)
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Items per page
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search term (firstName, lastName, or email)
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: asc
+ *         description: Sort order by creation date
+ *     responses:
+ *       200:
+ *         description: List of teacher users with pagination info
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ *                 page:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
+ *                 total:
+ *                   type: integer
+ */
+userRouter.get("/teachers", userController.getTeachers);
+
+/**
+ * @swagger
  * /api/v1/users/{id}:
  *   get:
  *     summary: Get user by ID
@@ -62,6 +134,10 @@ userRouter.get("/", userController.getAllUsers);
  *     responses:
  *       200:
  *         description: User found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
  */
