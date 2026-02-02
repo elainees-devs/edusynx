@@ -66,16 +66,41 @@ export class UserController {
     async (req, res) => {
       const updatedUser = await this.userRepo.updateUserById(
         req.params.id,
-        req.body
+        req.body,
       );
       if (!updatedUser) throw new AppError("User not found", 404);
 
       await redisClient.del(`user:${req.params.id}`);
       res.json(updatedUser);
-    }
+    },
   );
 
-  // 5. Method to delete a user by ID
+  // 5. Method to get all users with role "teacher"
+  getAllTeachers = handleAsync(async (_req, res) => {
+    const teachers = await this.userRepo.findAllTeachers();
+    res.status(200).json(teachers);
+  });
+
+// 6. Method to get all users with role "teacher" (with pagination, search, sorting)
+getTeachers = handleAsync(async (req, res) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const search = (req.query.search as string) || "";
+  const sort = (req.query.sort as string) === "desc" ? -1 : 1;
+
+  const result = await this.userRepo.findTeachersPaginated({
+    page,
+    limit,
+    search,
+    sort,
+  });
+
+  res.status(200).json(result);
+});
+
+
+
+  // 7. Method to delete a user by ID
   deleteUser = handleAsync<{ id: string }>(async (req, res) => {
     const deletedUser = await this.userRepo.deleteUserById(req.params.id);
     if (!deletedUser) throw new AppError("User not found", 404);
@@ -84,9 +109,16 @@ export class UserController {
     res.status(204).send();
   });
 
-  // 6. Method to delete all users
+  // 8. Method to delete all users
   deleteAllUsers = handleAsync(async (_req, res) => {
     await this.userRepo.deleteAllUsers();
     res.status(204).send();
   });
+
+  // 9. Method to count all teachers
+countTeachers = handleAsync(async (_req, res) => {
+  const count = await this.userRepo.countTeachers();
+  res.status(200).json({ count });
+});
+
 }
