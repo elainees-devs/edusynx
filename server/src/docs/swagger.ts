@@ -79,6 +79,7 @@ export const options: swaggerJSDoc.Options = {
         ...teacherSubjectSchema,
         ...subscriptionSchema,
         ...subscriptionPlanSchema,
+        ...attendanceSchema,
       },
     },
     security: [{ bearerAuth: [] }],
