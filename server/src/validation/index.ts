@@ -1,3 +1,5 @@
+import e from 'express';
+
 // server/src/validation/index.ts
 export { createGuardianSchema, updateGuardianSchema } from './guardian.schema';
 export { createClassSchema, updateClassSchema } from './class.schema';
@@ -12,3 +14,6 @@ export { createFeeSchema, updateFeeSchema } from './fee.schema';
 export { createInvoiceSchema, updateInvoiceSchema } from './invoice.schema';
 export { createNotificationSchema, updateNotificationSchema } from './notification.schema';
 export { loginSchema } from './login.schema';
+export { createSubscriptionSchema, updateSubscriptionSchema } from './subscription.schema';
+export { createSubscriptionPlanSchema, updateSubscriptionPlanSchema } from './subscription-plan.schema';
+export { createAttendanceSchema, updateAttendanceSchema } from './attendance.schema';
