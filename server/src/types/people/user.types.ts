@@ -27,7 +27,7 @@ export interface IBaseUser extends BaseDocument {
 }
 
 // Teacher interface with literal role
-export type ITeacher = Pick<
+export type ITeacher = BaseDocument & Pick<
   IBaseUser,
   "school" | "firstName" | "middleName" | "lastName"
 > & {
