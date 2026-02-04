@@ -36,6 +36,9 @@ import {
   profileRouter,
   analyticsRouter,
   teacherSubjectRouter,
+  subscriptionPlanRouter,
+  subscriptionRouter,
+  attendanceRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -111,7 +114,9 @@ apiRouter.use("/allocations", allocationRouter);
 apiRouter.use("/streams", streamRouter);
 apiRouter.use("/profile", profileRouter);
 apiRouter.use("/analytics", analyticsRouter);
-
+apiRouter.use("/subscription-plans", subscriptionPlanRouter);
+apiRouter.use("/subscriptions", subscriptionRouter);
+apiRouter.use("/attendance", attendanceRouter);
 
 app.use("/api/v1", apiRouter);
 
