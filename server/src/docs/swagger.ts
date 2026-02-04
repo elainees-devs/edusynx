@@ -25,6 +25,8 @@ import {
   streamSchema,
   guardianSchema,
   teacherSubjectSchema,
+  subscriptionSchema,
+  subscriptionPlanSchema,
 } from "./components/schemas";
 import { Stream } from "winston/lib/winston/transports";
 
@@ -74,7 +76,9 @@ export const options: swaggerJSDoc.Options = {
         ...classTeacherSchema,
         ...streamSchema,
         ...guardianSchema,
-        ...teacherSubjectSchema
+        ...teacherSubjectSchema,
+        ...subscriptionSchema,
+        ...subscriptionPlanSchema,
       },
     },
     security: [{ bearerAuth: [] }],
