@@ -1,19 +1,20 @@
-// src/validation/attendance.schema.ts
+// server/src/validation/attendance.schema.ts
 import { z } from "zod";
-import { AttendanceStatus } from "../types";
-import { objectId } from "./util";
+import { objectId } from "./util"; // your existing ObjectId validator
 
-export const attendanceEntrySchema = z.object({
-  studentId: objectId,
-  status: z.nativeEnum(AttendanceStatus),
-});
+export const attendanceStatusEnum = z.enum(["present", "absent", "late", "excused"]);
 
-export const attendanceSchema = z.object({
-  school: objectId,
-  classRef: objectId,
+export const createAttendanceSchema = z.object({
+  school: objectId,           // school ID
+  classRef: objectId,         // class ID
   schoolYear: z.string().min(4),
-  date: z.coerce.date(),
-  attendance: z
-    .array(attendanceEntrySchema)
-    .min(1, "Attendance list cannot be empty"),
+  date: z.string().datetime(), // ISO 8601 date string
+  attendance: z.array(
+    z.object({
+      studentId: objectId,
+      status: attendanceStatusEnum,
+    })
+  ),
 });
+
+export const updateAttendanceSchema = createAttendanceSchema.partial();
