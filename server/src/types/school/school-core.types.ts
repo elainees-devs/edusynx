@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
 import { ITeacher } from "../people/user.types";
 import { IStudent } from "../people/student.types";
+import { ISubscription } from "../../dto";
 
 export interface ISchool extends BaseDocument {
   name: string
@@ -17,6 +18,7 @@ export interface ISchool extends BaseDocument {
   slug?: string
   role: string
   accessUrl?: string
+  subscription: Types.ObjectId | ISubscription
 }
 export interface IStream extends BaseDocument{
   school: Types.ObjectId | ISchool
