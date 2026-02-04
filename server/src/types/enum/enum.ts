@@ -35,6 +35,8 @@ export enum ExamType {
 export enum AttendanceStatus {
   PRESENT = "present",
   ABSENT = "absent",
+  EXCUSED = "excused",
+  LATE = "late",
 }
 
 export enum Term {
