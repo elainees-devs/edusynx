@@ -27,6 +27,7 @@ import {
   teacherSubjectSchema,
   subscriptionSchema,
   subscriptionPlanSchema,
+  attendanceSchema,
 } from "./components/schemas";
 import { Stream } from "winston/lib/winston/transports";
 
