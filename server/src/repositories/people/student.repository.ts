@@ -231,6 +231,46 @@ export class StudentRepository {
         `${s.studentFirstName} ${s.studentMiddleName ?? ""} ${s.studentLastName}`.trim(),
     }));
   }
+
+  // ===============================
+  // GET STUDENTS BY CLASS AND STREAM 
+  // ===============================
+  async getStudentsByClassAndStream(classId: string, streamId: string) {
+    const students = await StudentModel.find({ classId, stream: streamId })
+      .populate({
+        path: "classId",
+        select: "clasName", // only return class name
+      })
+      .populate({
+        path: "stream",
+        select: "streamName", // only return stream name
+      });
+
+    return students.map((s) => {
+      // Narrow classId type
+      let clasName: string | undefined;
+      if (s.classId && typeof s.classId !== "string") {
+        clasName = (s.classId as IClass).clasName;
+      }
+
+      // Narrow stream type
+      let streamName: string | undefined;
+      if (s.stream && typeof s.stream !== "string") {
+        streamName = (s.stream as IStream).streamName;
+      }
+
+      return {
+        _id: s._id,
+        studentFirstName: s.studentFirstName,
+        studentMiddleName: s.studentMiddleName,
+        studentLastName: s.studentLastName,
+        clasName,
+        streamName,
+      };
+    });
+  }
 }
+
+
 
 export const studentRepo = new StudentRepository();
