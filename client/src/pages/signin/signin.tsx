@@ -7,7 +7,6 @@ import { LoginForm } from "../../components";
 import { loginUser } from "../../api";
 import { useGlobalState, useUserAuth } from "../../hooks";
 
-
 const SignIn: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [email, setEmail] = useState("");
@@ -24,7 +23,7 @@ const SignIn: React.FC = () => {
     [UserRole.PRINCIPAL]: "principal",
     [UserRole.ACCOUNTANT]: "accountant",
     [UserRole.GUARDIAN]: "guardian",
-    "super-admin": "super-admin"
+    "super-admin": "super-admin",
   };
   function isPopulatedSchool(school: unknown): school is { isActive: boolean } {
     return (
@@ -42,6 +41,10 @@ const SignIn: React.FC = () => {
     try {
       const { token, user } = await loginUser(email, password);
 
+      // Save user info and token
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+
       if (isPopulatedSchool(user.school)) {
         console.log("School isActive:", user.school.isActive);
       } else {
@@ -53,7 +56,7 @@ const SignIn: React.FC = () => {
         Swal.fire(
           "Account Inactive",
           "Kindly contact admin for support.",
-          "warning"
+          "warning",
         );
         return;
       }
@@ -67,7 +70,7 @@ const SignIn: React.FC = () => {
         Swal.fire(
           "School Inactive",
           "Kindly contact admin for support.",
-          "warning"
+          "warning",
         );
         return;
       }
@@ -123,7 +126,7 @@ const SignIn: React.FC = () => {
       <LoginForm
         slug={slug!}
         email={email}
-        rememberMe = {rememberMe}
+        rememberMe={rememberMe}
         password={password}
         setEmail={setEmail}
         setPassword={setPassword}
