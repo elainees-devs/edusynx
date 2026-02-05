@@ -9,6 +9,7 @@ import {
 import type { ISchool } from "../../types";
 import SchoolLogoDropzone from "./school/school-logo";
 import { SubmitButton } from "../../shared";
+import { pricingPlans } from "../../constants";
 
 interface Props {
   register: UseFormRegister<ISchool>;
@@ -148,6 +149,32 @@ const SchoolRegistrationForm: React.FC<Props> = ({
           </p>
         )}
       </div>
+
+      {/* Subscription Plan */}
+<div>
+  <label className="block mb-1">Subscription Plan</label>
+
+  <select
+    {...register("subscription", { required: "Subscription plan is required" })}
+    className={`w-full border rounded px-3 py-2 ${
+      errors.subscription ? "border-red-500" : "border-gray-300"
+    }`}
+  >
+    <option value="">Select a plan</option>
+    {pricingPlans.map((plan) => (
+      <option key={plan.title} value={plan.title}>
+        {plan.title} — {plan.price}
+      </option>
+    ))}
+  </select>
+
+  {errors.subscription && (
+    <p className="text-red-500 text-sm mt-1">
+      {errors.subscription.message}
+    </p>
+  )}
+</div>
+
 
       {/* Role */}
       <div>
