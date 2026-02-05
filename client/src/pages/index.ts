@@ -32,6 +32,10 @@ export { default as RegisterStudent } from './student/register-student'
 export { default as ViewStudents } from './student/view-students'
 export {default as ViewGuardian} from './student/view-guardian'
 
+//---------- Attendance Management ----------
+export { default as RegisterAttendancePage } from './attendance/register-attendance'
+
+
 // ---------- Teacher Management ----------
 export { default as ViewTeachers } from './teachers/view-teachers'
 
