@@ -1,7 +1,6 @@
 // client/src/types/people/user.types.ts
 import type { UserRole } from "../../constants";
 import type { BaseDocument } from "../common/base.types";
-import type { IDepartment } from "../school/academic.types";
 import type { ISchool } from "../school/school-core.types";
 
 
@@ -25,13 +24,13 @@ export interface IBaseUser extends BaseDocument {
   role: UserRole;
 }
 
-export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
-   role: typeof UserRole.TEACHER
-  isClassTeacher?:boolean
-  classId?: string // assign class when isClassTeacher is true
-  department?: string |IDepartment
-  isHeadOfDepartment?:boolean
-}
+// export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
+//    role: typeof UserRole.TEACHER
+//   isClassTeacher?:boolean
+//   classId?: string // assign class when isClassTeacher is true
+//   department?: string |IDepartment
+//   isHeadOfDepartment?:boolean
+// }
 
 export interface GuardianFormInput {
   school: string; // Assuming ID string here; adjust if different
