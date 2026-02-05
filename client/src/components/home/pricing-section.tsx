@@ -36,11 +36,15 @@ const PricingSection: React.FC = () => {
               </p>
               <p className="mb-6 text-gray-500">{plan.description}</p>
               <ul className="mb-6 space-y-2 text-left">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2 text-gray-700">
-                    <span className="text-green-500">✔</span>
-                    {feature}
-                  </li>
+                {plan.featureGroups.map((featureGroup, i) => (
+                  <div key={i}>
+                    {featureGroup.features.map((item, j) => (
+                      <li key={j} className="flex items-start gap-2 text-gray-700">
+                        <span className="text-green-500">✔</span>
+                        {item}
+                      </li>
+                    ))}
+                  </div>
                 ))}
               </ul>
 
