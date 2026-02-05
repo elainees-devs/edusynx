@@ -1,6 +1,6 @@
 // server/src/routes/class.route.ts
 import { Router } from "express";
-import { createClassSchema, updateClassSchema } from "../validation/class.schema";
+import { createClassSchema, updateClassSchema } from "../validation";
 import { ClassController } from "../controllers";
 import { validate } from "../middlewares/validate";
 
