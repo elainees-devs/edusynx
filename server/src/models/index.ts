@@ -1,4 +1,6 @@
 // server/src/models/index.ts
+export * from './subscription/subscription-plan.model'
+export * from './subscription/subscription.model'       
 export * from './school-core/school.model'
 export * from './school-core/stream.model'
 export * from './school-core/class.model'  
