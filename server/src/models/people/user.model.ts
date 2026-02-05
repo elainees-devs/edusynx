@@ -4,7 +4,7 @@ import { IBaseUser, UserRole } from "../../types";
 
 
 export const UserSchemaFields: Record<
-  keyof Omit<IBaseUser, "_id" | "createdAt" | "updatedAt">,
+  keyof Omit<IBaseUser,  "createdAt" | "updatedAt" | "_id">,
   any
 > = {
   school: { type: Schema.Types.ObjectId, ref: "School", required: true },
