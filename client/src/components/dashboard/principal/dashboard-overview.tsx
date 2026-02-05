@@ -1,205 +1,161 @@
-import React, { useEffect, useState } from "react";
+// client/src/components/PrincipalDashboardOverview.tsx
+import React from "react";
 import {
-  FaMoneyBillWave,
-  FaExclamationTriangle,
-  FaUserCheck,
-  FaUserGraduate,
-  FaChalkboardTeacher,
-} from "react-icons/fa";
-import { MdNotificationsActive } from "react-icons/md";
-import type {
-  AttendanceAlert,
-  FeeAlert,
-  FinancialSummary,
-} from "../../../constants/data/head-teacher-dashboard";
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
 
-const tabs = ["Students", "Teachers", "Attendance", "Performance"];
+// Color palette
+const chartColors = ["#319795", "#008eab", "#3280b7", "#6c6daf"];
+
+// Dummy Data
+const kpiData = {
+  students: 1250,
+  teachers: 58,
+  classes: 24,
+  pendingFees: 7230,
+};
+
+const attendanceData = [
+  { month: "Jan", rate: 80 },
+  { month: "Feb", rate: 85 },
+  { month: "Mar", rate: 83 },
+  { month: "Apr", rate: 86 },
+  { month: "May", rate: 88 },
+  { month: "Jun", rate: 92 },
+];
+
+const examData = [
+  { grade: "A", students: 85 },
+  { grade: "B", students: 60 },
+  { grade: "C", students: 45 },
+  { grade: "D", students: 20 },
+];
+
+const feeData = [
+  { name: "Paid", value: 60 },
+  { name: "Due", value: 25 },
+  { name: "Overdue", value: 5 },
+  { name: "Other", value: 10 },
+];
+
+const recentActivity = [
+  { id: 1, text: "New student: Emma Watson enrolled." },
+  { id: 2, text: "Mr. Smith marked absent today." },
+  { id: 3, text: "Science Fair scheduled for May 20th." },
+  { id: 4, text: "Fee reminder sent to 5 parents." },
+];
+
+const quickActions = [
+  { id: 1, label: "Add Student", color: chartColors[0] },
+  { id: 2, label: "Add Teacher", color: chartColors[1] },
+  { id: 3, label: "Create Exam", color: chartColors[2] },
+  { id: 4, label: "Send Notification", color: chartColors[3] },
+];
+
+// KPI Card Component
+const KPICard: React.FC<{ title: string; value: number }> = ({ title, value }) => (
+  <div className="bg-white rounded shadow p-4 flex-1 text-center">
+    <p className="text-gray-500">{title}</p>
+    <p className="text-2xl font-bold">{value}</p>
+  </div>
+);
 
 const PrincipalDashboardOverview: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("Students");
-  const [filters, setFilters] = useState({
-    class: "",
-    stream: "",
-    date: "",
-  });
-
-  const [finance, setFinance] = useState<FinancialSummary>({
-    totalIncome: 0,
-    totalExpenses: 0,
-    netBalance: 0,
-  });
-
-  const [feeAlerts, setFeeAlerts] = useState<FeeAlert[]>([]);
-  const [attendanceAlerts, setAttendanceAlerts] = useState<AttendanceAlert[]>([]);
-
-  useEffect(() => {
-    // Simulated API fetch
-    setFinance({ totalIncome: 1200000, totalExpenses: 500000, netBalance: 700000 });
-    setFeeAlerts([
-      { studentName: "Jane Doe", className: "Grade 6", overdueAmount: 15000 },
-      { studentName: "John Smith", className: "Grade 8", overdueAmount: 20000 },
-    ]);
-    setAttendanceAlerts([
-      { studentName: "Mary Wambui", className: "Grade 5", attendanceRate: 68 },
-      { studentName: "Ali Yusuf", className: "Grade 7", attendanceRate: 70 },
-    ]);
-  }, []);
-
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
   return (
-    <div className="ml-48 p-6 bg-gray-50 min-h-screen space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Head Teacher Dashboard</h1>
-
-      {/* Filters */}
-      <div className="flex flex-wrap gap-4 bg-white p-4 rounded-2xl shadow">
-        <select
-          value={filters.class}
-          onChange={(e) => handleFilterChange("class", e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-blue-200"
-        >
-          <option value="">All Classes</option>
-          <option value="Grade 5">Grade 5</option>
-          <option value="Grade 6">Grade 6</option>
-          <option value="Grade 7">Grade 7</option>
-        </select>
-
-        <select
-          value={filters.stream}
-          onChange={(e) => handleFilterChange("stream", e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2 focus:ring focus:ring-blue-200"
-        >
-          <option value="">All Streams</option>
-          <option value="North">North</option>
-          <option value="South">South</option>
-        </select>
-
-        <input
-          type="date"
-          value={filters.date}
-          onChange={(e) => handleFilterChange("date", e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-2"
-        />
+    <div className="ml-48 p-6 space-y-6 overflow-auto">
+      {/* KPI Cards */}
+      <div className="flex gap-6 mb-6 flex-wrap">
+        <KPICard title="Total Students" value={kpiData.students} />
+        <KPICard title="Total Teachers" value={kpiData.teachers} />
+        <KPICard title="Classes & Streams" value={kpiData.classes} />
+        <KPICard title="Pending Fees" value={kpiData.pendingFees} />
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-4 border-b">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            className={`pb-2 text-lg font-medium ${
-              activeTab === tab
-                ? "border-b-4 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-gray-800"
-            }`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
+      {/* Charts */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        {/* Attendance Line Chart */}
+        <div className="bg-white rounded shadow p-4">
+          <h3 className="font-bold mb-2">Attendance Rate</h3>
+          <LineChart width={300} height={200} data={attendanceData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="rate" stroke={chartColors[0]} strokeWidth={2} />
+          </LineChart>
+        </div>
+
+        {/* Fee Pie Chart */}
+        <div className="bg-white rounded shadow p-4">
+          <h3 className="font-bold mb-2">Fee Collection</h3>
+          <PieChart width={300} height={200}>
+            <Pie
+              data={feeData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={60}
+              label
+            >
+              {feeData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
+              ))}
+            </Pie>
+            <Legend />
+          </PieChart>
+        </div>
+
+        {/* Exam Bar Chart */}
+        <div className="bg-white rounded shadow p-4">
+          <h3 className="font-bold mb-2">Exam Performance</h3>
+          <BarChart width={300} height={200} data={examData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="grade" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="students" fill={chartColors[1]} />
+          </BarChart>
+        </div>
       </div>
 
-      {/* Tab Content */}
-      {activeTab === "Students" && (
-        <>
-          {/* Financial Summary */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-2xl shadow">
-              <div className="flex items-center gap-2 text-green-600">
-                <FaMoneyBillWave className="w-6 h-6" />
-                <h2 className="text-lg font-semibold">Total Income</h2>
-              </div>
-              <p className="text-2xl font-bold mt-2">KES {finance.totalIncome.toLocaleString()}</p>
-            </div>
-            <div className="bg-white p-4 rounded-2xl shadow">
-              <div className="flex items-center gap-2 text-red-500">
-                <FaMoneyBillWave className="w-6 h-6" />
-                <h2 className="text-lg font-semibold">Total Expenses</h2>
-              </div>
-              <p className="text-2xl font-bold mt-2">KES {finance.totalExpenses.toLocaleString()}</p>
-            </div>
-            <div className="bg-white p-4 rounded-2xl shadow">
-              <div className="flex items-center gap-2 text-blue-600">
-                <FaMoneyBillWave className="w-6 h-6" />
-                <h2 className="text-lg font-semibold">Net Balance</h2>
-              </div>
-              <p className="text-2xl font-bold mt-2">KES {finance.netBalance.toLocaleString()}</p>
-            </div>
-          </section>
-
-          {/* Alerts Section */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Fee Alerts */}
-            <div className="bg-white p-4 rounded-2xl shadow">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-800 flex gap-2 items-center">
-                  <FaExclamationTriangle className="text-yellow-500" />
-                  Overdue Fees Alerts
-                </h2>
-                <MdNotificationsActive className="text-red-500 w-6 h-6" />
-              </div>
-              <ul className="mt-4 space-y-2">
-                {feeAlerts.map((alert, idx) => (
-                  <li key={idx} className="border-b pb-2">
-                    <span className="font-medium">{alert.studentName}</span> ({alert.className}) –{" "}
-                    <span className="text-red-600">KES {alert.overdueAmount.toLocaleString()}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Attendance Alerts */}
-            <div className=" bg-white p-4 rounded-2xl shadow">
-              <h2 className="text-xl font-semibold text-gray-800 flex gap-2 items-center">
-                <FaUserCheck className="text-indigo-600" />
-                Low Attendance Alerts
-              </h2>
-              <ul className="mt-4 space-y-2">
-                {attendanceAlerts.map((alert, idx) => (
-                  <li key={idx} className="border-b pb-2">
-                    <span className="font-medium">{alert.studentName}</span> ({alert.className}) –{" "}
-                    <span className="text-orange-600">{alert.attendanceRate}%</span> attendance
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        </>
-      )}
-
-      {activeTab === "Teachers" && (
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold text-gray-800 flex gap-2 items-center">
-            <FaChalkboardTeacher className="text-purple-600" />
-            Teachers Overview
-          </h2>
-          <p className="text-gray-600 mt-2">Coming soon — teacher attendance & subject load.</p>
+      {/* Recent Activity & Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-white rounded shadow p-4">
+          <h3 className="font-bold mb-2">Recent Activity</h3>
+          <ul className="space-y-2">
+            {recentActivity.map(a => (
+              <li key={a.id} className="border-b border-gray-200 pb-2">{a.text}</li>
+            ))}
+          </ul>
         </div>
-      )}
-
-      {activeTab === "Attendance" && (
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold text-gray-800 flex gap-2 items-center">
-            <FaUserCheck className="text-green-600" />
-            Attendance Overview
-          </h2>
-          <p className="text-gray-600 mt-2">Graph/Charts to visualize attendance trends.</p>
+        <div className="bg-white rounded shadow p-4">
+          <h3 className="font-bold mb-2">Quick Actions</h3>
+          <div className="flex flex-col space-y-2">
+            {quickActions.map(a => (
+              <button
+                key={a.id}
+                style={{ backgroundColor: a.color }}
+                className="text-white py-2 px-4 rounded hover:opacity-90"
+              >
+                {a.label}
+              </button>
+            ))}
+          </div>
         </div>
-      )}
-
-      {activeTab === "Performance" && (
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold text-gray-800 flex gap-2 items-center">
-            <FaUserGraduate className="text-blue-600" />
-            Academic Performance
-          </h2>
-          <p className="text-gray-600 mt-2">Performance analytics by class or stream.</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
-
 export default PrincipalDashboardOverview;
