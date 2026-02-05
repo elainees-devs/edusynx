@@ -22,6 +22,7 @@ import {
   RegisterSubject,
   ViewStreams,
   ViewSubjects,
+  RegisterAttendancePage,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -102,6 +103,12 @@ function App() {
           <Route path="/:slug/student/new" element={<RegisterStudent />} />
           <Route path="/:slug/students/view" element={<ViewStudents />} />
           <Route path="/:slug/guardian/view" element={<ViewGuardian />} />
+
+          {/* === Attendance === */}
+          <Route
+            path="/dashboard/attendance/register/"
+            element={<RegisterAttendancePage />}
+          />
 
           {/* === Miscellaneous === */}
         </Routes>
