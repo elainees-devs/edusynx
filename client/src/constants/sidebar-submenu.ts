@@ -53,3 +53,7 @@ export const subjectNavChildren: NavItem[] = [
   { name: "Add Subject", icon: FaPlusCircle, path: "/dashboard/subjects/add" },
   { name: "Assign Teachers", icon: FaTasks, path: "/dashboard/subjects/assign" },
 ];
+
+// ----- ATTENDANCE -----
+export const attendanceNavChildren: NavItem[] = [
+  { name: "Register Attendance", icon: FaPlusCircle, path:"/dashboard/attendance/register/" },];
