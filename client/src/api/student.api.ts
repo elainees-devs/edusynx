@@ -52,6 +52,24 @@ export const getStudents = async (
   return response.data;
 };
 
+
+/* ==============================
+   Get all students for a specific class (no pagination)
+================================ */
+export const getStudentsByClass = async (classId: string): Promise<Student[]> => {
+  try {
+    const response = await axios.get(`${API_BASE}/students`, {
+      params: { classId },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching students:", error.response?.data);
+      throw error.response?.data || { message: "Failed to fetch students" };
+    }
+    throw { message: "Unknown error occurred while fetching students" };
+  }
+};
 /* ==============================
    Upload students file
 ================================ */
@@ -124,3 +142,28 @@ export const countStudents = async (): Promise<{ count: number }> => {
   const response = await axios.get(`${API_BASE}/students/count`);
   return response.data;
 }
+
+/* ==============================
+   Get students by class + stream
+================================ */
+export const getStudentsByClassAndStream = async (
+  classId: string,
+  stream: string
+): Promise<Student[]> => {
+  try {
+    const response = await axios.get(`${API_BASE}/students/class`, {
+      params: { classId, stream },
+    });
+
+    // Backend returns: { data: [...] }
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching students:", error.response?.data);
+      throw error.response?.data || { message: "Failed to fetch students" };
+    }
+
+    throw { message: "Unknown error occurred while fetching students" };
+  }
+};
+
