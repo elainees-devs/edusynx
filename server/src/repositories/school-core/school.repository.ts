@@ -13,7 +13,8 @@ export class SchoolRepository {
     const school = new SchoolModel({
       ...schoolData,
       slug,
-      accessUrl: accessUrl 
+      accessUrl: accessUrl, 
+      subscription: schoolData.subscription
     });
     console.log(accessUrl)
     return await school.save();
