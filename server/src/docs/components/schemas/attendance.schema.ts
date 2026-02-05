@@ -1,5 +1,4 @@
 // server/src/docs/components/schemas/attendance.schema.ts
-// server/src/docs/components/schemas/attendance.schema.ts
 
 export const attendanceSchema = {
   AttendanceCreate: {
