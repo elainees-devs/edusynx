@@ -1,7 +1,6 @@
 // server/src/controllers/index.ts
 
 export * from "./allocation.controller";
-export * from "./academics/attendance.controller";
 export * from "./academics/class.teacher.controller";
 export * from "./academics/department.controller";
 export * from "./academics/exam.controller";
@@ -21,7 +20,10 @@ export * from "./permissions/rolePermission.controller";
 export * from "./school-core/class.controller";
 export * from "./school-core/school.controller";
 export * from "./school-core/stream.controller";
+export * from "./school-core/attendance.controller";
 export * from "./security/login.controller";
 export * from "./security/session.controller";
 export * from "./analytics/analytics.controller";
+export * from "./subscription/subscription.controller"
+export * from "./subscription/subscription-plan.controller"
 
