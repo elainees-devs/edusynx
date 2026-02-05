@@ -44,7 +44,7 @@ export class StudentController {
     const paginatedStudents = allStudents.slice(start, start + limit);
 
     // Return paginated response
-    res.json({ data: paginatedStudents, search,page, totalPages, total });
+    res.json({ data: paginatedStudents, search, page, totalPages, total });
   });
 
   // 3. Get student with guardian
@@ -122,4 +122,59 @@ export class StudentController {
       students,
     });
   });
+
+  // 12. Get students by class name
+  // ===============================
+  // GET STUDENTS BY CLASS & STREAM WITH PAGINATION
+  // ===============================
+  getStudentsByClassAndStream = handleAsync(async (req, res) => {
+  // 1️Pagination & search
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const search = (req.query.search as string) || "";
+
+  // 2Class & Stream IDs
+  const classId = req.query.classId as string;
+  const streamId = req.query.stream as string;
+
+  if (!classId || !streamId) {
+    return res.status(400).json({ message: "classId and stream are required" });
+  }
+
+  // 3Fetch students from repository
+  let students = await studentRepo.getStudentsByClassAndStream(classId, streamId);
+
+  // Filter by search
+  if (search) {
+    const lowerSearch = search.toLowerCase();
+    students = students.filter(
+      (s) =>
+        s.studentFirstName.toLowerCase().includes(lowerSearch) ||
+        s.studentLastName.toLowerCase().includes(lowerSearch) ||
+        (s.studentMiddleName?.toLowerCase().includes(lowerSearch) ?? false)
+    );
+  }
+
+  // 5Pagination
+  const total = students.length;
+  const totalPages = Math.ceil(total / limit);
+  const start = (page - 1) * limit;
+  const paginatedStudents = students.slice(start, start + limit);
+
+  // Return paginated response
+  res.json({
+    data: paginatedStudents.map((s) => ({
+      _id: s._id,
+      studentFirstName: s.studentFirstName,
+      studentMiddleName: s.studentMiddleName,
+      studentLastName: s.studentLastName,
+      clasName: s.clasName,
+      stream: s.streamName,
+    })),
+    search,
+    page,
+    totalPages,
+    total,
+  });
+});
 }
