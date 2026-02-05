@@ -24,6 +24,7 @@ const SchoolSchema: Schema = new Schema<ISchool>(
     },
     role: { type: String, required: true },
     accessUrl: { type: String, required: true, lowercase: true },
+    subscription: { type: Schema.Types.ObjectId, ref: "Subscription", required: true },
   },
 
   {
