@@ -26,3 +26,6 @@ export {departmentRouter} from './department.route'
 export { feePaymentRouter } from './feePayment.route';
 export {profileRouter} from './profile.route'
 export {analyticsRouter} from './analytics.route'
+export { subscriptionPlanRouter } from './subscription-plan.route';
+export { subscriptionRouter } from './subscription.route';
+export { attendanceRouter } from './attendance.route';
