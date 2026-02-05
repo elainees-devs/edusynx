@@ -69,7 +69,7 @@ const schoolController = new SchoolController();
 ========================= */
 /**
  * @swagger
- * /api/v1schools/register:
+ * /api/v1/schools/register:
  *   post:
  *     summary: Create a new school
  *     tags: [Schools]
