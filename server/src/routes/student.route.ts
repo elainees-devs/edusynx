@@ -61,9 +61,9 @@ const upload = multer({ storage: multer.memoryStorage() });
  */
 studentRouter.post(
   "/upload",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]), // ✅ allow multiple roles
-  upload.single("file"), // ✅ handle CSV/Excel
-  studentController.uploadStudentsData, // ✅ uses req.user.school
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]), // allow multiple roles
+  upload.single("file"), // handle CSV/Excel
+  studentController.uploadStudentsData, // uses req.user.school
 );
 
 /**
@@ -238,11 +238,93 @@ studentRouter.patch(
 
 /**
  * @swagger
+ * /api/v1/students/class:
+ *   get:
+ *     summary: Get all students by class and stream with pagination
+ *     tags: [Students]
+ *     parameters:
+ *       - in: query
+ *         name: classId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the class
+ *       - in: query
+ *         name: stream
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the stream
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of students per page
+ *       - in: query
+ *         name: search
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Search term for first, middle, or last name
+ *     responses:
+ *       200:
+ *         description: Paginated list of students
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         description: Student ID
+ *                       studentFirstName:
+ *                         type: string
+ *                       studentMiddleName:
+ *                         type: string
+ *                       studentLastName:
+ *                         type: string
+ *                       clasName:
+ *                         type: string
+ *                       streamName:
+ *                         type: string
+ *                 search:
+ *                   type: string
+ *                 page:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
+ *                 total:
+ *                   type: integer
+ */
+
+studentRouter.get(
+  "/class",
+  studentController.getStudentsByClassAndStream
+);
+
+
+/**
+ * @swagger
  * /api/v1/students/{id}:
  *   delete:
  *     summary: Delete student by ID
  *     tags: [Students]
  */
+
 studentRouter.delete("/:id", studentController.deleteStudentById);
 
 /**
