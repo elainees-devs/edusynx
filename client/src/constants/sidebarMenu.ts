@@ -18,7 +18,8 @@ import {
   teacherNavChildren,
   subjectNavChildren,
   studentNavChildren,
-  streamNavChildren
+  streamNavChildren,
+  attendanceNavChildren
 } from "./sidebar-submenu";
 
 export interface NavItem {
@@ -71,6 +72,14 @@ export const principalNavItems: NavItem[] = [
     path: "/dashboard/subjects",
     children: subjectNavChildren,
   },
+
+  {
+    name: "Attendance",
+    icon: FaClipboardList,  
+    path: "/dashboard/attendance",
+    children: attendanceNavChildren,
+  },
+
   { name: "Reports", icon: FaClipboardList, path: "/dashboard/reports" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
