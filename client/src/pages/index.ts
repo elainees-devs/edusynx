@@ -34,6 +34,7 @@ export {default as ViewGuardian} from './student/view-guardian'
 
 //---------- Attendance Management ----------
 export { default as RegisterAttendancePage } from './attendance/register-attendance'
+export { default as ViewAttendance } from './attendance/view-attendance'
 
 
 // ---------- Teacher Management ----------
