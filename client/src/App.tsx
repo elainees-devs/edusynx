@@ -23,6 +23,7 @@ import {
   ViewStreams,
   ViewSubjects,
   RegisterAttendancePage,
+  ViewAttendance,
 } from "./pages";
 import {
   AccountantDashboard,
@@ -108,6 +109,10 @@ function App() {
           <Route
             path="/dashboard/attendance/register/"
             element={<RegisterAttendancePage />}
+          />
+          <Route
+            path="/dashboard/attendance/view"
+            element={<ViewAttendance />}
           />
 
           {/* === Miscellaneous === */}
