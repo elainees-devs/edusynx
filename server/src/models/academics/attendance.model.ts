@@ -6,6 +6,7 @@ const attendanceSchema = new Schema<IAttendance>(
   {
     school: { type: Schema.Types.ObjectId, ref: 'School', required: true },
     classRef: { type: Schema.Types.ObjectId, ref: 'Class', required: true },
+    streamId: { type: Schema.Types.ObjectId, ref: 'Stream', required: true },
     schoolYear: { type: String, required: true },
     date: { type: Date, required: true },
     attendance: [
