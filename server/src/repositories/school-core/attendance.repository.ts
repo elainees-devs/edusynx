@@ -2,75 +2,100 @@
 import { Types } from "mongoose";
 import { IAttendance } from "../../types";
 import { AttendanceModel } from "../../models";
-import { PaginationOptions } from "../../shared/pagination";
+
 
 export class AttendanceRepository {
   /**
-   * Create a new attendance record for a class on a specific date
+   *  Create a new attendance record for a class on a specific date
    */
   async create(attendanceData: IAttendance): Promise<IAttendance> {
     const attendance = new AttendanceModel(attendanceData);
     return attendance.save();
   }
 
+
   /**
-   * Find attendance by ID
+   * Get all attendance records and flatten for the UI
+   */
+  async findAll(): Promise<any[]> {
+    const records = await AttendanceModel.find()
+      .populate("school")
+      .populate("classRef")
+      .populate("streamId")
+      .populate({
+        path: "attendance.studentId",
+        select: "studentFirstName studentLastName"
+      })
+      .lean()
+      .exec();
+
+    return records.flatMap((record: any) =>
+      (record.attendance || []).map((entry: any) => ({
+        _id: entry._id,
+        studentName: [entry.studentId?.studentFirstName, entry.studentId?.studentLastName].filter(Boolean).join(" ") || "—",
+        clasName: record.classRef?.clasName || "—",
+        streamName: record.streamId?.streamName || "—",
+        date: record.date ? new Date(record.date).toISOString().slice(0, 10) : "—",
+        status: entry.status,
+        notes: entry.notes || "—"
+      }))
+    );
+  }
+
+
+  /**
+   * Get attendance by ID
    */
   async findById(id: string): Promise<IAttendance | null> {
     return AttendanceModel.findById(id)
       .populate("school")
       .populate("classRef")
-      .populate("attendance.studentId")
+      .populate("streamId")
+      .populate({
+        path: "attendance.studentId",
+        select: "studentFirstName studentLastName"
+      })
       .exec();
   }
 
+
+
   /**
-   * Get attendance for a class on a specific date
-   */
-  async findByClassAndDate(
+ * Get the unique attendance record for a class, stream, and specific date
+ */
+  async findByClassStreamAndDate(
     classId: string,
+    streamId: string,
     date: Date
   ): Promise<IAttendance | null> {
+    // Normalize date to cover the full 24-hour period of the selected day
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
+
     const end = new Date(date);
     end.setHours(23, 59, 59, 999);
 
     return AttendanceModel.findOne({
       classRef: classId,
+      streamId: streamId,
       date: { $gte: start, $lte: end },
     })
-      .populate("attendance.studentId")
+      .populate({
+        path: "attendance.studentId",
+        select: "studentFirstName studentLastName rollNumber" // Tailor these to your Student model
+      })
+      .populate("classRef", "clasName") // Optional: useful for UI breadcrumbs
+      .populate("streamId", "streamName")
       .exec();
   }
 
-  /**
-   * Get attendance for a class on a specific date with pagination
-   */
-  async findByClassAndDatePaginated(
-    classId: string,
-    date: Date,
-    options: PaginationOptions
-  ): Promise<IAttendance[]> {
-    const start = new Date(date);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(date);
-    end.setHours(23, 59, 59, 999);
 
-    return AttendanceModel.find({
-      classRef: classId,
-      date: { $gte: start, $lte: end },
-    })
-      .skip(options.skip || 0)
-      .limit(options.limit || 10)
-      .populate("attendance.studentId")
-      .exec();
-  }
+
 
   /**
    * Count attendance records for a class on a specific date
    */
-  async countByClassAndDate(classId: string, date: Date): Promise<number> {
+  async countByClassAndDate(classId: string, streamId: string, date: Date): Promise<number> {
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
     const end = new Date(date);
@@ -78,9 +103,11 @@ export class AttendanceRepository {
 
     return AttendanceModel.countDocuments({
       classRef: classId,
+      stream: streamId,
       date: { $gte: start, $lte: end },
     }).exec();
   }
+
 
   /**
    * Get all attendance for a school/year
@@ -97,6 +124,7 @@ export class AttendanceRepository {
       .populate("attendance.studentId")
       .exec();
   }
+
 
   /**
    * Update a specific student's attendance status
@@ -117,6 +145,7 @@ export class AttendanceRepository {
       .populate("attendance.studentId")
       .exec();
   }
+
 
   /**
    * Replace the full attendance array for a class/date
