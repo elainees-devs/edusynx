@@ -8,5 +8,6 @@ export {default as SubjectTable} from'./subject-table.tsx'
 export {default as TeacherTable} from'./teacher-table.tsx'
 export {default as GuardianTable} from'./guardian-table.tsx'
 export {default as StudentTable} from'./student-table.tsx'
+export {default as AttendanceTable} from'./attendance-table.tsx'    
 
 
