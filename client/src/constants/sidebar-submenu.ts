@@ -56,4 +56,5 @@ export const subjectNavChildren: NavItem[] = [
 
 // ----- ATTENDANCE -----
 export const attendanceNavChildren: NavItem[] = [
-  { name: "Register Attendance", icon: FaPlusCircle, path:"/dashboard/attendance/register/" },];
+  { name: "Register Attendance", icon: FaPlusCircle, path:"/dashboard/attendance/register/" },
+{ name: "View Attendance Records", icon: FaListAlt, path: "/dashboard/attendance/records" }];
