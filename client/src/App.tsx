@@ -111,7 +111,7 @@ function App() {
             element={<RegisterAttendancePage />}
           />
           <Route
-            path="/dashboard/attendance/view"
+            path="/dashboard/attendance/records"
             element={<ViewAttendance />}
           />
 
