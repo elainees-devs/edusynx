@@ -29,6 +29,15 @@ export class AttendanceController {
     res.status(201).json(newAttendance);
   });
 
+   /**
+   * Get all attendance records
+   * GET /attendance/
+   */
+  getAllAttendance = handleAsync(async (req, res) => {
+    const allAttendance = await attendanceRepo.findAll();
+    res.json(allAttendance);
+  });
+
   /**
    * Get attendance by ID
    * GET /attendance/:id
@@ -40,33 +49,26 @@ export class AttendanceController {
   });
 
   /**
-   * Get attendance for a class on a specific date
-   * GET /attendance?classId=xxx&date=2026-02-02&page=1&limit=10
-   */
-  getAttendanceByClassAndDate = handleAsync(async (req: Request, res: Response) => {
-    const { classId, date, page = "1", limit = "10" } = req.query;
+ * GET /attendance?classId=xxx&streamId=xxx&date=2026-02-02
+ */
+getAttendanceByClassAndDate = handleAsync(async (req, res) => {
+  const { classId, streamId, date } = req.query;
 
-    if (!classId) throw new AppError("classId query parameter is required", 400);
-    if (!date) throw new AppError("date query parameter is required", 400);
+  if (!classId || !streamId || !date) {
+    throw new AppError("classId, streamId, and date are required", 400);
+  }
 
-    const pageNum = parseInt(page as string);
-    const limitNum = parseInt(limit as string);
-    const skip = (pageNum - 1) * limitNum;
+  const record = await attendanceRepo.findByClassStreamAndDate(
+    classId as string,
+    streamId as string,
+    new Date(date as string)
+  );
 
-    const [records, total] = await Promise.all([
-      attendanceRepo.findByClassAndDatePaginated(classId as string, new Date(date as string), { skip, limit: limitNum } as PaginationOptions),
-      attendanceRepo.countByClassAndDate(classId as string, new Date(date as string)),
-    ]);
-
-    res.json({
-      page: pageNum,
-      limit: limitNum,
-      total,
-      totalPages: Math.ceil(total / limitNum),
-      data: records,
-    });
+  res.json({
+    success: true,
+    data: record, // Returns the IAttendance object or null
   });
-
+});
   /**
    * Update a specific student's attendance status
    * PATCH /attendance/student/:attendanceId/:studentId
