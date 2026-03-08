@@ -1,7 +1,7 @@
 // client/src/pages/dashboard/index.ts
-export {default as AccountantDashboard} from './accountant'
-export {default as TeacherDashboard} from './teacher'
-export {default as GuardianDashboard} from './guardian'
-export {default as PrincipalDashboard} from './principal'
-export {default as SchoolAdminDashboard} from './school-admin'
-export {default as SuperAdminDashboard} from './super-admin'
+export {default as AccountantDashboard} from './Accountant'
+export {default as TeacherDashboard} from './Teacher'
+export {default as GuardianDashboard} from './Guardian'
+export {default as PrincipalDashboard} from './Principal'
+export {default as SchoolAdminDashboard} from './SchoolAdmin'
+export {default as SuperAdminDashboard} from './SuperAdmin'
