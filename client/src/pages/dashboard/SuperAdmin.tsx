@@ -1,5 +1,5 @@
 // client/src/pages/dashboard/super-admin.tsx
-import SuperAdminDashboardOverView from "../../components/dashboard/super-admin/dashboard-overview"
+import SuperAdminDashboardOverView from "../../components/dashboard/super-admin/DashboardOverview"
 import Sidebar from "../../shared/layout/dashboard/sidebar"
 import Topbar from "../../shared/layout/dashboard/topbar"
 
