@@ -70,6 +70,8 @@ export const getStudentsByClass = async (classId: string): Promise<Student[]> =>
     throw { message: "Unknown error occurred while fetching students" };
   }
 };
+
+
 /* ==============================
    Upload students file
 ================================ */
