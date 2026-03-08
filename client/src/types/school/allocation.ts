@@ -6,7 +6,7 @@ export type Teacher = Pick<
   IBaseUser,
   "firstName"|"middleName"| "lastName"|"primaryPhoneNumber" | "secondaryPhoneNumber" | "email"
 > & {
-  id: string
+  _id: string
   isActive: boolean
   employmentNo: string
 };
