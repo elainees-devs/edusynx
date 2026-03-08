@@ -4,7 +4,6 @@ import { AttendanceController } from "../controllers";
 import { createAttendanceSchema, updateAttendanceSchema } from "../validation";
 import { validate } from "../middlewares/validate";
 
-
 const attendanceRouter = Router();
 const attendanceController = new AttendanceController();
 
@@ -36,29 +35,20 @@ const attendanceController = new AttendanceController();
 attendanceRouter.post(
   "/",
   validate(createAttendanceSchema),
-  attendanceController.createAttendance
+  attendanceController.createAttendance,
 );
 
-/**
- * @swagger
- * /api/v1/attendance/{id}:
+/** * @swagger
+ * /api/v1/attendance:
  *   get:
- *     summary: Get attendance by ID
+ *     summary: Get all attendance records
  *     tags: [Attendance]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Attendance ID
  *     responses:
  *       200:
- *         description: Attendance details
- *       404:
- *         description: Attendance not found
+ *         description: List of all attendance records
  */
-attendanceRouter.get("/:id", attendanceController.getAttendanceById);
+
+attendanceRouter.get("/", attendanceController.getAllAttendance);
 
 /**
  * @swagger
@@ -81,6 +71,12 @@ attendanceRouter.get("/:id", attendanceController.getAttendanceById);
  *           format: date-time
  *         description: Date to filter attendance (ISO format)
  *       - in: query
+ *         name: streamId
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Stream ID
+ *       - in: query
  *         name: page
  *         schema:
  *           type: integer
@@ -96,7 +92,32 @@ attendanceRouter.get("/:id", attendanceController.getAttendanceById);
  *       400:
  *         description: Missing parameters
  */
-attendanceRouter.get("/class", attendanceController.getAttendanceByClassAndDate);
+attendanceRouter.get(
+  "/class",
+  attendanceController.getAttendanceByClassAndDate,
+);
+
+
+/**
+ * @swagger
+ * /api/v1/attendance/{id}:
+ *   get:
+ *     summary: Get attendance by ID
+ *     tags: [Attendance]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Attendance ID
+ *     responses:
+ *       200:
+ *         description: Attendance details
+ *       404:
+ *         description: Attendance not found
+ */
+attendanceRouter.get("/:id", attendanceController.getAttendanceById);
 
 /**
  * @swagger
@@ -134,7 +155,7 @@ attendanceRouter.get("/class", attendanceController.getAttendanceByClassAndDate)
  */
 attendanceRouter.patch(
   "/student/:attendanceId/:studentId",
-  attendanceController.updateStudentStatus
+  attendanceController.updateStudentStatus,
 );
 
 /**
@@ -164,7 +185,7 @@ attendanceRouter.patch(
 attendanceRouter.patch(
   "/:id",
   validate(updateAttendanceSchema),
-  attendanceController.updateAttendance
+  attendanceController.updateAttendance,
 );
 
 /**
