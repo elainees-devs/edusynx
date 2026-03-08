@@ -1,94 +1,100 @@
 // client/src/api/attendance.api.ts
-import axios from "axios";
-import type { IAttendance, IStudentAttendance, PaginatedAttendanceRecords } from "../types";
+import axios from 'axios';
+import type { AttendanceStatus, IAttendance } from '../types/school/attendance.types';
+
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
-/* ==============================
-   Create a new attendance record (POST)
-================================ */
-export const createAttendance = async (data: IAttendance): Promise<IAttendance> => {
-  try {
-    const response = await axios.post(`${API_BASE}/attendance`, data);
-    console.log("Attendance created:", response.data);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Error creating attendance:", error.response?.data);
-      throw error.response?.data || { message: "Failed to create attendance" };
-    }
-    throw { message: "Unknown error occurred while creating attendance" };
-  }
-};
+const api = axios.create({
+  baseURL: API_BASE,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-/* ==============================
-   Get attendance by ID (GET)
-================================ */
-export const getAttendanceById = async (id: string): Promise<IAttendance> => {
-  const response = await axios.get(`${API_BASE}/attendance/${id}`);
-  return response.data;
-};
-
-/* ==============================
-   Get attendance for a class on a specific date with pagination (GET)
-================================ */
-export const getAttendanceByClassAndDate = async (
-  classId: string,
-  date: string,
-  page = 1,
-  limit = 10
-): Promise<PaginatedAttendanceRecords> => {
-  try {
-    const response = await axios.get(`${API_BASE}/attendance/class`, {
-      params: { classId, date, page, limit },
+export const attendanceApi = {
+  /**
+   * Fetch a single attendance sheet for a class/stream on a specific date.
+   * Based on controller: GET /attendance/class?classId=...&streamId=...&date=...
+   */
+  getAttendanceByClassAndDate: async (
+    classId: string,
+    streamId: string,
+    date: string
+  ): Promise<{ 
+    success: boolean; 
+    data: IAttendance | null;
+    page?: number;
+    total?: number;
+  }> => {
+    const response = await api.get('/attendance/class', {
+      params: { classId, streamId, date },
     });
     return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Error fetching attendance:", error.response?.data);
-      throw error.response?.data || { message: "Failed to fetch attendance" };
-    }
-    throw { message: "Unknown error occurred while fetching attendance" };
+  },
+
+  /**
+   * Create a new attendance record.
+   * POST /attendance
+   */
+  createAttendance: async (attendanceData: Partial<IAttendance>): Promise<IAttendance> => {
+    const response = await api.post('/attendance', attendanceData);
+    return response.data;
+  },
+
+  /**
+   * Replace the full attendance array for an existing record.
+   * PATCH /attendance/:id
+   */
+  updateFullAttendance: async (
+    id: string,
+    attendanceArray: { studentId: string; status: AttendanceStatus }[]
+  ): Promise<IAttendance> => {
+    const response = await api.patch(`/attendance/${id}`, {
+      attendance: attendanceArray,
+    });
+    return response.data;
+  },
+
+  /**
+   * Update a specific student's status within an attendance record.
+   * PATCH /attendance/student/:attendanceId/:studentId
+   */
+  updateStudentStatus: async (
+    attendanceId: string,
+    studentId: string,
+    status: AttendanceStatus
+  ): Promise<IAttendance> => {
+    const response = await api.patch(
+      `/attendance/student/${attendanceId}/${studentId}`,
+      { status }
+    );
+    return response.data;
+  },
+
+  /**
+   * Get the flattened list of all attendance records for the UI table.
+   * GET /attendance/
+   */
+  getAllAttendanceFlattened: async (): Promise<IAttendance[]> => {
+    const response = await api.get('/attendance');
+    return response.data;
+  },
+
+  /**
+   * Delete an attendance record.
+   * DELETE /attendance/:id
+   */
+  deleteAttendance: async (id: string): Promise<void> => {
+    await api.delete(`/attendance/${id}`);
+  },
+
+  /**
+   * Get attendance by unique ID.
+   * GET /attendance/:id
+   */
+  getAttendanceById: async (id: string): Promise<IAttendance> => {
+    const response = await api.get(`/attendance/${id}`);
+    return response.data;
   }
-};
-
-/* ==============================
-   Update a specific student's attendance status (PATCH)
-================================ */
-export const updateStudentAttendanceStatus = async (
-  attendanceId: string,
-  studentId: string,
-  status: "present" | "absent" | "late" | "excused"
-): Promise<IStudentAttendance> => {
-  const response = await axios.patch(
-    `${API_BASE}/attendance/student/${attendanceId}/${studentId}`,
-    { status }
-  );
-  return response.data;
-};
-
-/* ==============================
-   Replace full attendance array for a class/date (PATCH)
-================================ */
-export const updateAttendance = async (
-  id: string,
-  data: Partial<IAttendance>
-): Promise<IAttendance> => {
-  const payload = Object.fromEntries(
-    Object.entries(data).filter(([, value]) => value !== undefined && value !== "")
-  );
-
-  if (Object.keys(payload).length === 0) {
-    throw new Error("No valid fields provided to update.");
-  }
-
-  const response = await axios.patch(`${API_BASE}/attendance/${id}`, payload);
-  return response.data;
-};
-
-/* ==============================
-   Delete attendance record by ID (DELETE)
-================================ */
-export const deleteAttendance = async (id: string): Promise<void> => {
-  await axios.delete(`${API_BASE}/attendance/${id}`);
 };
