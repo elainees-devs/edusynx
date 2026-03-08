@@ -1,0 +1,46 @@
+// server/src/constants/seedPlans.ts
+import { FEATURE_KEYS } from "./features";
+
+export const seedPlans = [
+  {
+    name: "Starter",
+    price: 2500,
+    features: [
+      FEATURE_KEYS.STUDENT_MANAGEMENT,
+      FEATURE_KEYS.ATTENDANCE_MANAGEMENT,
+      FEATURE_KEYS.MANUAL_INVOICING,
+      FEATURE_KEYS.BASIC_REPORTS,
+    ],
+  },
+  {
+    name: "Professional",
+    price: 6500,
+    features: [
+      FEATURE_KEYS.STUDENT_MANAGEMENT,
+      FEATURE_KEYS.ATTENDANCE_MANAGEMENT,
+      FEATURE_KEYS.MANUAL_INVOICING,
+      FEATURE_KEYS.BASIC_REPORTS,
+      FEATURE_KEYS.MPESA_INTEGRATION,
+      FEATURE_KEYS.EMAIL_ALERTS,
+      FEATURE_KEYS.SMS_ALERTS,
+      FEATURE_KEYS.REALTIME_DASHBOARDS,
+    ],
+  },
+  {
+    name: "Enterprise",
+    price: 0, // Custom pricing
+    features: [
+      FEATURE_KEYS.STUDENT_MANAGEMENT,
+      FEATURE_KEYS.ATTENDANCE_MANAGEMENT,
+      FEATURE_KEYS.MANUAL_INVOICING,
+      FEATURE_KEYS.BASIC_REPORTS,
+      FEATURE_KEYS.MPESA_INTEGRATION,
+      FEATURE_KEYS.EMAIL_ALERTS,
+      FEATURE_KEYS.SMS_ALERTS,
+      FEATURE_KEYS.REALTIME_DASHBOARDS,
+      FEATURE_KEYS.MULTI_BRANCH,
+      FEATURE_KEYS.ADVANCED_REPORTS,
+      FEATURE_KEYS.API_ACCESS,
+    ],
+  },
+];
