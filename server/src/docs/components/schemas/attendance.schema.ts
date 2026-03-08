@@ -7,6 +7,7 @@ export const attendanceSchema = {
     properties: {
       school: { type: "string", example: "695d29b347d57b0dc35577d3" }, // school ID
       classRef: { type: "string", example: "695d29b347d57b0dc35577d3" }, // class ID
+      streamId:{type: "string", example: "695d29b347d57b0dc35577d3"}, // stream ID
       schoolYear: { type: "string", example: "2025-2026" }, // academic year
       date: { type: "string", format: "date-time", example: "2026-02-02T00:00:00.000Z" }, // ISO date string
       attendance: {
