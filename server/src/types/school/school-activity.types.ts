@@ -5,7 +5,7 @@ import { BaseDocument } from "../common/base.types";
 import { IStudent } from "../people/student.types";
 import { IBaseUser } from "../people/user.types";
 import { Term, ExamType, AttendanceStatus } from "../enum/enum";
-import { ISchool, IClass } from "./school-core.types";
+import { ISchool, IClass, IStream } from "./school-core.types";
 import { ISubject } from "./academic.types";
 
 export interface IExam extends BaseDocument {
@@ -33,6 +33,7 @@ export interface IAttendance extends BaseDocument {
   school: Types.ObjectId | ISchool;
   classRef: Types.ObjectId | IClass;
   schoolYear: string;
+  streamId: Types.ObjectId | IStream;
   date: Date;
   attendance: {
     studentId: Types.ObjectId | IStudent;
