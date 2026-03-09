@@ -1,7 +1,6 @@
-// client/src/pages/home.tsx
+// client/src/pages/Home.tsx
 import { Benefits, Hero, HowItWorks,  KeyFeatures,  NavBar,  PricingSection } from "../components";
-
-import Footer from "../shared/layout/footer";
+import Footer from "../shared/layout/Footer";
 
 const HomePage = () => {
   return (
