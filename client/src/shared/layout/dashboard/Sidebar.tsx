@@ -1,37 +1,34 @@
-//client/src/shared/layout/dashboard/sidebar.tsx
+//client/src/shared/layout/dashboard/Sidebar.tsx
 import { Link, useLocation, useParams } from "react-router-dom";
 import {
   principalNavItems,
   schoolAdminNavItems,
   superAdminNavItems,
   type NavItem,
-} from "../../../constants/sidebarMenu";
-import { studentNavChildren } from "../../../constants/sidebar-submenu";
-import EduSynxLogo from "../../edusynx-logo";
+} from "../../../constants/SidebarMenu";
+import { studentNavChildren } from "../../../constants/SidebarSubmenu";
+import EduSynxLogo from "../../EdusynxLogo";
 
 interface SidebarProps {
   role: string | string[];
 }
 
-
-
-
 const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
   const { slug = "" } = useParams<{ slug: string }>();
-  
+
   const normalizedRole = Array.isArray(role)
-    ? role[0].toLowerCase().replace(/\s+/g, "-") 
+    ? role[0].toLowerCase().replace(/\s+/g, "-")
     : role.toLowerCase().replace(/\s+/g, "-");
 
   const navMap: Record<string, () => NavItem[]> = {
     "super-admin": () => superAdminNavItems,
-    "principal": () => principalNavItems,
+    principal: () => principalNavItems,
     "school-admin": () =>
       schoolAdminNavItems.map((item) =>
         item.name === "Students"
           ? { ...item, children: studentNavChildren(slug) }
-          : item
+          : item,
       ),
   };
 
@@ -77,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
                           {childName}
                         </Link>
                       </li>
-                    )
+                    ),
                   )}
                 </ul>
               )}
