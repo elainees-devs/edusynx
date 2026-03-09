@@ -3,7 +3,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { useClassTeachers } from "../../hooks";
 import { SearchBar } from "../../shared";
 import type { ClassTeacher } from "../../types";
-import ClassOverviewTable from "../data-table/class-overview-table";
+import ClassOverviewTable from "../data-table/ClassOverviewTable";
 
 
 const ClassOverviewList: React.FC = () => {
