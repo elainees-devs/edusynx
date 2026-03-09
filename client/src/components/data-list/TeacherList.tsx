@@ -1,6 +1,6 @@
-// client/src/components/data-list/teacher-list.tsx
+// client/src/components/data-list/TeacherList.tsx
 import React, { useEffect, useState, useCallback } from "react";
-import type { Teacher } from "../../types/school/allocation";
+import type { Teacher } from "../../types/school/Allocation";
 import { deleteUser, getTeachers, updateUser} from "../../api";
 import { TeacherTable } from "../data-table";
 import { Pagination, SearchBar } from "../../shared";
