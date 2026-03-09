@@ -1,7 +1,6 @@
-// client/src/shared/layout/dashboard/topbar.tsx
+// client/src/shared/layout/dashboard/Topbar.tsx
 import { NotificationButton, Profile } from "./top-bar";
-
-type UserRole = "school-admin" | "principal" | "teacher" | "accountant";
+import type { UserRole } from "../../../constants/UserRole";
 
 interface TopbarProps {
   title?: string;
