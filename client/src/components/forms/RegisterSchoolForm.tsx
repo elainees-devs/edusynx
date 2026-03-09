@@ -7,7 +7,7 @@ import {
   type UseFormSetValue,
 } from "react-hook-form";
 import type { ISchool } from "../../types";
-import SchoolLogoDropzone from "./school/school-logo";
+import SchoolLogoDropzone from "./school/SchoolLogo";
 import { SubmitButton } from "../../shared";
 import { pricingPlans } from "../../constants";
 
