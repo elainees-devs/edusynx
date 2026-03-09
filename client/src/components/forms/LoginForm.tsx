@@ -1,9 +1,9 @@
 // client/src/components/forms/login-form.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginButton from "../buttons/login-button";
 import { MdEmail } from "react-icons/md";
 import { RiEyeLine, RiEyeOffLine, RiLockPasswordLine } from "react-icons/ri";
+import LoginButton from "../buttons/LoginButton";
 
 export interface LoginFormProps {
   email: string;
