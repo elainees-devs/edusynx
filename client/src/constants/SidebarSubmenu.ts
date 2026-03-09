@@ -1,4 +1,4 @@
-// client/src/constants/sidebar-submenu.ts
+// client/src/constants/SidebarSubmenu.ts
 import {
   FaEye,
   FaTasks,
@@ -12,7 +12,7 @@ import {
   FaChalkboardTeacher,
   FaPlus,
 } from "react-icons/fa";
-import type { NavItem } from "./sidebarMenu";
+import type { NavItem } from "./SidebarMenu";
 
 // ----- TEACHERS -----
 export const teacherNavChildren: NavItem[] = [
