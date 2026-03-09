@@ -1,10 +1,10 @@
-//client/src/context/subject/subject-form-provider.tsx
+//client/src/context/subject/SubjectFormProvider.tsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-import type { ISubject, SubjectData } from "../types";
+import type { SubjectData } from "../types";
 import { useClassOptions, useSchoolBySlug } from "../hooks";
-import { SubjectFormContext } from "./subject-form.context";
+import { SubjectFormContext } from "./SubjectFormContext";
+
 
 export const SubjectFormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -15,7 +15,7 @@ export const SubjectFormProvider: React.FC<{ children: React.ReactNode }> = ({
     classOptions,
     loading,
     error: classError,
-  } = useClassOptions(schoolId);
+  } = useClassOptions();
 
   const [formData, setFormData] = useState<SubjectData>({
     subjectName: "",
@@ -26,10 +26,13 @@ export const SubjectFormProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     if (!schoolId || formData.school === schoolId) return;
-    setFormData((prev) => ({ ...prev, school: schoolId }));
+    setFormData((prev) => ({
+      ...prev,
+      school: schoolId || '',
+    }));
   }, [schoolId, formData.school]);
 
-  const updateForm = (data: Partial<ISubject>) => {
+  const updateForm = (data: Partial<SubjectData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
