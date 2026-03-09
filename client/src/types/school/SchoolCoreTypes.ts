@@ -1,4 +1,4 @@
-// client/src/types/school/school-core.types.ts
+// client/src/types/school/SchoolCoreTypes.ts
 import type { BaseDocument } from "../common/BaseTypes";
 import type { Student } from "../people/StudentTypes";
 export interface ISchool extends BaseDocument {
@@ -64,7 +64,10 @@ export interface ISubject {
     name: string;
   };
 }
-export interface SubjectData extends ISubject {
+export interface SubjectData {
+  _id: string;
+  subjectName: string;
+  classRef: string | IClass;
   school: string;
 }
 
