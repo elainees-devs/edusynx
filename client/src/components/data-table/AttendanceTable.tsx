@@ -1,7 +1,7 @@
 // client/src/components/data-table/attendance-table.tsx
 import React, { useState, useMemo } from "react";
 import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
-import { AttendanceStatus } from "../../types/school/attendance.types";
+import { AttendanceStatus } from "../../types/school/AttendanceTypes";
 
 interface FlatAttendance {
   _id: string;
