@@ -1,7 +1,8 @@
-// client/src/api/base-user.api.ts
+// client/src/api/BaseUserApi.ts
 import axios from "axios";
 import type { GetPageParams, IBaseUser, PaginatedTeachers } from "../types";
-import type { Teacher } from "../types/school/allocation";
+import type { Teacher } from "../types/school/Allocation";
+
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
