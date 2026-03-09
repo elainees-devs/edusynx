@@ -1,11 +1,12 @@
 // client/src/components/data-table/school-list.tsx
 import React, { useEffect, useState } from "react";
-import { useSchoolEditHandlers } from "../../utils/useSchoolEditHandlers";
+
 import { schoolFields } from "../../constants";
 import type { ISchool } from "../../types";
 import { fetchSchools } from "../../api";
-import SchoolRow from "../data-table/school-row";
+import SchoolRow from "../data-table/SchoolRow";
 import { Pagination } from "../../shared";
+import { useSchoolEditHandlers } from "../../utils/UseSchoolEditHandlers";
 
 
 const SchoolList: React.FC = () => {
