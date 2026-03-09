@@ -1,6 +1,7 @@
-// client/src/api/super-admin-api.ts
+// client/src/api/SuperAdminApi.ts
 import axios from 'axios';
-import type { ISuperAdmin } from '../types/people/user.types';
+import type { ISuperAdmin } from '../types';
+
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
