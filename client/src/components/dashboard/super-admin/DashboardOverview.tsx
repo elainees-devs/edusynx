@@ -20,7 +20,7 @@ import {
   recentErrors,
   schoolsGrowthData,
   uptimeData,
-} from "../../../constants/super-admin";
+} from "../../../constants/SuperAdmin";
 import {
   FaClock,
   FaExclamationTriangle,
