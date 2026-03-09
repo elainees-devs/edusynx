@@ -1,9 +1,11 @@
 // client/src/context/useGlobalState.tsx
 import React, { useReducer, useEffect } from "react";
-import { GlobalStateContext } from "./globalStateContext";
+
 import { reducer } from "./globalStateReducer";
-import { initialState } from "../../types/global/globalState.types";
+
 import { useUserAuth } from "../../hooks";
+import { initialState } from "../../types/global/GlobalStateTypes";
+import { GlobalStateContext } from "./GlobalStateContext";
 
 
 interface Props {
