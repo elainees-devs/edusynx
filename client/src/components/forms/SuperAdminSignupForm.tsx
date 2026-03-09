@@ -1,8 +1,8 @@
-// client/src/components/forms/super-admin-signup-form.tsx
+// client/src/components/forms/SuperAdminSignUpForm.tsx
 import React from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
-import type { ISuperAdmin } from "../../types/people/user.types";
+import type { ISuperAdmin } from "../../types";
 
 interface SuperAdminSignUpProps {
   register: UseFormRegister<ISuperAdmin>;
