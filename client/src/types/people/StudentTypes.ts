@@ -1,11 +1,9 @@
-// client/src/types/people/student.types.ts
-
-import type { Guardian } from "./user.types";
-import type { Option } from "../school/school-core.types";
+// client/src/types/people/StudentTypes.ts
+import type { Option } from "../school/SchoolCoreTypes";
+import type { Guardian } from "./UserTypes";
 
 export type StudentGender = "male" | "female";
 export type StudentStatus = "Active" | "Inactive" | "Suspended" | "Graduated";
-
 
 export interface StudentFormData {
   school: string;
@@ -36,6 +34,5 @@ export interface StudentFormContextType {
 }
 
 export interface Student extends StudentFormData {
-  _id: string; 
+  _id: string;
 }
-
