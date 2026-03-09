@@ -1,12 +1,11 @@
-//client/src/components/data-list/student-list.tsx
+//client/src/components/data-list/StreamList.tsx
 import React, { useEffect, useState, useCallback } from "react";
-import type { IStream} from "../../types";
-import {  deleteStream, getStreams, updateStream } from "../../api";
-import { StreamTable } from "../data-table";
+import type { IStream } from "../../types";
+import { deleteStream, getStreams, updateStream } from "../../api";
 import { Pagination, SearchBar } from "../../shared";
 import { searchConfig } from "../../constants";
 import Swal from "sweetalert2";
-
+import { StreamsTable } from "../data-table";
 
 const StreamList: React.FC = () => {
   const [streams, setStreams] = useState<IStream[]>([]);
@@ -20,7 +19,6 @@ const StreamList: React.FC = () => {
   // Load streams from API (with backend search & pagination)
   const loadStreams = useCallback(async () => {
     try {
-      
       setLoading(true);
       const res = await getStreams({
         page,
@@ -45,16 +43,14 @@ const StreamList: React.FC = () => {
 
   const { placeholder } = searchConfig.stream;
 
-   /* =========================
+  /* =========================
      EDIT STREAM
   ========================= */
   const handleEdit = async (id: string, data: Partial<IStream>) => {
     try {
       const updatedStream = await updateStream(id, data);
 
-      setStreams((prev) =>
-        prev.map((s) => (s._id === id ? updatedStream : s))
-      );
+      setStreams((prev) => prev.map((s) => (s._id === id ? updatedStream : s)));
 
       Swal.fire("Success", "Stream updated", "success");
     } catch {
@@ -79,16 +75,13 @@ const StreamList: React.FC = () => {
     try {
       await deleteStream(stream._id);
 
-      setStreams((prev) =>
-        prev.filter((s) => s._id !== stream._id)
-      );
+      setStreams((prev) => prev.filter((s) => s._id !== stream._id));
 
       Swal.fire("Deleted", "Stream removed", "success");
     } catch {
       Swal.fire("Error", "Delete failed", "error");
     }
   };
-
 
   return (
     <div className="p-4 space-y-4">
@@ -108,7 +101,7 @@ const StreamList: React.FC = () => {
         <div className="text-center py-6 text-gray-500">Loading streams...</div>
       ) : (
         <div className="flex flex-col gap-4">
-          <StreamTable
+          <StreamsTable
             streams={streams} // data already filtered & paginated from backend
             // sortAsc={sortAsc}
             page={page}
