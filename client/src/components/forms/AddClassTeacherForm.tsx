@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import type { Teacher, ClassAllocation } from "../../types/school/allocation";
+import type { Teacher, ClassAllocation } from "../../types/school/Allocation";
 
 type FormData = {
   className: string;
@@ -53,7 +53,7 @@ const ClassTeacherForm: React.FC<Props> = ({ teachers, existingAllocations, onAl
 
     // Check if teacher is already assigned
     const isTeacherAssigned = existingAllocations.some(
-      (entry) => entry.teacher.id === selectedTeacher.id
+      (entry) => entry.teacher._id === selectedTeacher._id
     );
 
     if (isTeacherAssigned) {
@@ -116,7 +116,7 @@ const ClassTeacherForm: React.FC<Props> = ({ teachers, existingAllocations, onAl
           <ul className="absolute z-10 bg-white w-full border mt-1 rounded shadow max-h-48 overflow-y-auto">
             {searchResults.map((t) => (
               <li
-                key={t.id}
+                key={t._id}
                 className="p-2 hover:bg-gray-200 cursor-pointer"
                 onClick={() => handleTeacherSelect(t)}
               >
