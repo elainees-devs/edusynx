@@ -1,14 +1,16 @@
 // client/src/api/attendance.api.ts
-import axios from 'axios';
-import type { AttendanceStatus, IAttendance } from '../types/school/attendance.types';
-
+import axios from "axios";
+import type {
+  AttendanceStatus,
+  IAttendance,
+} from "../types/school/AttendanceTypes";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 const api = axios.create({
   baseURL: API_BASE,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -20,14 +22,14 @@ export const attendanceApi = {
   getAttendanceByClassAndDate: async (
     classId: string,
     streamId: string,
-    date: string
-  ): Promise<{ 
-    success: boolean; 
+    date: string,
+  ): Promise<{
+    success: boolean;
     data: IAttendance | null;
     page?: number;
     total?: number;
   }> => {
-    const response = await api.get('/attendance/class', {
+    const response = await api.get("/attendance/class", {
       params: { classId, streamId, date },
     });
     return response.data;
@@ -37,8 +39,10 @@ export const attendanceApi = {
    * Create a new attendance record.
    * POST /attendance
    */
-  createAttendance: async (attendanceData: Partial<IAttendance>): Promise<IAttendance> => {
-    const response = await api.post('/attendance', attendanceData);
+  createAttendance: async (
+    attendanceData: Partial<IAttendance>,
+  ): Promise<IAttendance> => {
+    const response = await api.post("/attendance", attendanceData);
     return response.data;
   },
 
@@ -48,7 +52,7 @@ export const attendanceApi = {
    */
   updateFullAttendance: async (
     id: string,
-    attendanceArray: { studentId: string; status: AttendanceStatus }[]
+    attendanceArray: { studentId: string; status: AttendanceStatus }[],
   ): Promise<IAttendance> => {
     const response = await api.patch(`/attendance/${id}`, {
       attendance: attendanceArray,
@@ -63,11 +67,11 @@ export const attendanceApi = {
   updateStudentStatus: async (
     attendanceId: string,
     studentId: string,
-    status: AttendanceStatus
+    status: AttendanceStatus,
   ): Promise<IAttendance> => {
     const response = await api.patch(
       `/attendance/student/${attendanceId}/${studentId}`,
-      { status }
+      { status },
     );
     return response.data;
   },
@@ -77,7 +81,7 @@ export const attendanceApi = {
    * GET /attendance/
    */
   getAllAttendanceFlattened: async (): Promise<IAttendance[]> => {
-    const response = await api.get('/attendance');
+    const response = await api.get("/attendance");
     return response.data;
   },
 
@@ -96,5 +100,5 @@ export const attendanceApi = {
   getAttendanceById: async (id: string): Promise<IAttendance> => {
     const response = await api.get(`/attendance/${id}`);
     return response.data;
-  }
+  },
 };
