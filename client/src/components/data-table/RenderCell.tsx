@@ -1,6 +1,6 @@
 // client/src/components/data-table/render-cell.tsx
 import React from "react";
-import { normalizeValue } from "../../utils/normalizeValue";
+import { normalizeValue } from "../../utils/NormalizeValue";
 
 export const renderCell = (
   field: { key: string; label: string; type?: string; isLink?: boolean },
