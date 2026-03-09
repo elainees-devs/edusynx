@@ -1,8 +1,8 @@
 // client/src/types/school/school-core.types.ts
-import type { BaseDocument } from "../common/base.types";
-import type { Student } from "../people/student.types";
-
+import type { BaseDocument } from "../common/BaseTypes";
+import type { Student } from "../people/StudentTypes";
 export interface ISchool extends BaseDocument {
+  _id: string;
   name: string;
   address: string;
   phoneNumber: string;
@@ -31,11 +31,11 @@ export interface ISchool extends BaseDocument {
 export interface IStream {
   _id: string;
   school:
-    | string
-    | {
-        _id: string;
-        name: string;
-      };
+  | string
+  | {
+    _id: string;
+    name: string;
+  };
   streamName: string;
   academicYear: string;
 }
@@ -44,11 +44,11 @@ export interface IClass {
   _id: string;
   clasName: string;
   school:
-    | string
-    | {
-        _id: string;
-        name: string;
-      };
+  | string
+  | {
+    _id: string;
+    name: string;
+  };
   academicYear: string;
   students?: Array<string | Student>;
 }
@@ -58,11 +58,11 @@ export interface ISubject {
   subjectName: string;
   classRef: string | IClass;
   school:
-    | string
-    | {
-        _id: string;
-        name: string;
-      };
+  | string
+  | {
+    _id: string;
+    name: string;
+  };
 }
 export interface SubjectData extends ISubject {
   school: string;
