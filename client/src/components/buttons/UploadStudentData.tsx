@@ -2,8 +2,8 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Swal from "sweetalert2";
-import { uploadStudentsFile } from "../../api/student.api";
 import type { Student } from "../../types";
+import { uploadStudentsFile } from "../../api";
 
 interface UploadStudentsButtonProps {
   onUploadSuccess?: (students: Student[]) => void;
