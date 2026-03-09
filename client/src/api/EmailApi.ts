@@ -1,6 +1,7 @@
 // client/src/api/email.ts
 import axios from 'axios';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/Logger';
+
 
 export const sendAccessLink = async (email: string, accessUrl: string) => {
   try {
