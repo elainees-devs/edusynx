@@ -1,8 +1,10 @@
-// client/src/types/pagination/pagination.types.ts
-import type { Student } from "../people/student.types";
-import type { Guardian } from "../people/user.types";
-import type { Teacher } from "../school/allocation";
-import type { IAttendance, IClass, IStream, ISubject } from "../school/school-core.types";
+// client/src/types/pagination/PaginationTypes.ts
+import type { Student } from "../people/StudentTypes";
+import type { Guardian } from "../people/UserTypes";
+import type { Teacher } from "../school/Allocation";
+import type { IAttendance } from "../school/AttendanceTypes";
+import type { IClass, IStream, ISubject } from "../school/SchoolCoreTypes";
+
 
 export interface GetPageParams{
   page: number
