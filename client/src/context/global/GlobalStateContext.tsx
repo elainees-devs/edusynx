@@ -1,7 +1,6 @@
-// client/src/context/global/globalStateContext.tsx
+// client/src/context/global/GlobalStateContext.tsx
 import React, { createContext } from "react";
-import type { Action, GlobalState } from "../../types/global/globalState.types";
-
+import type { Action, GlobalState } from "../../types/global/GlobalStateTypes";
 
 export const GlobalStateContext = createContext<
   | {
@@ -10,4 +9,3 @@ export const GlobalStateContext = createContext<
     }
   | undefined
 >(undefined);
-
