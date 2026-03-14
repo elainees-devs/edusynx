@@ -1,5 +1,4 @@
 // server/src/types/subscription/subscription.types.ts
-
 import { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
 import { ISchool } from "../school/school-core.types";
@@ -14,6 +13,7 @@ export interface ISubscriptionPlan extends BaseDocument {
 export interface ISubscription extends BaseDocument {
   school: Types.ObjectId | ISchool;
   planId: Types.ObjectId | ISubscriptionPlan;
+  duration: number;
   startDate: Date;
   endDate: Date;
   isActive: boolean;
