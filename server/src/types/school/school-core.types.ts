@@ -3,33 +3,32 @@ import { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
 import { ITeacher } from "../people/user.types";
 import { IStudent } from "../people/student.types";
-import { ISubscription } from "../../dto";
+import { ISubscription } from "../subscription/subscription.types";
 
 export interface ISchool extends BaseDocument {
-  name: string
-  address: string
-  phoneNumber: string
-  email: string
-  website?: string
-  establishedYear: number
-  logoUrl?: string
-  isActive: boolean
-  schoolCode: string
-  slug?: string
-  role: string
-  accessUrl?: string
-  subscription: Types.ObjectId | ISubscription
+  name: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+  website?: string;
+  establishedYear: number;
+  logoUrl?: string;
+  isActive: boolean;
+  schoolCode: string;
+  slug?: string;
+  role: string;
+  accessUrl?: string;
+  subscription: ISubscription;
 }
-export interface IStream extends BaseDocument{
-  school: Types.ObjectId | ISchool
-  streamName: string
-  academicYear: string
+export interface IStream extends BaseDocument {
+  school: Types.ObjectId | ISchool;
+  streamName: string;
+  academicYear: string;
 }
 export interface IClass extends BaseDocument {
-  school: Types.ObjectId | ISchool
-  clasName: string
-  academicYear: string
-  classTeacher?: Types.ObjectId | ITeacher
-  students?: Array<Types.ObjectId | IStudent >
+  school: Types.ObjectId | ISchool;
+  clasName: string;
+  academicYear: string;
+  classTeacher?: Types.ObjectId | ITeacher;
+  students?: Array<Types.ObjectId | IStudent>;
 }
-
