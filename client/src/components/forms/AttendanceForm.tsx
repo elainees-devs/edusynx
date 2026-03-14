@@ -1,4 +1,4 @@
-// client/src/components/forms/attendance-form.tsx
+// client/src/components/forms/AttendanceForm.tsx
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -6,10 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 
 import { useClassOptions } from "../../hooks/useClassOptions";
-import { getStudentsByClassAndStream } from "../../api";
-import { attendanceApi } from "../../api/attendance.api";
-import { AttendanceStatus} from "../../types/school/attendance.types";
-import type { IAttendance } from "../../types/school/attendance.types";
+import { attendanceApi, getStudentsByClassAndStream } from "../../api";
+import { AttendanceStatus, type IAttendance } from "../../types/school/AttendanceTypes";
+
 
 interface AttendanceEntry {
   studentId: string | { _id: string; studentFirstName: string; studentLastName: string };

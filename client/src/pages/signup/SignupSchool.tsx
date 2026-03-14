@@ -26,11 +26,22 @@ const SchoolSignupPage: React.FC = () => {
       logoUrl: "",
       isActive: false,
       schoolCode: "",
+      subscription: {
+        planId: {
+          _id: "",
+          name: "",
+          price: 0,
+          durationInMonths: 0,
+        },
+        isActive: false,
+        duration: 0, // in months
+      },
       role: "principal",
     },
   });
 
   const onSubmit = async (data: ISchool) => {
+    console.log("DEBUG: Form Data inside onSubmit:", data);
     try {
       await registerSchool(data);
       Swal.fire("Success", "School registered successfully!", "success");

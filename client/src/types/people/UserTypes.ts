@@ -1,8 +1,8 @@
-// client/src/types/people/user.types.ts
+// client/src/types/people/UserTypes.ts
 import type { UserRole } from "../../constants";
-import type { BaseDocument } from "../common/base.types";
-import type { ISchool } from "../school/school-core.types";
-
+import type { BaseDocument } from "../common/BaseTypes";
+import type { IDepartment } from "../school/AcademicTypes";
+import type { IClass, ISchool } from "../school/SchoolCoreTypes";
 
 export interface IBaseUser extends BaseDocument {
   school: string | ISchool;
@@ -24,13 +24,26 @@ export interface IBaseUser extends BaseDocument {
   role: UserRole;
 }
 
-// export type ITeacher = Pick<IBaseUser, "school" | "firstName" | "middleName" | "lastName"> & {
-//    role: typeof UserRole.TEACHER
-//   isClassTeacher?:boolean
-//   classId?: string // assign class when isClassTeacher is true
-//   department?: string |IDepartment
-//   isHeadOfDepartment?:boolean
-// }
+export interface ITeacher extends Pick<
+  IBaseUser,
+  | "school"
+  | "firstName"
+  | "middleName"
+  | "lastName"
+  | "email"
+  | "primaryPhoneNumber"
+  | "secondaryPhoneNumber"
+  | "avatarUrl"
+  | "isActive"
+> {
+  role: typeof UserRole.TEACHER;
+
+  isClassTeacher?: boolean;
+  classId?: string | IClass; // assign class when isClassTeacher is true
+
+  department?: string | IDepartment;
+  isHeadOfDepartment?: boolean;
+}
 
 export interface GuardianFormInput {
   school: string; // Assuming ID string here; adjust if different
@@ -47,7 +60,7 @@ export interface GuardianFormInput {
   isTwoFactorEnabled?: boolean;
 }
 export interface Guardian extends GuardianFormInput {
-  _id: string; 
+  _id: string;
   familyNumber?: string;
 }
 

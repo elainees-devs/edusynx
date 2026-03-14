@@ -4,7 +4,8 @@ import { FaUserPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 import type { Guardian, IClass, IStream, Student } from "../../types";
 import { countStudents, getAllClasses, getAllStreams } from "../../api";
 import { resolveId, sortByAdmissionNumber, sortByFirstName } from "../../utils";
-import { GuardianFormModal } from "../forms";
+import GuardianFormModal from "../forms/RegisterGuardianFormModal";
+
 
 interface StudentTableProps {
   students: Student[];

@@ -1,15 +1,15 @@
-// client/src/components/forms/register-school-form.tsx
-import React from "react";
+//client/src/components/forms/RegisterSchoolForm.tsx
+import React, { useEffect, useState } from "react";
 import {
   type UseFormRegister,
   type FieldErrors,
   type UseFormWatch,
   type UseFormSetValue,
 } from "react-hook-form";
-import type { ISchool } from "../../types";
-import SchoolLogoDropzone from "./school/school-logo";
+import type { ISchool, SubscriptionPlan } from "../../types";
+import SchoolLogoDropzone from "./school/SchoolLogo";
 import { SubmitButton } from "../../shared";
-import { pricingPlans } from "../../constants";
+import { SubscriptionPlanApi } from "../../api";
 
 interface Props {
   register: UseFormRegister<ISchool>;
@@ -24,9 +24,21 @@ const SchoolRegistrationForm: React.FC<Props> = ({
   errors,
   watch,
   setValue,
-  isSubmitting
+  isSubmitting,
 }) => {
   const logoUrl = watch("logoUrl");
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [loadingPlans, setLoadingPlans] = useState(true);
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      setLoadingPlans(true);
+      const data = await SubscriptionPlanApi.getAll();
+      setPlans(data);
+      setLoadingPlans(false);
+    };
+    fetchPlans();
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -151,31 +163,57 @@ const SchoolRegistrationForm: React.FC<Props> = ({
       </div>
 
       {/* Subscription Plan */}
-<div>
-  <label className="block mb-1">Subscription Plan</label>
+      <div>
+        <label className="block mb-1 font-medium">Subscription Plan</label>
+        {loadingPlans ? (
+          <p className="text-gray-500 text-sm">Loading plans...</p>
+        ) : (
+          <select
+            {...register("subscription.planId", { // Path matches ISchool interface
+              required: "Subscription plan is required",
+            })}
+            className={`w-full border rounded px-3 py-2 ${
+              errors.subscription?.planId ? "border-red-500" : "border-gray-300"
+            }`}
+          >
+            <option value="">Select a plan</option>
+            {plans.map((plan) => (
+              <option key={plan._id} value={plan._id}>
+                {plan.name} — KES {plan.price} ({plan.durationInMonths} months)
+              </option>
+            ))}
+          </select>
+        )}
+        {errors.subscription?.planId && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.subscription.planId.message}
+          </p>
+        )}
+      </div>
 
-  <select
-    {...register("subscription", { required: "Subscription plan is required" })}
-    className={`w-full border rounded px-3 py-2 ${
-      errors.subscription ? "border-red-500" : "border-gray-300"
-    }`}
-  >
-    <option value="">Select a plan</option>
-    {pricingPlans.map((plan) => (
-      <option key={plan.title} value={plan.title}>
-        {plan.title} — {plan.price}
-      </option>
-    ))}
-  </select>
-
-  {errors.subscription && (
-    <p className="text-red-500 text-sm mt-1">
-      {errors.subscription.message}
-    </p>
-  )}
-</div>
-
-
+      {/* Desired Subscription Duration */}
+      <div>
+        <label className="block mb-1 font-medium">
+          Desired Subscription Duration (Months)
+        </label>
+        <input
+          type="number"
+          {...register("subscription.duration", { 
+            required: "Subscription duration is required",
+            valueAsNumber: true,
+          })}
+          className={`w-full border rounded px-3 py-2 ${
+            errors.subscription?.duration ? "border-red-500" : "border-gray-300"
+          }`}
+          placeholder="Duration in months"
+        />
+        {errors.subscription?.duration && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.subscription.duration.message}
+          </p>
+        )}
+      </div>
+      
       {/* Role */}
       <div>
         <label className="block mb-1">Role</label>
@@ -188,12 +226,12 @@ const SchoolRegistrationForm: React.FC<Props> = ({
         />
       </div>
 
-        {/* Submit Button */}
-       <SubmitButton
-            label="Register School"
-            loadingLabel="Registering..."
-            loading={isSubmitting}
-          />
+      {/* Submit Button */}
+      <SubmitButton
+        label="Register School"
+        loadingLabel="Registering..."
+        loading={isSubmitting}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // client/src/context/global/globalStateReducer.ts
-import type { Action, GlobalState } from "../../types/global/globalState.types";
 
+import type { Action, GlobalState } from "../../types/global/GlobalStateTypes";
 
 export const reducer = (state: GlobalState, action: Action): GlobalState => {
   switch (action.type) {

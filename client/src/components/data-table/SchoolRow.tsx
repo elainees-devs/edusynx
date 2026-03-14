@@ -3,7 +3,7 @@ import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import type { ISchool } from "../../types";
 import { sendAccessLink } from "../../api";
-import { logger } from "../../utils/logger";
+import { logger } from "../../utils/Logger";
 
 interface SchoolRowProps {
   s: ISchool;

@@ -20,7 +20,7 @@ import {
   studentNavChildren,
   streamNavChildren,
   attendanceNavChildren
-} from "./sidebar-submenu";
+} from "./SidebarSubmenu";
 
 export interface NavItem {
   name: string;

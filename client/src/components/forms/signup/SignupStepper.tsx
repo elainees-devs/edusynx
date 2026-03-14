@@ -6,11 +6,12 @@ import {
   PersonalInfoStep,
   RoleSpecificStep,
 } from "./steps";
-import { registerUser } from "../../../api/base-user.api";
+
 import { useSignUpContext } from "../../../context/signup/useSignUpContext";
 import Swal from "sweetalert2";
 import type { IBaseUser } from "../../../types";
 import { UserRole } from "../../../constants";
+import { registerUser } from "../../../api";
 
 const steps = [
   "Personal Info",

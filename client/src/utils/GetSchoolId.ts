@@ -1,5 +1,7 @@
 // client/src/utils/getSchoolId.ts
-import { isPopulatedSchool } from "./type-guard";
+
+import { isPopulatedSchool } from "./TypeGuard";
+
 
 type UserWithSchool = {
   role: string;

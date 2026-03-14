@@ -1,12 +1,11 @@
-// client/src/components/forms/reset-password-form.tsx
+// client/src/components/forms/ResetPasswordForm.tsx
 import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
-import type { SendResetTokenBody } from "../../types/email/email.types";
+import type { SendResetTokenBody } from "../../types/email/EmailTypes";
 
 interface ResetPasswordFormFieldsProps {
   register: UseFormRegister<SendResetTokenBody>;
   errors: FieldErrors<SendResetTokenBody>;
-  
 }
 
 const ResetPasswordFormFields: React.FC<ResetPasswordFormFieldsProps> = ({
@@ -34,7 +33,6 @@ const ResetPasswordFormFields: React.FC<ResetPasswordFormFieldsProps> = ({
         <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
       )}
     </div>
-
   </div>
 );
 

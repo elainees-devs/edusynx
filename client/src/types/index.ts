@@ -1,6 +1,7 @@
 // client/src/types/index.ts
-export * from './school/school-core.types';
-export * from './school/academic.types';
-export * from './people/user.types';
-export * from './people/student.types';
-export * from './pagination/pagination.types';
+export * from './school/SchoolCoreTypes';
+export * from './school/AcademicTypes';
+export * from './people/UserTypes';
+export * from './people/StudentTypes';
+export * from './pagination/PaginationTypes';
+export * from './subscription/SubscriptionTypes';

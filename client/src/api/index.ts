@@ -1,14 +1,16 @@
 // client/src/api/index.ts
-export * from "./student.api";
-export * from "./guardian.api";
-export * from "./base-user.api"
-export * from "./class.api";
-export * from "./stream.api"
-export * from "./subject.api";
-export * from "./school.api";
-export * from "./email.api";
-export * from "./auth.api";
-export * from "./class.teacher.api";
-export * from "./attendance.api";
+export * from "./StudentApi";
+export * from "./GuardianApi";
+export * from "./BaseUserApi";
+export * from "./ClassApi";
+export * from "./StreamApi";
+export * from "./SubjectApi";
+export * from "./SchoolApi";
+export * from "./EmailApi";
+export * from "./AuthApi";
+export * from "./ClassTeacherApi";
+export * from "./AttendanceApi";
+export * from "./SubscriptionPlanApi"
+export * from "./SubscriptionApi";
 
-export {loginSuperAdmin, sendPasswordResetEmail} from "./auth/super-admin-auth";
+export { loginSuperAdmin, sendPasswordResetEmail } from "./auth/SuperAdminAuth";

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { attendanceApi } from "../../api/attendance.api";
+import { attendanceApi } from "../../api/AttendanceApi";
 import { getAllClasses, getAllStreams } from "../../api";
-import type { AttendanceStatus } from "../../types/school/attendance.types";
-import AttendanceTable from "../data-table/attendance-table";
+import type { AttendanceStatus } from "../../types/school/AttendanceTypes";
+import AttendanceTable from "../data-table/AttendanceTable";
 import type { IClass, IStream } from "../../types";
 
 export interface IFlatAttendance {

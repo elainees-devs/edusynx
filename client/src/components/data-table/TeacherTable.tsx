@@ -1,7 +1,7 @@
-// client/src/components/data-table/teacher-table.tsx
+// client/src/components/data-table/TeacherTable.tsx
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
-import type { Teacher } from "../../types/school/allocation";
+import type { Teacher } from "../../types/school/Allocation";
 import { countTeachers } from "../../api";
 
 interface TeacherTableProps {

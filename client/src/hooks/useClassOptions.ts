@@ -1,8 +1,7 @@
 // client/src/hooks/useClassOptions.ts
 import { useEffect, useState, useMemo } from "react";
 import type { IClass, IStream } from "../types";
-import { getAllClasses } from "../api/class.api";
-import { getAllStreams } from "../api/stream.api";
+import { getAllClasses, getAllStreams } from "../api";
 
 export type ClassOption = {
   value: string;

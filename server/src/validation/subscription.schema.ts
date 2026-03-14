@@ -5,8 +5,7 @@ import { objectId } from "./util";
 export const createSubscriptionSchema = z.object({
   school: objectId,
   planId: objectId,
-  startDate: z.string().datetime({ message: "Invalid start date" }),
-  endDate: z.string().datetime({ message: "Invalid end date" }),
+  durationInMonths: z.number().int().positive(),
   isActive: z.boolean().optional().default(true),
 });
 

@@ -1,11 +1,12 @@
-// client/src/components/forms/new-password-form.tsx
+// client/src/components/forms/NewPasswordForm.tsx
 import React from "react";
 import {
   type UseFormRegister,
   type FieldErrors,
   type UseFormWatch,
 } from "react-hook-form";
-import type { NewPasswordBody } from "../../types/auth/new-password.types";
+import type { NewPasswordBody } from "../../types/auth/NewPasswordTypes";
+
 
 interface NewPasswordFormFieldsProps {
   register: UseFormRegister<NewPasswordBody>;

@@ -1,8 +1,8 @@
-// client/src/components/navbar.tsx
+// client/src/components/NavBar.tsx
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { EduSynxLogo } from "../../shared";
 import { NAV_LINKS } from "../../constants";
+import { EdusynxLogo } from "../../shared";
 
 
 const NavBar: React.FC = () => {
@@ -11,7 +11,7 @@ const NavBar: React.FC = () => {
   return (
     <header className="fixed top-0 w-full bg-white shadow-md z-[1000]">
       <nav className="flex justify-between items-center max-w-[1200px] mx-auto px-5 py-5">
-        <EduSynxLogo />
+        <EdusynxLogo />
 
         {/* Desktop Menu */}
         <ul className="hidden gap-6 md:flex">

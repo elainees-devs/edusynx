@@ -32,6 +32,7 @@ export const registerSchool = async (data: ISchool): Promise<ISchool> => {
     const response = await axios.post(`${API_BASE}/schools/register`, data);
     console.log("School registered successfully:", response.data);
     return response.data;
+    
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error response:", error.response?.data);

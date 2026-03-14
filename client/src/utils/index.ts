@@ -1,9 +1,9 @@
 // client/src/utils/index.ts
-export * from './normalizeValue'
-export * from './cn'
-export * from './logger'
-export * from './type-guard'
-export * from './useSchoolEditHandlers'
-export * from './capitalize'
-export * from './normalizeId'
-export * from './sortStudents'
+export * from './NormalizeValue';
+export * from './Cn';
+export * from './Logger';
+export * from './TypeGuard';
+export * from './UseSchoolEditHandlers';
+export * from './Capitalize';
+export * from './NormalizeId';
+export * from './SortStudents';
