@@ -24,7 +24,13 @@ const SchoolSchema: Schema = new Schema<ISchool>(
     },
     role: { type: String, required: true },
     accessUrl: { type: String, required: true, lowercase: true },
-    subscription: { type: Schema.Types.ObjectId, ref: "Subscription", required: true },
+    subscription: {
+      planId: { type: Schema.Types.ObjectId, ref: "SubscriptionPlan", required: true },
+      duration: { type: Number, required: true },
+      startDate: { type: Date, default: Date.now },
+      endDate: { type: Date },
+      isActive: { type: Boolean, default: false },
+    },
   },
 
   {
