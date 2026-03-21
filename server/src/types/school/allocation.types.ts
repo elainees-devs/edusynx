@@ -20,3 +20,10 @@ export interface ISchoolAllocation extends BaseDocument {
   classes: ClassAllocation[];
   headsOfSubjects: Record<string, string | Types.ObjectId>;
 }
+export interface TeacherSubjectAllocation {
+  teacher: string | Types.ObjectId;
+  subject: string | Types.ObjectId;
+  className: string | Types.ObjectId;
+  stream: string | Types.ObjectId; 
+}
+
