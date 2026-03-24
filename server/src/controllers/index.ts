@@ -1,6 +1,7 @@
 // server/src/controllers/index.ts
 
-export * from "./allocation.controller";
+export * from "./allocation/allocation.controller";
+export * from "./allocation/teacherSubject.allocation.controller";
 export * from "./academics/class.teacher.controller";
 export * from "./academics/department.controller";
 export * from "./academics/exam.controller";
