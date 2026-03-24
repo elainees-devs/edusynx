@@ -117,6 +117,7 @@ apiRouter.use("/analytics", analyticsRouter);
 apiRouter.use("/subscription-plans", subscriptionPlanRouter);
 apiRouter.use("/subscriptions", subscriptionRouter);
 apiRouter.use("/attendance", attendanceRouter);
+apiRouter.use("/teacher-subject-allocations", teacherSubjectRouter);
 
 app.use("/api/v1", apiRouter);
 
