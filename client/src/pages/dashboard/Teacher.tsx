@@ -1,9 +1,14 @@
-// src/pages/dashboard/teacher.tsx
-const TeacherDashBoard: React.FC = () =>{
+
+import { TeacherDashboardOverview } from "../../components"
+import { Sidebar, Topbar } from "../../shared/layout/dashboard"
+
+const TeacherDashboard: React.FC = () =>{
     return(
-        <div>
-            <h1>Teacher Dashboard</h1>
-        </div>
+        <div className="bg-gray">
+            <Topbar role="teacher" />
+            <Sidebar role="teacher" />
+            <TeacherDashboardOverview />
+            </div>
     )
 }
-export default TeacherDashBoard
+export default TeacherDashboard
