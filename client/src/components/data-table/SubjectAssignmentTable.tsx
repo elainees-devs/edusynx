@@ -1,4 +1,3 @@
-// No need to import React in modern React projects unless using JSX transform pre-React 17
 import type { SubjectAssignment } from "../../types/school/Allocation";
 
 const SubjectAssignmentTable = ({
