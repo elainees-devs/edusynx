@@ -100,12 +100,9 @@ const TeachersList: React.FC = () => {
             page={page}
             limit={limit}
             onToggleStatus={(id: string) => {
-              setTeachers((prev) =>
-                prev.map((t) =>
-                  t._id === id ? { ...t, isActive: !t.isActive } : t
-                )
-              );
-              // Handle toggle status logic here
+              const teacher = teachers.find((t) => t._id === id);
+              if (!teacher) return;
+              handleEdit(id, { isActive: !teacher.isActive });
             }}
             onSort={() => setSortAsc((prev) => !prev)}
             onEdit={handleEdit}
