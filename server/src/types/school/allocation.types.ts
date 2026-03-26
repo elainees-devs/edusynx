@@ -19,4 +19,12 @@ export interface ISchoolAllocation extends BaseDocument {
   school: Types.ObjectId | ISchool | string;       // <-- allow string for incoming payload
   classes: ClassAllocation[];
   headsOfSubjects: Record<string, string | Types.ObjectId>;
+  teacherSubjectAllocations: TeacherSubjectAllocation[];
 }
+export interface TeacherSubjectAllocation {
+  teacher: string | Types.ObjectId;
+  subject: string | Types.ObjectId;
+  className: string | Types.ObjectId;
+  stream: string | Types.ObjectId; 
+}
+

@@ -27,7 +27,7 @@ export * from "./security/session.repository"
 export * from "./permissions/permission.repository"
 export * from "./permissions/role.repository"
 export * from "./permissions/rolePermission.repository"
-export * from "./allocation.repository"
+export * from "./allocation/allocation.repository"
 export * from "./event.repository"
 export * from "./notification.repository"
 

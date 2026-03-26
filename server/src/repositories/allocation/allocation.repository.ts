@@ -1,7 +1,7 @@
 // server/repositories/allocation.repository.ts
 import { Types } from "mongoose";
-import { ISchoolAllocation } from "../types";
-import { SchoolAllocationModel } from "../models/allocation.model";
+import { ISchoolAllocation } from "../../types";
+import { SchoolAllocationModel } from "../../models/allocation.model";
 
 export class AllocationRepository {
   createAllocation = async (allocation: Partial<ISchoolAllocation>) => {

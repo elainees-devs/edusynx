@@ -22,3 +22,9 @@ export type ClassAllocation = {
   stream: string;
   teacher: Teacher;
 };
+
+export type SubjectAssignment = {
+  id: number;
+  subjectName: string;
+  teacher: Teacher;
+};

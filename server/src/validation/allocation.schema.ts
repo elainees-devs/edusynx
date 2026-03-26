@@ -1,6 +1,7 @@
 // server/src/validation/allocation.schema.ts
 import { z } from "zod";
 
+
 // validate ObjectId as 24 hex characters
 const objectId = z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ObjectId");
 
@@ -16,10 +17,18 @@ export const ClassAllocationSchema = z.object({
   subjects: z.array(SubjectAllocationSchema).min(1, "Each class must have subjects"),
 });
 
+export const TeacherSubjectAllocationSchema = z.object({
+  teacher: objectId,
+  subject: objectId,
+  className: objectId,
+  stream: objectId,
+});
+
 export const SchoolAllocationSchemaBase = z.object({
   school: objectId,
   classes: z.array(ClassAllocationSchema).min(1, "Must have at least one class"),
   headsOfSubjects: z.record(objectId),  // e.g., { Mathematics: teacherId }
+  teacherSubjectAllocations: z.array(TeacherSubjectAllocationSchema).min(1, "Must have at least one teacher-subject allocation"),
 });
 
 export const SchoolAllocationSchema = SchoolAllocationSchemaBase.refine(
@@ -27,6 +36,7 @@ export const SchoolAllocationSchema = SchoolAllocationSchemaBase.refine(
     allocation.classes.every((cls) =>
       !cls.classTeacher || cls.subjects.some((subject) =>
         subject.teachers.includes(cls.classTeacher!)
+  
       )
     ),
   {

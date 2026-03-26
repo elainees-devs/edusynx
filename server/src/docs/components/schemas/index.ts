@@ -24,6 +24,7 @@ export {guardianSchema} from './guardian.schema'
 export {subscriptionSchema} from './subscription.schema'
 export {subscriptionPlanSchema} from './subscription-plan.schema'
 export {attendanceSchema} from './attendance.schema'
+export {teacherSubjectAllocationSchema} from './teacherSubject.allocation.schema';
 
 
 

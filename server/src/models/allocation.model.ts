@@ -17,6 +17,14 @@ const ClassAllocationSchema = new Schema({
   subjects: { type: [SubjectAllocationSchema], required: true }
 }, { _id: false });
 
+//Nested schema: TeacherSubjectAllocation
+const TeacherSubjectAllocationSchema = new Schema({
+  teacher: { type: Schema.Types.ObjectId, ref: "Teacher", required: true },
+  subject: { type: Schema.Types.ObjectId, ref: "Subject", required: true },
+  className: { type: Schema.Types.ObjectId, ref: "Class", required: true },
+  stream: { type: Schema.Types.ObjectId, ref: "Stream", required: true }
+}, { _id: false });
+
 // Main schema: SchoolAllocation
 const SchoolAllocationSchema = new Schema({
   school: { type: Schema.Types.ObjectId, ref: "School", required: true },
@@ -25,7 +33,8 @@ const SchoolAllocationSchema = new Schema({
     type: Map,
     of: { type: Schema.Types.ObjectId, ref: "Teacher" },
     required: true
-  }
+  },
+  teacherSubjectAllocations: { type: [TeacherSubjectAllocationSchema], required: true }
 }, {
   timestamps: true 
 });
