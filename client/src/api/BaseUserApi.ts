@@ -87,7 +87,7 @@ export const getTeachers = async (
 // UPDATE USER
 // ================================
 export const updateUser = async (id: string, data: Partial<IBaseUser>) => {
-  const res = await axios.patch(`/users/${id}`, data);
+  const res = await axios.put(`${API_BASE}/users/${id}`, data);
   return res.data;
 };
 
@@ -114,7 +114,7 @@ export const countTeachers = async () => {
 // DELETE USER
 // ================================
 export const deleteUser = async (id: string) => {
-  const res = await axios.delete(`/users/${id}`);
+  const res = await axios.delete(`${API_BASE}/users/${id}`);
   return res.data;
 };
 
