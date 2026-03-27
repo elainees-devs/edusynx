@@ -5,7 +5,7 @@ import { Sidebar, Topbar } from "../../shared/layout/dashboard"
 const PrincipalDashboard: React.FC = () =>{
     return(
         <div className="bg-gray">
-            <Topbar role="PRINCIPAL" />
+            <Topbar role="principal" />
             <Sidebar role="principal" />
             <PrincipalDashboardOverview />
             </div>
