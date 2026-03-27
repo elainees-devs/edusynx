@@ -2,43 +2,43 @@
 // This file serves as a central export point for all pages in the application.
 
 // ---------- Auth Pages ----------
-export { default as SignIn } from './signin/signin'
-export { default as SignUp } from './signup/signup'
-export { default as SuperAdminSignIn } from './signin/super-admin-signin'
-export { default as SuperAdminSignUp } from './signup/super-admin-signup'
-export { default as Logout } from './logout';
-export { default as ResetPassword } from './password/reset-password'
-export { default as NewPassword } from './password/new-password'
+export { default as SignIn } from './signin/Signin'
+export { default as SignUp } from './signup/Signup'
+export { default as SuperAdminSignIn } from './signin/SuperAdminSignin'
+export { default as SuperAdminSignUp } from './signup/SuperAdminSignup'
+export { default as Logout } from './Logout';
+export { default as ResetPassword } from './password/ResetPassword'
+export { default as NewPassword } from './password/NewPassword'
 
 // ---------- Landing Page ----------
-export { default as HomePage } from './home'
+export { default as HomePage } from './Home'
 
 // ---------- School Registration ----------
-export { default as SchoolSignupPage } from './signup/signup-school'
+export { default as SchoolSignupPage } from './signup/SignupSchool'
 
 // ---------- Class and Stream Management ----------
-export { default as RegisterClass } from './class/register-class'
-export { default as ViewClass } from './class/view-class'
-export { default as RegisterStream } from './stream/register-stream'
-export { default as ViewStreams } from './stream/view-stream'
-export { default as ClassOverview} from './class/class-overview'
+export { default as RegisterClass } from './class/RegisterClass'
+export { default as ViewClass } from './class/ViewClass'
+export { default as RegisterStream } from './stream/RegisterStream'
+export { default as ViewStreams } from './stream/ViewStream'
+export { default as ClassOverview} from './class/ClassOverview'
 
 // ---------- Subject Management ----------
-export { default as RegisterSubject} from './subject/register-subject'
-export { default as ViewSubjects} from './subject/view-subject'
-
+export { default as RegisterSubject} from './subject/RegisterSubject'
+export { default as ViewSubjects} from './subject/ViewSubject'
+export { default as AssignSubjects} from './allocation/SubjectAssignment'
 // ---------- Student Management ----------
-export { default as RegisterStudent } from './student/register-student'
-export { default as ViewStudents } from './student/view-students'
-export {default as ViewGuardian} from './student/view-guardian'
+export { default as RegisterStudent } from './student/RegisterStudent'
+export { default as ViewStudents } from './student/ViewStudents'
+export {default as ViewGuardian} from './student/ViewGuardian'
 
 //---------- Attendance Management ----------
-export { default as RegisterAttendancePage } from './attendance/register-attendance'
-export { default as ViewAttendance } from './attendance/view-attendance'
+export { default as RegisterAttendancePage } from './attendance/RegisterAttendance'
+export { default as ViewAttendance } from './attendance/ViewAttendance'
 
 
 // ---------- Teacher Management ----------
-export { default as ViewTeachers } from './teachers/view-teachers'
+export { default as ViewTeachers } from './teachers/ViewTeachers'
 
 // ---------- Dashboard Pages ----------
-export { default as Schools } from './dashboard/schools'
+export { default as Schools } from './dashboard/Schools'

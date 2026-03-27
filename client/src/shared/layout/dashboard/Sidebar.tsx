@@ -4,6 +4,7 @@ import {
   principalNavItems,
   schoolAdminNavItems,
   superAdminNavItems,
+  teacherNavItems,
   type NavItem,
 } from "../../../constants/SidebarMenu";
 import { studentNavChildren } from "../../../constants/SidebarSubmenu";
@@ -30,6 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
           ? { ...item, children: studentNavChildren(slug) }
           : item,
       ),
+    teacher: () => teacherNavItems,
   };
 
   const navItems = navMap[normalizedRole]?.() || [];

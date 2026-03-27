@@ -1,6 +1,7 @@
 // client/src/pages/attendance/register-attendance.tsx
 import React from "react";
-import AttendanceForm from "../../components/forms/attendance-form";
+import { AttendanceForm } from "../../components";
+
 
 const RegisterAttendancePage: React.FC = () => {
   return (

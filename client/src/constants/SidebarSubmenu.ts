@@ -23,6 +23,8 @@ export const teacherNavChildren: NavItem[] = [
   { name: "Lesson Plans", icon: FaBookOpen, path: "/dashboard/teachers/lessons" },
   { name: "Messages", icon: FaEnvelope, path: "/dashboard/teachers/messages" },
   { name: "Teacher Documents", icon: FaFileAlt, path: "/dashboard/teachers/documents" },
+  { name: "Subject Assignment", icon: FaListAlt, path: "/dashboard/teachers/assign" },
+  
 ];
 
 // ----- STUDENTS -----
