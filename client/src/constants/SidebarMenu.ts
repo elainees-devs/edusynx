@@ -96,3 +96,14 @@ export const schoolAdminNavItems: NavItem[] = [
   { name: "Settings", icon: FaCog, path: "/dashboard/settings" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
+
+export const teacherNavItems: NavItem[] = [
+  {
+    name: "Teachers",
+    icon: FaChalkboardTeacher,  
+    path: "/dashboard/teachers",
+    children: teacherNavChildren,
+  },
+  { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
+];
+
