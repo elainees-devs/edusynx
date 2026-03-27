@@ -25,6 +25,7 @@ const ViewGuardian = lazy(() => import("./pages/student/ViewGuardian"));
 const RegisterAttendancePage = lazy(() => import("./pages/attendance/RegisterAttendance"));
 const ViewAttendance = lazy(() => import("./pages/attendance/ViewAttendance"));
 const ViewTeachers = lazy(() => import("./pages/teachers/ViewTeachers"));
+const AssignSubjects = lazy(() => import("./pages/allocation/SubjectAssignment"));
 const Schools = lazy(() => import("./pages/dashboard/Schools"));
 const AccountantDashboard = lazy(() => import("./pages/dashboard/Accountant"));
 const TeacherDashboard = lazy(() => import("./pages/dashboard/Teacher"));
@@ -96,6 +97,7 @@ function App() {
 
             {/* === Allocation === */}
             <Route path="/dashboard/class-overview" element={<ClassOverView />} />
+            <Route path="/dashboard/teachers/assign" element={<AssignSubjects />} />
 
             {/* === Subjects === */}
             <Route path="/dashboard/subjects/new" element={<RegisterSubject />} />
