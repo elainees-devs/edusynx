@@ -13,3 +13,5 @@ export { default as SchoolRegistrationForm } from "./RegisterSchoolForm";
 export { default as SignUpStepper } from "./signup/SignupStepper"
 export { default as SchoolLogoDropzone } from "./school/SchoolLogo";
 export { default as ClassFilterForm } from "./ClassFilterForm";
+export { default as AttendanceForm } from "./AttendanceForm";
+export { default as SubjectAssignmentForm } from "./SubjectAssignmentForm";
