@@ -1,51 +1,57 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useClassOptions } from "../../hooks/useClassOptions";
+import { useSubjectOptions } from "../../hooks/useSubjectOptions";
+import { useTeacherOptions } from "../../hooks/useTeacherOptions";
+import { getAllClasses } from "../../api/ClassApi";
+import { getAllStreams } from "../../api/StreamApi";
 import type { SubjectAssignment, Teacher } from "../../types/school/Allocation";
-import { getAllTeachers } from "../../api/BaseUserApi";
-import { getAllSubjects } from "../../api/SubjectApi";
-
-interface SubjectOption {
-  subjectName: string;
-  _id: string;
-}
+import type { IClass, IStream } from "../../types/school/SchoolCoreTypes";
 
 interface Props {
   initialData?: Partial<SubjectAssignment>;
-  onSubmit: (data: { subjectName: string; teacher: Teacher }) => void;
+  onSubmit: (data: { subjectName: string; teacher: Teacher, clas: IClass | undefined, stream: IStream | undefined }) => void;
   onCancel?: () => void;
 }
 
 const SubjectAssignmentForm: React.FC<Props> = ({ initialData, onSubmit, onCancel }) => {
-  const [subjectName, setSubjectName] = useState<string>(initialData?.subjectName || "");
   const [teacherId, setTeacherId] = useState<string>(initialData?.teacher?._id || "");
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [subjects, setSubjects] = useState<SubjectOption[]>([]);
+  const [classId, setClassId] = useState<string>("");
+  const [streamId, setStreamId] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [allClasses, setAllClasses] = useState<IClass[]>([]);
+  const [allStreams, setAllStreams] = useState<IStream[]>([]);
 
-  useEffect(() => {
-    Promise.all([getAllTeachers(), getAllSubjects()])
-      .then(([teacherList, subjectList]) => {
-        setTeachers(teacherList);
-        setSubjects(subjectList);
-      })
-      .catch(() => setError("Failed to load teachers or subjects."));
+  const { classOptions, streamOptions, error: classError } = useClassOptions();
+  const { subjectOptions, error: subjectError } = useSubjectOptions();
+  const { teacherOptions, error: teacherError } = useTeacherOptions();
+  const [subjectName, setSubjectName] = useState<string>(initialData?.subjectName || "");
+
+  React.useEffect(() => {
+    getAllClasses().then((classList) => {
+      setAllClasses(Array.isArray(classList) ? classList : []);
+    });
+    getAllStreams().then((streamList) => {
+      setAllStreams(Array.isArray(streamList) ? streamList : []);
+    });
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const teacher = teachers.find((t: Teacher) => t._id === teacherId);
-    if (!subjectName || !teacher) {
-      setError("Please select both subject and teacher.");
+    const teacher = teacherOptions.find((t) => t.value === teacherId)?.teacher;
+    const selectedClass = allClasses.find((c) => c._id === classId);
+    const selectedStream = allStreams.find((s) => s._id === streamId);
+    if (!subjectName || !teacher || !classId || !streamId) {
+      setError("Please select subject, teacher, class, and stream.");
       return;
     }
     setError(null);
-    onSubmit({ subjectName, teacher });
+    onSubmit({ subjectName, teacher, clas: selectedClass, stream: selectedStream });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded shadow max-w-md mx-auto">
       <h2 className="text-lg font-semibold">{initialData ? "Edit" : "Assign"} Subject</h2>
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {(error || classError || subjectError || teacherError) && <div className="text-red-600 text-sm">{error || classError || subjectError || teacherError}</div>}
       <div>
         <label className="block mb-1 font-medium">Subject</label>
         <select
@@ -55,9 +61,41 @@ const SubjectAssignmentForm: React.FC<Props> = ({ initialData, onSubmit, onCance
           required
         >
           <option value="">Select subject</option>
-          {subjects.map((s: SubjectOption) => (
-            <option key={s._id} value={s.subjectName}>
-              {s.subjectName}
+          {subjectOptions.map((s) => (
+            <option key={s.value} value={s.subjectName}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="block mb-1 font-medium">Class</label>
+        <select
+          value={classId}
+          onChange={(e) => setClassId(e.target.value)}
+          className="border p-2 rounded w-full"
+          required
+        >
+          <option value="">Select class</option>
+          {classOptions.map((cls) => (
+            <option key={cls.value} value={cls.value}>
+              {cls.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="block mb-1 font-medium">Stream</label>
+        <select
+          value={streamId}
+          onChange={(e) => setStreamId(e.target.value)}
+          className="border p-2 rounded w-full"
+          required
+        >
+          <option value="">Select stream</option>
+          {streamOptions.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
             </option>
           ))}
         </select>
@@ -71,9 +109,9 @@ const SubjectAssignmentForm: React.FC<Props> = ({ initialData, onSubmit, onCance
           required
         >
           <option value="">Select teacher</option>
-          {teachers.map((t: Teacher) => (
-            <option key={t._id} value={t._id}>
-              {t.firstName} {t.lastName} ({t.employmentNo})
+          {teacherOptions.map((t) => (
+            <option key={t.value} value={t.value}>
+              {t.label}
             </option>
           ))}
         </select>
