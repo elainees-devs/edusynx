@@ -39,6 +39,7 @@ import {
   subscriptionPlanRouter,
   subscriptionRouter,
   attendanceRouter,
+  cbcRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -118,6 +119,7 @@ apiRouter.use("/subscription-plans", subscriptionPlanRouter);
 apiRouter.use("/subscriptions", subscriptionRouter);
 apiRouter.use("/attendance", attendanceRouter);
 apiRouter.use("/teacher-subject-allocations", teacherSubjectRouter);
+apiRouter.use("/cbc", cbcRouter); 
 
 app.use("/api/v1", apiRouter);
 
