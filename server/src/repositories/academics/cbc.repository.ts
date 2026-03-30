@@ -98,8 +98,8 @@ export class CBCRepository {
     }
   }
 
-  // --- Strand CRUD ---
 
+  // --- Strand CRUD ---
   async createStrand(data: IStrand): Promise<IStrand> {
     try {
       const strand = new StrandModel(data);
@@ -110,7 +110,6 @@ export class CBCRepository {
     }
   }
 
-
   async getStrandById(id: string): Promise<IStrand | null> {
     try {
       const doc = await StrandModel.findById(new Types.ObjectId(id)).exec();
@@ -120,8 +119,30 @@ export class CBCRepository {
     }
   }
 
-  // --- SubStrand CRUD ---
+  async updateStrand(id: string, updates: Partial<IStrand>): Promise<IStrand | null> {
+    try {
+      const doc = await StrandModel.findByIdAndUpdate(
+        new Types.ObjectId(id),
+        updates,
+        { new: true }
+      ).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to update strand ${id}: ${(error as Error).message}`, 500);
+    }
+  }
 
+  async deleteStrand(id: string): Promise<IStrand | null> {
+    try {
+      const doc = await StrandModel.findByIdAndDelete(new Types.ObjectId(id)).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to delete strand ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+
+  // --- SubStrand CRUD ---
   async createSubStrand(data: ISubStrand): Promise<ISubStrand> {
     try {
       const subStrand = new SubStrandModel(data);
@@ -132,7 +153,6 @@ export class CBCRepository {
     }
   }
 
-
   async getSubStrandById(id: string): Promise<ISubStrand | null> {
     try {
       const doc = await SubStrandModel.findById(new Types.ObjectId(id)).exec();
@@ -142,8 +162,30 @@ export class CBCRepository {
     }
   }
 
-  // --- LearningOutcome CRUD ---
+  async updateSubStrand(id: string, updates: Partial<ISubStrand>): Promise<ISubStrand | null> {
+    try {
+      const doc = await SubStrandModel.findByIdAndUpdate(
+        new Types.ObjectId(id),
+        updates,
+        { new: true }
+      ).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to update sub-strand ${id}: ${(error as Error).message}`, 500);
+    }
+  }
 
+  async deleteSubStrand(id: string): Promise<ISubStrand | null> {
+    try {
+      const doc = await SubStrandModel.findByIdAndDelete(new Types.ObjectId(id)).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to delete sub-strand ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+
+  // --- LearningOutcome CRUD ---
   async createLearningOutcome(data: ILearningOutcome): Promise<ILearningOutcome> {
     try {
       const lo = new LearningOutcomeModel(data);
@@ -154,7 +196,6 @@ export class CBCRepository {
     }
   }
 
-
   async getLearningOutcomeById(id: string): Promise<ILearningOutcome | null> {
     try {
       const doc = await LearningOutcomeModel.findById(new Types.ObjectId(id)).exec();
@@ -164,8 +205,29 @@ export class CBCRepository {
     }
   }
 
-  // --- Assessment CRUD ---
+  async updateLearningOutcome(id: string, updates: Partial<ILearningOutcome>): Promise<ILearningOutcome | null> {
+    try {
+      const doc = await LearningOutcomeModel.findByIdAndUpdate(
+        new Types.ObjectId(id),
+        updates,
+        { new: true }
+      ).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to update learning outcome ${id}: ${(error as Error).message}`, 500);
+    }
+  }
 
+  async deleteLearningOutcome(id: string): Promise<ILearningOutcome | null> {
+    try {
+      const doc = await LearningOutcomeModel.findByIdAndDelete(new Types.ObjectId(id)).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to delete learning outcome ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  // --- Assessment CRUD ---
   async createAssessment(data: IAssessment): Promise<IAssessment> {
     try {
       const assessment = new AssessmentModel(data);
@@ -176,13 +238,34 @@ export class CBCRepository {
     }
   }
 
-
   async getAssessmentById(id: string): Promise<IAssessment | null> {
     try {
       const doc = await AssessmentModel.findById(new Types.ObjectId(id)).exec();
       return doc ? deepMapId(doc.toObject()) : null;
     } catch (error) {
       throw new AppError(`Failed to get assessment ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async updateAssessment(id: string, updates: Partial<IAssessment>): Promise<IAssessment | null> {
+    try {
+      const doc = await AssessmentModel.findByIdAndUpdate(
+        new Types.ObjectId(id),
+        updates,
+        { new: true }
+      ).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to update assessment ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async deleteAssessment(id: string): Promise<IAssessment | null> {
+    try {
+      const doc = await AssessmentModel.findByIdAndDelete(new Types.ObjectId(id)).exec();
+      return doc ? deepMapId(doc.toObject()) : null;
+    } catch (error) {
+      throw new AppError(`Failed to delete assessment ${id}: ${(error as Error).message}`, 500);
     }
   }
 }
