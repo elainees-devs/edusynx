@@ -12,6 +12,8 @@ import {
 	updateAssessmentSchema,
 	createAssessmentTemplateSchema,
 	updateAssessmentTemplateSchema,
+	createStudentAssessmentSchema,
+	updateStudentAssessmentSchema,
 
 } from "../validation";
 import { CBCController } from "../controllers/academics/cbc.controller";
@@ -57,5 +59,11 @@ cbcRouter.post("/assessment-templates", validate(createAssessmentTemplateSchema)
 cbcRouter.get("/assessment-templates/:id", cbcController.getAssessmentTemplateById);
 cbcRouter.patch("/assessment-templates/:id", validate(updateAssessmentTemplateSchema), cbcController.updateAssessmentTemplate);
 cbcRouter.delete("/assessment-templates/:id", cbcController.deleteAssessmentTemplate);
+
+// --- Student Assessment Routes ---
+cbcRouter.post("/student-assessments", validate(createStudentAssessmentSchema), cbcController.createStudentAssessment);
+cbcRouter.get("/student-assessments/:id", cbcController.getStudentAssessmentById);
+cbcRouter.patch("/student-assessments/:id", validate(updateStudentAssessmentSchema), cbcController.updateStudentAssessment);
+cbcRouter.delete("/student-assessments/:id", cbcController.deleteStudentAssessment);
 
 export { cbcRouter };
