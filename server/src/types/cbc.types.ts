@@ -17,10 +17,10 @@ export interface ILearningOutcome {
 
 export interface ISubStrand {
   _id?: string;
+  strandId: string; // Reference to parent Strand
   code: string;
   title: string;
   description?: string;
-  learningOutcomes?: ILearningOutcome[];
 }
 
 export interface IStrand {
