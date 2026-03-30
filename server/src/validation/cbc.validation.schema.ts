@@ -52,3 +52,13 @@ export const createAssessmentTemplateSchema = z.object({
   criteria: z.array(z.string()).optional(),
 });
 export const updateAssessmentTemplateSchema = createAssessmentTemplateSchema.partial();
+
+export const createStudentAssessmentSchema = z.object({
+  studentId: objectId,
+  assessmentTemplateId: objectId,
+  dateTaken: z.date(),
+  score: z.number().min(0).max(100),
+  feedback: z.string().optional(),
+});
+export const updateStudentAssessmentSchema = createStudentAssessmentSchema.partial(); 
+
