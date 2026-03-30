@@ -7,6 +7,7 @@ export * from "./school/academic.types"
 export * from "./school/school-activity.types";
 export * from "./school/allocation.types"
 export * from "./people/user.types";
+export * from "./cbc.types";
 export * from "./security/login.types"
 export * from "./security/session.types"
 export * from "./security/permission.types"
@@ -18,6 +19,7 @@ export * from "./auth/auth.types"
 export * from "./security/session.types"
 export * from "./email/email.types"
 export * from "./analytics/analytics.types"
+
 export type ILoginResponse = ILoginResponseSuccess | ILoginResponseFailure;
 
 
