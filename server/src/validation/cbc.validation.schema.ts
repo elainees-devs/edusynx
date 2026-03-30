@@ -44,3 +44,11 @@ export const createCompetencySchema = z.object({
 });
 
 export const updateCompetencySchema = createCompetencySchema.partial();
+
+export const createAssessmentTemplateSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().optional(),
+  type: z.enum(["formative", "summative"]),
+  criteria: z.array(z.string()).optional(),
+});
+export const updateAssessmentTemplateSchema = createAssessmentTemplateSchema.partial();
