@@ -3,6 +3,7 @@ import type { Student } from "../people/StudentTypes";
 import type { Guardian } from "../people/UserTypes";
 import type { Teacher } from "../school/Allocation";
 import type { IAttendance } from "../school/AttendanceTypes";
+import type { ICompetency } from "../school/CBCTypes";
 import type { IClass, IStream, ISubject } from "../school/SchoolCoreTypes";
 
 
@@ -29,6 +30,8 @@ export type PaginatedClasses = PaginatedResponse<IClass>;
 export type PaginatedStreams = PaginatedResponse<IStream>;
 export type PaginatedSubjects = PaginatedResponse<ISubject>;
 export type PaginatedAttendanceRecords = PaginatedResponse<IAttendance>;
+export type PaginatedCompetencies = PaginatedResponse<ICompetency>;
+
 
 
 
