@@ -2,9 +2,8 @@
 import { useGlobalState } from "../../hooks/useGlobalContext"; 
 
 import Swal from "sweetalert2";
-import Sidebar from "../../shared/layout/dashboard/sidebar";
-import Topbar from "../../shared/layout/dashboard/topbar";
-import { getSchoolId } from "../../utils/getSchoolId";
+import { Sidebar, Topbar } from "../../shared/layout/dashboard";
+import { getSchoolId } from "../../utils";
 import { registerClass } from "../../api";
 import { RegisterClassForm } from "../../components";
 import type { IClass } from "../../types";
