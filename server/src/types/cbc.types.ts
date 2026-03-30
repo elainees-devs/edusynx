@@ -17,7 +17,7 @@ export interface ILearningOutcome extends BaseDocument {
 }
 
 export interface IAssessmentTemplate {
-  learningOutcomeId: string;
+  learningOutcomeId: Types.ObjectId | string;
   title: string;
   type: "formative" | "summative";
   criteria?: string[];
@@ -46,3 +46,22 @@ export interface ICompetency extends BaseDocument {
   title: string;
   description?: string;
 }
+
+export interface IStudentAssessment {
+  studentId: Types.ObjectId | string;
+  subjectId: Types.ObjectId | string;
+
+  competencyId: Types.ObjectId | string;
+  strandId: Types.ObjectId | string;
+  subStrandId: Types.ObjectId | string;
+  learningOutcomeId: Types.ObjectId | string;
+
+  rating: 'BE' | 'AE' | 'ME' | 'EE';
+
+  term: string;
+  year: number;
+
+  teacherId?: Types.ObjectId | string;
+
+}
+
