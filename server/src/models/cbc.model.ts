@@ -6,6 +6,7 @@ import {
   IStrand,
   ISubStrand,
   IAssessmentTemplate,
+  IStudentAssessment,
 } from "../types";
 
 const AssessmentSchema = new Schema<IAssessment>(
@@ -71,6 +72,26 @@ const AssessmentTemplateSchema = new Schema<IAssessmentTemplate>(
   },
   { timestamps: true },
 );  
+
+export const StudentAssessmentSchema = new Schema<IStudentAssessment>(
+  {
+    studentId: { type: Schema.Types.ObjectId, ref: "Student", required: true },
+    subjectId: { type: Schema.Types.ObjectId, ref: "Subject", required: true },
+    competencyId: { type: Schema.Types.ObjectId, ref: "Competency", required: true },
+    strandId: { type: Schema.Types.ObjectId, ref: "Strand", required: true },
+    subStrandId: { type: Schema.Types.ObjectId, ref: "SubStrand", required: true },
+    learningOutcomeId: { type: Schema.Types.ObjectId, ref: "LearningOutcome", required: true },
+    rating: { type: String, enum: ['BE', 'AE', 'ME', 'EE'], required: true },
+    term: { type: String, required: true },
+    year: { type: Number, required: true },
+    teacherId: { type: Schema.Types.ObjectId, ref: "Teacher" },
+  },
+  { timestamps: true },
+);
+export const StudentAssessmentModel = mongoose.model<IStudentAssessment>(
+  "StudentAssessment",
+  StudentAssessmentSchema,
+);
 
 export const AssessmentModel = mongoose.model<IAssessment>(
   "Assessment",
