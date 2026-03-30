@@ -20,7 +20,8 @@ import {
   studentNavChildren,
   streamNavChildren,
   attendanceNavChildren,
-  competencyNavChildren
+  competencyNavChildren,
+  strandNavChildren
 } from "./SidebarSubmenu";
 
 export interface NavItem {
@@ -78,6 +79,12 @@ export const principalNavItems: NavItem[] = [
     icon: FaBook,
     path: "/dashboard/competency",
     children: competencyNavChildren,
+  },
+  {
+    name: "Strands",
+    icon: FaBook,
+    path: "/dashboard/strands",
+    children: strandNavChildren,
   },
   {
     name: "Attendance",
