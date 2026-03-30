@@ -12,13 +12,13 @@ const AssessmentSchema = new Schema<IAssessment>({
   description: String,
   type: { type: String, enum: ["formative", "summative"], required: true },
   criteria: [String],
-});
+}, { timestamps: true });
 
 const LearningOutcomeSchema = new Schema<ILearningOutcome>({
   code: { type: String, required: true },
   description: { type: String, required: true },
   assessments: [AssessmentSchema],
-});
+}, { timestamps: true });
 
 const SubStrandSchema = new Schema<ISubStrand>({
   code: { type: String, required: true },
@@ -28,19 +28,19 @@ const SubStrandSchema = new Schema<ISubStrand>({
   schoolId: { type: String, required: true },
   order: Number,
   isActive: { type: Boolean, default: true },
-});
+}, { timestamps: true });
 
 const StrandSchema = new Schema<IStrand>({
   code: { type: String, required: true },
   title: { type: String, required: true },
   description: String,
-});
+}, { timestamps: true });
 
 const CompetencySchema = new Schema<ICompetency>({
   code: { type: String, required: true },
   title: { type: String, required: true },
   description: String,
-});
+}, { timestamps: true });
 
 export const AssessmentModel = mongoose.model<IAssessment>(
   "Assessment",
