@@ -5,6 +5,7 @@ import {
   ILearningOutcome,
   IStrand,
   ISubStrand,
+  IAssessmentTemplate,
 } from "../types";
 
 const AssessmentSchema = new Schema<IAssessment>(
@@ -26,16 +27,6 @@ const LearningOutcomeSchema = new Schema<ILearningOutcome>(
     },
     code: { type: String, required: true },
     description: { type: String, required: true },
-  },
-  { timestamps: true },
-);
-
-const AssessmentTemplateSchema = new Schema(
-  {
-    title: { type: String, required: true },
-    description: String,
-    type: { type: String, enum: ["formative", "summative"], required: true },
-    criteria: [String],
   },
   { timestamps: true },
 );
@@ -71,6 +62,16 @@ const CompetencySchema = new Schema<ICompetency>(
   { timestamps: true },
 );
 
+const AssessmentTemplateSchema = new Schema<IAssessmentTemplate>(
+  {
+    learningOutcomeId: { type: Schema.Types.ObjectId, ref: "LearningOutcome", required: true },
+    title: { type: String, required: true },
+    type: { type: String, enum: ["formative", "summative"], required: true },
+    criteria: [String],
+  },
+  { timestamps: true },
+);  
+
 export const AssessmentModel = mongoose.model<IAssessment>(
   "Assessment",
   AssessmentSchema,
@@ -80,7 +81,7 @@ export const LearningOutcomeModel = mongoose.model<ILearningOutcome>(
   LearningOutcomeSchema,
 );
 
-export const AssessmentTemplateModel = mongoose.model(
+export const AssessmentTemplateModel = mongoose.model<IAssessmentTemplate>(
   "AssessmentTemplate",
   AssessmentTemplateSchema,
 );
@@ -89,7 +90,9 @@ export const SubStrandModel = mongoose.model<ISubStrand>(
   SubStrandSchema,
 );
 export const StrandModel = mongoose.model<IStrand>("Strand", StrandSchema);
+
 export const CompetencyModel = mongoose.model<ICompetency>(
   "Competency",
   CompetencySchema,
 );
+
