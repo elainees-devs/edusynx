@@ -43,4 +43,6 @@ export {
   updateCompetencySchema,
   createAssessmentTemplateSchema,
   updateAssessmentTemplateSchema,
+  createStudentAssessmentSchema,
+  updateStudentAssessmentSchema,
 } from "./cbc.validation.schema";
