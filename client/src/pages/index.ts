@@ -42,3 +42,6 @@ export { default as ViewTeachers } from './teachers/ViewTeachers'
 
 // ---------- Dashboard Pages ----------
 export { default as Schools } from './dashboard/Schools'
+
+// ---------- CBC Pages ----------
+export { default as RegisterCompetency } from './cbc/RegisterCompetency'
