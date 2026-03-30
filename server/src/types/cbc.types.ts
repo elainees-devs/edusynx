@@ -6,14 +6,21 @@ import { BaseDocument } from "./common/base.types";
 export interface IAssessment extends BaseDocument {
   title: string;
   description?: string;
-  type: 'formative' | 'summative';
+  type: "formative" | "summative";
   criteria?: string[];
 }
 
 export interface ILearningOutcome extends BaseDocument {
+  subStrandId: Types.ObjectId | string;
   code: string;
   description: string;
-  assessments?: IAssessment[];
+}
+
+export interface IAssessmentTemplate {
+  learningOutcomeId: string;
+  title: string;
+  type: "formative" | "summative";
+  criteria?: string[];
 }
 
 export interface ISubStrand extends BaseDocument {
@@ -26,11 +33,9 @@ export interface ISubStrand extends BaseDocument {
 
   order?: number;
   isActive?: boolean;
-
 }
 
 export interface IStrand {
-  _id?: string;
   code: string;
   title: string;
   description?: string;
@@ -41,4 +46,3 @@ export interface ICompetency extends BaseDocument {
   title: string;
   description?: string;
 }
-
