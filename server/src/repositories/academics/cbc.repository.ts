@@ -7,6 +7,7 @@ import {
   StrandModel,
   CompetencyModel,
   AssessmentTemplateModel,
+  StudentAssessmentModel,
 } from "../../models";
 import {
   IAssessment,
@@ -15,6 +16,7 @@ import {
   IStrand,
   ICompetency,
   IAssessmentTemplate,
+  IStudentAssessment,
 } from "../../types";
 import {
   CreateAssessmentDTO,
@@ -23,6 +25,7 @@ import {
   CreateStrandDTO,
   CreateCompetencyDTO,
   CreateAssessmentTemplateDTO,
+  CreateStudentAssessmentDTO,
 } from "../../dto/cbc.dto";
 import { AppError } from "../../utils";
 import { PaginationOptions } from "../../shared/pagination";
@@ -249,6 +252,39 @@ export class CBCRepository {
       return await AssessmentTemplateModel.findByIdAndDelete(id).exec();
     } catch (error) {
       throw new AppError(`Failed to delete assessment template ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  // -- Student Assessment CRUD --
+  async createStudentAssessment(data: CreateStudentAssessmentDTO): Promise<IStudentAssessment> {
+    try {
+      return await new StudentAssessmentModel(data).save();
+    } catch (error) {
+      throw new AppError(`Failed to create student assessment: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async getStudentAssessmentById(id: string): Promise<IStudentAssessment | null> {
+    return this.findByIdOrThrow<IStudentAssessment>(StudentAssessmentModel, id, "student assessment");
+  }
+
+  async getStudentAssessments(options?: PaginationOptions): Promise<IStudentAssessment[]> {
+    return this.findWithPagination<IStudentAssessment>(StudentAssessmentModel.find(), options);
+  }
+
+  async updateStudentAssessment(id: string, updates: Partial<CreateStudentAssessmentDTO>): Promise<IStudentAssessment | null> {
+    try {
+      return await StudentAssessmentModel.findByIdAndUpdate(id, updates, { new: true }).exec();
+    } catch (error) {
+      throw new AppError(`Failed to update student assessment ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async deleteStudentAssessment(id: string): Promise<IStudentAssessment | null> {
+    try {
+      return await StudentAssessmentModel.findByIdAndDelete(id).exec();
+    } catch (error) {
+      throw new AppError(`Failed to delete student assessment ${id}: ${(error as Error).message}`, 500);
     }
   }
 }
