@@ -41,7 +41,6 @@ export const createCompetencySchema = z.object({
   code: z.string().min(1),
   title: z.string().min(1),
   description: z.string().optional(),
-  strands: z.array(createStrandSchema).optional(),
 });
 
 export const updateCompetencySchema = createCompetencySchema.partial();
