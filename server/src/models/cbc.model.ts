@@ -24,7 +24,10 @@ const SubStrandSchema = new Schema<ISubStrand>({
   code: { type: String, required: true },
   title: { type: String, required: true },
   description: String,
-  learningOutcomes: [LearningOutcomeSchema],
+  strandId: { type: Schema.Types.ObjectId, ref: "Strand", required: true },
+  schoolId: { type: String, required: true },
+  order: Number,
+  isActive: { type: Boolean, default: true },
 });
 
 const StrandSchema = new Schema<IStrand>({
