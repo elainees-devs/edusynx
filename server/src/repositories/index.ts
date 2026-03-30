@@ -30,6 +30,7 @@ export * from "./permissions/rolePermission.repository"
 export * from "./allocation/allocation.repository"
 export * from "./event.repository"
 export * from "./notification.repository"
+export * from "./academics/cbc.repository";
 
 
 
