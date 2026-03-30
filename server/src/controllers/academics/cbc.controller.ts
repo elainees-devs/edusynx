@@ -196,4 +196,36 @@ export class CBCController {
       if (!deleted) throw new AppError("Assessment Template not found", 404);
       res.status(204).send();
     }); 
+
+  // --- Student Assessment ---
+  createStudentAssessment = handleAsync(async (req: Request, res: Response) => {
+    const newStudentAssessment = await cbcRepo.createStudentAssessment(req.body);
+    res.status(201).json(newStudentAssessment);
+  });
+
+  getStudentAssessmentById = handleAsync<{ id: string }>(async (req, res) => {
+    const studentAssessment = await cbcRepo.getStudentAssessmentById(req.params.id);
+    if (!studentAssessment) throw new AppError("Student Assessment not found", 404);
+    res.json(studentAssessment);
+  });
+
+  getStudentAssessments = handleAsync(async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+    const studentAssessments = await cbcRepo.getStudentAssessments({ skip, limit });
+    res.json({ page, limit, data: studentAssessments });
+  });
+
+    updateStudentAssessment = handleAsync<{ id: string }, any, Partial<any>>(async (req, res) => {
+      const updated = await cbcRepo.updateStudentAssessment(req.params.id, req.body);
+      if (!updated) throw new AppError("Student Assessment not found", 404);
+      res.json(updated);
+    });
+
+    deleteStudentAssessment = handleAsync<{ id: string }>(async (req, res) => {
+      const deleted = await cbcRepo.deleteStudentAssessment(req.params.id);
+      if (!deleted) throw new AppError("Student Assessment not found", 404);
+      res.status(204).send();
+    });
 }
