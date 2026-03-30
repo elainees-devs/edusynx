@@ -36,5 +36,5 @@ export interface ICompetency {
   code: string;
   title: string;
   description?: string;
-  strands?: IStrand[];
 }
+
