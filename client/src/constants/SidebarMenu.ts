@@ -19,7 +19,8 @@ import {
   subjectNavChildren,
   studentNavChildren,
   streamNavChildren,
-  attendanceNavChildren
+  attendanceNavChildren,
+  competencyNavChildren
 } from "./SidebarSubmenu";
 
 export interface NavItem {
@@ -75,8 +76,8 @@ export const principalNavItems: NavItem[] = [
   {
     name: "Competencies",
     icon: FaBook,
-    path: "/dashboard/competencies",
-    children: [], // Add competencyNavChildren when available
+    path: "/dashboard/competency",
+    children: competencyNavChildren,
   },
   {
     name: "Attendance",
