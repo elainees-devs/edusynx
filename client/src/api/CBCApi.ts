@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ICompetency, PaginatedCompetencies } from "../types";
+import type { ICompetency, IStrand,PaginatedCompetencies } from "../types";
 
 const API_BASE = "http://localhost:5000/api/v1/cbc";
 
@@ -44,9 +44,54 @@ export const updateCompetency = async (
   return response.data;
 };
 
+
 // Delete a competency
 export const deleteCompetency = async (id: string): Promise<void> => {
   console.log("Deleting competency with ID:", id);
   await axios.delete(`${API_BASE}/competencies/${id}`);
   console.log("Deleted competency with ID:", id);
 };
+
+// =========================
+// Strand APIs
+// =========================
+
+// Create a new strand
+export const createStrand = async (data: Omit<IStrand, "_id" | "createdAt" | "updatedAt">): Promise<IStrand> => {
+  const response = await axios.post(`${API_BASE}/strands`, data);
+  return response.data;
+};
+
+// Get all strands (paginated)
+export const getStrands = async (page = 1, limit = 10): Promise<{ page: number; limit: number; data: IStrand[] }> => {
+  const response = await axios.get(`${API_BASE}/strands`, { params: { page, limit } });
+  return response.data;
+};
+
+// Get a single strand by ID
+export const getStrandById = async (id: string): Promise<IStrand> => {
+  const response = await axios.get(`${API_BASE}/strands/${id}`);
+  return response.data;
+};
+
+// Update a strand
+export const updateStrand = async (
+  id: string,
+  data: Partial<Omit<IStrand, "_id" | "createdAt" | "updatedAt">>
+): Promise<IStrand> => {
+  const payload = Object.fromEntries(
+    Object.entries(data).filter(([, value]) => value !== undefined && value !== "")
+  );
+  if (Object.keys(payload).length === 0) {
+    throw new Error("No valid fields provided to update.");
+  }
+  const response = await axios.patch(`${API_BASE}/strands/${id}`, payload);
+  return response.data;
+};
+
+// Delete a strand
+export const deleteStrand = async (id: string): Promise<void> => {
+  await axios.delete(`${API_BASE}/strands/${id}`);
+};
+
+
