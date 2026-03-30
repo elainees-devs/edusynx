@@ -24,7 +24,7 @@ export interface ISchoolAllocation extends BaseDocument {
 export interface TeacherSubjectAllocation {
   teacher: string | Types.ObjectId;
   subject: string | Types.ObjectId;
-  className: string | Types.ObjectId;
+  clasName: string | Types.ObjectId;
   stream: string | Types.ObjectId; 
 }
 
