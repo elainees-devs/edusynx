@@ -167,4 +167,33 @@ export class CBCController {
       if (!deleted) throw new AppError("Assessment not found", 404);
       res.status(204).send();
     });
+
+  // --- Assessment Template ---
+  createAssessmentTemplate = handleAsync(async (req: Request, res: Response) => {
+    const newTemplate = await cbcRepo.createAssessmentTemplate(req.body);
+    res.status(201).json(newTemplate);
+  });
+
+  getAssessmentTemplateById = handleAsync<{ id: string }>(async (req, res) => {
+    const template = await cbcRepo.getAssessmentTemplateById(req.params.id);
+    if (!template) throw new AppError("Assessment Template not found", 404);
+    res.json(template);
+  });
+
+  getAssessmentTemplates = handleAsync(async (req: Request, res: Response) => {
+    const templates = await cbcRepo.getAssessmentTemplates();
+    res.json(templates);
+  });
+
+    updateAssessmentTemplate = handleAsync<{ id: string }, any, Partial<any>>(async (req, res) => {
+      const updated = await cbcRepo.updateAssessmentTemplate(req.params.id, req.body);
+      if (!updated) throw new AppError("Assessment Template not found", 404);
+      res.json(updated);
+    });
+
+    deleteAssessmentTemplate = handleAsync<{ id: string }>(async (req, res) => {
+      const deleted = await cbcRepo.deleteAssessmentTemplate(req.params.id);
+      if (!deleted) throw new AppError("Assessment Template not found", 404);
+      res.status(204).send();
+    }); 
 }
