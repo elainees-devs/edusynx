@@ -34,7 +34,9 @@ const PrincipalDashboard = lazy(() => import("./pages/dashboard/Principal"));
 const SchoolAdminDashboard = lazy(() => import("./pages/dashboard/SchoolAdmin"));
 const SuperAdminDashboard = lazy(() => import("./pages/dashboard/SuperAdmin"));
 const RegisterCompetency = lazy(() => import("./pages/cbc/RegisterCompetency"));  
+const RegisterStrand = lazy(() => import("./pages/cbc/RegisterStrand"));
 import GlobalStateProvider from "./context/global/useGlobalState";
+
 // import ClassTeacher from "./pages/allocation/class-teacher";
 
 
@@ -98,6 +100,7 @@ function App() {
 
             {/* === CBC === */}
             <Route path="/dashboard/competency/new" element={<RegisterCompetency />} />
+            <Route path="/dashboard/strands/new" element={<RegisterStrand />} />
 
             {/* === Allocation === */}
             <Route path="/dashboard/class-overview" element={<ClassOverView />} />
