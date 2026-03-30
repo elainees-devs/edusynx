@@ -72,7 +72,12 @@ export const principalNavItems: NavItem[] = [
     path: "/dashboard/subjects",
     children: subjectNavChildren,
   },
-
+  {
+    name: "Competencies",
+    icon: FaBook,
+    path: "/dashboard/competencies",
+    children: [], // Add competencyNavChildren when available
+  },
   {
     name: "Attendance",
     icon: FaClipboardList,  
