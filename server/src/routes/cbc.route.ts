@@ -10,6 +10,9 @@ import {
 	updateLearningOutcomeSchema,
 	createAssessmentSchema,
 	updateAssessmentSchema,
+	createAssessmentTemplateSchema,
+	updateAssessmentTemplateSchema,
+
 } from "../validation";
 import { CBCController } from "../controllers/academics/cbc.controller";
 import { validate } from "../middlewares/validate";
@@ -48,5 +51,11 @@ cbcRouter.post("/assessments", validate(createAssessmentSchema), cbcController.c
 cbcRouter.get("/assessments/:id", cbcController.getAssessmentById);
 cbcRouter.patch("/assessments/:id", validate(updateAssessmentSchema), cbcController.updateAssessment);
 cbcRouter.delete("/assessments/:id", cbcController.deleteAssessment);
+
+// --- Assessment Template Routes ---
+cbcRouter.post("/assessment-templates", validate(createAssessmentTemplateSchema), cbcController.createAssessmentTemplate);
+cbcRouter.get("/assessment-templates/:id", cbcController.getAssessmentTemplateById);
+cbcRouter.patch("/assessment-templates/:id", validate(updateAssessmentTemplateSchema), cbcController.updateAssessmentTemplate);
+cbcRouter.delete("/assessment-templates/:id", cbcController.deleteAssessmentTemplate);
 
 export { cbcRouter };
