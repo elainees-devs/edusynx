@@ -7,3 +7,4 @@ export * from './UseSchoolEditHandlers';
 export * from './Capitalize';
 export * from './NormalizeId';
 export * from './SortStudents';
+export * from './GetSchoolId';
