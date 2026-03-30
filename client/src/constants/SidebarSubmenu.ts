@@ -66,3 +66,9 @@ export const competencyNavChildren: NavItem[] = [
   { name: "Add Competency", icon: FaPlusCircle, path: "/dashboard/competency/new" },
   { name: "View Competencies", icon: FaListAlt, path: "/dashboard/competency/view" },
 ];
+
+// ---- STRANDS ----
+export const strandNavChildren: NavItem[] = [   
+  { name: "Add Strand", icon: FaPlusCircle, path: "/dashboard/strands/new" },
+  { name: "View Strands", icon: FaListAlt, path: "/dashboard/strands/view" },
+];  
