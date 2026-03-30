@@ -20,7 +20,7 @@ export const ClassAllocationSchema = z.object({
 export const TeacherSubjectAllocationSchema = z.object({
   teacher: objectId,
   subject: objectId,
-  className: objectId,
+  clasName: objectId,
   stream: objectId,
 });
 

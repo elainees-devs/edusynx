@@ -6,9 +6,9 @@ export const teacherSubjectAllocationSchema = {
     properties: {
       teacher: { type: "string", description: "Teacher ID" },
       subject: { type: "string", description: "Subject ID" },
-      className: { type: "string", description: "Class ID" },
+      clasName: { type: "string", description: "Class ID" },
       stream: { type: "string", description: "Stream ID" }
     },
-    required: ["teacher", "subject", "className", "stream"]
+    required: ["teacher", "subject", "clasName", "stream"]
   }
 };
