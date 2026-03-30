@@ -105,10 +105,6 @@ export const cbcSchema = {
       code: { type: "string" },
       title: { type: "string" },
       description: { type: "string" },
-      strands: {
-        type: "array",
-        items: { $ref: "#/components/schemas/cbcSchema/StrandCreate" },
-      },
     },
   },
   CompetencyUpdate: {
@@ -116,11 +112,8 @@ export const cbcSchema = {
     properties: {
       code: { type: "string" },
       title: { type: "string" },
-      description: { type: "string" },
-      strands: {
-        type: "array",
-        items: { $ref: "#/components/schemas/cbcSchema/StrandUpdate" },
+      description: { type: "string" }
       },
     },
-  },
-};
+  }
+
