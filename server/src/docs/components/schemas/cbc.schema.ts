@@ -115,5 +115,26 @@ export const cbcSchema = {
       description: { type: "string" }
       },
     },
-  }
 
+
+  AssessmentTemplateCreate: {
+    type: "object",
+    required: ["title", "type"],
+    properties: {
+      title: { type: "string" },
+      description: { type: "string" },
+      type: { type: "string", enum: ["formative", "summative"] },
+      criteria: { type: "array", items: { type: "string" } },
+    },
+  },
+  AssessmentTemplateUpdate: {
+    type: "object",
+    properties: {
+      title: { type: "string" },
+      description: { type: "string" },
+      type: { type: "string", enum: ["formative", "summative"] },
+      criteria: { type: "array", items: { type: "string" } },
+    },
+  },
+  
+}
