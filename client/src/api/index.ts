@@ -8,6 +8,7 @@ export * from "./SubjectApi";
 export * from "./SchoolApi";
 export * from "./EmailApi";
 export * from "./AuthApi";
+export * from "./SubjectAssignmentApi";
 export * from "./ClassTeacherApi";
 export * from "./AttendanceApi";
 export * from "./SubscriptionPlanApi"
