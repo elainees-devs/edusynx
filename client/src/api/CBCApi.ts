@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { ICompetency, PaginatedCompetencies } from "../types";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1/cbc";
 
 // Create a new competency
 export const createCompetency = async (data: Omit<ICompetency, "_id" | "createdAt" | "updatedAt">): Promise<ICompetency> => {
