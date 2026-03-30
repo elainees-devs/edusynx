@@ -39,6 +39,53 @@ function deepMapId(obj: any): any {
 }
 
 export class CBCRepository {
+    async getStrands(options?: PaginationOptions): Promise<IStrand[]> {
+      const { skip = 0, limit = 10 } = options || {};
+      try {
+        let query = StrandModel.find().skip(skip);
+        if (limit > 0) query = query.limit(limit);
+        const docs = await query.exec();
+        return docs.map(d => deepMapId(d.toObject()));
+      } catch (error) {
+        throw new AppError(`Failed to fetch strands: ${(error as Error).message}`, 500);
+      }
+    }
+
+    async getSubStrands(options?: PaginationOptions): Promise<ISubStrand[]> {
+      const { skip = 0, limit = 10 } = options || {};
+      try {
+        let query = SubStrandModel.find().skip(skip);
+        if (limit > 0) query = query.limit(limit);
+        const docs = await query.exec();
+        return docs.map(d => deepMapId(d.toObject()));
+      } catch (error) {
+        throw new AppError(`Failed to fetch sub-strands: ${(error as Error).message}`, 500);
+      }
+    }
+
+    async getLearningOutcomes(options?: PaginationOptions): Promise<ILearningOutcome[]> {
+      const { skip = 0, limit = 10 } = options || {};
+      try {
+        let query = LearningOutcomeModel.find().skip(skip);
+        if (limit > 0) query = query.limit(limit);
+        const docs = await query.exec();
+        return docs.map(d => deepMapId(d.toObject()));
+      } catch (error) {
+        throw new AppError(`Failed to fetch learning outcomes: ${(error as Error).message}`, 500);
+      }
+    }
+
+    async getAssessments(options?: PaginationOptions): Promise<IAssessment[]> {
+      const { skip = 0, limit = 10 } = options || {};
+      try {
+        let query = AssessmentModel.find().skip(skip);
+        if (limit > 0) query = query.limit(limit);
+        const docs = await query.exec();
+        return docs.map(d => deepMapId(d.toObject()));
+      } catch (error) {
+        throw new AppError(`Failed to fetch assessments: ${(error as Error).message}`, 500);
+      }
+    }
   // --- Competency CRUD ---
 
   async createCompetency(data: ICompetency): Promise<ICompetency> {
