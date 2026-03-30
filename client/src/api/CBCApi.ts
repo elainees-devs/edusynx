@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ICompetency, IStrand,PaginatedCompetencies } from "../types";
+import type { ICompetency, IStrand,PaginatedCompetencies, PaginatedStrands } from "../types";
 
 const API_BASE = "http://localhost:5000/api/v1/cbc";
 
@@ -63,7 +63,7 @@ export const createStrand = async (data: Omit<IStrand, "_id" | "createdAt" | "up
 };
 
 // Get all strands (paginated)
-export const getStrands = async (page = 1, limit = 10): Promise<{ page: number; limit: number; data: IStrand[] }> => {
+export const getStrands = async (page = 1, limit = 10): Promise<PaginatedStrands> => {
   const response = await axios.get(`${API_BASE}/strands`, { params: { page, limit } });
   return response.data;
 };
