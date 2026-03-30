@@ -21,7 +21,7 @@ const ClassAllocationSchema = new Schema({
 const TeacherSubjectAllocationSchema = new Schema({
   teacher: { type: Schema.Types.ObjectId, ref: "Teacher", required: true },
   subject: { type: Schema.Types.ObjectId, ref: "Subject", required: true },
-  className: { type: Schema.Types.ObjectId, ref: "Class", required: true },
+  clasName: { type: Schema.Types.ObjectId, ref: "Class", required: true },
   stream: { type: Schema.Types.ObjectId, ref: "Stream", required: true }
 }, { _id: false });
 
