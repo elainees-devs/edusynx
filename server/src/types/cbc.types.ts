@@ -1,24 +1,22 @@
 // CBC Types for EduSynx
 
 import { Types } from "mongoose";
+import { BaseDocument } from "./common/base.types";
 
-export interface IAssessment {
-  _id?: string;
+export interface IAssessment extends BaseDocument {
   title: string;
   description?: string;
   type: 'formative' | 'summative';
   criteria?: string[];
 }
 
-export interface ILearningOutcome {
-  _id?: string;
+export interface ILearningOutcome extends BaseDocument {
   code: string;
   description: string;
   assessments?: IAssessment[];
 }
 
-export interface ISubStrand {
-  _id?: string;
+export interface ISubStrand extends BaseDocument {
   schoolId: Types.ObjectId | string;
   strandId: Types.ObjectId | string;
 
@@ -38,8 +36,7 @@ export interface IStrand {
   description?: string;
 }
 
-export interface ICompetency {
-  _id?: string;
+export interface ICompetency extends BaseDocument {
   code: string;
   title: string;
   description?: string;
