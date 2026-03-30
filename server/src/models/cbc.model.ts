@@ -60,7 +60,6 @@ const CompetencySchema = new Schema<ICompetency>({
   code: { type: String, required: true },
   title: { type: String, required: true },
   description: String,
-  strands: [StrandSchema],
 });
 
 export const AssessmentModel = mongoose.model<IAssessment>('Assessment', AssessmentSchema);
