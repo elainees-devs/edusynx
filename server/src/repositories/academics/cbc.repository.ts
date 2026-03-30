@@ -6,6 +6,7 @@ import {
   SubStrandModel,
   StrandModel,
   CompetencyModel,
+  AssessmentTemplateModel,
 } from "../../models";
 import {
   IAssessment,
@@ -13,6 +14,7 @@ import {
   ISubStrand,
   IStrand,
   ICompetency,
+  IAssessmentTemplate,
 } from "../../types";
 import {
   CreateAssessmentDTO,
@@ -20,6 +22,7 @@ import {
   CreateSubStrandDTO,
   CreateStrandDTO,
   CreateCompetencyDTO,
+  CreateAssessmentTemplateDTO,
 } from "../../dto/cbc.dto";
 import { AppError } from "../../utils";
 import { PaginationOptions } from "../../shared/pagination";
@@ -204,6 +207,48 @@ export class CBCRepository {
       return await AssessmentModel.findByIdAndDelete(id).exec();
     } catch (error) {
       throw new AppError(`Failed to delete assessment ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  //--Assessment Template CRUD --
+  async createAssessmentTemplate(data: CreateAssessmentTemplateDTO): Promise<IAssessmentTemplate> {
+    try {
+      const template = new AssessmentTemplateModel(data);
+      return await template.save();
+    } catch (error) {
+      throw new AppError(`Failed to create assessment template: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async getAssessmentTemplateById(id: string): Promise<IAssessmentTemplate | null> {
+    try {
+      return await AssessmentTemplateModel.findById(id).exec();
+    } catch (error) {
+      throw new AppError(`Failed to get assessment template ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async getAssessmentTemplates(): Promise<IAssessmentTemplate[]> {
+    try {
+      return await AssessmentTemplateModel.find().exec();
+    } catch (error) {
+      throw new AppError(`Failed to fetch assessment templates: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async updateAssessmentTemplate(id: string, updates: Partial<CreateAssessmentTemplateDTO>): Promise<IAssessmentTemplate | null> {
+    try {
+      return await AssessmentTemplateModel.findByIdAndUpdate(id, updates, { new: true }).exec();
+    } catch (error) {
+      throw new AppError(`Failed to update assessment template ${id}: ${(error as Error).message}`, 500);
+    }
+  }
+
+  async deleteAssessmentTemplate(id: string): Promise<IAssessmentTemplate | null> {
+    try {
+      return await AssessmentTemplateModel.findByIdAndDelete(id).exec();
+    } catch (error) {
+      throw new AppError(`Failed to delete assessment template ${id}: ${(error as Error).message}`, 500);
     }
   }
 }
