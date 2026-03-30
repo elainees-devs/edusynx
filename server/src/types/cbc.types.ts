@@ -1,5 +1,7 @@
 // CBC Types for EduSynx
 
+import { Types } from "mongoose";
+
 export interface IAssessment {
   _id?: string;
   title: string;
@@ -17,10 +19,16 @@ export interface ILearningOutcome {
 
 export interface ISubStrand {
   _id?: string;
-  strandId: string; // Reference to parent Strand
+  schoolId: Types.ObjectId | string;
+  strandId: Types.ObjectId | string;
+
   code: string;
   title: string;
   description?: string;
+
+  order?: number;
+  isActive?: boolean;
+
 }
 
 export interface IStrand {
