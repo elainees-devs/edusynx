@@ -11,7 +11,7 @@ export const registerTeacherSubjectAllocation = async (data: {
   allocation: {
     teacher: string;
     subject: string;
-    className: string;
+    clasName: string;
     stream: string;
   };
 }): Promise<SubjectAssignment> => {
