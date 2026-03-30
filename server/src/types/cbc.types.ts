@@ -28,7 +28,6 @@ export interface IStrand {
   code: string;
   title: string;
   description?: string;
-  subStrands?: ISubStrand[];
 }
 
 export interface ICompetency {
