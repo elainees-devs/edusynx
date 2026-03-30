@@ -1,41 +1,47 @@
 // server/src/validation/cbc.validation.schema.ts
 import { z } from "zod";
+import { objectId } from "./util";
 
-export const AssessmentSchema = z.object({
-  _id: z.string().optional(),
-  title: z.string(),
+export const createAssessmentSchema = z.object({
+  title: z.string().min(1),
   description: z.string().optional(),
   type: z.enum(["formative", "summative"]),
   criteria: z.array(z.string()).optional(),
 });
 
-export const LearningOutcomeSchema = z.object({
-  _id: z.string().optional(),
-  code: z.string(),
-  description: z.string(),
-  assessments: z.array(AssessmentSchema).optional(),
+export const updateAssessmentSchema = createAssessmentSchema.partial();
+
+export const createLearningOutcomeSchema = z.object({
+  code: z.string().min(1),
+  description: z.string().min(1),
+  assessments: z.array(createAssessmentSchema).optional(),
 });
 
-export const SubStrandSchema = z.object({
-  _id: z.string().optional(),
-  code: z.string(),
-  title: z.string(),
+export const updateLearningOutcomeSchema = createLearningOutcomeSchema.partial();
+
+export const createSubStrandSchema = z.object({
+  code: z.string().min(1),
+  title: z.string().min(1),
   description: z.string().optional(),
-  learningOutcomes: z.array(LearningOutcomeSchema).optional(),
+  learningOutcomes: z.array(createLearningOutcomeSchema).optional(),
 });
 
-export const StrandSchema = z.object({
-  _id: z.string().optional(),
-  code: z.string(),
-  title: z.string(),
+export const updateSubStrandSchema = createSubStrandSchema.partial();
+
+export const createStrandSchema = z.object({
+  code: z.string().min(1),
+  title: z.string().min(1),
   description: z.string().optional(),
-  subStrands: z.array(SubStrandSchema).optional(),
+  subStrands: z.array(createSubStrandSchema).optional(),
 });
 
-export const CompetencySchema = z.object({
-  _id: z.string().optional(),
-  code: z.string(),
-  title: z.string(),
+export const updateStrandSchema = createStrandSchema.partial();
+
+export const createCompetencySchema = z.object({
+  code: z.string().min(1),
+  title: z.string().min(1),
   description: z.string().optional(),
-  strands: z.array(StrandSchema).optional(),
+  strands: z.array(createStrandSchema).optional(),
 });
+
+export const updateCompetencySchema = createCompetencySchema.partial();
