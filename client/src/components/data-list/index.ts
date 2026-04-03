@@ -7,3 +7,5 @@ export { default as StudentList } from './StudentList';
 export { default as GuardianList } from './GuardianList';
 export { default as TeacherList } from './TeacherList';
 export { default as AttendanceList } from './AttendanceList';
+export { default as CompetencyList } from './CompetencyList';
+export { default as StrandList } from './StrandList';
