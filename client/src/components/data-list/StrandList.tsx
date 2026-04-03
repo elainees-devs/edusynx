@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import type { IStrand } from "../../types";
 import { getStrands, updateStrand, deleteStrand } from "../../api/CBCApi";
-import StrandTable from "../data-table/StrandTable";
 import { Pagination } from "../../shared";
 import { searchConfig } from "../../constants/SearchConfig";
 import Swal from "sweetalert2";
 import SearchBar from "../../shared/layout/ui/SearchBar";
+import { StrandTable } from "../data-table";
 
 const StrandList: React.FC = () => {
 	const [strands, setStrands] = useState<IStrand[]>([]);
