@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import type { ICompetency } from "../../types";
 import { getCompetencies, updateCompetency, deleteCompetency } from "../../api/CBCApi";
-import CompetencyTable from "../data-table/CompetencyTable";
 import { Pagination, SearchBar } from "../../shared";
 import { searchConfig } from "../../constants/SearchConfig";
 import Swal from "sweetalert2";
+import { CompetencyTable } from "../data-table";
 
 const CompetencyList: React.FC = () => {
   const [competencies, setCompetencies] = useState<ICompetency[]>([]);
