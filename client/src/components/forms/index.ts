@@ -15,3 +15,5 @@ export { default as SchoolLogoDropzone } from "./school/SchoolLogo";
 export { default as ClassFilterForm } from "./ClassFilterForm";
 export { default as AttendanceForm } from "./AttendanceForm";
 export { default as SubjectAssignmentForm } from "./SubjectAssignmentForm";
+export { default as RegisterCompetencyForm } from "./RegisterCompetencyForm";
+export { default as RegisterStrandForm } from "./RegisterStrandForm";
