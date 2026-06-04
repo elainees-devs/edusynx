@@ -13,5 +13,6 @@ export * from "./ClassTeacherApi";
 export * from "./AttendanceApi";
 export * from "./SubscriptionPlanApi"
 export * from "./SubscriptionApi";
+export * from "./AcademicYearApi";
 
 export { loginSuperAdmin, sendPasswordResetEmail } from "./auth/SuperAdminAuth";

@@ -37,6 +37,8 @@ const RegisterCompetency = lazy(() => import("./pages/cbc/RegisterCompetency"));
 const RegisterStrand = lazy(() => import("./pages/cbc/RegisterStrand"));
 const ViewCompetency = lazy(() => import("./pages/cbc/ViewCompetency"));
 const ViewStrand = lazy(() => import("./pages/cbc/ViewStrand"));
+const ViewAcademicYears = lazy(() => import("./pages/academic-year/ViewAcademicYears"));
+const RegisterAcademicYear = lazy(() => import("./pages/academic-year/RegisterAcademicYear"));
   
 import GlobalStateProvider from "./context/global/useGlobalState";
 
@@ -128,6 +130,10 @@ function App() {
               path="/dashboard/attendance/records"
               element={<ViewAttendance />}
             />
+
+            {/* === Academic Years === */}
+            <Route path="/academic-years" element={<ViewAcademicYears />} />
+            <Route path="/academic-years/register" element={<RegisterAcademicYear />} />
 
             {/* === Miscellaneous === */}
           </Routes>

@@ -71,4 +71,10 @@ export const competencyNavChildren: NavItem[] = [
 export const strandNavChildren: NavItem[] = [   
   { name: "Add Strand", icon: FaPlusCircle, path: "/dashboard/strands/new" },
   { name: "View Strands", icon: FaListAlt, path: "/dashboard/strands/view" },
+];
+
+// ---- ACADEMIC YEARS ----
+export const academicYearNavChildren: NavItem[] = [
+  { name: "View Academic Years", icon: FaListAlt, path: "/academic-years" },
+  { name: "New Academic Year", icon: FaPlusCircle, path: "/academic-years/register" },
 ];  
