@@ -13,30 +13,19 @@ const classController = new ClassController();
  * @swagger
  * tags:
  *   name: Classes
- *   description: API endpoints for managing school classes
+ *   description: Class management endpoints
  */
 
 /**
- * @swagger
- * /api/v1/classes:
- *   post:
- *     summary: Create a new class
- *     tags: [Classes]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ClassCreate'
- *     responses:
- *       201:
- *         description: Class created successfully
- *       400:
- *         description: Validation error
+ * CREATE CLASS
  */
 classRouter.post(
   "/",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  authenticateUser([
+    UserRole.SUPER_ADMIN,
+    UserRole.SCHOOL_ADMIN,
+    UserRole.PRINCIPAL,
+  ]),
   validate(createClassSchema),
   classController.createClass
 );
@@ -44,45 +33,67 @@ classRouter.post(
 /**
  * @swagger
  * /api/v1/classes:
- *   get:
- *     summary: Get paginated list of classes
+ *   post:
+ *     summary: Create a new class
  *     tags: [Classes]
- *     parameters:
- *       - in: query
- *         name: page
- *         schema:
- *           type: integer
- *           default: 1
- *         description: Page number
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 10
- *         description: Number of classes per page
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - clasName
+ *               - academicYear
+ *             properties:
+ *               school:
+ *                 type: string
+ *                 description: Required only for Super Admin (ObjectId)
+ *               clasName:
+ *                 type: string
+ *                 example: "Grade 7"
+ *               academicYear:
+ *                 type: string
+ *                 example: "2026"
  *     responses:
- *       200:
- *         description: Paginated list of classes
+ *       201:
+ *         description: Class created successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
  */
 classRouter.get(
   "/",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
-  classController.getClasses
+  authenticateUser([
+    UserRole.SCHOOL_ADMIN,
+    UserRole.PRINCIPAL,
+    UserRole.TEACHER,
+  ]),
+  classController.getAllClasses
 );
 
 /**
  * @swagger
- * /api/v1/classes/all:
+ * /api/v1/classes:
  *   get:
- *     summary: Get all classes without pagination
+ *     summary: Get paginated classes (scoped by school)
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of all classes
+ *         description: List of classes
  */
 classRouter.get(
   "/all",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  authenticateUser([
+    UserRole.SCHOOL_ADMIN,
+    UserRole.PRINCIPAL,
+    UserRole.TEACHER,
+  ]),
   classController.getAllClasses
 );
 
@@ -90,37 +101,41 @@ classRouter.get(
  * @swagger
  * /api/v1/classes/school/{schoolId}:
  *   get:
- *     summary: Get classes by school ID (optional academicYear)
+ *     summary: Get classes by school ID (with optional academic year filter)
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: schoolId
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the school
  *       - in: query
  *         name: academicYear
  *         schema:
  *           type: string
- *         description: Optional academic year filter
  *       - in: query
  *         name: page
  *         schema:
  *           type: integer
- *           default: 1
+ *           example: 1
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
- *           default: 10
+ *           example: 10
  *     responses:
  *       200:
- *         description: List of classes for the given school and academic year
+ *         description: Filtered class list
  */
 classRouter.get(
   "/school/:schoolId",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  authenticateUser([
+    UserRole.SUPER_ADMIN,
+    UserRole.SCHOOL_ADMIN,
+    UserRole.PRINCIPAL,
+  ]),
   classController.getClassesByFilter
 );
 
@@ -130,20 +145,26 @@ classRouter.get(
  *   get:
  *     summary: Get classes by academic year
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: academicYear
  *         required: true
  *         schema:
  *           type: string
- *         description: Academic year (e.g., 2024)
+ *           example: "2026"
  *     responses:
  *       200:
- *         description: List of classes for the given year
+ *         description: Classes for academic year
  */
 classRouter.get(
   "/year/:academicYear",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  authenticateUser([
+    UserRole.SCHOOL_ADMIN,
+    UserRole.PRINCIPAL,
+    UserRole.TEACHER,
+  ]),
   classController.getClassesByAcademicYear
 );
 
@@ -153,13 +174,14 @@ classRouter.get(
  *   get:
  *     summary: Get class by ID
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the class
  *     responses:
  *       200:
  *         description: Class details
@@ -168,23 +190,28 @@ classRouter.get(
  */
 classRouter.get(
   "/:id",
-  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
-  classController.getClassById
+  authenticateUser([
+    UserRole.SCHOOL_ADMIN,
+    UserRole.PRINCIPAL,
+    UserRole.TEACHER,
+  ]),
+  classController.getClassesByFilter
 );
 
 /**
  * @swagger
  * /api/v1/classes/{id}:
  *   patch:
- *     summary: Update a class by ID (partial update)
+ *     summary: Update class
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the class
  *     requestBody:
  *       required: true
  *       content:
@@ -193,9 +220,7 @@ classRouter.get(
  *             $ref: '#/components/schemas/ClassUpdate'
  *     responses:
  *       200:
- *         description: Class updated successfully
- *       404:
- *         description: Class not found
+ *         description: Updated successfully
  */
 classRouter.patch(
   "/:id",
@@ -208,8 +233,10 @@ classRouter.patch(
  * @swagger
  * /api/v1/classes/{id}:
  *   delete:
- *     summary: Delete a class by ID
+ *     summary: Delete class
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -218,9 +245,7 @@ classRouter.patch(
  *           type: string
  *     responses:
  *       204:
- *         description: Class deleted successfully
- *       404:
- *         description: Class not found
+ *         description: Deleted successfully
  */
 classRouter.delete(
   "/:id",
@@ -232,11 +257,13 @@ classRouter.delete(
  * @swagger
  * /api/v1/classes:
  *   delete:
- *     summary: Delete all classes
+ *     summary: Delete all classes (restricted)
  *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       204:
- *         description: All classes deleted successfully
+ *         description: All classes deleted
  */
 classRouter.delete(
   "/",
