@@ -16,7 +16,6 @@ export const createAttendanceSchema = z.object({
     })
   ),
   remarks: z.string().optional(),
-  createdBy: objectId,  
 });
 
 export const updateAttendanceSchema = createAttendanceSchema.partial();

@@ -180,7 +180,8 @@ export class AttendanceRepository {
   async updateStudentStatus(
     attendanceId: string,
     studentId: string,
-    status: string
+    status: string,
+    updatedBy?: Types.ObjectId
   ): Promise<IAttendance | null> {
     return AttendanceModel.findOneAndUpdate(
       {
@@ -190,6 +191,7 @@ export class AttendanceRepository {
       {
         $set: {
           "attendance.$.status": status,
+          updatedBy,
         },
       },
       { new: true }

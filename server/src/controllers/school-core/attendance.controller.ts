@@ -26,14 +26,12 @@ interface CreateAttendanceRequest {
   streamId: string;
   schoolYear: string;
   date: string;
-  createdBy: string;
   remarks?: string;
   attendance: AttendanceEntryRequest[];
 }
 
 interface UpdateAttendanceRequest {
   attendance: AttendanceEntryRequest[];
-  updatedBy: string;
   remarks?: string;
 }
 
@@ -52,6 +50,11 @@ export class AttendanceController {
     CreateAttendanceRequest
   >(async (req: Request, res: Response) => {
     const data = req.body;
+    const userId = (req as any).user?._id;
+
+    if (!userId) {
+      throw new AppError("User not authenticated", 401);
+    }
 
     const attendanceEntries: AttendanceEntryPayload[] =
       data.attendance.map((entry: AttendanceEntryRequest) => ({
@@ -64,7 +67,7 @@ export class AttendanceController {
       school: new Types.ObjectId(data.school),
       classRef: new Types.ObjectId(data.classRef),
       streamId: new Types.ObjectId(data.streamId),
-      createdBy: new Types.ObjectId(data.createdBy),
+      createdBy: userId,
       date: new Date(data.date),
       attendance: attendanceEntries,
     };
@@ -145,11 +148,13 @@ export class AttendanceController {
   >(async (req, res) => {
     const { attendanceId, studentId } = req.params;
     const { status } = req.body;
+    const userId = (req as any).user?._id;
 
     const updated = await attendanceRepo.updateStudentStatus(
       attendanceId,
       studentId,
-      status
+      status,
+      userId
     );
 
     if (!updated) {
@@ -172,7 +177,12 @@ export class AttendanceController {
     UpdateAttendanceRequest
   >(async (req, res) => {
     const { id } = req.params;
-    const { attendance, updatedBy, remarks } = req.body;
+    const { attendance, remarks } = req.body;
+    const userId = (req as any).user?._id;
+
+    if (!userId) {
+      throw new AppError("User not authenticated", 401);
+    }
 
     const attendanceArray: AttendanceEntryPayload[] =
       attendance.map((entry: AttendanceEntryRequest) => ({
@@ -183,7 +193,7 @@ export class AttendanceController {
     const updated = await attendanceRepo.updateAttendance(
       id,
       attendanceArray,
-      new Types.ObjectId(updatedBy),
+      userId,
       remarks
     );
 
