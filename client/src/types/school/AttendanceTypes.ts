@@ -16,6 +16,7 @@ export interface IAttendanceEntry {
     studentLastName: string;
   } | string;
   status: typeof AttendanceStatus[keyof typeof AttendanceStatus];
+  remarks?: string;
 }
 
 export interface IAttendance {
@@ -26,4 +27,17 @@ export interface IAttendance {
   schoolYear: string;
   date: string;
   attendance: IAttendanceEntry[];
+  remarks?: string;
+  createdBy?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  } | string;
+  updatedBy?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  } | string;
+  createdAt?: string;
+  updatedAt?: string;
 }

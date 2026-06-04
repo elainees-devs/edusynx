@@ -92,4 +92,60 @@ export const attendanceApi = {
     const response = await apiClient.get(`/attendance/${id}`);
     return response.data;
   },
+
+  /**
+   * GET /analytics/attendance/trends
+   */
+  getAttendanceTrends: async (
+    classId: string,
+    streamId: string,
+    startDate: string,
+    endDate: string
+  ) => {
+    const response = await apiClient.get("/analytics/attendance/trends", {
+      params: { classId, streamId, startDate, endDate },
+    });
+    return response.data;
+  },
+
+  /**
+   * GET /analytics/attendance/at-risk
+   */
+  getAtRiskStudents: async (
+    schoolId: string,
+    schoolYear: string,
+    threshold?: number
+  ) => {
+    const response = await apiClient.get("/analytics/attendance/at-risk", {
+      params: { schoolId, schoolYear, threshold },
+    });
+    return response.data;
+  },
+
+  /**
+   * GET /analytics/attendance/student/:id
+   */
+  getStudentAnalytics: async (studentId: string) => {
+    const response = await apiClient.get(
+      `/analytics/attendance/student/${studentId}`
+    );
+    return response.data;
+  },
+
+  /**
+   * GET /analytics/attendance/class/:id
+   */
+  getClassAnalytics: async (
+    classId: string,
+    startDate: string,
+    endDate: string
+  ) => {
+    const response = await apiClient.get(
+      `/analytics/attendance/class/${classId}`,
+      {
+        params: { startDate, endDate },
+      }
+    );
+    return response.data;
+  },
 };
