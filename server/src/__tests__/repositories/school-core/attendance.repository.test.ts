@@ -73,4 +73,37 @@ describe('AttendanceRepository', () => {
       expect(result).toEqual(mockRecords);
     });
   });
+
+  describe('updateStudentStatus', () => {
+    it('should update specific student status and audit fields', async () => {
+      const attendanceId = new Types.ObjectId().toString();
+      const studentId = new Types.ObjectId().toString();
+      const updatedBy = new Types.ObjectId();
+      const mockResult = { _id: attendanceId };
+
+      (AttendanceModel.findOneAndUpdate as jest.Mock).mockReturnValue(mockQuery(mockResult));
+
+      const result = await repo.updateStudentStatus(attendanceId, studentId, 'present', updatedBy);
+
+      expect(AttendanceModel.findOneAndUpdate).toHaveBeenCalledWith(
+        { _id: attendanceId, 'attendance.studentId': studentId },
+        { $set: { 'attendance.$.status': 'present', updatedBy } },
+        { new: true }
+      );
+      expect(result).toEqual(mockResult);
+    });
+  });
+
+  describe('findByStudent', () => {
+    it('should find all records containing studentId', async () => {
+      const studentId = new Types.ObjectId().toString();
+      const mockRecords = [{ _id: '1' }];
+      (AttendanceModel.find as jest.Mock).mockReturnValue(mockQuery(mockRecords));
+
+      const result = await repo.findByStudent(studentId);
+
+      expect(AttendanceModel.find).toHaveBeenCalledWith({ 'attendance.studentId': studentId });
+      expect(result).toEqual(mockRecords);
+    });
+  });
 });

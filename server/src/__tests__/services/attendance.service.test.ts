@@ -93,4 +93,25 @@ describe('AttendanceService', () => {
       expect(atRisk[0].studentId).toBe(studentB.toString());
     });
   });
+
+  describe('calculateTrendData', () => {
+    it('should generate trend data points', () => {
+      const records = [
+        {
+          date: new Date('2026-06-01'),
+          attendance: [{ studentId: new Types.ObjectId(), status: AttendanceStatus.PRESENT }]
+        },
+        {
+          date: new Date('2026-06-02'),
+          attendance: [{ studentId: new Types.ObjectId(), status: AttendanceStatus.ABSENT }]
+        }
+      ] as any;
+      const trends = attendanceService.calculateTrendData(records);
+      expect(trends).toHaveLength(2);
+      expect(trends[0].date).toBe('2026-06-01');
+      expect(trends[0].attendanceRate).toBe(100);
+      expect(trends[1].date).toBe('2026-06-02');
+      expect(trends[1].attendanceRate).toBe(0);
+    });
+  });
 });

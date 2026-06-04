@@ -33,7 +33,7 @@ describe("AnalyticsController - Attendance", () => {
       mockReq.query = { startDate: "2026-01-01", endDate: "2026-01-31" };
 
       await controller.getClassAttendanceAnalytics(
-        mockReq as Request,
+        mockReq as any,
         mockRes as Response,
         jest.fn()
       );
@@ -52,14 +52,14 @@ describe("AnalyticsController - Attendance", () => {
 
       const next = jest.fn();
       await controller.getClassAttendanceAnalytics(
-        mockReq as Request,
+        mockReq as any,
         mockRes as Response,
         next
       );
 
       expect(next).toHaveBeenCalledWith(expect.objectContaining({
         message: "startDate and endDate are required",
-        statusCode: 400
+        status: 400
       }));
     });
   });
@@ -75,7 +75,7 @@ describe("AnalyticsController - Attendance", () => {
       mockReq.params = { id: "std1" };
 
       await controller.getStudentAttendanceAnalytics(
-        mockReq as Request,
+        mockReq as any,
         mockRes as Response,
         jest.fn()
       );
@@ -85,6 +85,65 @@ describe("AnalyticsController - Attendance", () => {
       expect(mockRes.json).toHaveBeenCalledWith({
         success: true,
         data: mockSummary
+      });
+    });
+  });
+
+  describe("getAttendanceTrends", () => {
+    it("should return trend data for a class and stream", async () => {
+      const mockRecords = [{ _id: "rec3" }];
+      const mockTrends = [{ date: "2026-06-01", attendanceRate: 100 }];
+
+      (AttendanceRepository.prototype.findByDateRange as jest.Mock).mockResolvedValue(mockRecords);
+      (AttendanceService.prototype.calculateTrendData as jest.Mock).mockReturnValue(mockTrends);
+
+      mockReq.query = { 
+        classId: "class-1", 
+        streamId: "stream-1", 
+        startDate: "2026-01-01", 
+        endDate: "2026-01-31" 
+      };
+
+      await controller.getAttendanceTrends(
+        mockReq as any,
+        mockRes as Response,
+        jest.fn()
+      );
+
+      expect(AttendanceRepository.prototype.findByDateRange).toHaveBeenCalled();
+      expect(AttendanceService.prototype.calculateTrendData).toHaveBeenCalledWith(mockRecords);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        success: true,
+        data: mockTrends
+      });
+    });
+  });
+
+  describe("getAtRiskStudents", () => {
+    it("should return at-risk students for a school and year", async () => {
+      const mockRecords = [{ _id: "rec4" }];
+      const mockAtRisk = [{ studentId: "std-bad", attendanceRate: 50 }];
+
+      (AttendanceRepository.prototype.findAllBySchoolYear as jest.Mock).mockResolvedValue(mockRecords);
+      (AttendanceService.prototype.getAtRiskStudents as jest.Mock).mockReturnValue(mockAtRisk);
+
+      mockReq.query = { 
+        schoolId: "sch-1",
+        schoolYear: "2026",
+        threshold: "75"
+      };
+
+      await controller.getAtRiskStudents(
+        mockReq as any,
+        mockRes as Response,
+        jest.fn()
+      );
+
+      expect(AttendanceRepository.prototype.findAllBySchoolYear).toHaveBeenCalledWith("sch-1", "2026");
+      expect(AttendanceService.prototype.getAtRiskStudents).toHaveBeenCalledWith(mockRecords, 75);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        success: true,
+        data: mockAtRisk
       });
     });
   });
