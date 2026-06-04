@@ -25,6 +25,7 @@ const StudentDetail = lazy(() => import("./pages/student/StudentDetail"));
 const ViewGuardian = lazy(() => import("./pages/student/ViewGuardian"));
 const RegisterAttendancePage = lazy(() => import("./pages/attendance/RegisterAttendance"));
 const ViewAttendance = lazy(() => import("./pages/attendance/ViewAttendance"));
+const AttendanceAnalytics = lazy(() => import("./pages/attendance/AttendanceAnalytics"));
 const ViewTeachers = lazy(() => import("./pages/teachers/ViewTeachers"));
 const AssignSubjects = lazy(() => import("./pages/allocation/SubjectAssignment"));
 const Schools = lazy(() => import("./pages/dashboard/Schools"));
@@ -138,6 +139,10 @@ function App() {
             <Route
               path="/dashboard/attendance/records"
               element={<ViewAttendance />}
+            />
+            <Route
+              path="/dashboard/attendance/analytics"
+              element={<AttendanceAnalytics />}
             />
 
             {/* === Academic Years === */}

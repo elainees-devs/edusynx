@@ -36,6 +36,7 @@ export { default as StudentDetail } from './student/StudentDetail'
 //---------- Attendance Management ----------
 export { default as RegisterAttendancePage } from './attendance/RegisterAttendance'
 export { default as ViewAttendance } from './attendance/ViewAttendance'
+export { default as AttendanceAnalytics } from './attendance/AttendanceAnalytics'
 
 
 // ---------- Teacher Management ----------
