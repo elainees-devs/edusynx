@@ -41,6 +41,11 @@ export { default as ViewAttendance } from './attendance/ViewAttendance'
 // ---------- Teacher Management ----------
 export { default as ViewTeachers } from './teachers/ViewTeachers'
 
+// ---------- Staff Management ----------
+export { default as ViewStaff } from './staff/ViewStaff'
+export { default as RegisterStaff } from './staff/RegisterStaff'
+export { default as StaffDetail } from './staff/StaffDetail'
+
 // ---------- Dashboard Pages ----------
 export { default as Schools } from './dashboard/Schools'
 
