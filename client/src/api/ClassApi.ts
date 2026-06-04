@@ -1,15 +1,14 @@
 // client/src/api/class.api.ts
+import apiClient from "./client";
 import axios from "axios";
 import type { GetPageParams, IClass, PaginatedClasses } from "../types";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 /* ==============================
    Register a new class (POST)
 ================================ */
 export const registerClass = async (data: IClass): Promise<IClass> => {
   try {
-    const response = await axios.post(`${API_BASE}/classes`, data);
+    const response = await apiClient.post("/classes", data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -31,7 +30,7 @@ export const registerClass = async (data: IClass): Promise<IClass> => {
    Fetch all classes (no pagination)
 ================================ */
 export const getAllClasses = async (): Promise<IClass[]> => {
-  const response = await axios.get(`${API_BASE}/classes/all`);
+  const response = await apiClient.get("/classes/all");
   return response.data;
 };
 
@@ -39,7 +38,7 @@ export const getAllClasses = async (): Promise<IClass[]> => {
    Fetch paginated classes
 ================================ */
 export const getClasses = async (params: GetPageParams): Promise<PaginatedClasses> => {
-  const response = await axios.get(`${API_BASE}/classes`, { params });
+  const response = await apiClient.get("/classes", { params });
   return response.data;
 };
 
@@ -53,12 +52,12 @@ export const getClassesByFilter = async (
   limit?: number,
 ): Promise<PaginatedClasses> => {
   try {
-    const url = new URL(`${API_BASE}/classes/school/${schoolId}`);
-    if (academicYear) url.searchParams.append("academicYear", academicYear);
-    if (page) url.searchParams.append("page", page.toString());
-    if (limit) url.searchParams.append("limit", limit.toString());
+    const params: Record<string, string | number> = {};
+    if (academicYear) params.academicYear = academicYear;
+    if (page) params.page = page;
+    if (limit) params.limit = limit;
 
-    const response = await axios.get(url.toString());
+    const response = await apiClient.get(`/classes/school/${schoolId}`, { params });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -85,7 +84,7 @@ export const updateClass = async (
     throw new Error("No valid fields provided to update.");
   }
 
-  const { data: updatedClass } = await axios.patch(`${API_BASE}/classes/${id}`, payload);
+  const { data: updatedClass } = await apiClient.patch(`/classes/${id}`, payload);
   return updatedClass;
 };
 
@@ -93,20 +92,20 @@ export const updateClass = async (
    Delete a class by ID
 ================================ */
 export const deleteClass = async (id: string): Promise<void> => {
-  await axios.delete(`${API_BASE}/classes/${id}`);
+  await apiClient.delete(`/classes/${id}`);
 };
 
 /* ==============================
    Delete all classes
 ================================ */
 export const deleteAllClasses = async (): Promise<void> => {
-  await axios.delete(`${API_BASE}/classes`);
+  await apiClient.delete("/classes");
 };
 
 /* ==============================
    Count total classes
 ================================ */
 export const countClasses = async (): Promise<{ count: number }> => {
-  const response = await axios.get(`${API_BASE}/classes/count`);
+  const response = await apiClient.get("/classes/count");
   return response.data;
 };

@@ -1,10 +1,9 @@
 // client/src/api/auth.ts
+import apiClient from "./client";
 import axios from "axios";
 import { logger } from "../utils/Logger";
 import type { NewPasswordBody } from "../types/auth/NewPasswordTypes";
 import type { IBaseUser } from "../types";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 interface LoginResponse {
   message: string;
@@ -17,14 +16,9 @@ export const loginUser = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(
-      `${API_BASE}/auth/login`,
+    const response = await apiClient.post(
+      "/auth/login",
       { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
     );
 
     logger.info(`User login successful: ${email}`);
@@ -46,16 +40,10 @@ export const loginUser = async (
   }
 };
 
-
-
 // Reset password functionality
 export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   try {
-    await axios.post(`${API_BASE}/password-reset`, { email }, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await apiClient.post("/password-reset", { email });
 
     logger.info(`Password reset email sent to: ${email}`);
   } catch (error) {
@@ -71,9 +59,6 @@ export const sendPasswordResetEmail = async (email: string): Promise<void> => {
 }
    
 export const confirmPasswordReset = async (data: NewPasswordBody) => {
-  const response = await axios.post(
-    "http://localhost:5000/api/v1/password-reset/confirm", 
-    data
-  );
+  const response = await apiClient.post("/password-reset/confirm", data);
   return response.data;
 };

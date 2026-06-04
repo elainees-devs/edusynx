@@ -1,18 +1,9 @@
 // client/src/api/attendance.api.ts
-import axios from "axios";
+import apiClient from "./client";
 import type {
   AttendanceStatus,
   IAttendance,
 } from "../types/school/AttendanceTypes";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
-
-const api = axios.create({
-  baseURL: API_BASE,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 export const attendanceApi = {
   /**
@@ -29,7 +20,7 @@ export const attendanceApi = {
     page?: number;
     total?: number;
   }> => {
-    const response = await api.get("/attendance/class", {
+    const response = await apiClient.get("/attendance/class", {
       params: { classId, streamId, date },
     });
     return response.data;
@@ -42,7 +33,7 @@ export const attendanceApi = {
   createAttendance: async (
     attendanceData: Partial<IAttendance>,
   ): Promise<IAttendance> => {
-    const response = await api.post("/attendance", attendanceData);
+    const response = await apiClient.post("/attendance", attendanceData);
     return response.data;
   },
 
@@ -54,7 +45,7 @@ export const attendanceApi = {
     id: string,
     attendanceArray: { studentId: string; status: AttendanceStatus }[],
   ): Promise<IAttendance> => {
-    const response = await api.patch(`/attendance/${id}`, {
+    const response = await apiClient.patch(`/attendance/${id}`, {
       attendance: attendanceArray,
     });
     return response.data;
@@ -69,7 +60,7 @@ export const attendanceApi = {
     studentId: string,
     status: AttendanceStatus,
   ): Promise<IAttendance> => {
-    const response = await api.patch(
+    const response = await apiClient.patch(
       `/attendance/student/${attendanceId}/${studentId}`,
       { status },
     );
@@ -81,7 +72,7 @@ export const attendanceApi = {
    * GET /attendance/
    */
   getAllAttendanceFlattened: async (): Promise<IAttendance[]> => {
-    const response = await api.get("/attendance");
+    const response = await apiClient.get("/attendance");
     return response.data;
   },
 
@@ -90,7 +81,7 @@ export const attendanceApi = {
    * DELETE /attendance/:id
    */
   deleteAttendance: async (id: string): Promise<void> => {
-    await api.delete(`/attendance/${id}`);
+    await apiClient.delete(`/attendance/${id}`);
   },
 
   /**
@@ -98,7 +89,7 @@ export const attendanceApi = {
    * GET /attendance/:id
    */
   getAttendanceById: async (id: string): Promise<IAttendance> => {
-    const response = await api.get(`/attendance/${id}`);
+    const response = await apiClient.get(`/attendance/${id}`);
     return response.data;
   },
 };

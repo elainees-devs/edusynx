@@ -1,17 +1,12 @@
 // client/src/api/subject.api.ts
-import axios from "axios";
+import apiClient from "./client";
 import type { ISubject, GetPageParams, PaginatedSubjects } from "../types";
 
-const BASE_URL = "http://localhost:5000/api/v1";
-
-/* ==============================
-   Register subject (POST)
-================================ */
 export const registerSubject = async (data: {
   subjectName: string;
 }): Promise<ISubject> => {
   try {
-    const response = await axios.post(`${BASE_URL}/subjects`, data);
+    const response = await apiClient.post("/subjects", data);
     return response.data;
   } catch (error) {
     console.error("Failed to add subject:", error);
@@ -19,27 +14,18 @@ export const registerSubject = async (data: {
   }
 };
 
-/* ==============================
-   Fetch all subjects
-================================ */
 export const getAllSubjects = async (): Promise<ISubject[]> => {
-  const response = await axios.get(`${BASE_URL}/subjects`);
+  const response = await apiClient.get("/subjects");
   return response.data.data || [];
 };
 
-/* ==============================
-   Fetch subjects (paginated)
-================================ */
 export const getSubjects = async (
   params: GetPageParams
 ): Promise<PaginatedSubjects> => {
-  const response = await axios.get(`${BASE_URL}/subjects`, { params });
+  const response = await apiClient.get("/subjects", { params });
   return response.data;
 };
 
-/* ==============================
-   Update subject (PATCH)
-================================ */
 export const updateSubject = async (
   id: string,
   data: Partial<Omit<ISubject, "_id" | "createdAt" | "updatedAt">>
@@ -52,21 +38,17 @@ export const updateSubject = async (
     throw new Error("No valid fields provided to update.");
   }
 
-  const { data: updatedSubject } = await axios.patch(
-    `${BASE_URL}/subjects/${id}`,
+  const { data: updatedSubject } = await apiClient.patch(
+    `/subjects/${id}`,
     payload
   );
 
   return updatedSubject;
 };
 
-/* ==============================
-   Get subjects by school
-================================ */
 export const getSubjectsBySchool = async (schoolId: string): Promise<ISubject[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/subject/school/${schoolId}`);
-    console.log("📦 Full response.data:", response.data);
+    const response = await apiClient.get(`/subject/school/${schoolId}`);
 
     if (Array.isArray(response.data.subjects)) {
       return response.data.subjects;
@@ -79,20 +61,14 @@ export const getSubjectsBySchool = async (schoolId: string): Promise<ISubject[]>
   }
 };
 
-/* ==============================
-   Delete subject
-================================ */
 export const deleteSubject = async (
   id: string
 ): Promise<{ message: string }> => {
-  const response = await axios.delete(`${BASE_URL}/subjects/${id}`);
+  const response = await apiClient.delete(`/subjects/${id}`);
   return response.data;
 };
 
-/* ==============================
-   Count subjects
-================================ */
 export const countSubjects = async (): Promise<{ count: number }> => {
-  const response = await axios.get(`${BASE_URL}/subjects/count`);
+  const response = await apiClient.get("/subjects/count");
   return response.data;
 };

@@ -1,14 +1,12 @@
 // client/src/api/BaseUserApi.ts
+import apiClient from "./client";
 import axios from "axios";
 import type { GetPageParams, IBaseUser, PaginatedTeachers } from "../types";
 import type { Teacher } from "../types/school/Allocation";
 
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
-
 export const registerUser = async (data: IBaseUser) => {
   try {
-    const response = await axios.post(`${API_BASE}/users`, data);
+    const response = await apiClient.post("/users", data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -32,7 +30,7 @@ export const registerUser = async (data: IBaseUser) => {
 // GET USER BY ID
 // ================================
 export const getUserById = async (id: string) => {
-  const res = await axios.get(`${API_BASE}/users/${id}`);
+  const res = await apiClient.get(`/users/${id}`);
   return res.data;
 };
 
@@ -40,7 +38,7 @@ export const getUserById = async (id: string) => {
 // GET ALL USERS
 // ================================
 export const getUsers = async () => {
-  const res = await axios.get(`${API_BASE}/users`);
+  const res = await apiClient.get("/users");
   return res.data;
 };
 
@@ -48,7 +46,7 @@ export const getUsers = async () => {
 // GET ALL TEACHERS (no pagination)
 // ================================
 export const getAllTeachers = async (): Promise<Teacher[]> => {
-  const res = await axios.get(`${API_BASE}/users/teachers`);
+  const res = await apiClient.get("/users/teachers");
   return res.data;
 };
 
@@ -59,7 +57,7 @@ export const getAllTeachers = async (): Promise<Teacher[]> => {
 export const getTeachers = async (
   params: GetPageParams,
 ): Promise<PaginatedTeachers> => {
-  const res = await axios.get(`${API_BASE}/users/teachers`, { params });
+  const res = await apiClient.get("/users/teachers", { params });
 
   // Map directly to Teacher type (no _id -> id conversion)
   const teachers: Teacher[] = (res.data.data as Teacher[]).map((t) => ({
@@ -87,7 +85,7 @@ export const getTeachers = async (
 // UPDATE USER
 // ================================
 export const updateUser = async (id: string, data: Partial<IBaseUser>) => {
-  const res = await axios.put(`${API_BASE}/users/${id}`, data);
+  const res = await apiClient.put(`/users/${id}`, data);
   return res.data;
 };
 
@@ -97,7 +95,7 @@ export const updateUser = async (id: string, data: Partial<IBaseUser>) => {
 
 export const countTeachers = async () => {
   try {
-    const response = await axios.get(`${API_BASE}/users/teachers/count`);
+    const response = await apiClient.get("/users/teachers/count");
     return response.data; // { count: number }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -114,7 +112,7 @@ export const countTeachers = async () => {
 // DELETE USER
 // ================================
 export const deleteUser = async (id: string) => {
-  const res = await axios.delete(`${API_BASE}/users/${id}`);
+  const res = await apiClient.delete(`/users/${id}`);
   return res.data;
 };
 
@@ -122,6 +120,6 @@ export const deleteUser = async (id: string) => {
 // DELETE ALL USERS
 // ================================
 export const deleteAllUsers = async () => {
-  const res = await axios.delete(`/users`);
+  const res = await apiClient.delete("/users");
   return res.data;
 };

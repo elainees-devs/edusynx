@@ -1,10 +1,8 @@
 // client/src/api/auth/super-admin-auth.ts
+import apiClient from "../client";
 import axios from "axios";
 import type { ISuperAdmin } from "../../types/people/UserTypes";
 import { logger } from "../../utils/Logger";
-
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 interface LoginResponse {
   message: string;
@@ -17,14 +15,9 @@ export const loginSuperAdmin = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(
-      `${API_BASE}/super-admin/login`,
+    const response = await apiClient.post(
+      "/super-admin/login",
       { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
     );
 
     logger.info(`Super Admin  login successful: ${email}`);
@@ -46,14 +39,9 @@ export const loginSuperAdmin = async (
   }
 };
 
-// forgot password functionality
 export const sendPasswordResetEmail = async (email: string): Promise<void> => {
   try {
-    await axios.post(`${API_BASE}/password-reset`, { email }, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await apiClient.post("/password-reset", { email });
 
     logger.info(`Password reset email sent to: ${email}`);
   } catch (error) {

@@ -1,22 +1,15 @@
 // client/src/api/SubscriptionApi.ts
 
+import apiClient from "./client";
 import axios from "axios";
 import type { CreateSubscriptionPayload, SubscriptionResponse } from "../types";
 
-// Base URL for all subscription-related API requests
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
-
-
-
-/* ==============================
-   Create a new subscription
-================================ */
 export const createSubscription = async (
   payload: CreateSubscriptionPayload
 ): Promise<SubscriptionResponse> => {
   try {
-    const response = await axios.post<SubscriptionResponse>(
-      `${API_BASE}/subscriptions`,
+    const response = await apiClient.post<SubscriptionResponse>(
+      "/subscriptions",
       payload
     );
 

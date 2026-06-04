@@ -1,40 +1,26 @@
 // client/src/api/guardian.api.ts
-import axios from "axios";
+import apiClient from "./client";
 import type { Guardian, PaginatedGuardians } from "../types";
-
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
-
-/* ==============================
-   Fetch guardians (paginated)
-================================ */
 
 export const getGuardians = async (
   params: Record<string, any>,
 ): Promise<PaginatedGuardians> => {
-  const response = await axios.get(`${API_BASE}/guardians`, {
+  const response = await apiClient.get("/guardians", {
     params,
   });
 
   return response.data;
 };
 
-/* ==============================
-   Search guardians (paginated, with text search)
-================================ */
-
 export const searchGuardians = async (
   filters: { search?: string; schoolId?: string; page: number; limit: number }
 ): Promise<PaginatedGuardians> => {
-  const { data } = await axios.get(`${API_BASE}/guardians/search`, {
+  const { data } = await apiClient.get("/guardians/search", {
     params: filters,
   });
   return data;
 };
 
-/* ==============================
-Update guardian (PATCH)
-================================ */
 export const updateGuardian = async (
   id: string,
   data: Partial<Omit<Guardian, "_id" | "createdAt" | "updatedAt">>,
@@ -50,8 +36,8 @@ export const updateGuardian = async (
     throw new Error("No valid fields provided to update.");
   }
 
-  const { data: updatedGuardian } = await axios.patch(
-    `${API_BASE}/guardians/${id}`,
+  const { data: updatedGuardian } = await apiClient.patch(
+    `/guardians/${id}`,
     payload,
   );
 

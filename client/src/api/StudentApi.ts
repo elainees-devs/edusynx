@@ -1,26 +1,14 @@
 // client/src/api/student.api.ts
+import apiClient from "./client";
 import axios from "axios";
 import type { GetPageParams, PaginatedStudents, Student, StudentFormData, StudentHistoryEntry } from "../types";
-
-
-/* ==============================
-   Axios config
-================================ */
-
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
-
-/* ==============================
-   Create student
-================================ */
 
 export const registerStudent = async (
   data: StudentFormData
 ): Promise<Student> => {
   try {
-    const response = await axios.post(`${API_BASE}/students`, data);
+    const response = await apiClient.post("/students", data);
     return response.data;
-    
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Register student error:", error.response?.data);
@@ -35,26 +23,17 @@ export const registerStudent = async (
     console.error("Unknown error:", error);
     throw { message: "Unknown error occurred" };
   }
-
 };
-
-/* ==============================
-   Fetch students (paginated)
-================================ */
 
 export const getStudents = async (
   params: GetPageParams
 ): Promise<PaginatedStudents> => {
-  const response = await axios.get(`${API_BASE}/students`, {
+  const response = await apiClient.get("/students", {
     params,
   });
 
   return response.data;
 };
-
-/* ==============================
-   Search students (paginated, with filters)
-================================ */
 
 export interface StudentSearchFilters {
   search?: string;
@@ -69,19 +48,15 @@ export interface StudentSearchFilters {
 export const searchStudents = async (
   filters: StudentSearchFilters
 ): Promise<PaginatedStudents> => {
-  const { data } = await axios.get(`${API_BASE}/students/search`, {
+  const { data } = await apiClient.get("/students/search", {
     params: filters,
   });
   return data;
 };
 
-
-/* ==============================
-   Get all students for a specific class (no pagination)
-================================ */
 export const getStudentsByClass = async (classId: string): Promise<Student[]> => {
   try {
-    const response = await axios.get(`${API_BASE}/students`, {
+    const response = await apiClient.get("/students", {
       params: { classId },
     });
     return response.data;
@@ -94,19 +69,14 @@ export const getStudentsByClass = async (classId: string): Promise<Student[]> =>
   }
 };
 
-
-/* ==============================
-   Upload students file
-================================ */
-
 export const uploadStudentsFile = async (
   file: File
 ): Promise<Student[]> => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await axios.post<{ students: Student[] }>(
-    `${API_BASE}/students/upload`,
+  const response = await apiClient.post<{ students: Student[] }>(
+    "/students/upload",
     formData,
     {
       headers: {
@@ -118,14 +88,10 @@ export const uploadStudentsFile = async (
   return response.data.students;
 };
 
-/* ==============================
-   Update student (PATCH)
-================================ */
 export const updateStudent = async (
   id: string,
   data: Partial<Omit<Student, "_id" | "createdAt" | "updatedAt">>,
 ): Promise<Student> => {
-  // Remove undefined or empty string fields, and convert date fields to ISO
   const payload = Object.fromEntries(
     Object.entries(data)
       .filter(([, value]) => value !== undefined && value !== "")
@@ -141,46 +107,35 @@ export const updateStudent = async (
     throw new Error("No valid fields provided to update.");
   }
 
-  const { data: updatedStudent } = await axios.patch(
-    `${API_BASE}/students/${id}`,
+  const { data: updatedStudent } = await apiClient.patch(
+    `/students/${id}`,
     payload,
   );
 
   return updatedStudent;
 };
 
-/* ==============================
-   Delete student
-================================ */
-
 export const deleteStudent = async (
   id: string
 ): Promise<{ message: string }> => {
-  const response = await axios.delete(`${API_BASE}/students/${id}`);
+  const response = await apiClient.delete(`/students/${id}`);
   return response.data;
 };
 
-/* ==============================
-   Count students
-================================ */
 export const countStudents = async (): Promise<{ count: number }> => {
-  const response = await axios.get(`${API_BASE}/students/count`);
+  const response = await apiClient.get("/students/count");
   return response.data;
 }
 
-/* ==============================
-   Get students by class + stream
-================================ */
 export const getStudentsByClassAndStream = async (
   classId: string,
   stream: string
 ): Promise<Student[]> => {
   try {
-    const response = await axios.get(`${API_BASE}/students/class`, {
+    const response = await apiClient.get("/students/class", {
       params: { classId, stream },
     });
 
-    // Backend returns: { data: [...] }
     return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -192,16 +147,13 @@ export const getStudentsByClassAndStream = async (
   }
 };
 
-/* ==============================
-   Promote students (class-wide)
-================================ */
 export const promoteStudents = async (
   sourceClassId: string,
   targetClassId: string,
   targetStreamId?: string,
   academicYear?: string,
 ): Promise<{ message: string; modifiedCount: number }> => {
-  const { data } = await axios.post(`${API_BASE}/students/promote`, {
+  const { data } = await apiClient.post("/students/promote", {
     sourceClassId,
     targetClassId,
     targetStreamId,
@@ -210,16 +162,13 @@ export const promoteStudents = async (
   return data;
 };
 
-/* ==============================
-   Transfer a single student
-================================ */
 export const transferStudent = async (
   id: string,
   targetClassId: string,
   targetStreamId?: string,
   reason?: string,
 ): Promise<Student> => {
-  const { data } = await axios.patch(`${API_BASE}/students/${id}/transfer`, {
+  const { data } = await apiClient.patch(`/students/${id}/transfer`, {
     targetClassId,
     targetStreamId,
     reason,
@@ -227,25 +176,19 @@ export const transferStudent = async (
   return data;
 };
 
-/* ==============================
-   Graduate selected students
-================================ */
 export const graduateStudents = async (
   studentIds: string[],
 ): Promise<{ message: string; modifiedCount: number }> => {
-  const { data } = await axios.patch(`${API_BASE}/students/graduate`, {
+  const { data } = await apiClient.patch("/students/graduate", {
     studentIds,
   });
   return data;
 };
 
-/* ==============================
-   Get student with history
-================================ */
 export const getStudentHistory = async (
   id: string,
 ): Promise<Student & { history?: StudentHistoryEntry[] }> => {
-  const { data } = await axios.get(`${API_BASE}/students/${id}/history`);
+  const { data } = await apiClient.get(`/students/${id}/history`);
   return data;
 };
 

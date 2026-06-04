@@ -1,5 +1,6 @@
 // client/src/api/email.ts
 import axios from 'axios';
+import apiClient from './client';
 import { logger } from '../utils/Logger';
 
 
@@ -20,7 +21,7 @@ export const sendAccessLink = async (email: string, accessUrl: string) => {
 
 export const sendResetTokenEmail = async (email: string) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/v1/password-reset", {
+    const res = await apiClient.post("/password-reset", {
       email,
     });
 
