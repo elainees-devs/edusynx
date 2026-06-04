@@ -5,13 +5,12 @@ import { searchConfig } from "../../constants";
 import type { Guardian } from "../../types";
 import { GuardianTable } from "../data-table";
 import Swal from "sweetalert2";
-import { getGuardians, updateGuardian } from "../../api";
+import { searchGuardians, updateGuardian } from "../../api";
 
 const GuardianList: React.FC = () => {
   const [guardians, setGuardians] = useState<Guardian[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [sortAsc, setSortAsc] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,11 +26,10 @@ const GuardianList: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const res = await getGuardians({
+      const res = await searchGuardians({
         page,
         limit,
-        sort: sortAsc ? "asc" : "desc",
-        search: searchTerm,
+        search: searchTerm || undefined,
       });
 
       setGuardians(res.data);
@@ -42,7 +40,7 @@ const GuardianList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, sortAsc, searchTerm]);
+  }, [page, limit, searchTerm]);
 
   useEffect(() => {
     loadGuardians();
@@ -100,7 +98,7 @@ const GuardianList: React.FC = () => {
             onAdd={() => console.log("Add Guardian")}
             onEdit={handleEditGuardian}
             onDelete={handleDeleteGuardian}
-            onSort={() => setSortAsc((prev) => !prev)}
+            onSort={() => {}}
             page={page}
             limit={limit}
           />

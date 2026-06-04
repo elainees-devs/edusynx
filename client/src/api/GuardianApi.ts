@@ -1,6 +1,6 @@
 // client/src/api/guardian.api.ts
 import axios from "axios";
-import type { GetPageParams, Guardian, PaginatedGuardians } from "../types";
+import type { Guardian, PaginatedGuardians } from "../types";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
@@ -10,13 +10,26 @@ const API_BASE =
 ================================ */
 
 export const getGuardians = async (
-  params: GetPageParams,
+  params: Record<string, any>,
 ): Promise<PaginatedGuardians> => {
   const response = await axios.get(`${API_BASE}/guardians`, {
     params,
   });
 
   return response.data;
+};
+
+/* ==============================
+   Search guardians (paginated, with text search)
+================================ */
+
+export const searchGuardians = async (
+  filters: { search?: string; schoolId?: string; page: number; limit: number }
+): Promise<PaginatedGuardians> => {
+  const { data } = await axios.get(`${API_BASE}/guardians/search`, {
+    params: filters,
+  });
+  return data;
 };
 
 /* ==============================

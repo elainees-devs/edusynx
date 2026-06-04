@@ -5,6 +5,7 @@ import {
   getStudents,
   graduateStudents,
   updateStudent,
+  searchStudents,
 } from "../../api";
 import { StudentTable } from "../data-table";
 import { Pagination, SearchBar } from "../../shared";
@@ -23,18 +24,27 @@ const StudentsList: React.FC = () => {
   const [showPromoteForm, setShowPromoteForm] = useState(false);
   const [transferTarget, setTransferTarget] = useState<Student | null>(null);
   const [statusFilter, setStatusFilter] = useState("");
+  const [classFilter, setClassFilter] = useState("");
+  const [streamFilter, setStreamFilter] = useState("");
+  const [genderFilter, setGenderFilter] = useState("");
   const limit = 10;
 
   const loadStudents = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await getStudents({
+      const filters: Record<string, any> = {
         page,
         limit,
-        sort: sortAsc ? "asc" : "desc",
-        search: searchTerm,
+        search: searchTerm || undefined,
         status: statusFilter || undefined,
-      });
+        classId: classFilter || undefined,
+        streamId: streamFilter || undefined,
+        gender: genderFilter || undefined,
+      };
+      const cleanFilters = Object.fromEntries(
+        Object.entries(filters).filter(([, v]) => v !== undefined)
+      );
+      const res = await searchStudents(cleanFilters as any);
 
       setStudents(res.data);
       setTotalPages(res.totalPages);
@@ -43,7 +53,7 @@ const StudentsList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, sortAsc, searchTerm, statusFilter]);
+  }, [page, limit, sortAsc, searchTerm, statusFilter, classFilter, streamFilter, genderFilter]);
 
   useEffect(() => {
     loadStudents();
@@ -136,23 +146,59 @@ const StudentsList: React.FC = () => {
         }}
       />
 
-      <div className="flex items-center gap-2">
-        <label htmlFor="status-filter" className="text-sm font-medium">Status:</label>
-        <select
-          id="status-filter"
-          value={statusFilter}
-          onChange={(e) => {
-            setStatusFilter(e.target.value);
-            setPage(1);
-          }}
-          className="border rounded px-3 py-1.5 text-sm"
-        >
-          <option value="">All</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-          <option value="Suspended">Suspended</option>
-          <option value="Graduated">Graduated</option>
-        </select>
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-2">
+          <label htmlFor="status-filter" className="text-sm font-medium">Status:</label>
+          <select
+            id="status-filter"
+            value={statusFilter}
+            onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+            className="border rounded px-3 py-1.5 text-sm"
+          >
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="transferred">Transferred</option>
+            <option value="graduated">Graduated</option>
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="gender-filter" className="text-sm font-medium">Gender:</label>
+          <select
+            id="gender-filter"
+            value={genderFilter}
+            onChange={(e) => { setGenderFilter(e.target.value); setPage(1); }}
+            className="border rounded px-3 py-1.5 text-sm"
+          >
+            <option value="">All</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="class-filter" className="text-sm font-medium">Class ID:</label>
+          <input
+            id="class-filter"
+            type="text"
+            value={classFilter}
+            onChange={(e) => { setClassFilter(e.target.value); setPage(1); }}
+            placeholder="Filter by class"
+            className="border rounded px-3 py-1.5 text-sm w-40"
+          />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="stream-filter" className="text-sm font-medium">Stream ID:</label>
+          <input
+            id="stream-filter"
+            type="text"
+            value={streamFilter}
+            onChange={(e) => { setStreamFilter(e.target.value); setPage(1); }}
+            placeholder="Filter by stream"
+            className="border rounded px-3 py-1.5 text-sm w-40"
+          />
+        </div>
       </div>
 
       {loading ? (

@@ -52,6 +52,29 @@ export const getStudents = async (
   return response.data;
 };
 
+/* ==============================
+   Search students (paginated, with filters)
+================================ */
+
+export interface StudentSearchFilters {
+  search?: string;
+  classId?: string;
+  streamId?: string;
+  status?: string;
+  gender?: string;
+  page: number;
+  limit: number;
+}
+
+export const searchStudents = async (
+  filters: StudentSearchFilters
+): Promise<PaginatedStudents> => {
+  const { data } = await axios.get(`${API_BASE}/students/search`, {
+    params: filters,
+  });
+  return data;
+};
+
 
 /* ==============================
    Get all students for a specific class (no pagination)
