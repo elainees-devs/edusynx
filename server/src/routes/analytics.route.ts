@@ -49,4 +49,78 @@ analyticsRouter.get(
   analyticsController.getPerformanceSummary
 );
 
+/**
+ * @swagger
+ * /api/v1/analytics/attendance/summary:
+ *   get:
+ *     summary: Get attendance summary analytics
+ *     tags: [Analytics]
+ */
+analyticsRouter.get(
+  "/attendance/summary",
+  analyticsController.getAttendanceSummary
+);
+
+/**
+ * @swagger
+ * /api/v1/analytics/attendance/trends:
+ *   get:
+ *     summary: Get attendance trend analytics
+ *     tags: [Analytics]
+ */
+analyticsRouter.get(
+  "/attendance/trends",
+  analyticsController.getAttendanceTrends
+);
+
+/**
+ * @swagger
+ * /api/v1/analytics/attendance/class/{id}:
+ *   get:
+ *     summary: Get attendance analytics for a specific class
+ *     tags: [Analytics]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Class ID
+ */
+analyticsRouter.get(
+  "/attendance/class/:id",
+  analyticsController.getClassAttendanceAnalytics
+);
+
+/**
+ * @swagger
+ * /api/v1/analytics/attendance/at-risk:
+ *   get:
+ *     summary: Get at-risk students based on attendance threshold
+ *     tags: [Analytics]
+ */
+analyticsRouter.get(
+  "/attendance/at-risk",
+  analyticsController.getAtRiskStudents
+);
+
+/**
+ * @swagger
+ * /api/v1/analytics/attendance/student/{id}:
+ *   get:
+ *     summary: Get attendance analytics for a specific student
+ *     tags: [Analytics]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Student ID
+ */
+analyticsRouter.get(
+  "/attendance/student/:id",
+  analyticsController.getStudentAttendanceAnalytics
+);
+
 export { analyticsRouter };

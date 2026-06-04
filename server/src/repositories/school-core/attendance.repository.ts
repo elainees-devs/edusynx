@@ -252,6 +252,29 @@ async findByDateRange(
 }
 
 /**
+ * Get all attendance records for a specific class (all streams) within a date range
+ */
+async findByClass(
+  classId: string,
+  startDate: Date,
+  endDate: Date
+): Promise<IAttendance[]> {
+  return AttendanceModel.find({
+    classRef: classId,
+    date: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  })
+    .populate("classRef")
+    .populate("streamId")
+    .populate("attendance.studentId")
+    .populate("createdBy", "firstName lastName")
+    .populate("updatedBy", "firstName lastName")
+    .exec();
+}
+
+/**
  * Get all attendance records for a specific student
  */
 async findByStudent(studentId: string): Promise<IAttendance[]> {

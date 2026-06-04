@@ -103,68 +103,6 @@ attendanceRouter.get(
 );
 
 /**
- * =========================
- * ANALYTICS ROUTES
- * =========================
- */
-
-/**
- * @swagger
- * /api/v1/attendance/analytics/summary:
- *   get:
- *     summary: Get attendance summary analytics
- *     tags: [Attendance]
- */
-attendanceRouter.get(
-  "/analytics/summary",
-  attendanceController.getAttendanceSummary
-);
-
-/**
- * @swagger
- * /api/v1/attendance/analytics/trends:
- *   get:
- *     summary: Get attendance trend analytics
- *     tags: [Attendance]
- */
-attendanceRouter.get(
-  "/analytics/trends",
-  attendanceController.getAttendanceTrends
-);
-
-/**
- * @swagger
- * /api/v1/attendance/analytics/at-risk:
- *   get:
- *     summary: Get at-risk students based on attendance threshold
- *     tags: [Attendance]
- */
-attendanceRouter.get(
-  "/analytics/at-risk",
-  attendanceController.getAtRiskStudents
-);
-
-/**
- * @swagger
- * /api/v1/attendance/analytics/student/{id}:
- *   get:
- *     summary: Get attendance analytics for a specific student
- *     tags: [Attendance]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Student ID
- */
-attendanceRouter.get(
-  "/analytics/student/:id",
-  attendanceController.getStudentAttendanceAnalytics
-);
-
-
-/**
  * @swagger
  * /api/v1/attendance/{id}:
  *   get:
