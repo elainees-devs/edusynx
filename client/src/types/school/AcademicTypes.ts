@@ -1,16 +1,16 @@
-// server/src/types/school/academic.types.ts
-import type { ITeacher } from "../people/UserTypes";
+// client/src/types/school/AcademicTypes.ts
+import type { IStaff } from "../people/StaffTypes";
 import type { IClass, ISchool, IStream } from "./SchoolCoreTypes";
 
 export interface IDepartment {
   school: string | ISchool;
   departmentName: string;
-  headOfDepartment?: string | IClassTeacher;
-  teachers?: string | ITeacher[];
+  headOfDepartment?: string | IStaff;
+  teachers?: string | IStaff[];
 }
 
 export interface IClassTeacher {
-  teacher: string | ITeacher;
+  teacher: string | IStaff;
   grade: string | IClass;
   stream: string | IStream;
   totalStudents: number;

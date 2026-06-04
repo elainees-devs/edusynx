@@ -2,6 +2,7 @@
 import type { Student } from "../people/StudentTypes";
 import type { Guardian } from "../people/UserTypes";
 import type { Teacher } from "../school/Allocation";
+import type { IStaff } from "../people/StaffTypes";
 import type { IAttendance } from "../school/AttendanceTypes";
 import type { ICompetency, IStrand } from "../school/CBCTypes";
 import type { IAcademicYear } from "../school/AcademicYearTypes";
@@ -34,9 +35,6 @@ export type PaginatedAttendanceRecords = PaginatedResponse<IAttendance>;
 export type PaginatedCompetencies = PaginatedResponse<ICompetency>;
 export type PaginatedStrands = PaginatedResponse<IStrand>;
 export type PaginatedAcademicYears = PaginatedResponse<IAcademicYear>;
-
-
-
-
+export type PaginatedStaff = PaginatedResponse<IStaff>;
 
 

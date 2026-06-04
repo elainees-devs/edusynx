@@ -3,6 +3,7 @@ export * from './school/SchoolCoreTypes';
 export * from './school/AcademicTypes';
 export * from './people/UserTypes';
 export * from './people/StudentTypes';
+export * from './people/StaffTypes';
 export * from './pagination/PaginationTypes';
 export * from './subscription/SubscriptionTypes';
 export * from './school/CBCTypes';

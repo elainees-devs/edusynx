@@ -1,6 +1,7 @@
 // client/src/constants/SearchConfig.ts
 import type { Guardian, IClass, ICompetency, IStrand, IStream, ISubject, Student } from "../types";
 import type { Teacher } from "../types/school/Allocation";
+import type { IStaff } from "../types/people/StaffTypes";
 
 // Generic config type
 interface SearchConfig<T> {
@@ -53,4 +54,9 @@ export const searchConfig = {
     placeholder: "Search by Code or Title...",
     keys: ["code", "title"] as (keyof IStrand)[],
   } satisfies SearchConfig<IStrand>,
+
+  staff: {
+    placeholder: "Search by Employee No., Name, or Email...",
+    keys: ["employeeNumber", "firstName", "middleName", "lastName", "email"] as (keyof IStaff)[],
+  } satisfies SearchConfig<IStaff>,
 };
