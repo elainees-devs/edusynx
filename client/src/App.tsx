@@ -42,7 +42,12 @@ const ViewAcademicYears = lazy(() => import("./pages/academic-year/ViewAcademicY
 const RegisterAcademicYear = lazy(() => import("./pages/academic-year/RegisterAcademicYear"));
 const ViewEnrollments = lazy(() => import("./pages/enrollment/ViewEnrollments"));
 const RegisterEnrollment = lazy(() => import("./pages/enrollment/RegisterEnrollment"));
-  
+const ViewStaff = lazy(() => import("./pages/staff/ViewStaff"));
+const RegisterStaff = lazy(() => import("./pages/staff/RegisterStaff"));
+const StaffDetail = lazy(() => import("./pages/staff/StaffDetail"));
+const ViewDepartments = lazy(() => import("./pages/departments/ViewDepartments"));
+const RegisterDepartment = lazy(() => import("./pages/departments/RegisterDepartment"));
+
 import GlobalStateProvider from "./context/global/useGlobalState";
 
 // import ClassTeacher from "./pages/allocation/class-teacher";
@@ -143,6 +148,15 @@ function App() {
             <Route path="/enrollments" element={<ViewEnrollments />} />
             <Route path="/enrollments/register" element={<RegisterEnrollment />} />
             <Route path="/enrollments/bulk" element={<RegisterEnrollment />} />
+
+            {/* === Staff === */}
+            <Route path="/dashboard/staff/view" element={<ViewStaff />} />
+            <Route path="/dashboard/staff/register" element={<RegisterStaff />} />
+            <Route path="/dashboard/staff/:id" element={<StaffDetail />} />
+
+            {/* === Departments === */}
+            <Route path="/dashboard/departments/view" element={<ViewDepartments />} />
+            <Route path="/dashboard/departments/register" element={<RegisterDepartment />} />
 
             {/* === Miscellaneous === */}
           </Routes>

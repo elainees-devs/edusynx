@@ -11,6 +11,8 @@ import {
   FaListAlt,
   FaChalkboardTeacher,
   FaPlus,
+  FaUserTie,
+  FaBuilding,
 } from "react-icons/fa";
 import type { NavItem } from "./SidebarMenu";
 
@@ -81,4 +83,16 @@ export const academicYearNavChildren: NavItem[] = [
 export const enrollmentNavChildren: NavItem[] = [
   { name: "View Enrollments", icon: FaListAlt, path: "/enrollments" },
   { name: "New Enrollment", icon: FaPlusCircle, path: "/enrollments/register" },
-];  
+];
+
+// ---- STAFF ----
+export const staffNavChildren: NavItem[] = [
+  { name: "View Staff", icon: FaListAlt, path: "/dashboard/staff/view" },
+  { name: "Register Staff", icon: FaPlusCircle, path: "/dashboard/staff/register" },
+];
+
+// ---- DEPARTMENTS ----
+export const departmentNavChildren: NavItem[] = [
+  { name: "View Departments", icon: FaListAlt, path: "/dashboard/departments/view" },
+  { name: "Register Department", icon: FaPlusCircle, path: "/dashboard/departments/register" },
+];

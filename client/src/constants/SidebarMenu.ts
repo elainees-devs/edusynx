@@ -11,6 +11,8 @@ import {
   FaBook,
   FaClipboardList,
   FaStream,
+  FaUserTie,
+  FaBuilding,
 } from "react-icons/fa";
 import type { IconType } from "react-icons";
 import {
@@ -24,6 +26,8 @@ import {
   strandNavChildren,
   academicYearNavChildren,
   enrollmentNavChildren,
+  staffNavChildren,
+  departmentNavChildren,
 } from "./SidebarSubmenu";
 
 export interface NavItem {
@@ -52,6 +56,12 @@ export const principalNavItems: NavItem[] = [
     icon: FaChalkboardTeacher,
     path: "/dashboard/teachers",
     children: teacherNavChildren,
+  },
+  {
+    name: "Staff",
+    icon: FaUserTie,
+    path: "/dashboard/staff",
+    children: staffNavChildren,
   },
   { 
     name: "Students", icon: FaUserGraduate, 
@@ -105,6 +115,12 @@ export const principalNavItems: NavItem[] = [
     icon: FaClipboardList,
     path: "/enrollments",
     children: enrollmentNavChildren,
+  },
+  {
+    name: "Departments",
+    icon: FaBuilding,
+    path: "/dashboard/departments",
+    children: departmentNavChildren,
   },
   { name: "Reports", icon: FaClipboardList, path: "/dashboard/reports" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
