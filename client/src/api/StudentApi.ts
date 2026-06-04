@@ -1,6 +1,6 @@
 // client/src/api/student.api.ts
 import axios from "axios";
-import type { GetPageParams, PaginatedStudents, Student, StudentFormData } from "../types";
+import type { GetPageParams, PaginatedStudents, Student, StudentFormData, StudentHistoryEntry } from "../types";
 
 
 /* ==============================
@@ -167,5 +167,62 @@ export const getStudentsByClassAndStream = async (
 
     throw { message: "Unknown error occurred while fetching students" };
   }
+};
+
+/* ==============================
+   Promote students (class-wide)
+================================ */
+export const promoteStudents = async (
+  sourceClassId: string,
+  targetClassId: string,
+  targetStreamId?: string,
+  academicYear?: string,
+): Promise<{ message: string; modifiedCount: number }> => {
+  const { data } = await axios.post(`${API_BASE}/students/promote`, {
+    sourceClassId,
+    targetClassId,
+    targetStreamId,
+    academicYear,
+  });
+  return data;
+};
+
+/* ==============================
+   Transfer a single student
+================================ */
+export const transferStudent = async (
+  id: string,
+  targetClassId: string,
+  targetStreamId?: string,
+  reason?: string,
+): Promise<Student> => {
+  const { data } = await axios.patch(`${API_BASE}/students/${id}/transfer`, {
+    targetClassId,
+    targetStreamId,
+    reason,
+  });
+  return data;
+};
+
+/* ==============================
+   Graduate selected students
+================================ */
+export const graduateStudents = async (
+  studentIds: string[],
+): Promise<{ message: string; modifiedCount: number }> => {
+  const { data } = await axios.patch(`${API_BASE}/students/graduate`, {
+    studentIds,
+  });
+  return data;
+};
+
+/* ==============================
+   Get student with history
+================================ */
+export const getStudentHistory = async (
+  id: string,
+): Promise<Student & { history?: StudentHistoryEntry[] }> => {
+  const { data } = await axios.get(`${API_BASE}/students/${id}/history`);
+  return data;
 };
 

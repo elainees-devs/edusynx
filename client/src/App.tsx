@@ -21,6 +21,7 @@ const RegisterSubject = lazy(() => import("./pages/subject/RegisterSubject"));
 const ViewSubjects = lazy(() => import("./pages/subject/ViewSubject"));
 const RegisterStudent = lazy(() => import("./pages/student/RegisterStudent"));
 const ViewStudents = lazy(() => import("./pages/student/ViewStudents"));
+const StudentDetail = lazy(() => import("./pages/student/StudentDetail"));
 const ViewGuardian = lazy(() => import("./pages/student/ViewGuardian"));
 const RegisterAttendancePage = lazy(() => import("./pages/attendance/RegisterAttendance"));
 const ViewAttendance = lazy(() => import("./pages/attendance/ViewAttendance"));
@@ -119,6 +120,7 @@ function App() {
             {/* === Students and Guardian === */}
             <Route path="/:slug/student/new" element={<RegisterStudent />} />
             <Route path="/:slug/students/view" element={<ViewStudents />} />
+            <Route path="/:slug/students/:id" element={<StudentDetail />} />
             <Route path="/:slug/guardian/view" element={<ViewGuardian />} />
 
             {/* === Attendance === */}

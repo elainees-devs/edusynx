@@ -31,6 +31,7 @@ export { default as AssignSubjects} from './allocation/SubjectAssignment'
 export { default as RegisterStudent } from './student/RegisterStudent'
 export { default as ViewStudents } from './student/ViewStudents'
 export {default as ViewGuardian} from './student/ViewGuardian'
+export { default as StudentDetail } from './student/StudentDetail'
 
 //---------- Attendance Management ----------
 export { default as RegisterAttendancePage } from './attendance/RegisterAttendance'

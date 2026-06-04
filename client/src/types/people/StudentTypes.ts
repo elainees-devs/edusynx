@@ -33,6 +33,19 @@ export interface StudentFormContextType {
   error?: string;
 }
 
+export interface StudentHistoryEntry {
+  _id: string;
+  action: "promoted" | "transferred" | "graduated" | "admitted";
+  fromClass?: string;
+  toClass?: string;
+  fromStream?: string;
+  toStream?: string;
+  academicYear?: string;
+  reason?: string;
+  date: string;
+}
+
 export interface Student extends StudentFormData {
   _id: string;
+  history?: StudentHistoryEntry[];
 }

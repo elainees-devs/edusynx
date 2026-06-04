@@ -18,3 +18,5 @@ export { default as SubjectAssignmentForm } from "./SubjectAssignmentForm";
 export { default as RegisterCompetencyForm } from "./RegisterCompetencyForm";
 export { default as RegisterStrandForm } from "./RegisterStrandForm";
 export { default as AcademicYearForm } from "./AcademicYearForm";
+export { default as PromoteStudentsForm } from "./PromoteStudentsForm";
+export { default as TransferStudentForm } from "./TransferStudentForm";

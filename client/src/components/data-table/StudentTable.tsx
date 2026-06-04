@@ -1,11 +1,9 @@
-// client/src/components/tables/student-table.tsx
 import React, { useEffect, useMemo, useState } from "react";
-import { FaUserPlus, FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
+import { FaUserPlus, FaEdit, FaTrash, FaSave, FaTimes, FaExchangeAlt } from "react-icons/fa";
 import type { Guardian, IClass, IStream, Student } from "../../types";
 import { countStudents, getAllClasses, getAllStreams } from "../../api";
 import { resolveId, sortByAdmissionNumber, sortByFirstName } from "../../utils";
 import GuardianFormModal from "../forms/RegisterGuardianFormModal";
-
 
 interface StudentTableProps {
   students: Student[];
@@ -14,6 +12,9 @@ interface StudentTableProps {
   onAddGuardian?: (student: Student, newGuardian: Guardian) => void;
   onEdit: (id: string, updatedData: Partial<Student>) => void;
   onDelete: (student: Student) => void;
+  onTransfer: (student: Student) => void;
+  selectedIds: string[];
+  onSelectionChange: (ids: string[]) => void;
   page: number;
   limit: number;
 }
@@ -22,6 +23,9 @@ const StudentTable: React.FC<StudentTableProps> = ({
   students,
   onEdit,
   onDelete,
+  onTransfer,
+  selectedIds,
+  onSelectionChange,
   page,
   limit,
 }) => {
@@ -39,7 +43,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
     Record<string, Guardian[]>
   >({});
 
-  // Load classes, streams, and total students
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -63,7 +66,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
     loadData();
   }, []);
 
-  // Maps for class and stream names
   const classMap = useMemo(
     () => new Map(classes.map((cls) => [cls._id, cls.clasName])),
     [classes],
@@ -73,7 +75,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
     [streams],
   );
 
-  // Editing
   const startEditing = (student: Student) => {
     setEditingId(student._id);
     setEditData({
@@ -111,13 +112,29 @@ const StudentTable: React.FC<StudentTableProps> = ({
     cancelEditing();
   };
 
+  const allSelected =
+    students.length > 0 && selectedIds.length === students.length;
+  const toggleAll = () => {
+    if (allSelected) {
+      onSelectionChange([]);
+    } else {
+      onSelectionChange(students.map((s) => s._id));
+    }
+  };
+  const toggleOne = (id: string) => {
+    if (selectedIds.includes(id)) {
+      onSelectionChange(selectedIds.filter((x) => x !== id));
+    } else {
+      onSelectionChange([...selectedIds, id]);
+    }
+  };
+
   if (!students || students.length === 0) {
     return (
       <div className="text-center py-4 text-gray-500">No students found.</div>
     );
   }
 
-  // Sorting
   let sortedStudents = [...students];
   if (sortField === "adm")
     sortedStudents = sortByAdmissionNumber(sortedStudents);
@@ -133,6 +150,13 @@ const StudentTable: React.FC<StudentTableProps> = ({
       <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
         <thead className="bg-gray-100">
           <tr className="text-left text-sm font-semibold text-gray-700">
+            <th className="px-4 py-2 border w-10">
+              <input
+                type="checkbox"
+                checked={allSelected}
+                onChange={toggleAll}
+              />
+            </th>
             <th className="px-4 py-2 border">#</th>
             <th
               className="px-4 py-2 border cursor-pointer select-none"
@@ -165,6 +189,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
             <th className="px-4 py-2 border">Previous School</th>
             <th className="px-4 py-2 border">Class</th>
             <th className="px-4 py-2 border">Stream</th>
+            <th className="px-4 py-2 border">Status</th>
             <th className="px-4 py-2 border">Guardian</th>
             <th className="px-4 py-2 border">Actions</th>
           </tr>
@@ -175,16 +200,31 @@ const StudentTable: React.FC<StudentTableProps> = ({
             const isEditing = editingId === student._id;
             const classId = resolveId(student.classId);
 
-            // Resolve guardian (fallback)
             const guardianName =
               typeof student.guardianId === "object" &&
               student.guardianId !== null
                 ? student.guardianId.firstName
                 : (student.guardianId ?? "");
 
+            const statusColor: Record<string, string> = {
+              Active: "bg-green-100 text-green-800",
+              Inactive: "bg-gray-100 text-gray-600",
+              Suspended: "bg-yellow-100 text-yellow-800",
+              Graduated: "bg-blue-100 text-blue-800",
+              transferred: "bg-purple-100 text-purple-800",
+              graduated: "bg-blue-100 text-blue-800",
+            };
+
             return (
               <React.Fragment key={student._id}>
                 <tr className="hover:bg-gray-50 text-sm">
+                  <td className="px-4 py-2 border">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(student._id)}
+                      onChange={() => toggleOne(student._id)}
+                    />
+                  </td>
                   <td className="px-4 py-2 border">
                     {(page - 1) * limit + index + 1}
                   </td>
@@ -288,53 +328,70 @@ const StudentTable: React.FC<StudentTableProps> = ({
                       (streamMap.get(student.stream) ?? "Unknown Stream")
                     )}
                   </td>
+                  <td className="px-4 py-2 border">
+                    <span
+                      className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${
+                        statusColor[student.status] || "bg-gray-100"
+                      }`}
+                    >
+                      {student.status}
+                    </span>
+                  </td>
                   <td className="px-4 py-2 border">{guardianName}</td>
-                  <td className="px-4 py-2 border flex gap-2">
-                    {isEditing ? (
-                      <>
-                        <button type="button" title="Save" onClick={saveEdit}>
-                          <FaSave className="text-green-600 hover:text-green-800" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Cancel"
-                          onClick={cancelEditing}
-                        >
-                          <FaTimes className="text-gray-600 hover:text-gray-800" />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          type="button"
-                          title="Add Guardian"
-                          onClick={() => setGuardianModalStudent(student)}
-                        >
-                          <FaUserPlus className="text-blue-600 hover:text-blue-800" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Edit Student"
-                          onClick={() => startEditing(student)}
-                        >
-                          <FaEdit className="text-green-600 hover:text-green-800" />
-                        </button>
-                        <button
-                          type="button"
-                          title="Delete Student"
-                          onClick={() => onDelete(student)}
-                        >
-                          <FaTrash className="text-red-600 hover:text-red-800" />
-                        </button>
-                      </>
-                    )}
+                  <td className="px-4 py-2 border">
+                    <div className="flex gap-2 items-center">
+                      {isEditing ? (
+                        <>
+                          <button type="button" title="Save" onClick={saveEdit}>
+                            <FaSave className="text-green-600 hover:text-green-800" />
+                          </button>
+                          <button
+                            type="button"
+                            title="Cancel"
+                            onClick={cancelEditing}
+                          >
+                            <FaTimes className="text-gray-600 hover:text-gray-800" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            type="button"
+                            title="Add Guardian"
+                            onClick={() => setGuardianModalStudent(student)}
+                          >
+                            <FaUserPlus className="text-blue-600 hover:text-blue-800" />
+                          </button>
+                          <button
+                            type="button"
+                            title="Edit Student"
+                            onClick={() => startEditing(student)}
+                          >
+                            <FaEdit className="text-green-600 hover:text-green-800" />
+                          </button>
+                          <button
+                            type="button"
+                            title="Transfer Student"
+                            onClick={() => onTransfer(student)}
+                          >
+                            <FaExchangeAlt className="text-purple-600 hover:text-purple-800" />
+                          </button>
+                          <button
+                            type="button"
+                            title="Delete Student"
+                            onClick={() => onDelete(student)}
+                          >
+                            <FaTrash className="text-red-600 hover:text-red-800" />
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
 
-                {/* Guardians list under student */}
                 {(studentGuardians[student._id] || []).length > 0 && (
                   <tr>
-                    <td colSpan={11} className="bg-gray-50 px-4 py-2">
+                    <td colSpan={13} className="bg-gray-50 px-4 py-2">
                       <strong>Guardians:</strong>
                       <ul className="ml-4 list-disc">
                         {studentGuardians[student._id].map((g) => (
@@ -354,7 +411,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
         </tbody>
       </table>
 
-      {/* Guardian Modal rendered once */}
       {guardianModalStudent && (
         <GuardianFormModal
           student={{
