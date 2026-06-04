@@ -5,6 +5,9 @@ import { StudentController } from "../controllers";
 import {
   createStudentSchema,
   updateStudentSchema,
+  promoteStudentsSchema,
+  transferStudentSchema,
+  graduateStudentsSchema,
 } from "../validation/student.schema";
 import { validate } from "../middlewares/validate";
 import { UserRole } from "../types";
@@ -177,6 +180,42 @@ studentRouter.get("/count", studentController.countStudents);
 
 /**
  * @swagger
+ * /api/v1/students/graduate:
+ *   patch:
+ *     summary: Mark students as graduated
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - studentIds
+ *             properties:
+ *               studentIds:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Students graduated successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Access denied
+ */
+studentRouter.patch(
+  "/graduate",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(graduateStudentsSchema),
+  studentController.graduateStudents,
+);
+
+/**
+ * @swagger
  * /api/v1/students/{id}:
  *   patch:
  *     summary: Update student by ID
@@ -314,6 +353,118 @@ studentRouter.patch(
 studentRouter.get(
   "/class",
   studentController.getStudentsByClassAndStream
+);
+
+/**
+ * @swagger
+ * /api/v1/students/promote:
+ *   post:
+ *     summary: Batch promote all active students in a class to a target class
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - sourceClassId
+ *               - targetClassId
+ *               - targetStreamId
+ *               - academicYear
+ *             properties:
+ *               sourceClassId:
+ *                 type: string
+ *               targetClassId:
+ *                 type: string
+ *               targetStreamId:
+ *                 type: string
+ *               academicYear:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Students promoted successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Access denied
+ */
+studentRouter.post(
+  "/promote",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(promoteStudentsSchema),
+  studentController.promoteStudents,
+);
+
+/**
+ * @swagger
+ * /api/v1/students/{id}/transfer:
+ *   patch:
+ *     summary: Transfer a student to a new class/stream
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - targetClassId
+ *               - targetStreamId
+ *             properties:
+ *               targetClassId:
+ *                 type: string
+ *               targetStreamId:
+ *                 type: string
+ *               reason:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Student transferred successfully
+ *       404:
+ *         description: Student not found
+ */
+studentRouter.patch(
+  "/:id/transfer",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(transferStudentSchema),
+  studentController.transferStudent,
+);
+
+/**
+ * @swagger
+ * /api/v1/students/{id}/history:
+ *   get:
+ *     summary: Get student's academic history
+ *     tags: [Students]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Student history retrieved
+ *       404:
+ *         description: Student not found
+ */
+studentRouter.get(
+  "/:id/history",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  studentController.getStudentHistory,
 );
 
 

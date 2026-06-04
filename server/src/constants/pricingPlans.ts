@@ -43,7 +43,8 @@ export const pricingPlans = [
         group: "Advanced Features",
         features: [
           "M-Pesa Integration",
-          "Email & SMS Alerts",
+          "Email Alerts",
+          "SMS Alerts",
           "Real-Time Dashboards"
         ]
       }
@@ -64,7 +65,8 @@ export const pricingPlans = [
           "Manual Invoicing",
           "Basic Reports",
           "M-Pesa Integration",
-          "Email & SMS Alerts",
+          "Email Alerts",
+          "SMS Alerts",
           "Real-Time Dashboards"
         ]
       },

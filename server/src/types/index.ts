@@ -2,6 +2,7 @@
 
 import { ILoginResponseFailure, ILoginResponseSuccess } from "./auth/auth.types";
 export * from "./school/school-core.types";
+export * from "./school/academic-year.types";
 export * from "./subscription/subscription.types";
 export * from "./school/academic.types"
 export * from "./school/school-activity.types";

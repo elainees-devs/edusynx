@@ -123,7 +123,50 @@ export class StudentController {
     });
   });
 
-  // 12. Get students by class name
+  // 12. Promote students (batch)
+  promoteStudents = handleAsync(async (req, res) => {
+    const { sourceClassId, targetClassId, targetStreamId } = req.body;
+    const result = await studentRepo.promoteStudents(
+      sourceClassId,
+      targetClassId,
+      targetStreamId,
+    );
+    res.json({
+      message: `${result.modifiedCount} student(s) promoted successfully`,
+      modifiedCount: result.modifiedCount,
+    });
+  });
+
+  // 13. Transfer student
+  transferStudent = handleAsync(async (req, res) => {
+    const { targetClassId, targetStreamId } = req.body;
+    const student = await studentRepo.transferStudent(
+      req.params.id,
+      targetClassId,
+      targetStreamId,
+    );
+    if (!student) throw new AppError("Student not found", 404);
+    res.json({ message: "Student transferred successfully", student });
+  });
+
+  // 14. Graduate students (batch)
+  graduateStudents = handleAsync(async (req, res) => {
+    const { studentIds } = req.body;
+    const result = await studentRepo.graduateStudents(studentIds);
+    res.json({
+      message: `${result.modifiedCount} student(s) graduated successfully`,
+      modifiedCount: result.modifiedCount,
+    });
+  });
+
+  // 15. Get student history
+  getStudentHistory = handleAsync(async (req, res) => {
+    const student = await studentRepo.getStudentHistory(req.params.id);
+    if (!student) throw new AppError("Student not found", 404);
+    res.json(student);
+  });
+
+  // 16. Get students by class name
   // ===============================
   // GET STUDENTS BY CLASS & STREAM WITH PAGINATION
   // ===============================

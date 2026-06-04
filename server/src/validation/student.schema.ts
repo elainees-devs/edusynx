@@ -21,3 +21,20 @@ export const createStudentSchema = z.object({
 });
 
 export const updateStudentSchema = createStudentSchema.partial();
+
+export const promoteStudentsSchema = z.object({
+  sourceClassId: objectId,
+  targetClassId: objectId,
+  targetStreamId: objectId,
+  academicYear: z.string().min(4),
+});
+
+export const transferStudentSchema = z.object({
+  targetClassId: objectId,
+  targetStreamId: objectId,
+  reason: z.string().optional(),
+});
+
+export const graduateStudentsSchema = z.object({
+  studentIds: z.array(objectId).min(1),
+});

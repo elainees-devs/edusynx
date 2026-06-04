@@ -4,6 +4,7 @@ export { classRouter } from './class.route';
 export { classTeacherRoute } from './class.teacher.route';
 export { departmentRouter } from './department.route';
 export { streamRouter } from './stream.route';
+export { academicYearRouter } from './academic-year.route';
 export { cbcRouter } from './cbc.route';
 
 // People

@@ -1,5 +1,6 @@
 // server/src/validation/index.ts
 export { createGuardianSchema, updateGuardianSchema } from "./guardian.schema";
+export { createAcademicYearSchema, updateAcademicYearSchema } from "./academic-year.schema";
 export { createClassSchema, updateClassSchema } from "./class.schema";
 export { createStudentSchema, updateStudentSchema } from "./student.schema";
 export { createUserSchema, updateUserSchema } from "./user.schema";

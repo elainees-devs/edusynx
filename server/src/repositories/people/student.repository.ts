@@ -1,7 +1,7 @@
 // server/src/repositories/people/student.repository.ts
 import mongoose from "mongoose";
 import crypto from "crypto";
-import { IClass, IStream, IStudent } from "../../types";
+import { IClass, IStream, IStudent, StudentStatus } from "../../types";
 import { ClassModel, StudentModel } from "../../models";
 import { generateAdmissionNumber } from "../../utils";
 
@@ -269,8 +269,74 @@ export class StudentRepository {
       };
     });
   }
+
+  // ===============================
+  // PROMOTE STUDENTS (batch)
+  // ===============================
+  async promoteStudents(sourceClassId: string, targetClassId: string, targetStreamId: string) {
+    const result = await StudentModel.updateMany(
+      { classId: sourceClassId, status: StudentStatus.ACTIVE },
+      { $set: { classId: targetClassId, stream: targetStreamId } },
+    );
+    return result;
+  }
+
+  // ===============================
+  // TRANSFER STUDENT
+  // ===============================
+  async transferStudent(studentId: string, targetClassId: string, targetStreamId: string) {
+    const student = await StudentModel.findByIdAndUpdate(
+      studentId,
+      {
+        $set: {
+          classId: targetClassId,
+          stream: targetStreamId,
+          status: StudentStatus.TRANSFERRED,
+        },
+      },
+      { new: true },
+    ).populate({
+      path: "classId",
+      select: "clasName",
+    }).populate({
+      path: "stream",
+      select: "streamName",
+    });
+
+    return student;
+  }
+
+  // ===============================
+  // GRADUATE STUDENTS (batch)
+  // ===============================
+  async graduateStudents(studentIds: string[]) {
+    const result = await StudentModel.updateMany(
+      { _id: { $in: studentIds } },
+      { $set: { status: StudentStatus.GRADUATED } },
+    );
+    return result;
+  }
+
+  // ===============================
+  // GET STUDENT HISTORY
+  // ===============================
+  async getStudentHistory(studentId: string) {
+    const student = await StudentModel.findById(studentId)
+      .populate({
+        path: "classId",
+        select: "clasName",
+      })
+      .populate({
+        path: "stream",
+        select: "streamName",
+      })
+      .populate({
+        path: "guardian",
+        select: "firstName lastName email phoneNumber",
+      });
+
+    return student;
+  }
 }
-
-
 
 export const studentRepo = new StudentRepository();

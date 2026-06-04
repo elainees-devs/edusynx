@@ -21,6 +21,7 @@ export * from "./permissions/rolePermission.controller";
 export * from "./school-core/class.controller";
 export * from "./school-core/school.controller";
 export * from "./school-core/stream.controller";
+export * from "./school-core/academic-year.controller";
 export * from "./school-core/attendance.controller";
 export * from "./security/login.controller";
 export * from "./security/session.controller";

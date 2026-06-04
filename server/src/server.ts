@@ -40,6 +40,7 @@ import {
   subscriptionRouter,
   attendanceRouter,
   cbcRouter,
+  academicYearRouter,
 } from "./routes";
 import { SchoolController } from "./controllers";
 import adminRouter from "./routes/super-admin.route";
@@ -113,6 +114,7 @@ apiRouter.use("/super-admin", adminRouter);
 apiRouter.use("/password-reset", resetRouter);
 apiRouter.use("/allocations", allocationRouter);
 apiRouter.use("/streams", streamRouter);
+apiRouter.use("/academic-years", academicYearRouter);
 apiRouter.use("/profile", profileRouter);
 apiRouter.use("/analytics", analyticsRouter);
 apiRouter.use("/subscription-plans", subscriptionPlanRouter);

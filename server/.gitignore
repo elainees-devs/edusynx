@@ -8,6 +8,8 @@ build/
 # Environment variables
 .env
 
+.plans
+
 # Logs
 logs/
 *.log
