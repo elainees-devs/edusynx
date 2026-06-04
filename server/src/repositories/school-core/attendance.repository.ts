@@ -1,47 +1,92 @@
 // server/src/repositories/school-core/attendance.repository.ts
+
 import { Types } from "mongoose";
 import { IAttendance } from "../../types";
 import { AttendanceModel } from "../../models";
 
+interface AttendanceListItem {
+  _id: Types.ObjectId;
+  studentName: string;
+  clasName: string;
+  streamName: string;
+  date: string;
+  status: string;
+  remarks: string;
+}
+
+interface StudentName {
+  studentFirstName?: string;
+  studentLastName?: string;
+}
+
+interface AttendanceEntry {
+  _id: Types.ObjectId;
+  studentId?: StudentName;
+  status: string;
+}
+
+interface ClassInfo {
+  clasName?: string;
+}
+
+interface StreamInfo {
+  streamName?: string;
+}
+
+interface AttendanceRecord {
+  attendance: AttendanceEntry[];
+  classRef?: ClassInfo;
+  streamId?: StreamInfo;
+  date: Date;
+  remarks?: string;
+}
 
 export class AttendanceRepository {
   /**
-   *  Create a new attendance record for a class on a specific date
+   * Create a new attendance record for a class on a specific date
    */
   async create(attendanceData: IAttendance): Promise<IAttendance> {
     const attendance = new AttendanceModel(attendanceData);
     return attendance.save();
   }
 
-
   /**
    * Get all attendance records and flatten for the UI
    */
-  async findAll(): Promise<any[]> {
+  async findAll(): Promise<AttendanceListItem[]> {
     const records = await AttendanceModel.find()
       .populate("school")
       .populate("classRef")
       .populate("streamId")
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName")
       .populate({
         path: "attendance.studentId",
-        select: "studentFirstName studentLastName"
+        select: "studentFirstName studentLastName",
       })
-      .lean()
+      .lean<AttendanceRecord[]>()
       .exec();
 
-    return records.flatMap((record: any) =>
-      (record.attendance || []).map((entry: any) => ({
+    return records.flatMap((record) =>
+      record.attendance.map((entry) => ({
         _id: entry._id,
-        studentName: [entry.studentId?.studentFirstName, entry.studentId?.studentLastName].filter(Boolean).join(" ") || "—",
+        studentName:
+          [
+            entry.studentId?.studentFirstName,
+            entry.studentId?.studentLastName,
+          ]
+            .filter(Boolean)
+            .join(" ") || "—",
         clasName: record.classRef?.clasName || "—",
         streamName: record.streamId?.streamName || "—",
-        date: record.date ? new Date(record.date).toISOString().slice(0, 10) : "—",
+        date: record.date
+          ? new Date(record.date).toISOString().slice(0, 10)
+          : "—",
         status: entry.status,
-        notes: entry.notes || "—"
+        remarks: record.remarks || "—",
       }))
     );
   }
-
 
   /**
    * Get attendance by ID
@@ -51,24 +96,23 @@ export class AttendanceRepository {
       .populate("school")
       .populate("classRef")
       .populate("streamId")
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName")
       .populate({
         path: "attendance.studentId",
-        select: "studentFirstName studentLastName"
+        select: "studentFirstName studentLastName",
       })
       .exec();
   }
 
-
-
   /**
- * Get the unique attendance record for a class, stream, and specific date
- */
+   * Get the unique attendance record for a class, stream, and specific date
+   */
   async findByClassStreamAndDate(
     classId: string,
     streamId: string,
     date: Date
   ): Promise<IAttendance | null> {
-    // Normalize date to cover the full 24-hour period of the selected day
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
 
@@ -77,37 +121,40 @@ export class AttendanceRepository {
 
     return AttendanceModel.findOne({
       classRef: classId,
-      streamId: streamId,
+      streamId,
       date: { $gte: start, $lte: end },
     })
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName")
       .populate({
         path: "attendance.studentId",
-        select: "studentFirstName studentLastName rollNumber" // Tailor these to your Student model
+        select: "studentFirstName studentLastName rollNumber",
       })
-      .populate("classRef", "clasName") // Optional: useful for UI breadcrumbs
+      .populate("classRef", "clasName")
       .populate("streamId", "streamName")
       .exec();
   }
 
-
-
-
   /**
    * Count attendance records for a class on a specific date
    */
-  async countByClassAndDate(classId: string, streamId: string, date: Date): Promise<number> {
+  async countByClassAndDate(
+    classId: string,
+    streamId: string,
+    date: Date
+  ): Promise<number> {
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
+
     const end = new Date(date);
     end.setHours(23, 59, 59, 999);
 
     return AttendanceModel.countDocuments({
       classRef: classId,
-      stream: streamId,
+      streamId,
       date: { $gte: start, $lte: end },
     }).exec();
   }
-
 
   /**
    * Get all attendance for a school/year
@@ -122,9 +169,10 @@ export class AttendanceRepository {
     })
       .populate("classRef")
       .populate("attendance.studentId")
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName")
       .exec();
   }
-
 
   /**
    * Update a specific student's attendance status
@@ -139,27 +187,43 @@ export class AttendanceRepository {
         _id: attendanceId,
         "attendance.studentId": studentId,
       },
-      { $set: { "attendance.$.status": status } },
+      {
+        $set: {
+          "attendance.$.status": status,
+        },
+      },
       { new: true }
     )
       .populate("attendance.studentId")
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName")
       .exec();
   }
-
 
   /**
    * Replace the full attendance array for a class/date
    */
   async updateAttendance(
     attendanceId: string,
-    attendanceArray: { studentId: Types.ObjectId; status: string }[]
+    attendanceArray: {
+      studentId: Types.ObjectId;
+      status: string;
+    }[],
+    updatedBy: Types.ObjectId,
+    remarks?: string
   ): Promise<IAttendance | null> {
     return AttendanceModel.findByIdAndUpdate(
       attendanceId,
-      { attendance: attendanceArray },
+      {
+        attendance: attendanceArray,
+        updatedBy,
+        remarks,
+      },
       { new: true }
     )
       .populate("attendance.studentId")
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName")
       .exec();
   }
 
