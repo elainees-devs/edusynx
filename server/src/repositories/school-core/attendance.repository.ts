@@ -226,6 +226,45 @@ export class AttendanceRepository {
       .populate("updatedBy", "firstName lastName")
       .exec();
   }
+  /**
+ * Get attendance records for a class + stream within a date range
+ */
+async findByDateRange(
+  classId: string,
+  streamId: string,
+  startDate: Date,
+  endDate: Date
+): Promise<IAttendance[]> {
+  return AttendanceModel.find({
+    classRef: classId,
+    streamId,
+    date: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  })
+    .populate("classRef")
+    .populate("streamId")
+    .populate("attendance.studentId")
+    .populate("createdBy", "firstName lastName")
+    .populate("updatedBy", "firstName lastName")
+    .exec();
+}
+
+/**
+ * Get all attendance records for a specific student
+ */
+async findByStudent(studentId: string): Promise<IAttendance[]> {
+  return AttendanceModel.find({
+    "attendance.studentId": studentId,
+  })
+    .populate("classRef")
+    .populate("streamId")
+    .populate("attendance.studentId")
+    .populate("createdBy", "firstName lastName")
+    .populate("updatedBy", "firstName lastName")
+    .exec();
+}
 
   /**
    * Delete attendance by ID
