@@ -39,6 +39,9 @@ export interface IAttendance extends BaseDocument {
     studentId: Types.ObjectId | IStudent;
     status: AttendanceStatus;
   }[];
+  createdBy: Types.ObjectId | IBaseUser;
+  updatedBy?: Types.ObjectId | IBaseUser;
+  remarks?: string;
 }
 
 export interface IEvent extends BaseDocument {
