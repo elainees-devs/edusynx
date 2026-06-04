@@ -22,26 +22,18 @@ createClass = handleAsync(async (req: Request, res: Response) => {
     throw new AppError("Unauthorized", 401);
   }
 
-  let schoolId;
+  console.log("user =", user);
+  console.log("user.role =", user.role);
+  console.log("req.body =", req.body);
+  console.log("body.school =", req.body?.school);
 
-  // SUPER ADMIN: must provide school explicitly
-  if (user.role === UserRole.SUPER_ADMIN) {
-    if (!req.body.school) {
-      throw new AppError("School is required for Super Admin", 400);
-    }
+  const schoolId =
+    user.role === UserRole.SUPER_ADMIN
+      ? normalizeId(req.body.school)
+      : normalizeId(
+          "school" in user ? user.school : undefined
+        );
 
-    schoolId = normalizeId(req.body.school);
-  } 
-  // ALL OTHER ROLES: must have school in their profile
-  else {
-    if (!("school" in user) || !user.school) {
-      throw new AppError("User has no school assigned", 400);
-    }
-
-    schoolId = normalizeId(user.school);
-  }
-
-  // prevent spoofing
   const { school, ...classData } = req.body;
 
   const newClass = await classRepo.createClass({
