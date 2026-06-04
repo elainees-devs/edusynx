@@ -41,8 +41,26 @@ export enum EnrollmentType {
 }
 
 export enum ExamType {
+  MID_TERM = "mid-term",
+  END_TERM = "end-term",
+  QUIZ = "quiz",
+  ASSIGNMENT = "assignment",
   INTERNAL = "internal",
   EXTERNAL = "external",
+}
+
+export enum ExamStatus {
+  DRAFT = "draft",
+  SCHEDULED = "scheduled",
+  ONGOING = "ongoing",
+  COMPLETED = "completed",
+  PUBLISHED = "published",
+  CANCELLED = "cancelled",
+}
+
+export enum ResultStatus {
+  PENDING = "pending",
+  APPROVED = "approved",
 }
 
 export enum AttendanceStatus {
