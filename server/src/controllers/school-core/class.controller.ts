@@ -4,51 +4,53 @@ import { handleAsync } from "../../utils/handleAsync";
 import { AppError } from "../../utils/AppError";
 import { PaginationOptions } from "../../shared/pagination";
 import { ClassRepository } from "../../repositories";
+import { normalizeId } from "../../utils";
+import { UserRole } from "../../types";
 
 const classRepo = new ClassRepository();
 
 export class ClassController {
-  /**
-   * Create a new class
-   * POST /classes
-   */
-  createClass = handleAsync(async (req: Request, res: Response) => {
-    const newClass = await classRepo.createClass(req.body);
-    res.status(201).json(newClass);
+
+/**
+ * Create a new class
+ * POST /classes
+ */
+createClass = handleAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  let schoolId;
+
+  // SUPER ADMIN: must provide school explicitly
+  if (user.role === UserRole.SUPER_ADMIN) {
+    if (!req.body.school) {
+      throw new AppError("School is required for Super Admin", 400);
+    }
+
+    schoolId = normalizeId(req.body.school);
+  } 
+  // ALL OTHER ROLES: must have school in their profile
+  else {
+    if (!("school" in user) || !user.school) {
+      throw new AppError("User has no school assigned", 400);
+    }
+
+    schoolId = normalizeId(user.school);
+  }
+
+  // prevent spoofing
+  const { school, ...classData } = req.body;
+
+  const newClass = await classRepo.createClass({
+    ...classData,
+    school: schoolId,
   });
 
-  /**
-   * Get class by ID
-   * GET /classes/:id
-   */
-  getClassById = handleAsync<{ id: string }>(async (req, res) => {
-    const foundClass = await classRepo.getClassById(req.params.id);
-    if (!foundClass) throw new AppError("Class not found", 404);
-    res.json(foundClass);
-  });
-
-  /**
-   * Get paginated classes
-   * GET /classes?page=1&limit=10
-   */
-  getClasses = handleAsync(async (req: Request, res: Response) => {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const skip = (page - 1) * limit;
-
-    const [classes, total] = await Promise.all([
-      classRepo.getClasses({}, { skip, limit } as PaginationOptions),
-      classRepo.countClasses(),
-    ]);
-
-    res.json({
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-      data: classes,
-    });
-  });
+  res.status(201).json(newClass);
+});
 
   /**
    * Get all classes without pagination
