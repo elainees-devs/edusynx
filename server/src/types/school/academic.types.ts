@@ -3,12 +3,13 @@ import { Types } from "mongoose";
 import { BaseDocument } from "../common/base.types";
 import { IClass, ISchool, IStream } from "./school-core.types";
 import { IBaseUser, ITeacher } from "../people/user.types";
+import { IStaff } from "../people/staff.types";
 
 export interface IDepartment{
   school: string | ISchool
   departmentName: string;
-  headOfDepartment?: (Types.ObjectId | ITeacher)[]
-   teachers?: (Types.ObjectId | ITeacher)[]
+  headOfDepartment?: Types.ObjectId | IStaff
+  teachers?: Types.ObjectId[]
 }
 export interface ISubject extends BaseDocument {
   school: Types.ObjectId | ISchool

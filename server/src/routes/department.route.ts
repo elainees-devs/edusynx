@@ -1,8 +1,10 @@
 // server/src/routes/department.route.ts
 import { Router } from "express";
 import { DepartmentController } from "../controllers";
+import { authenticateUser } from "../middlewares/auth";
 import { createDepartmentSchema, updateDepartmentSchema } from "../validation/department.schema";
 import { validate } from "../middlewares/validate";
+import { UserRole } from "../types/enum/enum";
 
 const departmentRouter = Router();
 const departmentController = new DepartmentController();
@@ -32,7 +34,12 @@ const departmentController = new DepartmentController();
  *       400:
  *         description: Validation error
  */
-departmentRouter.post('/', validate(createDepartmentSchema), departmentController.createDepartment);
+departmentRouter.post(
+  '/',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(createDepartmentSchema),
+  departmentController.createDepartment
+);
 
 /**
  * @swagger
@@ -46,14 +53,13 @@ departmentRouter.post('/', validate(createDepartmentSchema), departmentControlle
  *         required: true
  *         schema:
  *           type: string
- *         description: Department ID
  *     responses:
  *       200:
  *         description: Department found
  *       404:
  *         description: Department not found
  */
-departmentRouter.get('/:id', departmentController.getDepartmentById);
+departmentRouter.get('/:id', authenticateUser(), departmentController.getDepartmentById);
 
 /**
  * @swagger
@@ -65,7 +71,7 @@ departmentRouter.get('/:id', departmentController.getDepartmentById);
  *       200:
  *         description: List of departments
  */
-departmentRouter.get('/', departmentController.getAllDepartments);
+departmentRouter.get('/', authenticateUser(), departmentController.getAllDepartments);
 
 /**
  * @swagger
@@ -93,7 +99,12 @@ departmentRouter.get('/', departmentController.getAllDepartments);
  *       404:
  *         description: Department not found
  */
-departmentRouter.put('/:id', validate(updateDepartmentSchema), departmentController.updateDepartment);
+departmentRouter.put(
+  '/:id',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(updateDepartmentSchema),
+  departmentController.updateDepartment
+);
 
 /**
  * @swagger
@@ -113,7 +124,11 @@ departmentRouter.put('/:id', validate(updateDepartmentSchema), departmentControl
  *       404:
  *         description: Department not found
  */
-departmentRouter.delete('/:id', departmentController.deleteDepartment); // Fixed typo in ':id'
+departmentRouter.delete(
+  '/:id',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  departmentController.deleteDepartment
+);
 
 /**
  * @swagger
@@ -125,6 +140,10 @@ departmentRouter.delete('/:id', departmentController.deleteDepartment); // Fixed
  *       204:
  *         description: All departments deleted
  */
-departmentRouter.delete('/', departmentController.deleteAllDepartments);
+departmentRouter.delete(
+  '/',
+  authenticateUser([UserRole.SUPER_ADMIN]),
+  departmentController.deleteAllDepartments
+);
 
 export {departmentRouter};

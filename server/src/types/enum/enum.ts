@@ -7,7 +7,8 @@ export enum LoginFailureReason {
 }
 
 export enum UserRole {
- PRINCIPAL = "principal",
+  PRINCIPAL = "principal",
+  DEPUTY_PRINCIPAL = "deputy-principal",
   TEACHER = "teacher",
   SCHOOL_ADMIN = "school-admin",
   GUARDIAN = "guardian",

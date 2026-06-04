@@ -5,34 +5,33 @@ import { IDepartment } from "../../types"
 
 // Repository for managing department-related database operations
 export class DepartmentRepository{
-    // Add new department
-    async createDepartment(departmentData:CreateDepartmentDTO):Promise<IDepartment>{
-        const departmentInstance = new DepartmentModel(departmentData)
-        return await departmentInstance.save()
-}
+    async createDepartment(departmentData: CreateDepartmentDTO): Promise<IDepartment> {
+        const department = await DepartmentModel.create(departmentData);
+        return await department.populate(["school", "headOfDepartment", "teachers"]);
+    }
 
-    // Retrieve department details by ID
-    async getDepartmentById(departmentId: string):Promise<IDepartment | null>{
-        return await DepartmentModel.findById(departmentId).populate("school")
-}
+    async getDepartmentById(departmentId: string): Promise<IDepartment | null> {
+        return await DepartmentModel.findById(departmentId)
+            .populate(["school", "headOfDepartment", "teachers"]);
+    }
 
-    // Retrieve all departments
-    async getAllDepartments(): Promise<IDepartment[]>{
-        return await DepartmentModel.find().populate("school")
-}
+    async getAllDepartments(schoolId?: string): Promise<IDepartment[]> {
+        const filter = schoolId ? { school: schoolId } : {};
+        return await DepartmentModel.find(filter)
+            .populate(["school", "headOfDepartment", "teachers"]);
+    }
 
-    // Update department details
     async updateDepartment(
         departmentId: string,
-        departmentData:Partial<CreateDepartmentDTO>):Promise<IDepartment | null>{
-        return await DepartmentModel.findByIdAndUpdate(departmentId, departmentData,{
+        departmentData: Partial<CreateDepartmentDTO>
+    ): Promise<IDepartment | null> {
+        return await DepartmentModel.findByIdAndUpdate(departmentId, departmentData, {
             new: true,
-        }).populate("school")
-}
+        }).populate(["school", "headOfDepartment", "teachers"]);
+    }
 
-    // Delete department by Id
-    async deleteDepartment(departmentId: string): Promise<IDepartment | null>{
-        return await DepartmentModel.findByIdAndDelete(departmentId).populate("school")
+    async deleteDepartment(departmentId: string): Promise<IDepartment | null> {
+        return await DepartmentModel.findByIdAndDelete(departmentId);
     }
 
     // Delete all departments

@@ -9,7 +9,8 @@
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "migrate:guardians": "ts-node src/scripts/migrate-guardian-students.ts",
-    "migrate:enrollments": "ts-node src/scripts/backfill-enrollments.ts"
+    "migrate:enrollments": "ts-node src/scripts/backfill-enrollments.ts",
+    "migrate:staff": "ts-node src/scripts/migrate-existing-staff.ts"
   },
   "keywords": [],
   "author": "",

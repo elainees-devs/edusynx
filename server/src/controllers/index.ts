@@ -16,6 +16,7 @@ export * from "./finance/payment.controller";
 export * from "./notification.controller";
 export * from "./people/student.controller";
 export * from "./people/user.controller";
+export * from "./people/staff.controller";
 export * from "./permissions/permission.controller";
 export * from "./permissions/rolePermission.controller";
 export * from "./school-core/class.controller";

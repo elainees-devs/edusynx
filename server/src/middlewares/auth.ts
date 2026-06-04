@@ -1,25 +1,26 @@
 // server/src/middlewares/auth.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { GuardianModel, TeacherModel, UserModel } from "../models";
+import { GuardianModel, StaffModel, UserModel } from "../models";
 import { IGuardian, ITeacher, IBaseUser } from "../types/people/user.types";
+import { IStaff } from "../types/people/staff.types";
 import { UserRole } from "../types/enum/enum";
 import { ILoginBase } from "../types/common/auth-context.types";
 
 /**
  * Supported user types attached to req.user
  */
-type AuthenticatedUser = IGuardian | ITeacher | IBaseUser;
+type AuthenticatedUser = IGuardian | ITeacher | IBaseUser | IStaff;
 
 /**
- * Allow one or many roles
+ * Allow one or many roles. Empty/undefined means all authenticated roles.
  */
-type Role = UserRole | UserRole[];
+type Role = UserRole | UserRole[] | undefined;
 
 /**
  * Authentication & authorization middleware
  */
-export const authenticateUser = (roles: Role) => {
+export const authenticateUser = (roles?: Role) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const authHeader = req.headers.authorization;
@@ -36,8 +37,9 @@ export const authenticateUser = (roles: Role) => {
 
       const payload = jwt.verify(token, process.env.JWT_SECRET as string) as any;
 
-      // normalize roles
-      const allowedRoles = Array.isArray(roles) ? roles : [roles];
+      const allowedRoles = roles
+        ? Array.isArray(roles) ? roles : [roles]
+        : Object.values(UserRole);
 
       if (!payload.role || !allowedRoles.includes(payload.role)) {
         console.log("Payload role:", payload.role);
@@ -53,11 +55,14 @@ export const authenticateUser = (roles: Role) => {
           user = await GuardianModel.findById(payload.userId).populate("school") as IGuardian;
           break;
         case UserRole.TEACHER:
-          user = await TeacherModel.findById(payload.userId).populate(["school", "class"]) as ITeacher;
+          user = await StaffModel.findById(payload.userId).populate(["school", "department"]) as IStaff;
           break;
+        case UserRole.DEPUTY_PRINCIPAL:
         case UserRole.SCHOOL_ADMIN:
         case UserRole.PRINCIPAL:
         case UserRole.ACCOUNTANT:
+          user = await StaffModel.findById(payload.userId).populate("school") as IStaff;
+          break;
         case UserRole.SUPER_ADMIN:
           user = await UserModel.findById(payload.userId).populate("school") as IBaseUser;
           break;

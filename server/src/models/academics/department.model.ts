@@ -7,13 +7,8 @@ const DepartmentSchema = new Schema<IDepartment>(
   {
     school: {type: Types.ObjectId,ref: "School",required: true},
     departmentName: {type: String,required: true,trim: true,lowercase: true},
-    headOfDepartment: {type: Types.ObjectId,ref: "Teacher"},
-    teachers: [
-      {
-        type: Types.ObjectId,
-        ref: "Teacher",
-      },
-    ],
+    headOfDepartment: {type: Types.ObjectId, ref: "Staff"},
+    teachers: [{ type: Types.ObjectId, ref: "Staff" }],
   },
   {
     timestamps: true,

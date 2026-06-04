@@ -50,3 +50,6 @@ export { subscriptionRouter } from './subscription.route';
 
 // Enrollment
 export { enrollmentRouter } from './enrollment.route';
+
+// Staff
+export { staffRouter } from './staff.route';

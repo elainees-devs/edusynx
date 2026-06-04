@@ -1,7 +1,8 @@
 // server/src/routes/student.route.ts
 import { Router } from "express";
 import multer from "multer";
-import { StudentController, GuardianController } from "../controllers";
+import { StudentController } from "../controllers";
+import { GuardianController } from "../controllers/people/guardian.controller";
 import {
   createStudentSchema,
   updateStudentSchema,
