@@ -1,18 +1,14 @@
 // server/src/types/express/index.d.ts
-import {IBaseUser, IGuardian, ITeacher} from "../people/user.types";
+
+import { IStaff } from "../../people/staff.types";
 import { ILoginBase } from "../../common/auth-context.types";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: IGuardian | ITeacher | IBaseUser;
+      user?: IGuardian | ITeacher | IBaseUser | IStaff | ISuperAdmin;
       loginInfo?: ILoginBase;
-      tenant?: any
+      tenant?: any;
     }
   }
 }
-
-
-
-
-
