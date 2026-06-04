@@ -24,7 +24,19 @@ export enum StudentStatus {
   ACTIVE = "active",
   TRANSFERRED = "transferred",
   GRADUATED = "graduated",
- 
+}
+
+export enum EnrollmentStatus {
+  ACTIVE = "active",
+  TRANSFERRED = "transferred",
+  WITHDRAWN = "withdrawn",
+  GRADUATED = "graduated",
+}
+
+export enum EnrollmentType {
+  NEW = "new",
+  RE_ENROLLMENT = "re-enrollment",
+  PROMOTION = "promotion",
 }
 
 export enum ExamType {

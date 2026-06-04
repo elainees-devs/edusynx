@@ -47,3 +47,6 @@ export { emailRouter } from './email.route';
 // Subscription
 export { subscriptionPlanRouter } from './subscription-plan.route';
 export { subscriptionRouter } from './subscription.route';
+
+// Enrollment
+export { enrollmentRouter } from './enrollment.route';

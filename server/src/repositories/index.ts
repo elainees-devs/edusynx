@@ -32,6 +32,7 @@ export * from "./allocation/allocation.repository"
 export * from "./event.repository"
 export * from "./notification.repository"
 export * from "./academics/cbc.repository";
+export * from "./academics/enrollment.repository";
 
 
 

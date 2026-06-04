@@ -28,4 +28,5 @@ export * from "./security/session.controller";
 export * from "./analytics/analytics.controller";
 export * from "./subscription/subscription.controller"
 export * from "./subscription/subscription-plan.controller"
+export * from "./academics/enrollment.controller"
 
