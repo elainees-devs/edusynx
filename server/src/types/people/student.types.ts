@@ -28,7 +28,7 @@ export interface IStudent extends BaseDocument{
   adm: number
   admissionDate: Date
   previousSchool?: string
-  guardian: Types.ObjectId | IBaseUser
+  guardians: Types.ObjectId[] | IBaseUser[]
   classId: Types.ObjectId | IClass
   stream: Types.ObjectId | IStream
   status: StudentStatus

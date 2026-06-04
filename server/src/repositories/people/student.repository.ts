@@ -394,7 +394,7 @@ export class StudentRepository {
         select: "streamName",
       })
       .populate({
-        path: "guardian",
+        path: "guardians",
         select: "firstName lastName email phoneNumber",
       });
 

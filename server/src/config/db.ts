@@ -13,6 +13,10 @@ const connectDB = async (): Promise<void> => {
       });
       logger.info('✅ Connected to the database successfully');
 
+      // Sync all indexes (text indexes on Student, Guardian, etc.)
+      await mongoose.syncIndexes();
+      logger.info('✅ Database indexes synchronized');
+
       // Seed subscription plans after DB connection
       await seedSubscriptionPlans();
       logger.info('✅ Subscription plans seeded successfully');

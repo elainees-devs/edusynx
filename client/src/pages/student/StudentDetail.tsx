@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import type { Student, StudentHistoryEntry } from "../../types";
+import type { Guardian, Student, StudentHistoryEntry } from "../../types";
 import { getStudentHistory } from "../../api";
 import { Sidebar, Topbar } from "../../shared";
 
@@ -125,6 +125,23 @@ const StudentDetail: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {student.guardians && student.guardians.length > 0 && (
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold mb-4">Guardians</h2>
+              <div className="space-y-3">
+                {(student.guardians as Guardian[]).map((g) => (
+                  <div key={g._id} className="border rounded p-3">
+                    <p className="font-medium">{g.firstName} {g.lastName}</p>
+                    <p className="text-sm text-gray-600">{g.email} | {g.primaryPhoneNumber}</p>
+                    {g.familyNumber && (
+                      <p className="text-sm text-gray-500">Family: {g.familyNumber}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {history.length > 0 && (
             <div className="bg-white rounded-lg shadow p-6">

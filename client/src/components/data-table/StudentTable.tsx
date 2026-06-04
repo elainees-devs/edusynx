@@ -201,16 +201,14 @@ const StudentTable: React.FC<StudentTableProps> = ({
             const classId = resolveId(student.classId);
 
             const guardianName =
-              typeof student.guardianId === "object" &&
-              student.guardianId !== null
-                ? student.guardianId.firstName
-                : (student.guardianId ?? "");
+              Array.isArray(student.guardians) && student.guardians.length > 0
+                ? typeof student.guardians[0] === "object" && student.guardians[0] !== null
+                  ? student.guardians[0].firstName
+                  : `${student.guardians.length} guardian(s)`
+                : "";
 
             const statusColor: Record<string, string> = {
-              Active: "bg-green-100 text-green-800",
-              Inactive: "bg-gray-100 text-gray-600",
-              Suspended: "bg-yellow-100 text-yellow-800",
-              Graduated: "bg-blue-100 text-blue-800",
+              active: "bg-green-100 text-green-800",
               transferred: "bg-purple-100 text-purple-800",
               graduated: "bg-blue-100 text-blue-800",
             };

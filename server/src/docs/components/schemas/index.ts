@@ -25,6 +25,8 @@ export {subscriptionSchema} from './subscription.schema'
 export {subscriptionPlanSchema} from './subscription-plan.schema'
 export {attendanceSchema} from './attendance.schema'
 export {teacherSubjectAllocationSchema} from './teacherSubject.allocation.schema';
+export {academicYearSchema} from './academic-year.schema';
+export {enrollmentSchema} from './enrollment.schema';
 
 
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Sidebar, Topbar } from "../../shared";
 import EnrollmentForm from "../../components/forms/EnrollmentForm";
 import BulkEnrollmentForm from "../../components/forms/BulkEnrollmentForm";
@@ -9,10 +9,13 @@ import { getSchoolId } from "../../utils/GetSchoolId";
 
 const RegisterEnrollment: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { state } = useGlobalState();
   const user = state.loggedInUser as { role: string; school?: string | { _id: string; isActive: boolean } } | undefined;
   const schoolId = getSchoolId(user) ?? "";
-  const [mode, setMode] = useState<"single" | "bulk">("single");
+  const [mode, setMode] = useState<"single" | "bulk">(
+    location.pathname.includes("/bulk") ? "bulk" : "single"
+  );
 
   const handleCreate = async (payload: any) => {
     await createEnrollment(payload as any);

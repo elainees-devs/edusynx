@@ -31,7 +31,7 @@ export class GuardianRepository {
 
     // Check if there is already a guardian linked to this student
     let existingGuardian = await GuardianModel.findOne({
-      student: studentDoc._id, // 'student' field is ObjectId ref
+      students: studentDoc._id,
       school,
     });
 
@@ -57,7 +57,7 @@ export class GuardianRepository {
       primaryPhoneNumber,
       secondaryPhoneNumber,
       nationality,
-      student: studentDoc._id, // link to student document
+      students: [studentDoc._id],
       school,
       familyNumber,
       role: UserRole.GUARDIAN,
@@ -65,9 +65,9 @@ export class GuardianRepository {
 
     await guardian.save();
 
-    // 5️Populate to include student's admission number and name
+    // Populate to include student's admission number and name
     await guardian.populate({
-      path: "student", // populate the 'student' field
+      path: "students",
       select: "adm studentFirstName studentLastName",
     });
 
@@ -82,9 +82,36 @@ export class GuardianRepository {
 
   async updateGuardianById(id: string, data: Partial<IGuardian>) {
     return GuardianModel.findByIdAndUpdate(id, data, { new: true }).populate({
-      path: "student",
-      select: "adm",
+      path: "students",
+      select: "adm studentFirstName studentLastName",
     });
+  }
+
+  // ===============================
+  // ASSIGN GUARDIANS TO STUDENT
+  // ===============================
+  async assignGuardiansToStudent(studentId: string, guardianIds: string[]) {
+    await Promise.all([
+      // Add student to each guardian's students array
+      GuardianModel.updateMany(
+        { _id: { $in: guardianIds } },
+        { $addToSet: { students: studentId } }
+      ),
+      // Add each guardian to the student's guardians array
+      StudentModel.findByIdAndUpdate(studentId, {
+        $addToSet: { guardians: { $each: guardianIds } },
+      }),
+    ]);
+  }
+
+  // ===============================
+  // GET FAMILY BY FAMILY NUMBER
+  // ===============================
+  async getFamilyByFamilyNumber(familyNumber: string) {
+    const guardians = await GuardianModel.find({ familyNumber })
+      .populate("students", "studentFirstName studentLastName adm")
+      .populate("school", "name");
+    return guardians;
   }
 
   // ===============================

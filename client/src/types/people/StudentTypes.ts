@@ -3,7 +3,7 @@ import type { Option } from "../school/SchoolCoreTypes";
 import type { Guardian } from "./UserTypes";
 
 export type StudentGender = "male" | "female";
-export type StudentStatus = "Active" | "Inactive" | "Suspended" | "Graduated";
+export type StudentStatus = "active" | "transferred" | "graduated";
 
 export interface StudentFormData {
   school: string;
@@ -21,7 +21,8 @@ export interface StudentFormData {
   status: StudentStatus;
   studentPhotoUrl: string | undefined;
   adm?: string;
-  guardianId?: string | Guardian;
+  guardians?: string[] | Guardian[];
+  familyNumber?: string;
 }
 
 export interface StudentFormContextType {

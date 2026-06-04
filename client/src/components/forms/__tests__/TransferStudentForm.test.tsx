@@ -35,7 +35,7 @@ const mockStudent: Student = {
   admissionDate: "2024-09-01",
   classId: "c1",
   stream: "s1",
-  status: "Active",
+  status: "active",
   studentPhotoUrl: "",
   adm: "1001",
 };

@@ -62,6 +62,7 @@ export interface GuardianFormInput {
 export interface Guardian extends GuardianFormInput {
   _id: string;
   familyNumber?: string;
+  students: string[];
 }
 
 // SuperAdmin interface with literal role

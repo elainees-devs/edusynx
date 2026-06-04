@@ -1,7 +1,7 @@
 // server/src/routes/student.route.ts
 import { Router } from "express";
 import multer from "multer";
-import { StudentController } from "../controllers";
+import { StudentController, GuardianController } from "../controllers";
 import {
   createStudentSchema,
   updateStudentSchema,
@@ -15,6 +15,7 @@ import { authenticateUser } from "../middlewares/auth";
 
 const studentRouter = Router();
 const studentController = new StudentController();
+const guardianController = new GuardianController();
 const upload = multer({ storage: multer.memoryStorage() });
 
 /**
@@ -120,9 +121,10 @@ studentRouter.post(
  *       200:
  *         description: Guardian assigned and admission number generated successfully
  */
-studentRouter.patch(
-  "/:id/assign-guardian",
-  studentController.generateAdmissionAndCreateStudent,
+studentRouter.post(
+  "/:id/assign-guardians",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  guardianController.assignGuardiansToStudent,
 );
 
 /**
@@ -178,7 +180,7 @@ studentRouter.get(
  *     tags: [Students]
  */
 studentRouter.get(
-  "/students/names",
+  "/names",
   authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
   studentController.getAllStudentNames,
 );

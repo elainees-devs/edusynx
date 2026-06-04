@@ -13,4 +13,5 @@ export { default as AttendanceTable } from './AttendanceTable';
 export { default as CompetencyTable } from './CompetencyTable';
 export { default as StrandTable } from './StrandTable';
 export { default as AcademicYearTable } from './AcademicYearTable';
+export { default as EnrollmentTable } from './EnrollmentTable';
 

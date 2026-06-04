@@ -29,6 +29,8 @@ import {
   subscriptionPlanSchema,
   attendanceSchema,
   teacherSubjectAllocationSchema,
+  academicYearSchema,
+  enrollmentSchema,
 } from "./components/schemas";
 import { Stream } from "winston/lib/winston/transports";
 
@@ -83,6 +85,8 @@ export const options: swaggerJSDoc.Options = {
         ...subscriptionPlanSchema,
         ...attendanceSchema,
         ...teacherSubjectAllocationSchema,
+        ...academicYearSchema,
+        ...enrollmentSchema,
       },
     },
     security: [{ bearerAuth: [] }],

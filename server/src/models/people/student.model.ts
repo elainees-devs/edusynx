@@ -28,7 +28,7 @@ const studentSchema = new Schema<IStudent>(
     adm: { type: Number, unique: true},
     admissionDate: { type: Date, required: true },
     previousSchool: { type: String },
-    guardian: { type: Schema.Types.ObjectId, ref: 'User'},
+    guardians: [{ type: Schema.Types.ObjectId, ref: 'User'}],
     classId: { type: Schema.Types.ObjectId, ref: 'Class', required: true },
     stream: { type: Schema.Types.ObjectId, ref: 'Stream', required: true },
     status: { type: String, enum: Object.values(StudentStatus), required: true },
@@ -42,7 +42,7 @@ const studentSchema = new Schema<IStudent>(
 );
 
 // Individual field index
-studentSchema.index({ guardian: 1 });
+studentSchema.index({ guardians: 1 });
 
 // Compound index for performance optimization (e.g., class list filters)
 studentSchema.index({ school: 1, classId: 1, status: 1 });

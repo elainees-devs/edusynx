@@ -10,3 +10,4 @@ export { default as AttendanceList } from './AttendanceList';
 export { default as CompetencyList } from './CompetencyList';
 export { default as StrandList } from './StrandList';
 export { default as AcademicYearList } from './AcademicYearList';
+export { default as EnrollmentList } from './EnrollmentList';

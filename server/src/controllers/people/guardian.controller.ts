@@ -73,7 +73,21 @@ export class GuardianController {
     });
   });
 
-  // 4. Update guardian by ID
+  // 4. Assign guardians to a student
+  assignGuardiansToStudent = handleAsync(async (req, res) => {
+    const { guardianIds } = req.body;
+    await guardianRepo.assignGuardiansToStudent(req.params.studentId, guardianIds);
+    res.json({ message: "Guardians assigned to student successfully" });
+  });
+
+  // 5. Get family by family number
+  getFamilyByFamilyNumber = handleAsync(async (req, res) => {
+    const { familyNumber } = req.params;
+    const family = await guardianRepo.getFamilyByFamilyNumber(familyNumber);
+    res.json(family);
+  });
+
+  // 6. Update guardian by ID
   updateGuardianById = handleAsync(async (req, res) => {
     const updatedGuardian = await guardianRepo.updateGuardianById(
       req.params.id,

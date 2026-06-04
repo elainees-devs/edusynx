@@ -26,7 +26,7 @@ const mockStudents: Student[] = [
     admissionDate: "2024-09-01",
     classId: "c1",
     stream: "s1",
-    status: "Active",
+    status: "active",
     studentPhotoUrl: "",
     adm: "1001",
     history: [],
@@ -42,7 +42,7 @@ const mockStudents: Student[] = [
     admissionDate: "2024-09-01",
     classId: "c1",
     stream: "s1",
-    status: "Graduated",
+    status: "graduated",
     studentPhotoUrl: "",
     adm: "1002",
     history: [],
@@ -58,7 +58,7 @@ const mockStudents: Student[] = [
     admissionDate: "2024-09-01",
     classId: "c1",
     stream: "s1",
-    status: "Inactive",
+    status: "transferred",
     studentPhotoUrl: "",
     adm: "1003",
     history: [],
@@ -126,9 +126,9 @@ describe("StudentTable", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Active")).toBeInTheDocument();
-      expect(screen.getByText("Graduated")).toBeInTheDocument();
-      expect(screen.getByText("Inactive")).toBeInTheDocument();
+      expect(screen.getByText("active")).toBeInTheDocument();
+      expect(screen.getByText("graduated")).toBeInTheDocument();
+      expect(screen.getByText("transferred")).toBeInTheDocument();
     });
   });
 

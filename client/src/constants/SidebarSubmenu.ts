@@ -30,15 +30,13 @@ export const teacherNavChildren: NavItem[] = [
 // ----- STUDENTS -----
 export const studentNavChildren = (slug: string): NavItem[] => [
   { name: "Add Student", icon: FaPlus, path: `/${slug}/student/new` },
-  { name: "View Active Students", icon: FaEye, path: `/${slug}/active/students` },
-  { name: "View Other Students", icon: FaEye, path: `/${slug}/students` },
-  { name: "Add Guardian", icon: FaPlus, path: "/dashboard/school-admin/guardians/new" },
-  { name: "View Guardian", icon: FaEye, path: "/dashboard/school-admin/guardians/view" },
+  { name: "View Students", icon: FaEye, path: `/${slug}/students/view` },
+  { name: "View Guardian", icon: FaEye, path: `/${slug}/guardian/view` },
 ];
 
 // ----- CLASSES -----
 export const classNavChildren: NavItem[] = [
-  { name: "Add Class", icon: FaPlusCircle, path: "/dashboard/class/new" },
+  { name: "Add Class", icon: FaPlusCircle, path: "/class/new" },
   { name: "View Registered Classes", icon: FaListAlt, path: "/:slug/dashboard/class/view" },
   { name: "Class Overview", icon: FaChalkboardTeacher, path: "/dashboard/class-overview" },
 ];

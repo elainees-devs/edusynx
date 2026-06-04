@@ -159,4 +159,65 @@ guardianRouter.patch(
   guardianController.updateGuardianById,
 );
 
+/**
+ * @swagger
+ * /api/v1/guardians/assign-to-student/{studentId}:
+ *   post:
+ *     summary: Assign multiple guardians to a student
+ *     tags: [Guardians]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: studentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - guardianIds
+ *             properties:
+ *               guardianIds:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Guardians assigned successfully
+ */
+guardianRouter.post(
+  "/assign-to-student/:studentId",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  guardianController.assignGuardiansToStudent,
+);
+
+/**
+ * @swagger
+ * /api/v1/guardians/family/{familyNumber}:
+ *   get:
+ *     summary: Get all guardians and students in a family by family number
+ *     tags: [Guardians]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: familyNumber
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Family data retrieved
+ */
+guardianRouter.get(
+  "/family/:familyNumber",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  guardianController.getFamilyByFamilyNumber,
+);
+
 export { guardianRouter };
