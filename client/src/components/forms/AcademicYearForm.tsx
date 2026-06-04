@@ -59,8 +59,9 @@ const AcademicYearForm: React.FC<Props> = ({ initial, schoolId, onSubmit, loadin
   return (
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 border rounded shadow space-y-4">
       <div>
-        <label className="block mb-1 text-sm font-medium">Academic Year Name</label>
+        <label htmlFor="ay-name" className="block mb-1 text-sm font-medium">Academic Year Name</label>
         <input
+          id="ay-name"
           type="text"
           value={name}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
@@ -70,8 +71,9 @@ const AcademicYearForm: React.FC<Props> = ({ initial, schoolId, onSubmit, loadin
       </div>
 
       <div>
-        <label className="block mb-1 text-sm font-medium">Start Date</label>
+        <label htmlFor="ay-start" className="block mb-1 text-sm font-medium">Start Date</label>
         <input
+          id="ay-start"
           type="date"
           value={startDate}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
@@ -81,8 +83,9 @@ const AcademicYearForm: React.FC<Props> = ({ initial, schoolId, onSubmit, loadin
       </div>
 
       <div>
-        <label className="block mb-1 text-sm font-medium">End Date</label>
+        <label htmlFor="ay-end" className="block mb-1 text-sm font-medium">End Date</label>
         <input
+          id="ay-end"
           type="date"
           value={endDate}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
@@ -91,8 +94,9 @@ const AcademicYearForm: React.FC<Props> = ({ initial, schoolId, onSubmit, loadin
         />
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
+      <label htmlFor="ay-active" className="flex items-center gap-2 text-sm">
         <input
+          id="ay-active"
           type="checkbox"
           checked={isActive}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIsActive(e.target.checked)}
