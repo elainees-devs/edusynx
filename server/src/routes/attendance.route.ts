@@ -1,7 +1,11 @@
 // server/src/routes/school-core/attendance.route.ts
+
 import { Router } from "express";
 import { AttendanceController } from "../controllers";
-import { createAttendanceSchema, updateAttendanceSchema } from "../validation";
+import {
+  createAttendanceSchema,
+  updateAttendanceSchema,
+} from "../validation";
 import { validate } from "../middlewares/validate";
 
 const attendanceRouter = Router();
@@ -24,8 +28,19 @@ const attendanceController = new AttendanceController();
  *       required: true
  *       content:
  *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/AttendanceCreate'
+ *           example:
+ *             school: "6857e1d7f0f9bdf3c7f1001"
+ *             classRef: "6857e1d7f0f9bdf3c7f1002"
+ *             streamId: "6857e1d7f0f9bdf3c7f1003"
+ *             schoolYear: "2026"
+ *             date: "2026-06-04"
+ *             createdBy: "6857e1d7f0f9bdf3c7f1004"
+ *             remarks: "Morning attendance"
+ *             attendance:
+ *               - studentId: "6857e1d7f0f9bdf3c7f1005"
+ *                 status: "present"
+ *               - studentId: "6857e1d7f0f9bdf3c7f1006"
+ *                 status: "absent"
  *     responses:
  *       201:
  *         description: Attendance created successfully
@@ -35,10 +50,11 @@ const attendanceController = new AttendanceController();
 attendanceRouter.post(
   "/",
   validate(createAttendanceSchema),
-  attendanceController.createAttendance,
+  attendanceController.createAttendance
 );
 
-/** * @swagger
+/**
+ * @swagger
  * /api/v1/attendance:
  *   get:
  *     summary: Get all attendance records
@@ -47,14 +63,13 @@ attendanceRouter.post(
  *       200:
  *         description: List of all attendance records
  */
-
 attendanceRouter.get("/", attendanceController.getAllAttendance);
 
 /**
  * @swagger
  * /api/v1/attendance/class:
  *   get:
- *     summary: Get attendance for a class on a specific date with pagination
+ *     summary: Get attendance for a class and stream on a specific date
  *     tags: [Attendance]
  *     parameters:
  *       - in: query
@@ -64,39 +79,28 @@ attendanceRouter.get("/", attendanceController.getAllAttendance);
  *           type: string
  *         description: Class ID
  *       - in: query
- *         name: date
- *         required: true
- *         schema:
- *           type: string
- *           format: date-time
- *         description: Date to filter attendance (ISO format)
- *       - in: query
  *         name: streamId
- *         required: false
+ *         required: true
  *         schema:
  *           type: string
  *         description: Stream ID
  *       - in: query
- *         name: page
+ *         name: date
+ *         required: true
  *         schema:
- *           type: integer
- *           default: 1
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 10
+ *           type: string
+ *           format: date
+ *         description: Attendance date
  *     responses:
  *       200:
- *         description: Paginated attendance for the class on the given date
+ *         description: Attendance record found
  *       400:
- *         description: Missing parameters
+ *         description: Missing required parameters
  */
 attendanceRouter.get(
   "/class",
-  attendanceController.getAttendanceByClassAndDate,
+  attendanceController.getAttendanceByClassAndDate
 );
-
 
 /**
  * @swagger
@@ -140,13 +144,8 @@ attendanceRouter.get("/:id", attendanceController.getAttendanceById);
  *       required: true
  *       content:
  *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               status:
- *                 type: string
- *                 enum: [present, absent, late, excused]
- *                 example: present
+ *           example:
+ *             status: "present"
  *     responses:
  *       200:
  *         description: Student attendance status updated
@@ -155,7 +154,7 @@ attendanceRouter.get("/:id", attendanceController.getAttendanceById);
  */
 attendanceRouter.patch(
   "/student/:attendanceId/:studentId",
-  attendanceController.updateStudentStatus,
+  attendanceController.updateStudentStatus
 );
 
 /**
@@ -170,12 +169,19 @@ attendanceRouter.patch(
  *         required: true
  *         schema:
  *           type: string
+ *         description: Attendance ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/AttendanceUpdate'
+ *           example:
+ *             updatedBy: "6857e1d7f0f9bdf3c7f1004"
+ *             remarks: "Updated after roll call"
+ *             attendance:
+ *               - studentId: "6857e1d7f0f9bdf3c7f1005"
+ *                 status: "present"
+ *               - studentId: "6857e1d7f0f9bdf3c7f1006"
+ *                 status: "late"
  *     responses:
  *       200:
  *         description: Attendance updated successfully
@@ -185,7 +191,7 @@ attendanceRouter.patch(
 attendanceRouter.patch(
   "/:id",
   validate(updateAttendanceSchema),
-  attendanceController.updateAttendance,
+  attendanceController.updateAttendance
 );
 
 /**
@@ -200,6 +206,7 @@ attendanceRouter.patch(
  *         required: true
  *         schema:
  *           type: string
+ *         description: Attendance ID
  *     responses:
  *       204:
  *         description: Attendance deleted successfully
