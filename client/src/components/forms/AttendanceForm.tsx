@@ -27,10 +27,12 @@ interface AttendanceFormData {
   streamId: string;
   classRef: string;
   date: Date;
+  remarks: string;
   attendance: {
     studentId: string;
     name: string;
     status: AttendanceStatus;
+    remarks: string;
   }[];
 }
 
@@ -40,6 +42,7 @@ const AttendanceForm: React.FC = () => {
   
   const { streamOptions, classOptions, error: classError } = useClassOptions();
   const [existingId, setExistingId] = useState<string | null>(null);
+  const [metadata, setMetadata] = useState<{ createdBy?: any; updatedBy?: any; updatedAt?: string }>({});
   const [loading, setLoading] = useState(false);
 
   const { control, register, handleSubmit, watch, setValue } =
@@ -50,6 +53,7 @@ const AttendanceForm: React.FC = () => {
         streamId: "",
         classRef: "",
         date: new Date(),
+        remarks: "",
         attendance: [],
       },
     });
@@ -84,22 +88,32 @@ const AttendanceForm: React.FC = () => {
         if (response.data) {
           // RECORD EXISTS: Load it for editing
           setExistingId(response.data._id || null);
-          const mappedAttendance = response.data.attendance.map((entry: AttendanceEntry) => ({
+          setMetadata({
+            createdBy: response.data.createdBy,
+            updatedBy: response.data.updatedBy,
+            updatedAt: response.data.updatedAt,
+          });
+          setValue("remarks", response.data.remarks || "");
+          const mappedAttendance = response.data.attendance.map((entry: AttendanceEntry & { remarks?: string }) => ({
             studentId: typeof entry.studentId === "string" ? entry.studentId : entry.studentId._id,
             name: typeof entry.studentId === "string" 
               ? "Student" 
               : `${entry.studentId.studentFirstName} ${entry.studentId.studentLastName}`,
             status: entry.status,
+            remarks: entry.remarks || "",
           }));
           setValue("attendance", mappedAttendance);
         } else {
           // NO RECORD: Load fresh student list
           setExistingId(null);
+          setMetadata({});
+          setValue("remarks", "");
           const students = await getStudentsByClassAndStream(selectedClass, selectedStream);
           const freshAttendance = students.map((stu: Student) => ({
             studentId: stu._id,
             name: `${stu.studentFirstName} ${stu.studentLastName}`,
             status: AttendanceStatus.PRESENT,
+            remarks: "",
           }));
           setValue("attendance", freshAttendance);
         }
@@ -122,35 +136,47 @@ const AttendanceForm: React.FC = () => {
     try {
       const payload: Partial<IAttendance> = {
         school: data.school,
-        schoolYear: data.date.getFullYear().toString(),
+        schoolYear: data.schoolYear,
         classRef: data.classRef,
         streamId: data.streamId,
         date: data.date.toISOString(),
+        remarks: data.remarks,
         attendance: data.attendance.map((a) => ({
           studentId: a.studentId,
           status: a.status,
+          remarks: a.remarks,
         })),
       };
 
       if (existingId) {
         // Update existing record
-        await attendanceApi.updateFullAttendance(existingId, payload.attendance as Array<{ studentId: string; status: AttendanceStatus }>);
+        await attendanceApi.updateFullAttendance(existingId, payload.attendance as any);
       } else {
         // Create new record
         await attendanceApi.createAttendance(payload);
       }
 
       Swal.fire("Success", `Attendance ${existingId ? 'updated' : 'saved'} successfully!`, "success");
-    } catch  {
-      Swal.fire("Error", "Could not save attendance. Please try again.", "error");
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || "Could not save attendance. Please try again.";
+      Swal.fire("Error", errorMsg, "error");
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white border rounded-xl shadow-sm">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Record Attendance</h2>
-        <p className="text-gray-500 text-sm">Select class details to {existingId ? 'update' : 'record'} student status.</p>
+    <div className="max-w-4xl mx-auto p-6 bg-white border rounded-xl shadow-sm">
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">Record Attendance</h2>
+          <p className="text-gray-500 text-sm">Select class details to {existingId ? 'update' : 'record'} student status.</p>
+        </div>
+        {existingId && metadata.updatedAt && (
+          <div className="text-right text-[10px] text-gray-400">
+            <p>Created by: {metadata.createdBy?.firstName} {metadata.createdBy?.lastName}</p>
+            {metadata.updatedBy && <p>Last updated by: {metadata.updatedBy.firstName} {metadata.updatedBy.lastName}</p>}
+            <p>At: {new Date(metadata.updatedAt).toLocaleString()}</p>
+          </div>
+        )}
       </div>
 
       {classError && <p className="text-red-500 mb-4">{classError}</p>}
@@ -190,6 +216,16 @@ const AttendanceForm: React.FC = () => {
           </div>
         </div>
 
+        <div>
+          <label className="block text-sm font-semibold text-gray-600 mb-1">General Daily Remarks</label>
+          <textarea 
+            {...register("remarks")} 
+            placeholder="e.g. Rainy day, low turnout"
+            className="w-full border p-2 rounded-lg text-sm"
+            rows={2}
+          />
+        </div>
+
         {loading ? (
           <div className="py-10 text-center text-blue-600 font-medium">Syncing data...</div>
         ) : fields.length > 0 && (
@@ -200,6 +236,7 @@ const AttendanceForm: React.FC = () => {
                   <th className="p-3 border-b text-sm font-bold text-gray-600 w-12">#</th>
                   <th className="p-3 border-b text-sm font-bold text-gray-600">Student Name</th>
                   <th className="p-3 border-b text-sm font-bold text-gray-600 text-center">Status</th>
+                  <th className="p-3 border-b text-sm font-bold text-gray-600">Remarks</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
@@ -208,7 +245,7 @@ const AttendanceForm: React.FC = () => {
                     <td className="p-3 text-sm text-gray-500">{index + 1}</td>
                     <td className="p-3 text-sm font-medium text-gray-800">{field.name}</td>
                     <td className="p-3">
-                      <div className="flex justify-center gap-2">
+                      <div className="flex justify-center gap-1">
                         {Object.values(AttendanceStatus).map((status) => (
                           <Controller
                             key={status}
@@ -218,18 +255,26 @@ const AttendanceForm: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => statusField.onChange(status)}
-                                className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase transition-all ${
+                                title={status}
+                                className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
                                   statusField.value === status 
                                     ? getStatusColor(status) 
                                     : "bg-gray-100 text-gray-400 hover:bg-gray-200"
                                 }`}
                               >
-                                {status}
+                                {status.charAt(0)}
                               </button>
                             )}
                           />
                         ))}
                       </div>
+                    </td>
+                    <td className="p-3">
+                      <input 
+                        {...register(`attendance.${index}.remarks`)}
+                        placeholder="Note..."
+                        className="w-full border-b bg-transparent text-[11px] focus:outline-none focus:border-blue-500"
+                      />
                     </td>
                   </tr>
                 ))}
