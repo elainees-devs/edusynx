@@ -1,27 +1,52 @@
-
 // server/src/utils/normalizeId.ts
+
 import { Types } from "mongoose";
-import { IBaseUser, IClass, ISchool, IStream, ISubject } from "../types"; 
-import { AppError } from "./AppError"; 
+import {
+  IBaseUser,
+  IClass,
+  ISchool,
+  IStream,
+  ISubject,
+} from "../types";
+import { AppError } from "./AppError";
 
 /**
- * Normalize various school representations to a Types.ObjectId.
- * 
- * @param school - string id, ObjectId, or ISchool object
- * @returns Types.ObjectId
- * @throws AppError if invalid
+ * Normalize various representations to a MongoDB ObjectId.
  */
 export function normalizeId(
-  school: Types.ObjectId | ISchool |IBaseUser|ISubject| IClass|IStream|string
+  value:
+    | Types.ObjectId
+    | ISchool
+    | IBaseUser
+    | ISubject
+    | IClass
+    | IStream
+    | string
+    | null
+    | undefined
 ): Types.ObjectId {
-  if (typeof school === "string") {
-    return new Types.ObjectId(school);
+  if (!value) {
+    throw new AppError("ID is required", 400);
   }
-  if (school instanceof Types.ObjectId) {
-    return school;
+
+  // String ObjectId
+  if (typeof value === "string") {
+    if (!Types.ObjectId.isValid(value)) {
+      throw new AppError("Invalid ObjectId", 400);
+    }
+
+    return new Types.ObjectId(value);
   }
-  if (school && school._id) {
-    return school._id;
+
+  // Already an ObjectId
+  if (value instanceof Types.ObjectId) {
+    return value;
   }
-  throw new AppError("Invalid school object: missing _id", 400);
+
+  // Populated document or interface with _id
+  if ("_id" in value && value._id) {
+    return normalizeId(value._id);
+  }
+
+  throw new AppError("Invalid object: missing _id", 400);
 }
