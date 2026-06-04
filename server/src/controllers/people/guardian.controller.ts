@@ -54,7 +54,26 @@ export class GuardianController {
     });
   });
 
-  // 3. Update guardian by ID
+  // 3. Search guardians
+  searchGuardians = handleAsync(async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const result = await guardianRepo.searchGuardians(req.query, {
+      skip: (page - 1) * limit,
+      limit,
+    });
+
+    res.json({
+      data: result.data,
+      page,
+      limit,
+      total: result.total,
+      totalPages: Math.ceil(result.total / limit),
+    });
+  });
+
+  // 4. Update guardian by ID
   updateGuardianById = handleAsync(async (req, res) => {
     const updatedGuardian = await guardianRepo.updateGuardianById(
       req.params.id,

@@ -23,6 +23,12 @@ const GuardianSchema: Schema = new Schema({
 
 // Indexes
 GuardianSchema.index({ familyNumber: 1 });            // For grouping family-related students/guardians
+GuardianSchema.index({
+  firstName: "text",
+  lastName: "text",
+  familyNumber: "text",
+  email: "text",
+});
 
 export const GuardianModel = mongoose.model<IGuardian>(
   "GuardianUser",

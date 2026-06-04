@@ -1,8 +1,9 @@
 // server/src/repositories/people/guardian.repository.ts
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import { GuardianModel, StudentModel } from "../../models";
 import { IGuardian, UserRole } from "../../types";
 import { generateFamilyNumber } from "../../utils";
+import { PaginationOptions } from "../../shared/pagination";
 
 export class GuardianRepository {
   // 1. Method to generate or reuse family number and create a guardian
@@ -84,5 +85,37 @@ export class GuardianRepository {
       path: "student",
       select: "adm",
     });
+  }
+
+  // ===============================
+  // SEARCH GUARDIANS
+  // ===============================
+  async searchGuardians(
+    filters: Record<string, any>,
+    options: PaginationOptions
+  ) {
+    const query: FilterQuery<IGuardian> = {};
+
+    if (filters.search) {
+      query.$text = { $search: filters.search };
+    }
+    if (filters.schoolId) query.school = filters.schoolId;
+
+    const { skip = 0, limit = 10 } = options;
+
+    const [guardians, total] = await Promise.all([
+      GuardianModel.find(query)
+        .populate("school")
+        .skip(skip)
+        .limit(limit)
+        .sort(
+          filters.search
+            ? { score: { $meta: "textScore" } }
+            : { lastName: 1 }
+        ),
+      GuardianModel.countDocuments(query),
+    ]);
+
+    return { data: guardians, total };
   }
 }

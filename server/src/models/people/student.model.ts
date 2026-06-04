@@ -47,5 +47,13 @@ studentSchema.index({ guardian: 1 });
 // Compound index for performance optimization (e.g., class list filters)
 studentSchema.index({ school: 1, classId: 1, status: 1 });
 
+// Text index for search
+studentSchema.index({
+  studentFirstName: "text",
+  studentMiddleName: "text",
+  studentLastName: "text",
+  studentId: "text",
+});
+
 
 export const StudentModel = model<IStudent>('Student', studentSchema);

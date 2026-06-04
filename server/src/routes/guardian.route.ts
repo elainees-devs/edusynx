@@ -77,6 +77,39 @@ guardianRouter.post("/", guardianController.generateFamilyNumberAndcreateGuardia
  *         description: List of all guardians
  */
 guardianRouter.get("/", guardianController.getAllGuardians);
+
+/**
+ * @swagger
+ * /api/v1/guardians/search:
+ *   get:
+ *     summary: Search guardians with text search
+ *     tags: [Guardians]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Full-text search term
+ *       - in: query
+ *         name: schoolId
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Paginated search results
+ */
+guardianRouter.get("/search", guardianController.searchGuardians);
+
 /**
  * @swagger
  * /api/v1/guardians/{id}:

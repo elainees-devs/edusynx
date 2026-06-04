@@ -1,9 +1,10 @@
 // server/src/repositories/people/student.repository.ts
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import crypto from "crypto";
 import { IClass, IStream, IStudent, StudentStatus } from "../../types";
 import { ClassModel, StudentModel } from "../../models";
 import { generateAdmissionNumber } from "../../utils";
+import { PaginationOptions } from "../../shared/pagination";
 
 export class StudentRepository {
   // ===============================
@@ -398,6 +399,43 @@ export class StudentRepository {
       });
 
     return student;
+  }
+
+  // ===============================
+  // SEARCH STUDENTS
+  // ===============================
+  async searchStudents(
+    filters: Record<string, any>,
+    options: PaginationOptions
+  ) {
+    const query: FilterQuery<IStudent> = {};
+
+    if (filters.search) {
+      query.$text = { $search: filters.search };
+    }
+    if (filters.classId) query.classId = filters.classId;
+    if (filters.streamId) query.stream = filters.streamId;
+    if (filters.status) query.status = filters.status;
+    if (filters.schoolId) query.school = filters.schoolId;
+    if (filters.gender) query.studentGender = filters.gender;
+
+    const { skip = 0, limit = 10 } = options;
+
+    const [students, total] = await Promise.all([
+      StudentModel.find(query)
+        .populate("classId", "clasName")
+        .populate("stream", "streamName")
+        .skip(skip)
+        .limit(limit)
+        .sort(
+          filters.search
+            ? { score: { $meta: "textScore" } }
+            : { studentLastName: 1 }
+        ),
+      StudentModel.countDocuments(query),
+    ]);
+
+    return { data: students, total };
   }
 }
 

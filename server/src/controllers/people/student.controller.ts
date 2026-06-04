@@ -169,7 +169,26 @@ export class StudentController {
     res.json(student);
   });
 
-  // 16. Get students by class name
+  // 16. Search students
+  searchStudents = handleAsync(async (req, res) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const result = await studentRepo.searchStudents(req.query, {
+      skip: (page - 1) * limit,
+      limit,
+    });
+
+    res.json({
+      data: result.data,
+      page,
+      limit,
+      total: result.total,
+      totalPages: Math.ceil(result.total / limit),
+    });
+  });
+
+  // 17. Get students by class name
   // ===============================
   // GET STUDENTS BY CLASS & STREAM WITH PAGINATION
   // ===============================

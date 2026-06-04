@@ -350,6 +350,50 @@ studentRouter.patch(
  *                   type: integer
  */
 
+/**
+ * @swagger
+ * /api/v1/students/search:
+ *   get:
+ *     summary: Search students with text search and filters
+ *     tags: [Students]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Full-text search term
+ *       - in: query
+ *         name: classId
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: streamId
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: gender
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Paginated search results
+ */
+studentRouter.get("/search", studentController.searchStudents);
+
 studentRouter.get(
   "/class",
   studentController.getStudentsByClassAndStream
