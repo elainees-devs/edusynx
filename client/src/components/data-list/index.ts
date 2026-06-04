@@ -12,3 +12,4 @@ export { default as StrandList } from './StrandList';
 export { default as AcademicYearList } from './AcademicYearList';
 export { default as EnrollmentList } from './EnrollmentList';
 export { default as StaffList } from './StaffList';
+export { default as DepartmentList } from './DepartmentList';

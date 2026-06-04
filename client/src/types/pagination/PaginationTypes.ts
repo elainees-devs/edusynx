@@ -7,6 +7,7 @@ import type { IAttendance } from "../school/AttendanceTypes";
 import type { ICompetency, IStrand } from "../school/CBCTypes";
 import type { IAcademicYear } from "../school/AcademicYearTypes";
 import type { IClass, IStream, ISubject } from "../school/SchoolCoreTypes";
+import type { IDepartment } from "../school/AcademicTypes";
 
 
 export interface GetPageParams{
@@ -36,5 +37,6 @@ export type PaginatedCompetencies = PaginatedResponse<ICompetency>;
 export type PaginatedStrands = PaginatedResponse<IStrand>;
 export type PaginatedAcademicYears = PaginatedResponse<IAcademicYear>;
 export type PaginatedStaff = PaginatedResponse<IStaff>;
+export type PaginatedDepartments = PaginatedResponse<IDepartment>;
 
 

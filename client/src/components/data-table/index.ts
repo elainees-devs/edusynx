@@ -15,4 +15,5 @@ export { default as StrandTable } from './StrandTable';
 export { default as AcademicYearTable } from './AcademicYearTable';
 export { default as EnrollmentTable } from './EnrollmentTable';
 export { default as StaffTable } from './StaffTable';
+export { default as DepartmentTable } from './DepartmentTable';
 

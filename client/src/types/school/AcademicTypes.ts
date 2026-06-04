@@ -1,8 +1,9 @@
 // client/src/types/school/AcademicTypes.ts
 import type { IStaff } from "../people/StaffTypes";
 import type { IClass, ISchool, IStream } from "./SchoolCoreTypes";
+import type { BaseDocument } from "../common/BaseTypes";
 
-export interface IDepartment {
+export interface IDepartment extends BaseDocument {
   school: string | ISchool;
   departmentName: string;
   headOfDepartment?: string | IStaff;

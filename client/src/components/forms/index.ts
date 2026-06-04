@@ -23,3 +23,4 @@ export { default as TransferStudentForm } from "./TransferStudentForm";
 export { default as EnrollmentForm } from "./EnrollmentForm";
 export { default as BulkEnrollmentForm } from "./BulkEnrollmentForm";
 export { default as StaffForm } from "./StaffForm";
+export { default as DepartmentForm } from "./DepartmentForm";

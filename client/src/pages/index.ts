@@ -46,6 +46,10 @@ export { default as ViewStaff } from './staff/ViewStaff'
 export { default as RegisterStaff } from './staff/RegisterStaff'
 export { default as StaffDetail } from './staff/StaffDetail'
 
+// ---------- Department Management ----------
+export { default as ViewDepartments } from './departments/ViewDepartments'
+export { default as RegisterDepartment } from './departments/RegisterDepartment'
+
 // ---------- Dashboard Pages ----------
 export { default as Schools } from './dashboard/Schools'
 
