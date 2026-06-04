@@ -15,4 +15,5 @@ export * from "./SubscriptionPlanApi"
 export * from "./SubscriptionApi";
 export * from "./AcademicYearApi";
 
+export * from "./EnrollmentApi";
 export { loginSuperAdmin, sendPasswordResetEmail } from "./auth/SuperAdminAuth";

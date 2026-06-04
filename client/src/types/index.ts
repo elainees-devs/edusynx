@@ -7,3 +7,4 @@ export * from './pagination/PaginationTypes';
 export * from './subscription/SubscriptionTypes';
 export * from './school/CBCTypes';
 export * from './school/AcademicYearTypes';
+export * from './academics/EnrollmentTypes';

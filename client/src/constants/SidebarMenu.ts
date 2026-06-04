@@ -22,7 +22,8 @@ import {
   attendanceNavChildren,
   competencyNavChildren,
   strandNavChildren,
-  academicYearNavChildren
+  academicYearNavChildren,
+  enrollmentNavChildren,
 } from "./SidebarSubmenu";
 
 export interface NavItem {
@@ -98,6 +99,12 @@ export const principalNavItems: NavItem[] = [
     icon: FaBook,
     path: "/academic-years",
     children: academicYearNavChildren,
+  },
+  {
+    name: "Enrollments",
+    icon: FaClipboardList,
+    path: "/enrollments",
+    children: enrollmentNavChildren,
   },
   { name: "Reports", icon: FaClipboardList, path: "/dashboard/reports" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },

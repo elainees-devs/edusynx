@@ -40,6 +40,8 @@ const ViewCompetency = lazy(() => import("./pages/cbc/ViewCompetency"));
 const ViewStrand = lazy(() => import("./pages/cbc/ViewStrand"));
 const ViewAcademicYears = lazy(() => import("./pages/academic-year/ViewAcademicYears"));
 const RegisterAcademicYear = lazy(() => import("./pages/academic-year/RegisterAcademicYear"));
+const ViewEnrollments = lazy(() => import("./pages/enrollment/ViewEnrollments"));
+const RegisterEnrollment = lazy(() => import("./pages/enrollment/RegisterEnrollment"));
   
 import GlobalStateProvider from "./context/global/useGlobalState";
 
@@ -136,6 +138,11 @@ function App() {
             {/* === Academic Years === */}
             <Route path="/academic-years" element={<ViewAcademicYears />} />
             <Route path="/academic-years/register" element={<RegisterAcademicYear />} />
+
+            {/* === Enrollments === */}
+            <Route path="/enrollments" element={<ViewEnrollments />} />
+            <Route path="/enrollments/register" element={<RegisterEnrollment />} />
+            <Route path="/enrollments/bulk" element={<RegisterEnrollment />} />
 
             {/* === Miscellaneous === */}
           </Routes>

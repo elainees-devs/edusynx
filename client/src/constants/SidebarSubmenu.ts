@@ -77,4 +77,10 @@ export const strandNavChildren: NavItem[] = [
 export const academicYearNavChildren: NavItem[] = [
   { name: "View Academic Years", icon: FaListAlt, path: "/academic-years" },
   { name: "New Academic Year", icon: FaPlusCircle, path: "/academic-years/register" },
+];
+
+// ---- ENROLLMENTS ----
+export const enrollmentNavChildren: NavItem[] = [
+  { name: "View Enrollments", icon: FaListAlt, path: "/enrollments" },
+  { name: "New Enrollment", icon: FaPlusCircle, path: "/enrollments/register" },
 ];  
