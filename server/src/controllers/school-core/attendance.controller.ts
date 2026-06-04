@@ -13,11 +13,13 @@ const attendanceRepo = new AttendanceRepository();
 interface AttendanceEntryRequest {
   studentId: string;
   status: string;
+  remarks?: string;
 }
 
 interface AttendanceEntryPayload {
   studentId: Types.ObjectId;
   status: string;
+  remarks?: string;
 }
 
 interface CreateAttendanceRequest {
@@ -60,6 +62,7 @@ export class AttendanceController {
       data.attendance.map((entry: AttendanceEntryRequest) => ({
         studentId: new Types.ObjectId(entry.studentId),
         status: entry.status,
+        remarks: entry.remarks,
       }));
 
     const attendanceData = {
@@ -72,14 +75,24 @@ export class AttendanceController {
       attendance: attendanceEntries,
     };
 
-    const newAttendance = await attendanceRepo.create(
-      attendanceData as unknown as IAttendance
-    );
+    try {
+      const newAttendance = await attendanceRepo.create(
+        attendanceData as unknown as IAttendance
+      );
 
-    res.status(201).json({
-      success: true,
-      data: newAttendance,
-    });
+      res.status(201).json({
+        success: true,
+        data: newAttendance,
+      });
+    } catch (error: any) {
+      if (error.code === 11000) {
+        throw new AppError(
+          "Attendance record already exists for this class, stream, and date.",
+          400
+        );
+      }
+      throw error;
+    }
   });
 
   /**
@@ -188,6 +201,7 @@ export class AttendanceController {
       attendance.map((entry: AttendanceEntryRequest) => ({
         studentId: new Types.ObjectId(entry.studentId),
         status: entry.status,
+        remarks: entry.remarks,
       }));
 
     const updated = await attendanceRepo.updateAttendance(

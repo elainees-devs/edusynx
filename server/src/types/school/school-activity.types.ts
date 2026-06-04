@@ -38,6 +38,7 @@ export interface IAttendance extends BaseDocument {
   attendance: {
     studentId: Types.ObjectId | IStudent;
     status: AttendanceStatus;
+    remarks?: string;
   }[];
   createdBy: Types.ObjectId | IBaseUser;
   updatedBy?: Types.ObjectId | IBaseUser;

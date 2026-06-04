@@ -13,6 +13,7 @@ const attendanceSchema = new Schema<IAttendance>(
       {
         studentId: { type: Schema.Types.ObjectId, ref: 'Student', required: true },
         status: { type: String, enum: Object.values(AttendanceStatus), required: true },
+        remarks: { type: String },
       },
     ],
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },

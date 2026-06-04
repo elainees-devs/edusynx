@@ -7,6 +7,7 @@ import {
   updateAttendanceSchema,
 } from "../validation";
 import { validate } from "../middlewares/validate";
+import { authenticateUser } from "../middlewares/auth";
 
 const attendanceRouter = Router();
 const attendanceController = new AttendanceController();
@@ -49,6 +50,7 @@ const attendanceController = new AttendanceController();
  */
 attendanceRouter.post(
   "/",
+  authenticateUser(),
   validate(createAttendanceSchema),
   attendanceController.createAttendance
 );
@@ -63,7 +65,7 @@ attendanceRouter.post(
  *       200:
  *         description: List of all attendance records
  */
-attendanceRouter.get("/", attendanceController.getAllAttendance);
+attendanceRouter.get("/", authenticateUser(), attendanceController.getAllAttendance);
 
 /**
  * @swagger
@@ -99,6 +101,7 @@ attendanceRouter.get("/", attendanceController.getAllAttendance);
  */
 attendanceRouter.get(
   "/class",
+  authenticateUser(),
   attendanceController.getAttendanceByClassAndDate
 );
 
@@ -121,7 +124,7 @@ attendanceRouter.get(
  *       404:
  *         description: Attendance not found
  */
-attendanceRouter.get("/:id", attendanceController.getAttendanceById);
+attendanceRouter.get("/:id", authenticateUser(), attendanceController.getAttendanceById);
 
 /**
  * @swagger
@@ -154,6 +157,7 @@ attendanceRouter.get("/:id", attendanceController.getAttendanceById);
  */
 attendanceRouter.patch(
   "/student/:attendanceId/:studentId",
+  authenticateUser(),
   attendanceController.updateStudentStatus
 );
 
@@ -190,6 +194,7 @@ attendanceRouter.patch(
  */
 attendanceRouter.patch(
   "/:id",
+  authenticateUser(),
   validate(updateAttendanceSchema),
   attendanceController.updateAttendance
 );
@@ -213,7 +218,7 @@ attendanceRouter.patch(
  *       404:
  *         description: Attendance not found
  */
-attendanceRouter.delete("/:id", attendanceController.deleteAttendance);
+attendanceRouter.delete("/:id", authenticateUser(), attendanceController.deleteAttendance);
 
 
 

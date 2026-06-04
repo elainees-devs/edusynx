@@ -1,7 +1,7 @@
 // server/src/routes/analytics.routes.ts
 import { Router } from "express";
 import { AnalyticsController } from "../controllers";
-
+import { authenticateUser } from "../middlewares/auth";
 
 const analyticsRouter = Router();
 const analyticsController = new AnalyticsController();
@@ -46,6 +46,7 @@ const analyticsController = new AnalyticsController();
  */
 analyticsRouter.get(
   "/performance/:schoolId/:classId/:term",
+  authenticateUser(),
   analyticsController.getPerformanceSummary
 );
 
@@ -58,6 +59,7 @@ analyticsRouter.get(
  */
 analyticsRouter.get(
   "/attendance/summary",
+  authenticateUser(),
   analyticsController.getAttendanceSummary
 );
 
@@ -70,6 +72,7 @@ analyticsRouter.get(
  */
 analyticsRouter.get(
   "/attendance/trends",
+  authenticateUser(),
   analyticsController.getAttendanceTrends
 );
 
@@ -89,6 +92,7 @@ analyticsRouter.get(
  */
 analyticsRouter.get(
   "/attendance/class/:id",
+  authenticateUser(),
   analyticsController.getClassAttendanceAnalytics
 );
 
@@ -101,6 +105,7 @@ analyticsRouter.get(
  */
 analyticsRouter.get(
   "/attendance/at-risk",
+  authenticateUser(),
   analyticsController.getAtRiskStudents
 );
 
@@ -120,6 +125,7 @@ analyticsRouter.get(
  */
 analyticsRouter.get(
   "/attendance/student/:id",
+  authenticateUser(),
   analyticsController.getStudentAttendanceAnalytics
 );
 
