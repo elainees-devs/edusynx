@@ -8,7 +8,7 @@ function tick(): Promise<void> {
   return new Promise((resolve) => setImmediate(resolve));
 }
 
-describe("StudentController — Phase 2B.1", () => {
+describe("StudentController — Phase 2B", () => {
   let controller: StudentController;
   let mockReq: Partial<Request>;
   let mockRes: Partial<Response>;
@@ -25,7 +25,7 @@ describe("StudentController — Phase 2B.1", () => {
   });
 
   describe("promoteStudents", () => {
-    it("should return modifiedCount on successful promotion", async () => {
+    it("should pass academicYear to repo and return modifiedCount", async () => {
       const mockResult = { modifiedCount: 5 };
       (StudentRepository.prototype.promoteStudents as jest.Mock).mockResolvedValue(mockResult);
       mockReq.body = {
@@ -42,7 +42,7 @@ describe("StudentController — Phase 2B.1", () => {
       );
 
       expect(StudentRepository.prototype.promoteStudents).toHaveBeenCalledWith(
-        "class-a", "class-b", "stream-x",
+        "class-a", "class-b", "stream-x", "2025",
       );
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "5 student(s) promoted successfully",
@@ -74,7 +74,7 @@ describe("StudentController — Phase 2B.1", () => {
   });
 
   describe("transferStudent", () => {
-    it("should return transferred student on success", async () => {
+    it("should pass reason to repo and return transferred student", async () => {
       const mockStudent = {
         _id: "student-1",
         studentFirstName: "John",
@@ -83,7 +83,7 @@ describe("StudentController — Phase 2B.1", () => {
       };
       (StudentRepository.prototype.transferStudent as jest.Mock).mockResolvedValue(mockStudent);
       mockReq.params = { id: "student-1" };
-      mockReq.body = { targetClassId: "class-b", targetStreamId: "stream-y" };
+      mockReq.body = { targetClassId: "class-b", targetStreamId: "stream-y", reason: "Medical" };
 
       await controller.transferStudent(
         mockReq as Request,
@@ -92,7 +92,7 @@ describe("StudentController — Phase 2B.1", () => {
       );
 
       expect(StudentRepository.prototype.transferStudent).toHaveBeenCalledWith(
-        "student-1", "class-b", "stream-y",
+        "student-1", "class-b", "stream-y", "Medical",
       );
       expect(mockRes.json).toHaveBeenCalledWith({
         message: "Student transferred successfully",

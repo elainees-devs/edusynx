@@ -67,8 +67,11 @@ export class StudentRepository {
   // ===============================
   // GET ALL STUDENTS
   // ===============================
-  async findAllStudents() {
-    const students = await StudentModel.find()
+  async findAllStudents(status?: string) {
+    const filter: Record<string, unknown> = {};
+    if (status) filter.status = status;
+
+    const students = await StudentModel.find(filter)
       .populate({
         path: "classId",
         select: "clasName", // only return grade
@@ -273,19 +276,47 @@ export class StudentRepository {
   // ===============================
   // PROMOTE STUDENTS (batch)
   // ===============================
-  async promoteStudents(sourceClassId: string, targetClassId: string, targetStreamId: string) {
-    const result = await StudentModel.updateMany(
+  async promoteStudents(sourceClassId: string, targetClassId: string, targetStreamId: string, academicYear?: string) {
+    const students = await StudentModel.find(
       { classId: sourceClassId, status: StudentStatus.ACTIVE },
-      { $set: { classId: targetClassId, stream: targetStreamId } },
     );
-    return result;
+
+    if (students.length === 0) {
+      return { modifiedCount: 0 };
+    }
+
+    const ops = students.map((s) => ({
+      updateOne: {
+        filter: { _id: s._id },
+        update: {
+          $set: { classId: targetClassId, stream: targetStreamId },
+          $push: {
+            history: {
+              action: "promoted",
+              fromClass: s.classId,
+              toClass: targetClassId,
+              fromStream: s.stream,
+              toStream: targetStreamId,
+              academicYear,
+              date: new Date(),
+            },
+          } as any,
+        },
+      },
+    }));
+
+    await StudentModel.bulkWrite(ops);
+    return { modifiedCount: students.length };
   }
 
   // ===============================
   // TRANSFER STUDENT
   // ===============================
-  async transferStudent(studentId: string, targetClassId: string, targetStreamId: string) {
-    const student = await StudentModel.findByIdAndUpdate(
+  async transferStudent(studentId: string, targetClassId: string, targetStreamId: string, reason?: string) {
+    const student = await StudentModel.findById(studentId);
+    if (!student) return null;
+
+    const updated = await StudentModel.findByIdAndUpdate(
       studentId,
       {
         $set: {
@@ -293,6 +324,17 @@ export class StudentRepository {
           stream: targetStreamId,
           status: StudentStatus.TRANSFERRED,
         },
+        $push: {
+          history: {
+            action: "transferred",
+            fromClass: student.classId,
+            toClass: targetClassId,
+            fromStream: student.stream,
+            toStream: targetStreamId,
+            reason,
+            date: new Date(),
+          },
+        } as any,
       },
       { new: true },
     ).populate({
@@ -303,18 +345,38 @@ export class StudentRepository {
       select: "streamName",
     });
 
-    return student;
+    return updated;
   }
 
   // ===============================
   // GRADUATE STUDENTS (batch)
   // ===============================
   async graduateStudents(studentIds: string[]) {
-    const result = await StudentModel.updateMany(
-      { _id: { $in: studentIds } },
-      { $set: { status: StudentStatus.GRADUATED } },
-    );
-    return result;
+    const students = await StudentModel.find({ _id: { $in: studentIds } });
+
+    if (students.length === 0) {
+      return { modifiedCount: 0 };
+    }
+
+    const ops = students.map((s) => ({
+      updateOne: {
+        filter: { _id: s._id },
+        update: {
+          $set: { status: StudentStatus.GRADUATED },
+          $push: {
+            history: {
+              action: "graduated",
+              fromClass: s.classId,
+              fromStream: s.stream,
+              date: new Date(),
+            },
+          } as any,
+        },
+      },
+    }));
+
+    await StudentModel.bulkWrite(ops);
+    return { modifiedCount: students.length };
   }
 
   // ===============================

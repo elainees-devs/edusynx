@@ -5,6 +5,19 @@ import { Gender, StudentStatus } from "../enum/enum";
 import { BaseDocument } from "../common/base.types";
 import { IClass, ISchool, IStream } from "../school/school-core.types";
 
+export type HistoryAction = "admitted" | "promoted" | "transferred" | "graduated";
+
+export interface IStatusChange {
+  action: HistoryAction;
+  fromClass?: Types.ObjectId | string;
+  toClass?: Types.ObjectId | string;
+  fromStream?: Types.ObjectId | string;
+  toStream?: Types.ObjectId | string;
+  academicYear?: string;
+  reason?: string;
+  date: Date;
+}
+
 export interface IStudent extends BaseDocument{
   school: string | ISchool
   studentFirstName: string
@@ -22,4 +35,5 @@ export interface IStudent extends BaseDocument{
   studentId?: string
   familyNumber?: number
   studentPhotoUrl?: string
+  history?: IStatusChange[]
 }

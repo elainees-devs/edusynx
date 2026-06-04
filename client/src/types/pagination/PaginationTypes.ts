@@ -13,7 +13,7 @@ export interface GetPageParams{
   limit: number
   search?: string
   sort?: "asc"|"desc"
-
+  status?: string
 }
 
 export interface PaginatedResponse<T> {

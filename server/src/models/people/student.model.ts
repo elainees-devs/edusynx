@@ -1,7 +1,21 @@
 // server/src/models/people/student.model.ts
 import { Schema, model} from 'mongoose';
 import { Gender, StudentStatus } from '../../types/enum/enum';
-import { IStudent } from '../../types';
+import { IStudent, IStatusChange } from '../../types';
+
+const statusChangeSchema = new Schema<IStatusChange>(
+  {
+    action: { type: String, enum: ["admitted", "promoted", "transferred", "graduated"], required: true },
+    fromClass: { type: Schema.Types.ObjectId, ref: "Class" },
+    toClass: { type: Schema.Types.ObjectId, ref: "Class" },
+    fromStream: { type: Schema.Types.ObjectId, ref: "Stream" },
+    toStream: { type: Schema.Types.ObjectId, ref: "Stream" },
+    academicYear: { type: String },
+    reason: { type: String },
+    date: { type: Date, default: Date.now },
+  },
+  { _id: true }
+);
 
 const studentSchema = new Schema<IStudent>(
   {
@@ -20,6 +34,7 @@ const studentSchema = new Schema<IStudent>(
     status: { type: String, enum: Object.values(StudentStatus), required: true },
     studentId: { type: String, unique: true },
     studentPhotoUrl: { type: String },
+    history: { type: [statusChangeSchema], default: [] },
   },
   {
     timestamps: true,

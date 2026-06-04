@@ -22,6 +22,7 @@ const StudentsList: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showPromoteForm, setShowPromoteForm] = useState(false);
   const [transferTarget, setTransferTarget] = useState<Student | null>(null);
+  const [statusFilter, setStatusFilter] = useState("");
   const limit = 10;
 
   const loadStudents = useCallback(async () => {
@@ -32,6 +33,7 @@ const StudentsList: React.FC = () => {
         limit,
         sort: sortAsc ? "asc" : "desc",
         search: searchTerm,
+        status: statusFilter || undefined,
       });
 
       setStudents(res.data);
@@ -41,7 +43,7 @@ const StudentsList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, sortAsc, searchTerm]);
+  }, [page, limit, sortAsc, searchTerm, statusFilter]);
 
   useEffect(() => {
     loadStudents();
@@ -133,6 +135,25 @@ const StudentsList: React.FC = () => {
           setPage(1);
         }}
       />
+
+      <div className="flex items-center gap-2">
+        <label htmlFor="status-filter" className="text-sm font-medium">Status:</label>
+        <select
+          id="status-filter"
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setPage(1);
+          }}
+          className="border rounded px-3 py-1.5 text-sm"
+        >
+          <option value="">All</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Suspended">Suspended</option>
+          <option value="Graduated">Graduated</option>
+        </select>
+      </div>
 
       {loading ? (
         <div className="text-center py-6 text-gray-500">Loading students...</div>

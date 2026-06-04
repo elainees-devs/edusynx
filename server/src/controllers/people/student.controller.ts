@@ -17,13 +17,14 @@ export class StudentController {
 
   // 2. Get all students
   getAllStudents = handleAsync(async (req, res) => {
-    // Get page, limit, and search from query
+    // Get page, limit, search, and status from query
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const search = (req.query.search as string) || "";
+    const status = (req.query.status as string) || "";
 
-    // Fetch all students from repo
-    let allStudents = await studentRepo.findAllStudents();
+    // Fetch all students from repo (with optional status filter)
+    let allStudents = await studentRepo.findAllStudents(status || undefined);
 
     // Filter by search if provided
     if (search) {
@@ -125,11 +126,12 @@ export class StudentController {
 
   // 12. Promote students (batch)
   promoteStudents = handleAsync(async (req, res) => {
-    const { sourceClassId, targetClassId, targetStreamId } = req.body;
+    const { sourceClassId, targetClassId, targetStreamId, academicYear } = req.body;
     const result = await studentRepo.promoteStudents(
       sourceClassId,
       targetClassId,
       targetStreamId,
+      academicYear,
     );
     res.json({
       message: `${result.modifiedCount} student(s) promoted successfully`,
@@ -139,11 +141,12 @@ export class StudentController {
 
   // 13. Transfer student
   transferStudent = handleAsync(async (req, res) => {
-    const { targetClassId, targetStreamId } = req.body;
+    const { targetClassId, targetStreamId, reason } = req.body;
     const student = await studentRepo.transferStudent(
       req.params.id,
       targetClassId,
       targetStreamId,
+      reason,
     );
     if (!student) throw new AppError("Student not found", 404);
     res.json({ message: "Student transferred successfully", student });
