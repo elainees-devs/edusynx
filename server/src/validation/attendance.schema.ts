@@ -15,6 +15,8 @@ export const createAttendanceSchema = z.object({
       status: attendanceStatusEnum,
     })
   ),
+  remarks: z.string().optional(),
+  createdBy: objectId,  
 });
 
 export const updateAttendanceSchema = createAttendanceSchema.partial();
