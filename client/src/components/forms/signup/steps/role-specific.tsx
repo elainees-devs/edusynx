@@ -1,14 +1,16 @@
 // client/src/components/forms/signup/steps/role-specific.tsx
 import { useParams } from "react-router-dom";
-import { useSignUpContext } from "../../../../context/signup/useSignUpContext";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/storeHooks";
+import { setFormData } from "../../../../store/slices/signupSlice";
 import { useClassOptions, useSchoolBySlug } from "../../../../hooks";
 
-type SignUpRole = "teacher" | "principal" | "school-admin" | "accountant";
+type SignUpRole = "teacher" | "principal" | "school-admin" | "accountant" | "guardian";
 const allowedRoles: SignUpRole[] = [
   "teacher",
   "principal",
   "school-admin",
   "accountant",
+  "guardian",
 ];
 
 const formatRole = (role: string) =>
@@ -24,7 +26,13 @@ const RoleSpecificStep = ({
   back: () => void;
   submit: () => void;
 }) => {
-  const { formData, updateForm } = useSignUpContext();
+  const dispatch = useAppDispatch();
+  const formData = useAppSelector((state) => state.signup.formData);
+  
+  const updateForm = (data: any) => {
+    dispatch(setFormData(data));
+  };
+
   const { slug } = useParams();
 
   const { schoolId, error: schoolError } = useSchoolBySlug(slug);
@@ -94,6 +102,24 @@ const RoleSpecificStep = ({
               )}
             </label>
           )}
+        </>
+      )}
+
+      {/* Guardian-specific fields */}
+      {formData.role === "guardian" && (
+        <>
+          <label className="block">
+            <span className="text-gray-700">Family Number</span>
+            <input
+              className="w-full p-2 border rounded"
+              placeholder="Enter unique Family Number"
+              value={formData.familyNumber || ""}
+              onChange={(e) => updateForm({ familyNumber: e.target.value })}
+            />
+            <p className="text-xs text-gray-400 mt-1 italic">
+              Use this number to link all your children in the same school.
+            </p>
+          </label>
         </>
       )}
 

@@ -21,7 +21,33 @@ import AtRiskWidget from './AtRiskWidget';
 const chartColors = ["#319795", "#008eab", "#3280b7", "#6c6daf"];
 
 // Dummy Data
-/* ... */
+const kpiData = {
+  totalStudents: 1250,
+  totalTeachers: 48,
+  totalClasses: 24,
+  pendingFees: 12450,
+};
+
+const studentTrendData = [
+  { month: "Jan", new: 40, transferred: 10 },
+  { month: "Feb", new: 30, transferred: 5 },
+  { month: "Mar", new: 60, transferred: 15 },
+  { month: "Apr", new: 80, transferred: 20 },
+  { month: "May", new: 50, transferred: 10 },
+  { month: "Jun", new: 90, transferred: 25 },
+];
+
+const attendanceData = [
+  { name: "Present", value: 85 },
+  { name: "Absent", value: 10 },
+  { name: "Late", value: 5 },
+];
+
+const recentActivity = [
+  { id: "1", text: "Grade 10 Attendance marked" },
+  { id: "2", text: "New student enrollment processed" },
+  { id: "3", text: "Teacher meeting scheduled for 3 PM" },
+];
 
 const KPICard: React.FC<{ title: string; value: number }> = ({ title, value }) => (
   <div className="bg-white rounded-xl shadow p-6 text-center">
@@ -99,25 +125,16 @@ const SchoolAdminDashboardOverview: React.FC = () => {
           </div>
         </div>
       </section>
-            >
-              {attendanceData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
-              ))}
-            </Pie>
-            <Legend />
-          </PieChart>
-        </div>
 
-        {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <p className="text-gray-500 text-sm mb-2">Recent Activity</p>
-          <ul className="space-y-2">
-            {recentActivity.map(a => (
-              <li key={a.id} className="border-b border-gray-200 pb-2">{a.text}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* Recent Activity */}
+      <div className="bg-white rounded-xl shadow p-6">
+        <p className="text-gray-500 text-sm mb-2">Recent Activity</p>
+        <ul className="space-y-2">
+          {recentActivity.map(a => (
+            <li key={a.id} className="border-b border-gray-200 pb-2">{a.text}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

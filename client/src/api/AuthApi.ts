@@ -62,3 +62,34 @@ export const confirmPasswordReset = async (data: NewPasswordBody) => {
   const response = await apiClient.post("/password-reset/confirm", data);
   return response.data;
 };
+
+export const signupUser = async (slug: string, userData: any) => {
+  try {
+    const response = await apiClient.post(`/${slug}/signup`, userData);
+    logger.info(`User signup successful for school: ${slug}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      logger.error(`Signup failed for school: ${slug}`, error);
+      throw (
+        error.response?.data || { message: "Signup failed. Please try again." }
+      );
+    }
+    throw new Error("A network error occurred while signing up.");
+  }
+};
+
+export const getPublicClassesBySlug = async (slug: string) => {
+  const response = await apiClient.get(`/${slug}/classes`);
+  return response.data;
+};
+
+export const getPublicStreamsBySlug = async (slug: string) => {
+  const response = await apiClient.get(`/${slug}/streams`);
+  return response.data;
+};
+
+export const getPublicAcademicYearsBySlug = async (slug: string) => {
+  const response = await apiClient.get(`/${slug}/academic-years`);
+  return response.data;
+};

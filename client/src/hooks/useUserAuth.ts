@@ -1,6 +1,7 @@
 // client/src/hooks/useUserAuth.ts
 import { useState, useEffect } from "react";
-import type { ISuperAdmin, IBaseUser } from "../types/people/user.types";
+import type { IBaseUser, ISuperAdmin } from "../types";
+
 
 interface UseLoggedInStatus {
   isLoggedIn: boolean;
@@ -12,9 +13,17 @@ interface UseLoggedInStatus {
 }
 
 export const useUserAuth = (): UseLoggedInStatus => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [savedUser, setUserDetails] = useState<IBaseUser | null>(null);
-  const [savedAdmin, setAdmin] = useState<ISuperAdmin | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    return !!(localStorage.getItem("savedUser") || localStorage.getItem("savedSuperAdmin"));
+  });
+  const [savedUser, setUserDetails] = useState<IBaseUser | null>(() => {
+    const data = localStorage.getItem("savedUser");
+    return data ? JSON.parse(data) : null;
+  });
+  const [savedAdmin, setAdmin] = useState<ISuperAdmin | null>(() => {
+    const data = localStorage.getItem("savedSuperAdmin");
+    return data ? JSON.parse(data) : null;
+  });
 
   useEffect(() => {
     const checkLoggedInStatus = () => {
@@ -33,8 +42,7 @@ export const useUserAuth = (): UseLoggedInStatus => {
         setAdmin(null);
       }
     };
-
-    checkLoggedInStatus();
+ 
 
     const interval = setInterval(() => {
       checkLoggedInStatus();

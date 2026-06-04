@@ -17,9 +17,10 @@ const SuperAdminSignIn: React.FC = () => {
     e.preventDefault();
 
     try {
-      const { user } = await loginSuperAdmin(email, password);
-         console.log("Logged-in user role:", user.role);
+      const { user, token } = await loginSuperAdmin(email, password);
+      console.log("Logged-in user role:", user.role);
 
+      localStorage.setItem("token", token);
       useAuth.loginSuperAdmin(user);
 
       Swal.fire({
@@ -30,9 +31,9 @@ const SuperAdminSignIn: React.FC = () => {
         showConfirmButton: false,
       });
 
-      // ✅ Redirect to dashboard after success
+      // Redirect to dashboard after success
       setTimeout(() => {
-        navigate("/dashboard/super-admin");
+        navigate("/super-admin/dashboard");
       }, 1500); // Give time for SweetAlert2 to show
     } catch (error) {
       if (

@@ -28,6 +28,7 @@ import {
   enrollmentNavChildren,
   staffNavChildren,
   departmentNavChildren,
+  classTeacherNavChildren,
 } from "./SidebarSubmenu";
 
 export interface NavItem {
@@ -38,10 +39,10 @@ export interface NavItem {
 }
 
 export const superAdminNavItems: NavItem[] = [
-  { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
-  { name: "Schools", icon: FaSchool, path: "/dashboard/schools" },
-  { name: "Users", icon: FaUser, path: "/dashboard/users" },
-  { name: "Settings", icon: FaCog, path: "/dashboard/settings" },
+  { name: "Dashboard", icon: FaTachometerAlt, path: "/super-admin/dashboard" },
+  { name: "Schools", icon: FaSchool, path: "/super-admin/schools" },
+  { name: "Users", icon: FaUser, path: "/super-admin/users" },
+  { name: "Settings", icon: FaCog, path: "/super-admin/settings" },
   { name: "Logout", icon: FaSignOutAlt, path: "/logout" },
 ];
 
@@ -65,7 +66,7 @@ export const principalNavItems: NavItem[] = [
   },
   { 
     name: "Students", icon: FaUserGraduate, 
-    path: "/:slug/students/view" ,
+    path: "/:slug/dashboard/students/view" ,
     children: studentNavChildren(":slug"),
   },
   { 
@@ -75,10 +76,10 @@ export const principalNavItems: NavItem[] = [
     children: streamNavChildren,
   },
   {
-    name: "Classes",
+    name: "Class",
     icon: FaBook,
     path: "/dashboard/classes",
-    children: classNavChildren,
+    children: classNavChildren(":slug"),
   },
   {
     name: "Subjects",
@@ -102,7 +103,7 @@ export const principalNavItems: NavItem[] = [
     name: "Attendance",
     icon: FaClipboardList,  
     path: "/dashboard/attendance",
-    children: attendanceNavChildren,
+    children: attendanceNavChildren(":slug"),
   },
   {
     name: "Academic Years",
@@ -127,11 +128,18 @@ export const principalNavItems: NavItem[] = [
 ];
 
 export const schoolAdminNavItems: NavItem[] = [
-  { name: "Dashboard", icon: FaTachometerAlt, path: "/dashboard" },
+  { name: "Dashboard", icon: FaTachometerAlt, path: "/:slug/dashboard/school-admin" },
   {
     name: "Students",
     icon: FaSchool,
-    path: "/dashboard/students",
+    path: "/:slug/dashboard/students/view",
+    children: studentNavChildren(":slug"),
+  },
+  {
+    name: "Class",
+    icon: FaBook,
+    path: "#",
+    children: classNavChildren(":slug"),
   },
 
   { name: "Reports", icon: FaUser, path: "/dashboard/reports" },
@@ -140,6 +148,23 @@ export const schoolAdminNavItems: NavItem[] = [
 ];
 
 export const teacherNavItems: NavItem[] = [
+  {
+    name: "Dashboard",
+    icon: FaTachometerAlt,
+    path: "/:slug/dashboard/teacher",
+  },
+  {
+    name: "Students",
+    icon: FaUserGraduate,
+    path: "/:slug/dashboard/students/view",
+    children: studentNavChildren(":slug"),
+  },
+  {
+    name: "Class",
+    icon: FaBook,
+    path: "#",
+    children: classTeacherNavChildren(":slug"),
+  },
   {
     name: "Teachers",
     icon: FaChalkboardTeacher,  

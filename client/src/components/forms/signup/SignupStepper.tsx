@@ -1,5 +1,8 @@
 // client/src/components/forms/signup/signup-stepper.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+
 import {
   AccountInfoStep,
   ContactInfoStep,
@@ -7,11 +10,15 @@ import {
   RoleSpecificStep,
 } from "./steps";
 
-import { useSignUpContext } from "../../../context/signup/useSignUpContext";
-import Swal from "sweetalert2";
-import type { IBaseUser } from "../../../types";
-import { UserRole } from "../../../constants";
-import { registerUser } from "../../../api";
+import { useAppDispatch, useAppSelector } from "../../../hooks/storeHooks";
+import {
+  nextStep,
+  prevStep,
+  setSchoolDetails,
+  resetSignup,
+} from "../../../store/slices/signupSlice";
+
+import { signupUser, getSchoolBySlug } from "../../../api";
 
 const steps = [
   "Personal Info",
@@ -21,35 +28,76 @@ const steps = [
 ];
 
 const SignUpStepper = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const dispatch = useAppDispatch();
+  const { slug } = useParams<{ slug: string }>();
+
+  const { currentStep, formData } = useAppSelector(
+    (state) => state.signup
+  );
+
   const [loading, setLoading] = useState(false);
-  const { formData } = useSignUpContext();
+
+  useEffect(() => {
+    const fetchSchool = async () => {
+      if (!slug) return;
+
+      try {
+        const school = await getSchoolBySlug(slug);
+        dispatch(setSchoolDetails(school));
+      } catch (error) {
+        console.error("Failed to fetch school:", error);
+
+        Swal.fire({
+          icon: "error",
+          title: "School Not Found",
+          text: "Registration link is invalid or the school is inactive.",
+        });
+      }
+    };
+
+    fetchSchool();
+
+    return () => {
+      dispatch(resetSignup());
+    };
+  }, [slug, dispatch]);
 
   const next = () => {
     setLoading(true);
+
     setTimeout(() => {
-      setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
+      dispatch(nextStep());
       setLoading(false);
     }, 800);
   };
 
   const back = () => {
     setLoading(true);
+
     setTimeout(() => {
-      setCurrentStep((s) => Math.max(s - 1, 0));
+      dispatch(prevStep());
       setLoading(false);
     }, 800);
   };
 
   const submit = async () => {
+    if (!slug) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Link",
+        text: "School registration link is missing.",
+      });
+      return;
+    }
+
     setLoading(true);
-    console.log("📝 Form Data:", formData);
+
     try {
-      // Validate required fields
+      console.log("📝 Form Data:", formData);
+
       if (
         !formData.email ||
         !formData.firstName ||
-        !formData.middleName ||
         !formData.lastName ||
         !formData.password ||
         !formData.role ||
@@ -60,47 +108,44 @@ const SignUpStepper = () => {
         throw new Error("Please fill in all required fields.");
       }
 
-      const userPayload: IBaseUser = {
-        school: formData.school,
-        firstName: formData.firstName,
-        middleName: formData.middleName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        primaryPhoneNumber: formData.primaryPhoneNumber,
-        nationality: formData.nationality,
-        role: UserRole[formData.role.toUpperCase() as keyof typeof UserRole],
+      const {
+        classId,
+        isClassTeacher,
+        familyNumber,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        confirmPassword,
+        ...restBaseData
+      } = formData;
 
-        // Optional fields
-        secondaryEmail: formData.secondaryEmail,
-        secondaryPhoneNumber: formData.secondaryPhoneNumber,
-        avatarUrl: formData.avatarUrl,
-        isActive: formData.isActive ?? true,
-        isLocked: formData.isLocked ?? false,
-        lastLogin: undefined,
-        passwordChangedAt: undefined,
-        isTwoFactorEnabled: false,
-
-        // Add this if role is teacher
-        ...(formData.role === "teacher" && {
-          classId: formData.classId,
-          isClassTeacher: formData.isClassTeacher ?? false,
-        }),
+      const userPayload: Record<string, unknown> = {
+        ...restBaseData,
       };
 
-      await registerUser(userPayload);
+      if (formData.role === "teacher") {
+        userPayload.isClassTeacher = isClassTeacher;
+        userPayload.assignedClass = classId;
+      } else if (formData.role === "guardian") {
+        userPayload.familyNumber = familyNumber;
+      }
 
-      Swal.fire({
+      await signupUser(slug, userPayload);
+
+      await Swal.fire({
         icon: "success",
         title: "Registration Complete",
         text: "User registered successfully!",
       });
-    } catch (err: unknown) {
+
+      dispatch(resetSignup());
+    } catch (err) {
       let message = "An unexpected error occurred.";
-      if (err instanceof Error) {
+
+      if (err && typeof err === "object" && "issues" in err && Array.isArray(err.issues)) {
+        message = (err.issues as { path: string[]; message: string }[])
+          .map((i) => `${i.path.join(".")}: ${i.message}`)
+          .join("\n");
+      } else if (err && typeof err === "object" && "message" in err && typeof err.message === "string") {
         message = err.message;
-      } else if (typeof err === "object" && err !== null && "message" in err) {
-        message = String((err as { message?: string }).message);
       }
 
       Swal.fire({
@@ -113,26 +158,43 @@ const SignUpStepper = () => {
     }
   };
 
-  const StepComponent = [
+  const stepComponents = [
     <PersonalInfoStep key="step1" next={next} />,
     <ContactInfoStep key="step2" next={next} back={back} />,
     <AccountInfoStep key="step3" next={next} back={back} />,
     <RoleSpecificStep key="step4" back={back} submit={submit} />,
-  ][currentStep];
+  ];
+
+  const StepComponent =
+    stepComponents[currentStep] ?? stepComponents[0];
 
   return (
-    <div className="max-w-xl pt-4 mx-auto mt-4">
-      <p className="pb-4">
-        To access your account, please finish setting up your profile by
-        completing the signup process.
-      </p>
+    <div className="w-full">
+      <div className="mb-8">
+        <h2 className="text-xl font-bold text-gray-800 mb-2">
+          {steps[currentStep] ?? steps[0]}
+        </h2>
 
-      <h2 className="mb-4 text-xl font-bold">{steps[currentStep]}</h2>
+        <div className="mb-4 flex gap-2">
+          {steps.map((_, idx) => (
+            <div
+              key={idx}
+              className={`h-1.5 flex-1 rounded-full ${
+                idx <= currentStep
+                  ? "bg-teal-400"
+                  : "bg-gray-200"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
 
       {loading ? (
-        <div className="flex flex-col items-center py-8">
-          <div className="loader mb-2"></div>
-          <p>Loading...</p>
+        <div className="flex flex-col items-center py-12">
+          <div className="loader mb-4"></div>
+          <p className="font-medium text-gray-500">
+            Processing...
+          </p>
         </div>
       ) : (
         StepComponent
@@ -142,3 +204,4 @@ const SignUpStepper = () => {
 };
 
 export default SignUpStepper;
+

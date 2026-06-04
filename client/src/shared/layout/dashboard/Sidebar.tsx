@@ -16,7 +16,12 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const location = useLocation();
-  const { slug = "" } = useParams<{ slug: string }>();
+  const { slug: urlSlug } = useParams<{ slug: string }>();
+  
+  // Fallback to user data if slug is not in URL
+  const user = JSON.parse(localStorage.getItem("savedUser") || "{}");
+  const userSlug = typeof user?.school === "object" ? user.school.slug : "";
+  const slug = urlSlug || userSlug || "";
 
   const normalizedRole = Array.isArray(role)
     ? role[0].toLowerCase().replace(/\s+/g, "-")
@@ -25,20 +30,18 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const navMap: Record<string, () => NavItem[]> = {
     "super-admin": () => superAdminNavItems,
     principal: () => principalNavItems,
-    "school-admin": () =>
-      schoolAdminNavItems.map((item) =>
-        item.name === "Students"
-          ? { ...item, children: studentNavChildren(slug) }
-          : item,
-      ),
+    "school-admin": () => schoolAdminNavItems,
     teacher: () => teacherNavItems,
   };
 
   const navItems = navMap[normalizedRole]?.() || [];
 
-  // Function to replace :slug in paths
-  const resolvePath = (path: string) =>
-    path.includes(":slug") ? path.replace(":slug", slug) : path;
+  // Function to replace :slug in paths and clean up double slashes
+  const resolvePath = (path: string) => {
+    let resolved = path.includes(":slug") ? path.replace(":slug", slug) : path;
+    // Remove double slashes that might occur if slug is empty
+    return resolved.replace(/\/+/g, "/");
+  };
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-48 bg-white text-gray-900 shadow-lg overflow-visible z-50">

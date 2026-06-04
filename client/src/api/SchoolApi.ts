@@ -37,7 +37,7 @@ export const registerSchool = async (data: ISchool): Promise<ISchool> => {
 };
 
 export const getSchoolBySlug = async (slug: string): Promise<ISchool> => {
-  const response = await apiClient.get(`/schools/${slug}`);
+  const response = await apiClient.get(`/${slug}/signup`);
   return response.data;
 };
 

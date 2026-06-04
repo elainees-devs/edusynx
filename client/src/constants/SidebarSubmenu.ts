@@ -21,7 +21,7 @@ export const teacherNavChildren: NavItem[] = [
   { name: "View Teachers", icon: FaEye, path: "/dashboard/principal/teachers/view" },
   { name: "Assign Subjects/Classes", icon: FaTasks, path: "/dashboard/teachers/assign" },
   { name: "Performance Review", icon: FaChartLine, path: "/dashboard/teachers/performance" },
-  { name: "Attendance Records", icon: FaCalendarCheck, path: "/dashboard/teachers/attendance" },
+  { name: "Attendance Records", icon: FaCalendarCheck, path: "/dashboard/attendance/records" },
   { name: "Lesson Plans", icon: FaBookOpen, path: "/dashboard/teachers/lessons" },
   { name: "Messages", icon: FaEnvelope, path: "/dashboard/teachers/messages" },
   { name: "Teacher Documents", icon: FaFileAlt, path: "/dashboard/teachers/documents" },
@@ -31,16 +31,17 @@ export const teacherNavChildren: NavItem[] = [
 
 // ----- STUDENTS -----
 export const studentNavChildren = (slug: string): NavItem[] => [
-  { name: "Add Student", icon: FaPlus, path: `/${slug}/student/new` },
-  { name: "View Students", icon: FaEye, path: `/${slug}/students/view` },
+  { name: "Add Student", icon: FaPlus, path: `/${slug}/dashboard/students/register` },
+  { name: "View Students", icon: FaEye, path: `/${slug}/dashboard/students/view` },
   { name: "View Guardian", icon: FaEye, path: `/${slug}/guardian/view` },
 ];
 
 // ----- CLASSES -----
-export const classNavChildren: NavItem[] = [
+export const classNavChildren = (slug: string): NavItem[] => [
   { name: "Add Class", icon: FaPlusCircle, path: "/class/new" },
-  { name: "View Registered Classes", icon: FaListAlt, path: "/:slug/dashboard/class/view" },
+  { name: "View Registered Classes", icon: FaListAlt, path: `/${slug}/dashboard/class/view` },
   { name: "Class Overview", icon: FaChalkboardTeacher, path: "/dashboard/class-overview" },
+  { name: "Add Attendance", icon: FaPlusCircle, path: `/${slug}/dashboard/student/attendance/new` },
 ];
 
 // ---STREAMS ---
@@ -57,9 +58,18 @@ export const subjectNavChildren: NavItem[] = [
 ];
 
 // ----- ATTENDANCE -----
-export const attendanceNavChildren: NavItem[] = [
-  { name: "Register Attendance", icon: FaPlusCircle, path:"/dashboard/attendance/register/" },
-{ name: "View Attendance Records", icon: FaListAlt, path: "/dashboard/attendance/records" }];
+export const attendanceNavChildren = (slug: string): NavItem[] => [
+  {
+    name: "Register Attendance",
+    icon: FaPlusCircle,
+    path: `/${slug}/dashboard/student/attendance/new`,
+  },
+  {
+    name: "View Attendance Records",
+    icon: FaListAlt,
+    path: "/dashboard/attendance/records",
+  },
+];
 
 // ---- COMPETENCY ----
 export const competencyNavChildren: NavItem[] = [   
@@ -89,6 +99,12 @@ export const enrollmentNavChildren: NavItem[] = [
 export const staffNavChildren: NavItem[] = [
   { name: "View Staff", icon: FaListAlt, path: "/dashboard/staff/view" },
   { name: "Register Staff", icon: FaPlusCircle, path: "/dashboard/staff/register" },
+];
+
+// ---- CLASS TEACHERS ----
+export const classTeacherNavChildren = (slug: string): NavItem[] => [
+  { name: "Add Attendance", icon: FaPlusCircle, path: `/${slug}/dashboard/student/attendance/new` },
+  { name: "Attendance Records", icon: FaCalendarCheck, path: `/${slug}/dashboard/attendance/records` },
 ];
 
 // ---- DEPARTMENTS ----

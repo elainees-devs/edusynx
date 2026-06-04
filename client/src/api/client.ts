@@ -26,16 +26,24 @@ apiClient.interceptors.response.use(
   (error) => {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
-        localStorage.removeItem("savedUser");
-        localStorage.removeItem("savedSuperAdmin");
-        localStorage.removeItem("token");
-        Swal.fire({
-          icon: "warning",
-          title: "Session Expired",
-          text: "Please sign in again.",
-        }).then(() => {
-          window.location.reload();
-        });
+        // Only trigger session expired if we actually have a token but it's invalid
+        const hasToken =
+          localStorage.getItem("token") ||
+          JSON.parse(localStorage.getItem("savedUser") || "{}").token ||
+          JSON.parse(localStorage.getItem("savedSuperAdmin") || "{}").token;
+
+        if (hasToken) {
+          localStorage.removeItem("savedUser");
+          localStorage.removeItem("savedSuperAdmin");
+          localStorage.removeItem("token");
+          Swal.fire({
+            icon: "warning",
+            title: "Session Expired",
+            text: "Please sign in again.",
+          }).then(() => {
+            window.location.reload();
+          });
+        }
       } else if (error.response?.status === 403) {
         Swal.fire({
           icon: "error",

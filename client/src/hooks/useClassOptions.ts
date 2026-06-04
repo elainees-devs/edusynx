@@ -1,7 +1,8 @@
 // client/src/hooks/useClassOptions.ts
 import { useEffect, useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import type { IClass, IStream } from "../types";
-import { getAllClasses, getAllStreams } from "../api";
+import { getAllClasses, getAllStreams, getPublicClassesBySlug, getPublicStreamsBySlug } from "../api";
 
 export type ClassOption = {
   value: string;
@@ -16,6 +17,7 @@ export type StreamOption = {
 };
 
 export const useClassOptions = () => {
+  const { slug } = useParams<{ slug: string }>();
   const [classes, setClasses] = useState<ClassOption[]>([]);
   const [streams, setStreams] = useState<StreamOption[]>([]);
   const [loading, setLoading] = useState(false);
@@ -25,11 +27,27 @@ export const useClassOptions = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [classList, streamList]: [IClass[], IStream[]] =
-          await Promise.all([getAllClasses(), getAllStreams()]);
+        let classList: IClass[] = [];
+        let streamList: IStream[] = [];
+
+        if (slug) {
+          // Public signup context
+          const [classRes, streamRes] = await Promise.all([
+            getPublicClassesBySlug(slug),
+            getPublicStreamsBySlug(slug),
+          ]);
+          classList = classRes.data || classRes;
+          streamList = streamRes.data || streamRes;
+        } else {
+          // Authenticated dashboard context
+          [classList, streamList] = await Promise.all([
+            getAllClasses(),
+            getAllStreams(),
+          ]);
+        }
 
         // Map streams for dropdown
-        const streamOptions: StreamOption[] = streamList.map((s) => ({
+        const streamOptions: StreamOption[] = (Array.isArray(streamList) ? streamList : []).map((s) => ({
           value: s._id,
           streamName: s.streamName,
           label: s.streamName,
@@ -37,7 +55,7 @@ export const useClassOptions = () => {
         setStreams(streamOptions);
 
         // Map classes
-        const classOptions: ClassOption[] = classList.map((cls) => ({
+        const classOptions: ClassOption[] = (Array.isArray(classList) ? classList : []).map((cls) => ({
           value: cls._id,
           clasName: cls.clasName,
           label: cls.clasName,
@@ -57,7 +75,8 @@ export const useClassOptions = () => {
     };
 
     fetchData();
-  }, []);
+  }, [slug]);
+
 
   const filteredClassOptions = useMemo(() => classes, [classes]);
   const filteredStreamOptions = useMemo(() => streams, [streams]);

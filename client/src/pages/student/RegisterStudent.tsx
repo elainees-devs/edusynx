@@ -4,10 +4,10 @@ import type { StudentFormData } from "../../types";
 import Swal from "sweetalert2";
 import { StudentFormProvider } from "../../context/student/student-form-provider";
 import { Sidebar, Topbar } from "../../shared/layout/dashboard";
-import { getSchoolId } from "../../utils/getSchoolId";
+import { getSchoolId } from "../../utils/GetSchoolId";
 import { useGlobalState } from "../../hooks";
 import { RegisterStudentForm } from "../../components";
-import UploadStudentsButton from "../../components/buttons/upload-student-data";
+import UploadStudentsButton from "../../components/buttons/UploadStudentData";
 import { UserRole } from "../../constants";
 import { registerStudent } from "../../api";
 

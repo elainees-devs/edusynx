@@ -37,8 +37,8 @@ interface AttendanceFormData {
 }
 
 const AttendanceForm: React.FC = () => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const schoolId = user?.school?._id || "";
+  const user = JSON.parse(localStorage.getItem("savedUser") || "{}");
+  const schoolId = typeof user?.school === "string" ? user.school : user?.school?._id || "";
   
   const { streamOptions, classOptions, error: classError } = useClassOptions();
   const [existingId, setExistingId] = useState<string | null>(null);
@@ -66,6 +66,15 @@ const AttendanceForm: React.FC = () => {
     control,
     name: "attendance",
   });
+
+  const toggleAllPresent = (checked: boolean) => {
+    const status = checked ? AttendanceStatus.PRESENT : AttendanceStatus.ABSENT;
+    fields.forEach((_, index) => {
+      setValue(`attendance.${index}.status`, status);
+    });
+  };
+
+  const isAllPresent = watch("attendance")?.every(a => a.status === AttendanceStatus.PRESENT);
 
   // -----------------------------------------------------------------
   // Sync Logic: Fetch existing record OR load fresh student list
@@ -229,51 +238,75 @@ const AttendanceForm: React.FC = () => {
         {loading ? (
           <div className="py-10 text-center text-blue-600 font-medium">Syncing data...</div>
         ) : fields.length > 0 && (
-          <div className="mt-6 border rounded-lg overflow-hidden">
+          <div className="mt-6 border rounded-xl overflow-hidden shadow-sm">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 text-[11px] uppercase tracking-wider text-gray-500">
                 <tr>
-                  <th className="p-3 border-b text-sm font-bold text-gray-600 w-12">#</th>
-                  <th className="p-3 border-b text-sm font-bold text-gray-600">Student Name</th>
-                  <th className="p-3 border-b text-sm font-bold text-gray-600 text-center">Status</th>
-                  <th className="p-3 border-b text-sm font-bold text-gray-600">Remarks</th>
+                  <th className="p-4 border-b w-12 text-center">#</th>
+                  <th className="p-4 border-b">Student Name</th>
+                  <th className="p-4 border-b text-center">
+                    <div className="flex flex-col items-center gap-1">
+                      <span>Present</span>
+                      <input 
+                        type="checkbox" 
+                        checked={isAllPresent}
+                        onChange={(e) => toggleAllPresent(e.target.checked)}
+                        className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      />
+                    </div>
+                  </th>
+                  <th className="p-4 border-b">Detailed Status</th>
+                  <th className="p-4 border-b">Remarks</th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
+              <tbody className="divide-y text-sm">
                 {fields.map((field, index) => (
-                  <tr key={field.id} className="hover:bg-gray-50">
-                    <td className="p-3 text-sm text-gray-500">{index + 1}</td>
-                    <td className="p-3 text-sm font-medium text-gray-800">{field.name}</td>
-                    <td className="p-3">
-                      <div className="flex justify-center gap-1">
-                        {Object.values(AttendanceStatus).map((status) => (
-                          <Controller
-                            key={status}
-                            control={control}
-                            name={`attendance.${index}.status`}
-                            render={({ field: statusField }) => (
-                              <button
-                                type="button"
-                                onClick={() => statusField.onChange(status)}
-                                title={status}
-                                className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
-                                  statusField.value === status 
-                                    ? getStatusColor(status) 
-                                    : "bg-gray-100 text-gray-400 hover:bg-gray-200"
-                                }`}
-                              >
-                                {status.charAt(0)}
-                              </button>
-                            )}
+                  <tr key={field.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="p-4 text-gray-500 text-center">{index + 1}</td>
+                    <td className="p-4 font-medium text-gray-800 whitespace-nowrap">{field.name}</td>
+                    <td className="p-4 text-center">
+                      <Controller
+                        control={control}
+                        name={`attendance.${index}.status`}
+                        render={({ field: statusField }) => (
+                          <input
+                            type="checkbox"
+                            checked={statusField.value === AttendanceStatus.PRESENT}
+                            onChange={(e) => {
+                              statusField.onChange(e.target.checked ? AttendanceStatus.PRESENT : AttendanceStatus.ABSENT);
+                            }}
+                            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                           />
-                        ))}
-                      </div>
+                        )}
+                      />
                     </td>
-                    <td className="p-3">
+                    <td className="p-4">
+                      <Controller
+                        control={control}
+                        name={`attendance.${index}.status`}
+                        render={({ field: statusField }) => (
+                          <select
+                            value={statusField.value}
+                            onChange={(e) => statusField.onChange(e.target.value)}
+                            className={`text-xs border rounded-lg px-2 py-1.5 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${
+                              statusField.value === AttendanceStatus.PRESENT ? 'bg-green-50 text-green-700 border-green-200' :
+                              statusField.value === AttendanceStatus.ABSENT ? 'bg-red-50 text-red-700 border-red-200' :
+                              statusField.value === AttendanceStatus.LATE ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
+                              'bg-blue-50 text-blue-700 border-blue-200'
+                            }`}
+                          >
+                            {Object.values(AttendanceStatus).map((s) => (
+                              <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
+                            ))}
+                          </select>
+                        )}
+                      />
+                    </td>
+                    <td className="p-4">
                       <input 
                         {...register(`attendance.${index}.remarks`)}
-                        placeholder="Note..."
-                        className="w-full border-b bg-transparent text-[11px] focus:outline-none focus:border-blue-500"
+                        placeholder="Add note..."
+                        className="w-full border-b border-transparent bg-transparent text-xs py-1 focus:outline-none focus:border-blue-300 transition-all placeholder:text-gray-300"
                       />
                     </td>
                   </tr>
@@ -293,17 +326,6 @@ const AttendanceForm: React.FC = () => {
       </form>
     </div>
   );
-};
-
-// Helper for UI colors
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'present': return "bg-green-600 text-white shadow-md";
-    case 'absent': return "bg-red-600 text-white shadow-md";
-    case 'late': return "bg-yellow-500 text-white shadow-md";
-    case 'excused': return "bg-blue-600 text-white shadow-md";
-    default: return "bg-gray-600 text-white";
-  }
 };
 
 export default AttendanceForm;

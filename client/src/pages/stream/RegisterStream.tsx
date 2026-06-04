@@ -5,7 +5,7 @@ import { registerStream } from "../../api/stream.api";
 import Swal from "sweetalert2";
 import Sidebar from "../../shared/layout/dashboard/sidebar";
 import Topbar from "../../shared/layout/dashboard/topbar";
-import { getSchoolId } from "../../utils/getSchoolId";
+import { getSchoolId } from "../../utils/GetSchoolId";
 
 
 const RegisterStream: React.FC = () => {

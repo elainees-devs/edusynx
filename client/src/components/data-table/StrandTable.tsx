@@ -1,4 +1,3 @@
-(empty)
 import React from "react";
 import type { IStrand } from "../../types";
 

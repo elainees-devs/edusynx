@@ -5,7 +5,7 @@ import { registerSubject } from "../../api/subject.api";
 import Swal from "sweetalert2";
 import Sidebar from "../../shared/layout/dashboard/sidebar";
 import Topbar from "../../shared/layout/dashboard/topbar";
-import { getSchoolId } from "../../utils/getSchoolId";
+import { getSchoolId } from "../../utils/GetSchoolId";
 import { useClassOptions } from "../../hooks";
 
 const RegisterSubject: React.FC = () => {

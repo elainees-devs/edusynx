@@ -1,7 +1,6 @@
 // client/src/pages/dashboard/super-admin.tsx
 import SuperAdminDashboardOverView from "../../components/dashboard/super-admin/DashboardOverview"
-import Sidebar from "../../shared/layout/dashboard/sidebar"
-import Topbar from "../../shared/layout/dashboard/topbar"
+import { Sidebar, Topbar } from "../../shared"
 
 const SuperAdminDashboard: React.FC = () =>{
     return(

@@ -1,5 +1,6 @@
 // client/src/components/forms/signup/steps/contact-info.tsx
-import { useSignUpContext } from "../../../../context/signup/useSignUpContext";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/storeHooks";
+import { setFormData } from "../../../../store/slices/signupSlice";
 
 const ContactInfoStep = ({
   next,
@@ -8,7 +9,12 @@ const ContactInfoStep = ({
   next: () => void;
   back: () => void;
 }) => {
-  const { formData, updateForm } = useSignUpContext();
+  const dispatch = useAppDispatch();
+  const formData = useAppSelector((state) => state.signup.formData);
+
+  const updateForm = (data: any) => {
+    dispatch(setFormData(data));
+  };
 
   return (
       <div className="space-y-4 border-[1px] p-8 border-dashed border-gray-200">
