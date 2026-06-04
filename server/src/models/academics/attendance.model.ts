@@ -15,6 +15,9 @@ const attendanceSchema = new Schema<IAttendance>(
         status: { type: String, enum: Object.values(AttendanceStatus), required: true },
       },
     ],
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    remarks: { type: String },
   },
   {
     timestamps: true,
