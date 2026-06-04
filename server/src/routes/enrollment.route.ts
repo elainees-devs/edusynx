@@ -5,6 +5,8 @@ import {
 } from "../validation/enrollment.schema";
 import { validate } from "../middlewares/validate";
 import { EnrollmentController } from "../controllers";
+import { authenticateUser } from "../middlewares/auth";
+import { UserRole } from "../types";
 
 const enrollmentRouter = Router();
 const controller = new EnrollmentController();
@@ -34,6 +36,7 @@ const controller = new EnrollmentController();
  */
 enrollmentRouter.post(
   "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(createEnrollmentSchema),
   controller.createEnrollment
 );
@@ -87,7 +90,11 @@ enrollmentRouter.post(
  *       200:
  *         description: Paginated list of enrollments
  */
-enrollmentRouter.get("/", controller.getEnrollments);
+enrollmentRouter.get(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getEnrollments
+);
 
 /**
  * @swagger
@@ -99,7 +106,11 @@ enrollmentRouter.get("/", controller.getEnrollments);
  *       200:
  *         description: List of all enrollments
  */
-enrollmentRouter.get("/all", controller.getAllEnrollments);
+enrollmentRouter.get(
+  "/all",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getAllEnrollments
+);
 
 /**
  * @swagger
@@ -117,7 +128,11 @@ enrollmentRouter.get("/all", controller.getAllEnrollments);
  *       200:
  *         description: List of enrollments for the student
  */
-enrollmentRouter.get("/by-student", controller.getEnrollmentsByStudent);
+enrollmentRouter.get(
+  "/by-student",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getEnrollmentsByStudent
+);
 
 /**
  * @swagger
@@ -135,7 +150,11 @@ enrollmentRouter.get("/by-student", controller.getEnrollmentsByStudent);
  *       200:
  *         description: List of enrollments for the academic year
  */
-enrollmentRouter.get("/by-academic-year", controller.getEnrollmentsByAcademicYear);
+enrollmentRouter.get(
+  "/by-academic-year",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getEnrollmentsByAcademicYear
+);
 
 /**
  * @swagger
@@ -155,7 +174,11 @@ enrollmentRouter.get("/by-academic-year", controller.getEnrollmentsByAcademicYea
  *       404:
  *         description: Not found
  */
-enrollmentRouter.get("/:id", controller.getEnrollmentById);
+enrollmentRouter.get(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getEnrollmentById
+);
 
 /**
  * @swagger
@@ -183,6 +206,7 @@ enrollmentRouter.get("/:id", controller.getEnrollmentById);
  */
 enrollmentRouter.patch(
   "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(updateEnrollmentSchema),
   controller.updateEnrollment
 );
@@ -205,7 +229,11 @@ enrollmentRouter.patch(
  *       404:
  *         description: Not found
  */
-enrollmentRouter.delete("/:id", controller.deleteEnrollment);
+enrollmentRouter.delete(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  controller.deleteEnrollment
+);
 
 /**
  * @swagger
@@ -217,6 +245,10 @@ enrollmentRouter.delete("/:id", controller.deleteEnrollment);
  *       204:
  *         description: All deleted
  */
-enrollmentRouter.delete("/", controller.deleteAllEnrollments);
+enrollmentRouter.delete(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  controller.deleteAllEnrollments
+);
 
 export { enrollmentRouter };

@@ -4,6 +4,8 @@ import { Router } from "express";
 import { GuardianController } from "../controllers/people/guardian.controller";
 import { updateGuardianSchema } from "../validation";
 import { validate } from "../middlewares/validate";
+import { authenticateUser } from "../middlewares/auth";
+import { UserRole } from "../types";
 
 const guardianRouter = Router();
 const guardianController = new GuardianController();
@@ -64,7 +66,11 @@ const guardianController = new GuardianController();
  *       500:
  *         description: Server error
  */
-guardianRouter.post("/", guardianController.generateFamilyNumberAndcreateGuardian);
+guardianRouter.post(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  guardianController.generateFamilyNumberAndcreateGuardian,
+);
 
 /**
  * @swagger
@@ -76,7 +82,11 @@ guardianRouter.post("/", guardianController.generateFamilyNumberAndcreateGuardia
  *       200:
  *         description: List of all guardians
  */
-guardianRouter.get("/", guardianController.getAllGuardians);
+guardianRouter.get(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  guardianController.getAllGuardians,
+);
 
 /**
  * @swagger
@@ -108,7 +118,11 @@ guardianRouter.get("/", guardianController.getAllGuardians);
  *       200:
  *         description: Paginated search results
  */
-guardianRouter.get("/search", guardianController.searchGuardians);
+guardianRouter.get(
+  "/search",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  guardianController.searchGuardians,
+);
 
 /**
  * @swagger
@@ -140,8 +154,9 @@ guardianRouter.get("/search", guardianController.searchGuardians);
  */
 guardianRouter.patch(
   "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(updateGuardianSchema),
-  guardianController.updateGuardianById
+  guardianController.updateGuardianById,
 );
 
 export { guardianRouter };

@@ -3,6 +3,8 @@ import { Router } from "express";
 import { createStreamSchema, updateStreamSchema } from "../validation/stream.schema";
 import { validate } from "../middlewares/validate";
 import { StreamController } from "../controllers";
+import { authenticateUser } from "../middlewares/auth";
+import { UserRole } from "../types";
 
 const streamRouter = Router();
 const streamController = new StreamController();
@@ -26,7 +28,12 @@ const streamController = new StreamController();
  *       400:
  *         description: Validation error
  */
-streamRouter.post('/', validate(createStreamSchema), streamController.createStream);
+streamRouter.post(
+  '/',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(createStreamSchema),
+  streamController.createStream
+);
 /**
  * @swagger
  * /api/v1/streams:
@@ -50,7 +57,11 @@ streamRouter.post('/', validate(createStreamSchema), streamController.createStre
  *       200:
  *         description: Paginated list of classes
  */
-streamRouter.get("/", streamController.getStreams);
+streamRouter.get(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  streamController.getStreams
+);
 
 /**
  * @swagger
@@ -62,7 +73,11 @@ streamRouter.get("/", streamController.getStreams);
  *       200:
  *         description: List of all streams
  */
-streamRouter.get("/all", streamController.getAllStreams);
+streamRouter.get(
+  "/all",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  streamController.getAllStreams
+);
 /**
  * @swagger
  * /api/v1/streams/{id}:
@@ -83,7 +98,11 @@ streamRouter.get("/all", streamController.getAllStreams);
  *         description: Stream not found
  */
 
-streamRouter.get('/:id', streamController.getStreamById);
+streamRouter.get(
+  '/:id',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  streamController.getStreamById
+);
 
 /**
  * @swagger
@@ -144,7 +163,12 @@ streamRouter.get('/', streamController.getStreams);
  *       404:
  *         description: Stream not found
  */
-streamRouter.patch('/:id', validate(updateStreamSchema), streamController.updateStream);
+streamRouter.patch(
+  '/:id',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(updateStreamSchema),
+  streamController.updateStream
+);
 
 /**
  * @swagger
@@ -165,7 +189,11 @@ streamRouter.patch('/:id', validate(updateStreamSchema), streamController.update
  *       404:
  *         description: Stream not found
  */
-streamRouter.delete('/:id', streamController.deleteStream);
+streamRouter.delete(
+  '/:id',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  streamController.deleteStream
+);
 
 /**
  * @swagger
@@ -178,6 +206,10 @@ streamRouter.delete('/:id', streamController.deleteStream);
  *       204:
  *         description: All streams deleted successfully
  */
-streamRouter.delete('/', streamController.deleteAllStreams);
+streamRouter.delete(
+  '/',
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  streamController.deleteAllStreams
+);
 
 export { streamRouter };

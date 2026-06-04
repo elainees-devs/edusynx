@@ -87,6 +87,7 @@ studentRouter.post(
  */
 studentRouter.post(
   "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(createStudentSchema),
   studentController.generateAdmissionAndCreateStudent,
 );
@@ -134,7 +135,11 @@ studentRouter.patch(
  *       200:
  *         description: List of all students
  */
-studentRouter.get("/", studentController.getAllStudents);
+studentRouter.get(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  studentController.getAllStudents,
+);
 
 /**
  * @swagger
@@ -146,7 +151,11 @@ studentRouter.get("/", studentController.getAllStudents);
  *       200:
  *         description: List of active students
  */
-studentRouter.get("/active", studentController.getActiveStudents);
+studentRouter.get(
+  "/active",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  studentController.getActiveStudents,
+);
 
 /**
  * @swagger
@@ -157,6 +166,7 @@ studentRouter.get("/active", studentController.getActiveStudents);
  */
 studentRouter.get(
   "/student/guardian/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
   studentController.getStudentWithGuardianById,
 );
 
@@ -167,7 +177,11 @@ studentRouter.get(
  *     summary: Get names of all students
  *     tags: [Students]
  */
-studentRouter.get("/students/names", studentController.getAllStudentNames);
+studentRouter.get(
+  "/students/names",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  studentController.getAllStudentNames,
+);
 
 /**
  * @swagger
@@ -176,7 +190,11 @@ studentRouter.get("/students/names", studentController.getAllStudentNames);
  *     summary: Count students
  *     tags: [Students]
  */
-studentRouter.get("/count", studentController.countStudents);
+studentRouter.get(
+  "/count",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  studentController.countStudents,
+);
 
 /**
  * @swagger
@@ -271,6 +289,7 @@ studentRouter.patch(
  */
 studentRouter.patch(
   "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(updateStudentSchema),
   studentController.updateStudentById,
 );
@@ -392,10 +411,11 @@ studentRouter.patch(
  *       200:
  *         description: Paginated search results
  */
-studentRouter.get("/search", studentController.searchStudents);
+studentRouter.get("/search", authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]), studentController.searchStudents);
 
 studentRouter.get(
   "/class",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
   studentController.getStudentsByClassAndStream
 );
 
@@ -520,7 +540,11 @@ studentRouter.get(
  *     tags: [Students]
  */
 
-studentRouter.delete("/:id", studentController.deleteStudentById);
+studentRouter.delete(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  studentController.deleteStudentById,
+);
 
 /**
  * @swagger
@@ -529,6 +553,10 @@ studentRouter.delete("/:id", studentController.deleteStudentById);
  *     summary: Delete all students
  *     tags: [Students]
  */
-studentRouter.delete("/", studentController.deleteAllStudents);
+studentRouter.delete(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  studentController.deleteAllStudents,
+);
 
 export { studentRouter };

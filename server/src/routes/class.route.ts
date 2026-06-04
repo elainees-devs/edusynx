@@ -3,6 +3,8 @@ import { Router } from "express";
 import { createClassSchema, updateClassSchema } from "../validation";
 import { ClassController } from "../controllers";
 import { validate } from "../middlewares/validate";
+import { authenticateUser } from "../middlewares/auth";
+import { UserRole } from "../types";
 
 const classRouter = Router();
 const classController = new ClassController();
@@ -32,7 +34,12 @@ const classController = new ClassController();
  *       400:
  *         description: Validation error
  */
-classRouter.post("/", validate(createClassSchema), classController.createClass);
+classRouter.post(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(createClassSchema),
+  classController.createClass
+);
 
 /**
  * @swagger
@@ -57,7 +64,11 @@ classRouter.post("/", validate(createClassSchema), classController.createClass);
  *       200:
  *         description: Paginated list of classes
  */
-classRouter.get("/", classController.getClasses);
+classRouter.get(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  classController.getClasses
+);
 
 /**
  * @swagger
@@ -69,7 +80,11 @@ classRouter.get("/", classController.getClasses);
  *       200:
  *         description: List of all classes
  */
-classRouter.get("/all", classController.getAllClasses);
+classRouter.get(
+  "/all",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  classController.getAllClasses
+);
 
 /**
  * @swagger
@@ -103,7 +118,11 @@ classRouter.get("/all", classController.getAllClasses);
  *       200:
  *         description: List of classes for the given school and academic year
  */
-classRouter.get("/school/:schoolId", classController.getClassesByFilter);
+classRouter.get(
+  "/school/:schoolId",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  classController.getClassesByFilter
+);
 
 /**
  * @swagger
@@ -122,7 +141,11 @@ classRouter.get("/school/:schoolId", classController.getClassesByFilter);
  *       200:
  *         description: List of classes for the given year
  */
-classRouter.get("/year/:academicYear", classController.getClassesByAcademicYear);
+classRouter.get(
+  "/year/:academicYear",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  classController.getClassesByAcademicYear
+);
 
 /**
  * @swagger
@@ -143,7 +166,11 @@ classRouter.get("/year/:academicYear", classController.getClassesByAcademicYear)
  *       404:
  *         description: Class not found
  */
-classRouter.get("/:id", classController.getClassById);
+classRouter.get(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  classController.getClassById
+);
 
 /**
  * @swagger
@@ -170,7 +197,12 @@ classRouter.get("/:id", classController.getClassById);
  *       404:
  *         description: Class not found
  */
-classRouter.patch("/:id", validate(updateClassSchema), classController.updateClass);
+classRouter.patch(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  validate(updateClassSchema),
+  classController.updateClass
+);
 
 /**
  * @swagger
@@ -190,7 +222,11 @@ classRouter.patch("/:id", validate(updateClassSchema), classController.updateCla
  *       404:
  *         description: Class not found
  */
-classRouter.delete("/:id", classController.deleteClass);
+classRouter.delete(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  classController.deleteClass
+);
 
 /**
  * @swagger
@@ -202,6 +238,10 @@ classRouter.delete("/:id", classController.deleteClass);
  *       204:
  *         description: All classes deleted successfully
  */
-classRouter.delete("/", classController.deleteAllClasses);
+classRouter.delete(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  classController.deleteAllClasses
+);
 
 export { classRouter };

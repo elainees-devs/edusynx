@@ -5,6 +5,8 @@ import {
 } from "../validation/academic-year.schema";
 import { validate } from "../middlewares/validate";
 import { AcademicYearController } from "../controllers";
+import { authenticateUser } from "../middlewares/auth";
+import { UserRole } from "../types";
 
 const academicYearRouter = Router();
 const controller = new AcademicYearController();
@@ -34,6 +36,7 @@ const controller = new AcademicYearController();
  */
 academicYearRouter.post(
   "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(createAcademicYearSchema),
   controller.createAcademicYear
 );
@@ -69,7 +72,11 @@ academicYearRouter.post(
  *       200:
  *         description: Paginated list of academic years
  */
-academicYearRouter.get("/", controller.getAcademicYears);
+academicYearRouter.get(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getAcademicYears
+);
 
 /**
  * @swagger
@@ -81,7 +88,11 @@ academicYearRouter.get("/", controller.getAcademicYears);
  *       200:
  *         description: List of all academic years
  */
-academicYearRouter.get("/all", controller.getAllAcademicYears);
+academicYearRouter.get(
+  "/all",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getAllAcademicYears
+);
 
 /**
  * @swagger
@@ -102,7 +113,11 @@ academicYearRouter.get("/all", controller.getAllAcademicYears);
  *       404:
  *         description: No active academic year found
  */
-academicYearRouter.get("/active", controller.getActiveAcademicYear);
+academicYearRouter.get(
+  "/active",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getActiveAcademicYear
+);
 
 /**
  * @swagger
@@ -122,7 +137,11 @@ academicYearRouter.get("/active", controller.getActiveAcademicYear);
  *       404:
  *         description: Not found
  */
-academicYearRouter.get("/:id", controller.getAcademicYearById);
+academicYearRouter.get(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL, UserRole.TEACHER]),
+  controller.getAcademicYearById
+);
 
 /**
  * @swagger
@@ -150,6 +169,7 @@ academicYearRouter.get("/:id", controller.getAcademicYearById);
  */
 academicYearRouter.patch(
   "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
   validate(updateAcademicYearSchema),
   controller.updateAcademicYear
 );
@@ -172,7 +192,11 @@ academicYearRouter.patch(
  *       404:
  *         description: Not found
  */
-academicYearRouter.delete("/:id", controller.deleteAcademicYear);
+academicYearRouter.delete(
+  "/:id",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  controller.deleteAcademicYear
+);
 
 /**
  * @swagger
@@ -184,6 +208,10 @@ academicYearRouter.delete("/:id", controller.deleteAcademicYear);
  *       204:
  *         description: All deleted
  */
-academicYearRouter.delete("/", controller.deleteAllAcademicYears);
+academicYearRouter.delete(
+  "/",
+  authenticateUser([UserRole.SCHOOL_ADMIN, UserRole.PRINCIPAL]),
+  controller.deleteAllAcademicYears
+);
 
 export { academicYearRouter };
